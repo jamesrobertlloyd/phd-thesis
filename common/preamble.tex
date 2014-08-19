@@ -1,23 +1,13 @@
-% All my custom preamble stuff.  Shouldn't overlap with anything in official-preamble
-
-
-
-
 % Paths to figure and table directories.
-\newcommand{\symmetryfigsdir}{figures/symmetries}
-\newcommand{\topologyfiguresdir}{figures/topology}
-\newcommand{\infinitefiguresdir}{figures/infinite}
-\newcommand{\grammarfiguresdir}{figures/grammar}
 \newcommand{\introfigsdir}{figures/intro}
-\newcommand{\gplvmfiguresdir}{figures/gplvm}
-\newcommand{\warpedfiguresdir}{figures/warped-mixtures}
-\newcommand{\deeplimitsfiguresdir}{figures/deep-limits}
-\newcommand{\quadraturefigsdir}{figures/quadrature}
-\newcommand{\additivefigsdir}{figures/additive}
-\newcommand{\decompfigsdir}{figures/decomp}
-\newcommand{\examplefigsdir}{figures/worked-example}
+\newcommand{\constructionfigsdir}{figures/construction}
+\newcommand{\descriptionfigsdir}{figures/description}
+\newcommand{\criticismfigsdir}{figures/criticism}
+\newcommand{\networksfigsdir}{figures/networks}
+\newcommand{\arraysfigsdir}{figures/arrays}
 
-\usepackage{bm}  % for warped mixtures - is this necessary?
+% Packages
+
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage{multirow}
@@ -26,38 +16,19 @@
 \usepackage{relsize}
 \usepackage{graphicx}
 \usepackage{amsmath,amssymb,textcomp}
+\usepackage{amsthm, bm}
 \usepackage{nicefrac}
 \usepackage{amsthm}
 \usepackage{tikz}
-\usetikzlibrary{arrows}
-\usetikzlibrary{calc}
+\usetikzlibrary{shapes.geometric,arrows,chains,matrix,positioning,scopes,calc}
+\tikzstyle{mybox} = [draw=white, rectangle]
+\usepackage{common/picins}
+\usepackage{etex}
+\definecolor{camlightblue}{rgb}{0.601, 0.8, 1}
 \usepackage{nth}
 \usepackage{rotating}
 \usepackage{array}
 \usepackage{fp}
-\usepackage{cleveref}   % Note: this package sometimes causes the page counter to reset.
-\crefname{equation}{equation}{equations}
-\crefname{figure}{figure}{figures}
-%\usepackage{common/sectsty}
-
-% Controls capitalization of all headers
-%\usepackage{stringstrings}
-%\usepackage[explicit]{titlesec}
-%\newcommand\SentenceCase[1]{%
-%  \caselower[e]{#1}%
-%  \capitalize[q]{\thestring}%
-%}
-%\titleformat{\section}
-%  {\normalfont\Large\bfseries}{\thesection}{1em}{\SentenceCase{#1}\thestring}
-
-
-%\titleformat{\section} % The normal, unstarred version
-%    {\Large\bfseries}{}{2ex}
-%    {\thesection. \MakeSentenceCase{#1}}
-
-%\titleformat{name=\section,numberless} % The starred version; note the `numberless` key
-%    {\Large\bfseries}{}{2ex}
-%    {\MakeSentenceCase{#1}}
 
 \usepackage[hyperpageref]{backref}
 % Setup to show (pages 4 and 9) sort of thing in the bibliography - DD
@@ -86,10 +57,6 @@
 
 \usepackage{stringstrings}
 
-%\newcommand{\headercase}{\
-%\DeclareFieldFormat{titlecase}{\MakeSentenceCase{#1}}
-
-
 %% For submission, make all render blank.
 \input{common/commenting.tex}
 %\renewcommand{\LATER}[1]{}
@@ -100,11 +67,16 @@
 %\renewcommand{\fPROBLEM}[1]{}
 %\renewcommand{\NA}[1]{}
 
+% Not math
+
+\def\ie{i.e.\ }
+\def\eg{e.g.\ }
+\def\etc{etc.\ }
+\def\iid{i.i.d.\ }
 
 % HUMBLE WORDS: shown slightly smaller when in normal text
 % Thanks to Christian Steinruecken!
 \input{common/humble.tex}
-
 
 % TODO: Clean up duplicates
 \declareHumble{ANOVA}{ANOVA}
@@ -166,46 +138,83 @@
 \declareHumble{UMIST}{UMIST}
 \declareHumble{vbgplvm}{VB GP-LVM}
 
+% Math
+
+\def\graphspace{\mathbf{G}}
+\def\Uniform{\mbox{\rm Uniform}}
+\def\Bernoulli{\mbox{\rm Bernoulli}}
+\def\simiid{\sim_{\mbox{\tiny iid}}}
+\def\eqdist{\stackrel{\mbox{\tiny d}}{=}}
+\def\ahfunction{\theta}       
+\def\AHfunction{\Theta}           % A-H random function
+\def\AHvar{U}                     % A-H uniform variables
+\def\AHvaralt{V}                  % A-H uniform variables - for bipartite data
+\def\larray{W}                    % latent array sampled with A-H
+\def\latentspace{\mathbf{W}}      % range of entries
+\def\darray{X}                    % data array
+\def\dataspace{\mathbf{X}}        % sample space
+\def\cfspace{\mathbf{C}}          % space of continuous functions
+\def\likelihood{P}
+
+\def\CovData{C}
+\def\CovDataAlt{D}
+
+\def\rweightedG{H}
+\def\rgraph{G}
+\def\SGinf{\mathbb{S}_{\infty}}
+
+\newcommand{\eqd}{\overset{\,_{\!d}}{=}}
+\newcommand{\defn}[1]{\emph{#1}}
+
+\newcommand{\Law}{\mathcal{L}}
+
+\newcommand{\NonNegInts}{\mathbb{Z}_+}
+\newcommand{\Nats}{\mathbb{N}}
+\newcommand{\Rationals}{\mathbb{Q}}
+\newcommand{\Reals}{\mathbb{R}}
+
+\newcommand{\as}{\textrm{a.s.}}
+
+\def\[#1\]{\begin{align}#1\end{align}}
+\newcommand{\defas}{:=}
+
+\newcommand{\kernel}{\kappa}
+\newcommand{\scalefactor}{s}
+\newcommand{\lengthscale}{\ell}
+\newcommand{\targets}{T}
+\newcommand{\noise}{\sigma_\targets}
+\newcommand{\pseudopoints}{\eta}
+\newcommand{\inputpoints}{\xi}
+\newcommand{\covhyppar}{\psi}
+\newcommand{\logistic}{\sigma}
+
+\newcommand{\CompOrder}{\mathcal{O}}
+
+%\newcommand{\gp}{{\acro{gp}}}
+\let\oldemptyset\emptyset
 \newcommand{\kSig}{\boldsymbol\sigma}
 
 \def\subexpr{{\cal S}}
 \def\baseker{{\cal B}}
 \def\numWinners{k}
 
-\def\ie{i.e.\ }
-\def\eg{e.g.\ }
-\def\etc{etc.\ }
-\let\oldemptyset\emptyset
-%\let\emptyset 0
+\newcommand{\Normal}{\mathcal{N}}
+\newcommand{\N}[3]{\mathcal{N}\!\left(#1|#2,#3\right)}
+\newcommand{\Nt}[2]{\mathcal{N}\!\left(#1,#2\right)}
+\newcommand{\bN}[3]{\mathcal{N}\big(#1|#2,#3\big)}
+\newcommand{\boldN}[3]{\text{\textbf{\mathcal{N}}}\big(#1;#2,#3\big)}
+\newcommand{\ones}[1]{\mat{1}_{#1}}
+\newcommand{\eye}[1]{\mat{E}_{#1}}
+\newcommand{\tra}{{^\ensuremath{\mathsf{T}}}}
+\newcommand{\trace}{\operatorname{tr}}
+\newcommand{\deq}{:=}
 
-
-
-
-% Unify notation between neural-net land and GP-land.
-\newcommand{\hphi}{h}
-\newcommand{\hPhi}{\vh}
-\newcommand{\walpha}{w}
-\newcommand{\wboldalpha}{\bw}
-\newcommand{\wcapalpha}{\vW}
-\newcommand{\lengthscale}{w}
+\newcommand{\inv}{^{{\mathsmaller{-1}}}}
 
 \newcommand{\layerindex}{\ell}
 
-
-
-\newcommand{\gpdrawbox}[1]{
-\setlength\fboxsep{0pt}
-\hspace{-0.15in} 
-\fbox{
-\includegraphics[width=0.464\columnwidth]{\deeplimitsfiguresdir/deep_draws/deep_gp_sample_layer_#1}
-}}
-
-
-
 \newcommand{\procedurename}{ABCD}
 \newcommand{\genText}[1]{{\sf #1}}
-
-
 
 \newcommand{\asdf}{$^{\textnormal{th}}$}
 
@@ -244,7 +253,6 @@
 \newcommand{\po}[1]{p\!\left(#1\right)}
 \newcommand{\pF}[3]{p\!\left(\,#1\!=\!#2\;\middle\vert\;#3\,\right)} 
 \newcommand{\mean}[2]{{m}\!\left(#1\middle\vert#2\right)}
-
 
 
 \newcommand{\valpha}{\boldsymbol{\alpha}}
@@ -291,81 +299,6 @@
 \newcommand{\vZ}{\mat{Z}}
 \newcommand{\vz}{\vect{z}}
 
-
-% deep gp notation
-\newcommand{\netweights}{w}
-\newcommand{\vnetweights}{\vw}
-\newcommand{\mnetweights}{\vW}
-\newcommand{\outweights}{\v}
-\newcommand{\voutweights}{\vv}
-\newcommand{\moutweights}{\vV}
-
-\newcommand{\unitparams}{\v}
-\newcommand{\vunitparams}{\vv}
-\newcommand{\munitparams}{\vV}
-
-
-\newcommand{\He}{\mathcal{H}}
-\newcommand{\normx}[2]{\left\|#1\right\|_{#2}}
-\newcommand{\Hnorm}[1]{\normx{#1}{\He}}
-\newcommand{\mmd}{{\rm MMD}}
-
-
-\newcommand{\mf}{\bar{\vf}}
-
-%\newcommand{\mf}{\mu} %{\bar{\ell}}
-\newcommand{\lf}{f} % Likelihood function
-\newcommand{\st}{_\star}
-
-% from simpler log-bq writeup
-\newcommand{\lftwo}{{\log \ell}}
-\newcommand{\mftwo}{{\bar \ell}}
-\newcommand{\loggp}{{\log\acro{GP}}}%| \bX, \vy )}}
-\newcommand{\loggpdist}{{\acro{GP}(\lftwo)}}%| \vX, \vy )}}
-
-
-\newcommand{\inv}{^{{\mathsmaller{-1}}}}
-\newcommand{\tohalf}{^{{\mathsmaller{\nicefrac{1}{2}}}}}
-
-\newcommand{\Normal}{\mathcal{N}}
-\newcommand{\N}[3]{\mathcal{N}\!\left(#1 \middle| #2,#3\right)}
-\newcommand{\Nt}[2]{\mathcal{N}\!\left(#1,#2\right)}
-\newcommand{\NT}[2]{\mathcal{N}\!\left(#1,#2\right)}
-\newcommand{\GPdist}[3]{\mathcal{GP}\!\left(#1 \, \middle| \, #2, #3 \right)}
-\newcommand{\GPdisttwo}[2]{\mathcal{GP}\!\left(\, #1, #2 \right)}
-\newcommand{\bN}[3]{\mathcal{N}\big(#1 \middle| #2,#3\big)}
-\newcommand{\boldN}[3]{\text{\textbf{\mathcal{N}}}\big(#1;#2,#3\big)}
-\newcommand{\ones}[1]{\mat{1}_{#1}}
-\newcommand{\eye}[1]{\mat{E}_{#1}}
-\newcommand{\tra}{^{\mathsf{T}}}
-%\newcommand{\tra}{^{\top}}
-%\mathsf{T}
-\newcommand{\trace}{\operatorname{tr}}
-\newcommand{\shift}{\operatorname{shift}}
-\renewcommand{\mod}{\operatorname{mod}}
-\newcommand{\deq}{:=}
-\newcommand{\oneofk}{\operatorname{one-of-k}}
-%\newcommand{\degree}{^\circ}
-
-\newcommand{\GPt}[2]{\mathcal{GP}\!\left(#1,#2\right)}
-%\newcommand{\GPt}[2]{\gp\!\left(#1,#2\right)}
-
-\DeclareMathOperator{\tr}{tr}
-\DeclareMathOperator{\chol}{chol}
-\DeclareMathOperator{\diag}{diag}
-
-\newenvironment{narrow}[2]{%
-  \begin{list}{}{%
-  \setlength{\topsep}{0pt}%
-  \setlength{\leftmargin}{#1}%
-  \setlength{\rightmargin}{#2}%
-  \setlength{\listparindent}{\parindent}%
-  \setlength{\itemindent}{\parindent}%
-  \setlength{\parsep}{\parskip}}%
-\item[]}{\end{list}}
-
-
-
 \newcommand{\dist}{\ \sim\ }
 \def\given{\,|\,}
 
@@ -376,9 +309,7 @@
 
 \newcommand{\defeq}{\mathrel{:\mkern-0.25mu=}}
 
-\def\ie{i.e.\ }
-\def\eg{e.g.\ }
-\def\iid{i.i.d.\ }
+
 %\def\simiid{\sim_{\mbox{\tiny iid}}}
 \def\simiid{\overset{\mbox{\tiny iid}}{\sim}}
 \def\simind{\overset{\mbox{\tiny \textnormal{ind}}}{\sim}}
@@ -394,13 +325,8 @@
 \def\GP{\mathcal{GP}}
 \def\GPLVM{\mathcal{GP-LVM}}
 
-
-
-
 % Kernel stuff
 
-\def\iva{\vect{\inputVar}}
-\def\ivaone{\inputVar}
 \def\inputVar{x}
 \def\InputVar{X}
 \def\InputSpace{\mathcal{X}}
@@ -417,39 +343,29 @@
 \newcommand{\kerntimes}{ \! \times \!}
 \newcommand{\kernplus}{ \, + \,}
 
-
 % Proof stuff
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{prop}[theorem]{Proposition}
 \newtheorem{proposition}{Proposition}
-\newtheorem*{cor}{Corollary}
 
-% For infinite bq
-\newcommand{\iv}{\theta}
-\newcommand{\viv}{\vtheta}
+\newtheorem{thm}{Theorem}%[section]
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}{Corollary}
 
-% For intro chapter
-\newcommand{\funcval}{\vf(\vX)}
-\newcommand{\testpoint}{{\vx^\star}}
+\theoremstyle{definition}
+\newtheorem{definition}[thm]{Definition}%[section]
+\newtheorem{conj}{Conjecture}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{example}{Example}[section]
+\newtheorem{rem}[thm]{Remark}
 
-\newcommand{\underwrite}[2]{{\underbrace{#1}_{\textnormal{#2}}}}
+\theoremstyle{remark}
+%\newtheorem{rem}{Remark}
+\newtheorem{note}{Note}
+\newtheorem{case}{Case}
 
 
-
-% For kernel figures
-\newcommand{\fhbig}{2cm}%
-\newcommand{\fwbig}{3cm}%
-\newcommand{\kernpic}[1]{\includegraphics[height=\fhbig,width=\fwbig]{\grammarfiguresdir/structure_examples/#1}}%
-\newcommand{\kernpicr}[1]{\rotatebox{90}{\includegraphics[height=\fwbig,width=\fhbig]{\grammarfiguresdir/structure_examples/#1}}}%
-\newcommand{\addkernpic}[1]{{\includegraphics[height=\fhbig,width=\fwbig]{\grammarfiguresdir/additive_multi_d/#1}}}%
-\newcommand{\largeplus}{\tabbox{{\Large+}}}%
-\newcommand{\largeeq}{\tabbox{{\Large=}}}%
-\newcommand{\largetimes}{\tabbox{{\Large$\times$}}}%
-\newcommand{\fixedx}{$x$ (with $x' = 1$)}%
-
-% for warped mixtures
-\newcommand{\CLAS}{\vz}  %cluster assignments
-\newcommand{\CLASi}{z} % individual cluster assignments
-
+\numberwithin{equation}{section}
+\numberwithin{thm}{section}
