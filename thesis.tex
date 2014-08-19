@@ -126,7 +126,7 @@
 
 % *********************** Adding TOC and List of Figures ***********************
 
-% These lines remove 'Contents' from table of contents - DD
+% These lines remove 'Contents' from table of contents
 \addtocontents{toc}{\protect\setcounter{tocdepth}{-1}}
 \tableofcontents
 \addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
@@ -135,11 +135,6 @@
 
 \listoftables
 
-%\newcommand{\nomname}{Notation}
-%\nomenclature{$a$}{The number of angels per unit area}% 
-%\nomenclature{$N$}{The number of angels per needle point}% 
-%\nomenclature{$A$}{The area of the needle point}% 
-%\printnomencl
 \input{notation}
 
 
@@ -147,7 +142,12 @@
 \mainmatter
 
 \input{intro}
-\input{dummy}
+\input{api}
+\input{construction}
+\input{description}
+\input{criticism}
+\input{networks}
+\input{arrays}
 \input{discussion}
 
 
