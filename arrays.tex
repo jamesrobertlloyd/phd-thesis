@@ -4,7 +4,18 @@
 \chapter{Representing probability distributions of exchangeable arrays}
 \label{ch:arrays}
 
-This chapter\dots
+In chapter~\ref{ch:networks} we demonstrated how to characterise probability distributions over objects such as networks or user--item rating matrices.
+The key properties that allowed us to characterise these distributions were symmetries in the data, or invariances to the way they are stored.
+For networks, we assumed that the ordering of the nodes contained no information.
+For user--item data we assumed that the order of both users and items were irrelevant to meaning of the data.
+
+In this chapter we extend these ideas of exchangeability to the full generality of any data that can be stored in a relational database.
+This essentially includes every form of data imaginable.
+We demonstrate that extensions of the \NA{Aldous--Hoover} theorem to $n$-arrays due to Kallenberg are self strengthening to the case of exchangeable databases.
+These new theorems reveal a natural parameter space for data stored in relational databases elucidating how to construct appropriate statistical models for such data.
+
+This chapter is largely based on collaborations with Zoubin Ghahramani, Peter Orbanz and Daniel Roy.
+In particular, the theorems presented in this chapter appeared at \NA{BNP} and \NA{NIPS} workshops but without proof.
 
 \section{Introduction}
 
@@ -34,14 +45,6 @@ We show that the representation theorems for single arrays can be used to derive
 \label{fig:exchangeable}
 \end{figure}
 
-%Another example, movie ratings.
-%Order of users and order of movies unimportant so we appeal to Aldous--Hoover after first mentioning that our data is encoded in an array.
-%Cite some papers and mention that PMF (contrast with non-probabilistic SVD version) corresponds to this parameter space.
-
-%Finally, a database may consist of many tables recording the value of many relations between different sets of objects \eg users, movies, actors, genres.
-%Exchangeability of objects means an interesting coupled exchangeability of the tables recording the data (give an example).
-%We extend the representation theorems to deal with this (perhaps give sneak preview of the result here).
-
 \section{Exchangeable databases}
 
 We abstractly define a database following the entity-relationship formalism \citep[e.g.][]{Ullman2002} where the values of attributes are the result of evaluating a function (relation) over a collection of entities / objects.
@@ -50,10 +53,8 @@ We abstractly define a database following the entity-relationship formalism \cit
 \newcommand{\Types}{T}
 \newcommand{\Space}{S}
 \begin{definition}[types, signatures, relation]
-Fix a finite set $\Types$ of \defn{types}.  By a \defn{signature} we mean a finite sequence $s \in \Types^n$ of types.
-By a \defn{relation $r$ of signature $s \in \Types^n$ with values in a space $\Space$} we mean 
-%a $n$-dimensional array of values of $\Space$.  More concretely, $r$ 
-a function from $\Nats^n$ to $\Space$.
+Fix a finite set $\Types$ of \defn{types}.  Define a \defn{signature} to be a finite sequence $s \in \Types^n$ of types.
+Define a \defn{relation $r$ of signature $s \in \Types^n$ with values in a space $\Space$} to be a function from $\Nats^n$ to $\Space$.
 \end{definition}
 
 We may encode a relation $r$ with signature $s \in \Types^n$ as an array $X^r \defas (X^r_{\bi})_{\bi \in \Nats^n}$ given by
@@ -66,7 +67,7 @@ Let $\Types = \{\textit{users,movies}\}$.  Then a relation $r$ of signature $(\t
 \end{example}
 
 \begin{definition}[database]
-By a \defn{database} we mean a collection of $R$ relations $r_1,\dotsc,r_R$ of signature $s_1,\dotsc,s_R$, respectively, taking values in $\Space_1,\dotsc,\Space_R$, respectively.
+Define a \defn{database} to be a collection of $R$ relations $r_1,\dotsc,r_R$ of signature $s_1,\dotsc,s_R$, respectively, taking values in $\Space_1,\dotsc,\Space_R$, respectively.
 \end{definition}
 
 We may encode a database as a collection of arrays $(X^{r_j})_{j=1}^R$, where $X^{r_j}$ encodes the relation $r_j$.  
@@ -74,13 +75,13 @@ For notational simplicity, we will often refer to the collection of arrays $(X^{
 %For notational simplicity, we will sometimes write $(X^r)$ to denote such a collection of arrays.
 
 Permuting the ordering of objects within a database results in a permutation of the indices of several of the arrays encoding its relations.  We will now make this precise:
-For each type $t \in \Types$, let $p_t \in \SGinf$ be a permutation of $\Nats$, i.e., $p_t : \Nats \to \Nats$ is one-to-one and onto.  
+For each type $t \in \Types$, let $p_t \in \SGinf$ be a permutation of $\Nats$. 
 Write $p = (p_t ; t \in \Types) \in \SGinf^T$ for the collection of such permutations.
 Given a signature $s \in \Types^n$, define $p^s$ to be the map from $\Nats^n$ to $\Nats^n$ such that
 \[
 p^s(\bi) \defas (p_{s_1}(i_1), \dotsc,p_{s_n}(i_n)), \qquad \text{for } \bi \in \Nats^n.
 \]
-In other words, $p^s$ maps a sequence $i_1,\dotsc,i_n$ of indices (into the set of objects of type $s_1,\dotsc,s_n$, respectively) to the sequence where each index is permuted by the permutation corresponding to its type.
+In other words, $p^s$ maps a sequence $i_1,\dotsc,i_n$ of indices (indexing objects of type $s_1,\dotsc,s_n$, respectively) to the sequence where each index is permuted by the permutation corresponding to its type.
 
 If $X^r$ is the encoding of a relation $r$ with signature $s \in \Types^n$, then the permuted relation $r \circ p$ is represented by the array $X^{r\circ p}$ given by
 \[
@@ -115,7 +116,11 @@ Let $(\AHvar^t_i)_{i\in\Nats,t \in \Types}$ be a collection of \iid Uniform$[0,1
    \]
 \end{thm}
 
-The proof is based on a reduction to the representation theorem for $\pi$-exchangeable arrays presented in \cite{Kallenberg1999a} but omitted for brevity.  The theorem can be strengthened to state that the law of fixed subarrays are mutually absolutely continuous and the associated Radon-Nikodym derivatives converge uniformly to $1$ as $n \to \infty$.  An almost-sure representational result can also be given at the expense of heavy notation.
+The proof is based on a reduction to the representation theorem for $\pi$-exchangeable arrays presented in \cite{Kallenberg1999a} but omitted for brevity.
+
+In section
+
+The theorem can be strengthened to state that the law of fixed subarrays are mutually absolutely continuous and the associated Radon-Nikodym derivatives converge uniformly to $1$ as $n \to \infty$.  An almost-sure representational result can also be given at the expense of heavy notation.
 
 %are mutually absolutely continuous for all $m,n \in \Nats$ and the as
 %   $\Law((\chi_m X^{j,n})_{j=1\ldots R})$ and $\Law((\chi_m X^{r_j})_{j=1\ldots R})$ are mutually absolutely continuous for all $m,n \in \Nats$ and the associated Radon--Nikodym derivatives converge uniformly to 1 as $n \to \infty$ for fixed $m$.
@@ -440,6 +445,12 @@ The two objects are represented by \iid random variables, $(U_i)$ for students, 
 %\subsubsection{Relation to full representation theorem}
 %
 %Show how the simple array representation for a 2-array relates to the full representation theorem \ie either can be interpreted as a sampling distribution in the \iid case or local univariate probability distributions can be encoded into the function representation at very small scales.
+
+\section{Proof of exchangeable database representation theorem}
+\label{sec:proof_database}
+
+\section{An almost sure representation theorem}
+\label{sec:almost_sure}
 
 \section{A generic generative model}
 
