@@ -7,11 +7,10 @@
 In chapter~\ref{ch:networks} we demonstrated how to characterise probability distributions over objects such as networks or user--item rating matrices.
 The key properties that allowed us to characterise these distributions were symmetries in the data, or invariances to the way they are stored.
 For networks, we assumed that the ordering of the nodes contained no information.
-For user--item data we assumed that the order of both users and items were irrelevant to meaning of the data.
+For user--item data we assumed that the order of both users and items were irrelevant to the meaning of the data.
 
-In this chapter we extend these ideas of exchangeability to the full generality of any data that can be stored in a relational database.
-This essentially includes every form of data imaginable.
-We demonstrate that extensions of the \NA{Aldous--Hoover} theorem to $n$-arrays due to Kallenberg are self strengthening to the case of exchangeable databases.
+In this chapter we extend these ideas of exchangeability to any data that can be stored in a relational database.
+We demonstrate that extensions of the \NA{Aldous--Hoover} theorem to $n$-arrays due to Kallenberg \NA{cite} are self strengthening to the case of exchangeable databases.
 These new theorems reveal a natural parameter space for data stored in relational databases elucidating how to construct appropriate statistical models for such data.
 
 This chapter is largely based on collaborations with Zoubin Ghahramani, Peter Orbanz and Daniel Roy.
@@ -30,12 +29,6 @@ This form of exchangeability is appropriate when the order of the objects underl
 For example, the left hand side of figure~\ref{fig:exchangeable} shows the same network but with differently labeled nodes.
 If the labeling is unimportant, then any probabilistic model of such data should assign them the same probability.
 
-\newpage
-Relational data are typically stored in arrays; the right hand side of figure~\ref{fig:exchangeable} shows the corresponding adjacency matrix representations of the networks on the left.
-We demonstrate that exchangeability of the objects underlying a relational database can be expressed in terms of array exchangeability.
-Prior work on array exchangeability, both theoretical \citep[e.g.][]{Hoover1979, Aldous1981a, Hoover1982, Kallenberg1999a, Diaconis2007, Aldous2010, Austin2012, Choi2012, Wolfe2013} and applied \citep[e.g.][]{Hoff2007a,Roy2009,Lloyd2012}, has focused on single exchangaeble arrays.
-We show that the representation theorems for single arrays can be used to derive representations for collections of exchangeable arrays \ie exchangeable databases.
-
 \begin{figure}[t]
 \centering
 \begin{tabular}{c}
@@ -45,9 +38,14 @@ We show that the representation theorems for single arrays can be used to derive
 \label{fig:exchangeable}
 \end{figure}
 
+Relational data are typically stored in arrays; the right hand side of figure~\ref{fig:exchangeable} shows the corresponding adjacency matrix representations of the networks on the left.
+We demonstrate that exchangeability of the objects underlying a relational database can be expressed in terms of array exchangeability.
+Prior work on array exchangeability, both theoretical \citep[e.g.][]{Hoover1979, Aldous1981a, Hoover1982, Kallenberg1999a, Diaconis2007, Aldous2010, Austin2012, Choi2012, Wolfe2013} and applied \citep[e.g.][]{Hoff2007a,Roy2009,Lloyd2012}, has focused on single exchangaeble arrays.
+We show that the representation theorems for single arrays can be used to derive representations for collections of exchangeable arrays \ie exchangeable databases.
+
 \section{Exchangeable databases}
 
-We abstractly define a database following the entity-relationship formalism \citep[e.g.][]{Ullman2002} where the values of attributes are the result of evaluating a function (relation) over a collection of entities / objects.
+We abstractly define a database following the entity-relationship formalism \citep[e.g.][]{Ullman2002} where the values of attributes are the result of evaluating functions (relations) over a collection of entities / objects.
 
 \newcommand{\bi}{\bm{i}}
 \newcommand{\Types}{T}
@@ -63,7 +61,9 @@ X^r_{\bi} = r(i_1,\dotsc,i_n), \qquad \text{for } \bi = (i_1,\dotsc, i_n) \in \N
 \]
 
 \begin{example} 
-Let $\Types = \{\textit{users,movies}\}$.  Then a relation $r$ of signature $(\textit{users},\textit{movies})$ taking values in $\{1,2,3,4,5\}$ might store movie ratings with rows corresponding to some enumeration of \textit{users}, and columns corresponding to some enumeration of \textit{movies}.  A relation $r'$ of signature $(\textit{users},\textit{users})$ taking values in $\{0,1\}$ might store the symmetric friendship relations in a social network.
+Let $\Types = \{\textit{users,movies}\}$.
+A relation $r$ of signature $(\textit{users},\textit{movies})$ taking values in $\{1,2,3,4,5\}$ might store movie ratings with rows corresponding to some enumeration of \textit{users}, and columns corresponding to some enumeration of \textit{movies}. 
+A relation $r'$ of signature $(\textit{users},\textit{users})$ taking values in $\{0,1\}$ might store the symmetric friendship relations in a social network.
 \end{example}
 
 \begin{definition}[database]
@@ -74,7 +74,7 @@ We may encode a database as a collection of arrays $(X^{r_j})_{j=1}^R$, where $X
 For notational simplicity, we will often refer to the collection of arrays $(X^{r_j})_{j=1}^R$ as if it were the database itself.
 %For notational simplicity, we will sometimes write $(X^r)$ to denote such a collection of arrays.
 
-Permuting the ordering of objects within a database results in a permutation of the indices of several of the arrays encoding its relations.  We will now make this precise:
+Permuting the ordering of objects within a database results in a permutation of the indices of several of the arrays encoding its relations.
 For each type $t \in \Types$, let $p_t \in \SGinf$ be a permutation of $\Nats$. 
 Write $p = (p_t ; t \in \Types) \in \SGinf^T$ for the collection of such permutations.
 Given a signature $s \in \Types^n$, define $p^s$ to be the map from $\Nats^n$ to $\Nats^n$ such that
@@ -100,43 +100,49 @@ We say that a random database $(X^{r_j})_{j=1}^R$ is \emph{exchangeable} when it
 
 %Let $\Law(Y)$ be the law (distribution) of a random variable $Y$ and define $\chi_m X \defas (X_{i_1\ldots i_d}; \ i_j \le m )$.
 
-The following result characterizes the distribution of any exchangeable database to arbitrary accuracy. 
-Let $(\AHvar^t_i)_{i\in\Nats,t \in \Types}$ be a collection of \iid Uniform$[0,1]$ random variables.
+The following result characterizes the distribution of any exchangeable database to arbitrary accuracy.
 
-\begin{thm}[functional representation for exchangeable databases]
-  \label{thm:simple-database}
+\begin{cor}[functional representation for exchangeable databases]
+  \label{cor:simple-database}
    Let $(X^{r_j})_{j=1}^R$ be an exchangeable random database.
    Then there exists a sequence of random measurable functions $F^{j,1}, F^{j,2}, \dotsc$ for 
-   every $j=1\ldots R$ such that 
+   every $j=1\ldots R$ and collection of \iid Uniform$[0,1]$ random variables $(\AHvar^t_i)_{i\in\Nats,t \in \Types}$ such that 
    the random databases $(X^{r_j,m})_{j=1}^R$
     converge in distribution to $(X^{r_j})_{j=1\ldots R}$ as $m \to \infty$, where   
 %   the sequence of arrays $X^{j,1},X^{j,2},\dotsc$, for $j \in \{1,\dotsc,R\}$, given by
    \[
      X^{r_j,m}_{\bi} := F^{j,m}(\AHvar^{s_j(1)}_{i_1},\dotsc,\AHvar^{s_j(n)}_{i_n}), \qquad \text{for } \bi \in \Nats^n.
    \]
-\end{thm}
+\end{cor}
 
-The proof is based on a reduction to the representation theorem for $\pi$-exchangeable arrays presented in \cite{Kallenberg1999a} but omitted for brevity.
-
-In section
-
-The theorem can be strengthened to state that the law of fixed subarrays are mutually absolutely continuous and the associated Radon-Nikodym derivatives converge uniformly to $1$ as $n \to \infty$.  An almost-sure representational result can also be given at the expense of heavy notation.
+This a corollary of a stronger theorem presented in section~\ref{sec:proof_database} which states that the law of fixed subarrays are mutually absolutely continuous and the associated Radon-Nikodym derivatives converge uniformly to $1$ as $n \to \infty$.
+We also preset an almost-sure representational result which requires some heavy notation which we build up in subsequent sections.
 
 %are mutually absolutely continuous for all $m,n \in \Nats$ and the as
 %   $\Law((\chi_m X^{j,n})_{j=1\ldots R})$ and $\Law((\chi_m X^{r_j})_{j=1\ldots R})$ are mutually absolutely continuous for all $m,n \in \Nats$ and the associated Radon--Nikodym derivatives converge uniformly to 1 as $n \to \infty$ for fixed $m$.
 %\end{thm}
 
-Because the notation is somewhat involved, we present a special case of this theorem applicable to \eg modeling a network with side information for each node.
+To demonstrate this theorem, we present two special cases of this result applicable to modelling a network with side information for each node and a social network with associated user-item data.
 
 \begin{cor}
   Consider an exchangeable database with one object type, one unary relationship, and one binary relationship; denote the binary relationship by the array $X=(X_{i,j})_{i,j\in\Nats}$ and the unary relationship with the sequence $C=(C_i)_{i\in\Nats}$.
    Then there exists a sequence of pairs of random measurable functions $(F^n, G^n)_{n\in\Nats}$ and a collection of \iid Uniform$[0,1]$ random variables $(\AHvar_{i})_{i\in\Nats}$ such that if we define the arrays $X^1,X^2,\dotsc$ and sequences $C^1,C^2,\dotsc$ by
    \[ 
      X^n_{i,j} &\defas F^n(\AHvar_{i},\AHvar_{j}), \qquad \text{for } i,j,n\in\Nats, \\
-     C^n_{i,j} &\defas G^n(\AHvar_{i}), \qquad \text{for } i,n\in\Nats,
+     C^n_{i} &\defas G^n(\AHvar_{i}), \qquad \text{for } i,n\in\Nats,
     \]
    then $(X^n,C^n)$ converges in distribution to $(X,C)$ as $n \to \infty$.
-   \end{cor}
+\end{cor}
+
+\begin{cor}
+  Consider an exchangeable database with two object types, one binary relation between two objects of the first type and a binary relation between objects of different types;  denote the first relation by the array $X=(X_{i,j})_{i,j\in\Nats}$ and the second by $Y=(Y_{i,k})_{i,k\in\Nats}$.
+   Then there exists a sequence of pairs of random measurable functions $(F^n, G^n)_{n\in\Nats}$ and a collection of \iid Uniform$[0,1]$ random variables $(\AHvar_{i})_{i\in\Nats}, (\AHvaralt_{i})_{i\in\Nats}$ such that if we define the arrays $X^1,X^2,\dotsc$ and  $Y^1,Y^2,\dotsc$ by
+   \[ 
+     X^n_{i,j} &\defas F^n(\AHvar_{i},\AHvar_{j}), \qquad \text{for } i,j,n\in\Nats, \\
+     Y^n_{i,k} &\defas G^n(\AHvar_{i}, \AHvaralt_{k}), \qquad \text{for } i,k,n\in\Nats,
+    \]
+   then $(X^n,Y^n)$ converges in distribution to $(X,Y)$ as $n \to \infty$.
+\end{cor}
 
 %\begin{cor}
 %  Consider an exchangeable database with one object type, a unary relationship and a binary relationship; denote the binary relationship by the array $(X_{ij})$ and the unary relationship with the sequence $(C_i)$.
@@ -155,7 +161,7 @@ Because the notation is somewhat involved, we present a special case of this the
 %The redundancy of the representation in the larger array can be removed by integrating over the redundant elements.
 %These integrals constitute the functions $(F^r_n)$ and the proof concludes by demonstrating the reuqired properties of these functions.\hfill{$\square$}
 
-\begin{rem}[uniform distributions]\label{rem:sym}
+\begin{rem}[uniform distributions]\label{rem:uniform}
 The uniform distributions in the theorem are canonical but the theorem still holds with any non-atomic probability measure on a Borel space \eg Gaussian distributions.
 \end{rem}
 %\begin{rem}[Characteristing the distribution exactly]\label{rem:exact}
@@ -163,9 +169,13 @@ The uniform distributions in the theorem are canonical but the theorem still hol
 %A generalisation to exchangeable databases that is analagous to theorem~\ref{thm:simple-database} can be derived but is omitted for brevity since it is significantly more cumbersome to express.
 %\end{rem}
 
+\begin{rem}[random functions]\label{rem:randfunc}
+\TBD{Explain precisely what is meant by a random function}
+\end{rem}
+
 \subsection{Intepretation and examples}
 
-Theorem~\ref{thm:simple-database} states that the joint distribution of an exchangeable database can be arbitrarily well approximated by a collection of random measurable functions and uniform random variables.
+Corollary~\ref{for:simple-database} states that the joint distribution of an exchangeable database can be arbitrarily well approximated by a collection of random measurable functions and uniform random variables.
 This functional form provides a set of parameters to be estimated that are naturally hierarchical.
 The functions $(F^{j,n})$ capture properties of entire relations whilst the $(U^t_i)$ represent randomness associated with particular objects underlying the relational data.
 
@@ -195,12 +205,10 @@ This is demonstrated pictorially in figure~\ref{fig:graphon}; in this case $F$ c
 \caption{
 A pictorial representation of a model for network data inspired by the Aldous--Hover representation theorem.
 The left shows a random sample of a binary network (represented by an adjacency matrix) generated by a model of the form given by equation~\eqref{eq:graphon}.
-This figure is adapted from \cite{Lloyd2012} with permission.}
+}
 \label{fig:graphon}
 \end{figure}
 
-%\subsubsection{Example : A network with side information}
-%
 \subsubsection{Example : A simple database}
 
 Consider the simple database shown on the left hand side of figure~\ref{fig:multi-rel-seq}.
@@ -222,235 +230,91 @@ The two objects are represented by \iid random variables, $(U_i)$ for students, 
 \label{fig:multi-rel-seq}
 \end{figure}
 
-%
-%\begin{thm}[Kallenberg \cite{kallenberg1999multivariate}]
-%\label{theorem:simple}
-%Let $\darray$ be an exchangeable array in a Borel space $\dataspace$.  Then there exist some simple exchangeable arrays $X_1,X_2,\dotsc$ such that $\Law(\chi_m X_n) \textrm{ and } \Law(\chi_m X)$ are mutually absolutely continuous for all $m,n \in \Nats$ and the associated Radon--Nikodym derivatives converge uniformly to 1 as $n \to \infty$ for fixed $m$.
-%\end{thm}
-  
-%\emph{Proof sketch:}
-%
-%Define $M_o := \max_r m^r_o$ and let
-%\begin{eqnarray*}
-%  (R_{i_1,\ldots,i_{\sum_{o=1}^O M_o}}) & := & (X^1_{i_1,\ldots i_{m^1_1},i_{M_1+1},\ldots,i_{{M_1 + m^1_2}},\ldots,i_{\sum_{o=1}^{O-1}M_o + m^1_O}},\\
-%  & & \ldots, \\
-%  & & X^R_{i_1,\ldots i_{m^R_1},i_{M_1+1},\ldots,i_{{M_1 + m^R_2}},\ldots,i_{\sum_{o=1}^{O-1}M_o + m^R_O}}).
-%\end{eqnarray*}
-%R is $\pi$ exchangeable where $\pi$ is the partition of consecutive integers with lengths $M_1, M_2, \ldots, M_O$ so by theorem~\ref{thm:pi-exch}, and a transfer argument there exists a measurable function $f:[0,1]^{\sum_{o=1}^O M_o+1} \to \prod\dataspace^r$ and \iid collection of random variables $(\AHvar_{i}^j)_{i\in\Nats,\,j\in\{1,\ldots,o\}}$, such that
-%\[
-%R_{i_1,\ldots,i_{\sum_{o=1}^O M_o}} = f(...)\ \as,
-%\]
-%\NA{and so we do the same integral construction and then prove necessary properties.}\hfill{$\square$}
-
-%\TBD{Give an example with reference to the figure below to show that the theorem isn't really too scary.}
-
-%\section{Exchangeable 2-arrays}
-%
-%We start by reviewing exchangeability for 2-arrays followed by a corollary applicable to an array with sequential side information (\eg social network and age data).
-%
-%\begin{definition}
-%  A $2$-array $\darray=(\darray_{ij})_{i,j\in\Nats}$ is called a (jointly/weakly) \emph{exchangeable array} if 
-%  \begin{equation*}
-%    \label{eq:jointly:ex}
-%    (\darray_{ij})\eqdist(\darray_{p(i)p(j)}) \qquad\text{ for every } p\in\SGinf\;.
-%  \end{equation*}
-%\end{definition}
-%
-%This definition states that the distribution of the array, $\darray$, is invariant to joint permutations of both its rows and columns.
-%This assumption would be appropriate for a monopartite graph where the order of the nodes was arbitrary \eg figure~\ref{fig:exchangeable} or a social network.
-%
-%\subsection{The Aldous--Hoover representation of an exchangeable 2-array}
-%
-%\begin{thm}[Aldous \cite{Aldous:1981}, Hoover \cite{Hoover1979}]
-%  \label{thm:ah}
-%  A random 2-array $(\darray_{ij})$ is exchangeable if and only if there exists a measurable function ${f:[0,1]^4\rightarrow\dataspace}$ such that 
-%  \begin{equation}
-%    (\darray_{ij})\eqdist (f(\AHvar, \AHvar_i,\AHvar_j,\AHvar_{ij})).
-%    \label{eq:ah}
-%  \end{equation}
-%where $\AHvar$, $(\AHvar_i)_{i\in\Nats}$ and $(\AHvar_{ij})_{i\le j\in\Nats}$ are \iid $\Uniform[0,1]$ random variables and $\AHvar_{ji} = \AHvar_{ij}$ for $j < i \in \Nats$.
-%\end{thm}
-%\begin{rem}[Random function interpretation]\label{rem:rand-func}
-%One can alternatively state this theorem by replacing the deterministic function $f(\AHvar, \AHvar_i,\AHvar_j,\AHvar_{ij})$ with a random function $F(\AHvar_i,\AHvar_j,\AHvar_{ij})$.
-%This form can be more natural for inspiring models of exchangeable arrays.
-%\end{rem}
-%\begin{rem}[Uniform priors]\label{remsym}
-%The uniform priors in the theorem are canonical but the theorem still holds with any non-atomic probability measure on a Borel space \eg Gaussian distributions.
-%\end{rem}
-%\begin{rem}[Separately exchangeable arrays]\label{remsep}
-%We say that an array $(X_{ij})$ is \emph{separately exchangeable} when $(X_{ij}) \eqdist (X_{p(i)p'(j)})$ for every pair $p,p' \in \SGinf$ of permutations.
-%Such symmetry would be appropriate when modeling \eg a user $\times$ movies ratings array.
-%A separately exchangeable array can be shown to have the representation $(X_{ij}) \eqdist (f(U,U_i,V_j,W_{ij}))$, where $(U_i)$, $(V_j)$ and $(W_{ij})_{i,j\in\Nats}$ are \iid $\Uniform[0,1]$ random variables.
-%\end{rem}
-%
-%\subsubsection{Interpretation and consequences for statistical modeling}
-%
-%The Aldous--Hoover representation theorem states that the distribution of any exchanegable array can be modelled using the functional form in equation~\eqref{eq:ah}.
-%This equation provides a set of parameters to be estimated that are naturally hierarchical.
-%The random variable $\AHvar$ models randomness common to the entire array, the $(U_i)$ represent randomness associated with particular rows and columns and the $(U_{ij})$ model remaining randomness at each entry of the array.
-%In the context of a network, $\AHvar$ could model the overall proportion of links, the $(U_i)$ might represent node group structure and the $(U_{ij})$ might capture an observation process.
-%
-%\subsection{Extension: An array with side information}
-%
-%We now demonstrate how theorem~\ref{thm:ah} can be used to derive a representation theorem applicable to data that is not naturally represented in the form of a single array.
-%For motivation, consider a social network represented by an adjacency matrix $(\darray_{ij})$ together with data on each user represented by a sequence $(\CovData_i)$.
-%If the order of users is arbitrary, then any probabilistic model of the combined data should be invariant to \emph{joint} permutations of the rows and volumsn of $\darray$ and the elements of $\CovData$
-%In this situation, an appropriate exchangeability assumption for this data is
-%\[
-%(\darray_{ij},\CovData_i)_{i,j \in \Nats} \eqdist (\darray_{p(i)p(j)}, \CovData_{p(i)})_{i,j\in \Nats}, \textrm{ for every } p\in\SGinf. 
-%\]
-%
-%We know derive a representation theorem for this data.
-%Let $U_s$, $s \subseteq \Nats$, be an \iid collection of $\Uniform[0,1]$ random variables.
-%For notational simplicity, we will write $U_i \defas U_{\theset i}$, $U_{ij} \defas U_{\theset{i,j}}$, and $U \defas U_\emptyset$.
-%
-%\begin{cor}
-%\label{cor:ahside}
-%
-%Let $\darray_{ij}$, $i,j\in\Nats$, and $\CovData_i$, $i\in\Nats$, be random variables in $\dataspace$ and $\dataspace'$ respectively.  Then the following are equivalent:
-%  
-%\begin{enumerate}  
-%
-%\item[i.] 
-%$(\darray_{ij},\CovData_i)_{i,j \in \Nats} \eqdist (\darray_{p(i)p(j)}, \CovData_{p(i)})_{i,j\in \Nats}$, for every $p\in\SGinf$. 
-%
-%\item[ii.] 
-%There are measurable functions $g:[0,1]^4\to\dataspace$ and $h:[0,1]^2\to\dataspace'$ such that 
-%   $
-%   %\label{eq:ah:cov}
-%    (\darray_{ij},\CovData_i)_{i \in \Nats} \eqdist (g(\AHvar,\AHvar_i,\AHvar_j,\AHvar_{ij}), h(\AHvar,\AHvar_i))_{i,j\in\Nats}.
-%  $
-%
-%\end{enumerate}
-%\end{cor}
-%
-%\begin{proof}
-%(ii) implies (i) trivially since the collection $\AHvar_s$ is i.i.d.
-%Define $(R_{ij}) := (\darray_{ij}, \CovData_i)$, $i,j \in \Nats$, and note that (i) is precisely the statement that $(R_{ij})$ is jointly exchangeable.
-%%
-%By theorem~\ref{thm:ah}, there exists a measurable function $f:[0,1]^4 \to \dataspace \times \dataspace'$ and \iid collection of random variables $U_s$, $s \subseteq \Nats$, such that $R_{ij} \eqdist f(\AHvar,\AHvar_i,\AHvar_j,\AHvar_{ij}) \, i,j \in \Nats.$
-%\[
-%R_{ij} \eqdist f(\AHvar,\AHvar_i,\AHvar_j,\AHvar_{ij}) \qquad i,j \in \Nats.
-%\]
-%In particular, by a transfer argument (see corollary 5.11 of \cite{Kallenberg2002}) there exists $U_s$ such that
-%\[
-%R_{ij} = f(\AHvar,\AHvar_i,\AHvar_j,\AHvar_{ij})\ \as, \qquad i,j \in \Nats,
-%\]
-%and so there are measurable functions $f_1,f_2$ into $\dataspace$ and $\dataspace'$, respectively, such that
-%\[
-%\darray_{ij} = f_1(\AHvar,\AHvar_i,\AHvar_j,\AHvar_{ij}) \ \text{ and } \   % \qquad i,j \in \Nats,
-%\]
-%and
-%\[
-%\CovData_i = f_2(\AHvar,\AHvar_i,\AHvar_j,\AHvar_{ij}) \ \as, \qquad i,j \in \Nats.
-%\]
-%(Indeed, $f_1,f_2$ are just the composition of $f$ and a projection.)
-%Define
-%\[
-%   Z^i_j \defas f_2(\AHvar,\AHvar_i,\AHvar_j,\AHvar_{ij}), \qquad i,j \in \Nats.
-%\]
-%\fTBD{JRL: I believe this, but for my own education I would like to see a rigorous version of the words `conditioned on'}
-%Then conditioned on $\AHvar$ and $\AHvar_i$, the sequence $Z^i_1,Z^i_2,\dotsc$ is \iid and a.s.\ nonrandom and so each element is equal to its expectation
-%\[
-%h(\AHvar,\AHvar_i) \defas \mathbb{E}[Z^i_1 | \AHvar,\AHvar_i]
-%= \int \int f_2(\AHvar, \AHvar_i, x, y)\, \dee x\,\dee y.
-%\]
-%Taking $g=f_1$ and $h$ satisfies (ii).
-%\end{proof}
-%
-%\section{$d$-arrays, simple arrays and $\pi$-exchangeability}
-%
-%We now state extensions of the representation theorems to $d$-arrays and more general types of array exchangeabilty.
-%The main result of this paper then follows using an analogous proof mechanism to corrolary~\ref{cor:ahside}.
-%
-%\subsection{Exchangeable $d$-arrays}
-%
-%\begin{definition}
-%  A $d$-array $\darray=(\darray_{i_1\ldots i_d})_{i_j\in\Nats}$ is called a (jointly/weakly) \emph{exchangeable array} if 
-%  \begin{equation*}
-%    \label{eq:jointly:ex}
-%    (\darray_{i_1\ldots i_d})\eqdist(\darray_{p(i_1)\ldots p(i_d)}) \qquad\text{ for every } p\in\SGinf\;.
-%  \end{equation*}
-%\end{definition}
-%
-%Aldous--Hoover representations can be derived for $d$-arrays \eg
-%
-%\begin{thm}[\eg Kallenberg \cite{kallenberg1999multivariate}]
-%  \label{theorem:ah3}
-%  A random 3-array $(\darray_{ijk})$ is exchangeable if and only if there exists a measurable function ${f:[0,1]^8\rightarrow\dataspace}$ such that 
-%  \begin{equation}
-%    \label{eq:ah3}
-%    (\darray_{ij})\eqdist (f(\AHvar, \AHvar_i,\AHvar_j,\AHvar_k,\AHvar_{ij},\AHvar_{ik},\AHvar_{jk},\AHvar_{ijk})).
-%  \end{equation}
-%where $\AHvar$, $(\AHvar_i)_{i\in\Nats}$, $(\AHvar_{ij})_{i\le j\in\Nats}$ and $(\AHvar_{ijk})_{i\le j\le k\in\Nats}$ are \iid $\Uniform[0,1]$ random variables.
-%\end{thm}
-%
-%The dimensionality of the domain of the function in equations \ref{eq:ah} and \ref{eq:ah3} grows exponentially with $d$ and thus the representation can become unwieldy quicky.
-%To state the general representation therefore requires specialised notation (see proposition 1 of \cite{kallenberg1999multivariate}).
-%Fortunately, a simpler representation exists that provides an arbitrarily good approximation to any exchangeable array distribution.
-%
-%\subsection{Simple arrays}
-%
-%Call an exchangeable array $(\darray_{i_1\ldots i_d})$ simple if it admits a representation
-%\[
-%(X_{i_1i_2\ldots i_d}) \eqd (\AHfunction(\AHvar, \AHvar_{i_1},\ldots,\AHvar_{i_d})) \nonumber
-%\]
-%where $\AHfunction : [0,1]^{d+1} \rightarrow \dataspace$ is a measurable function and $\AHvar$ and $(\AHvar_{i})_{i\in\Nats}$ are \iid $\Uniform[0,1]$ random variables.
-%
-%Let $\Law(Y)$ be the law (distribution) of a random variable $Y$ and define $\chi_m X \defas (X_{i_1\ldots i_d}; \ i_j \le m )$.
-%
-%\begin{thm}[Kallenberg \cite{kallenberg1999multivariate}]
-%\label{theorem:simple}
-%Let $\darray$ be an exchangeable array in a Borel space $\dataspace$.  Then there exist some simple exchangeable arrays $X_1,X_2,\dotsc$ such that $\Law(\chi_m X_n) \textrm{ and } \Law(\chi_m X)$ are mutually absolutely continuous for all $m,n \in \Nats$ and the associated Radon--Nikodym derivatives converge uniformly to 1 as $n \to \infty$ for fixed $m$.
-%\end{thm}
-%
-%For brevity we later denote this type of convergence by $\convdspecial$.
-%\TBD{State that this is an arbirarily goos approximation type of result}
-%
-%\subsection{$\pi$-exchangeability}
-%
-%In addition to a simplified representation theorem, we will also need a generalised notion of exchangeability \eg
-%
-%\begin{table}[ht]
-%  \centering
-%    \begin{tabular}{rclccl}
-%      $\darray_{ijk}$ & $\eqd$ & $\darray_{p(i)p(j)p(k)}$ & $\forall\,p\in\SGinf$ & - & Jointly / weakly exchangeable \\
-%      $\darray_{ijk}$ & $\eqd$ & $\darray_{p(i)q(j)r(k)}$ & $\forall\,p,q,r\in\SGinf$ & - & Separately / strongly exchangeable \\
-%      $\darray_{ijk}$ & $\eqd$ & $\darray_{p(i)q(j)q(k)}$ & $\forall\,p,q\in\SGinf$ & - & A type of $\pi$-exchangeability \\
-%    \end{tabular}
-%\end{table}
-%
-%In general, consider a $d$-array, $(X_{i_1i_2\ldots i_d})_{i_j\in\Nats}$, and a partition $\pi$ of the set $\{1,\ldots,d\}$.
-%We say that $(X_{i_1i_2\ldots i_d})$ is $\pi$-exchangeable if
-%\begin{equation*}
-%  (X_{i_1i_2\ldots i_d}) \eqd (X_{p^{\pi_1}(i_1)p^{\pi_2}(i_2)\ldots p^{\pi_d}(i_d)}) \quad \forall\,\,p^1,\ldots,p^{|\pi|}\in\SGinf
-%\end{equation*}
-%where $\pi_i$ denotes the subset $I \in \pi$ that contains $i$.
-%
-%The concept of simple arrays applies to $\pi$-exchangeable arrays as well.
-%Call a $\pi$-exchangeable array $(\darray_{i_1\ldots i_d})$ simple if it admits a representation
-%\[
-%(X_{i_1i_2\ldots i_d}) \eqd (\AHfunction(\AHvar_{i_1}^{\pi_1},\ldots,\AHvar_{i_d}^{\pi_d})) \nonumber
-%\]
-%where $\AHfunction : [0,1]^d \rightarrow \dataspace$ is a random measurable function and $(\AHvar_{i}^j)_{i\in\Nats,\,j\in\{1,\ldots,d\}}$ are \iid $\Uniform[0,1]$ random variables.
-%
-%\begin{thm}[Kallenberg \cite{kallenberg1999multivariate}]
-%\label{thm:pi-exch}
-%Let $\darray$ be a $\pi$-exchangeable array in a Borel space $\dataspace$.  Then there exist some simple $\pi$-exchangeable arrays $X_1,X_2,\dotsc$ such that $X_n \convdspecial X$.
-%\end{thm}
-%
-%\subsubsection{Example}
-%If $(\darray_{ijk}) \eqd (\darray_{p(i)q(j)q(k)}) \,\, \forall\,p,q\in\SGinf$ then this distribution can be arbitrarily well approximated by $(\AHfunction(\AHvar_i,\AHvaralt_j,\AHvaralt_k))$ where $(\AHvar_i), (\AHvaralt_j)$ are \iid $\Uniform[0,1]$ random variables.
-%
-%\subsubsection{Relation to full representation theorem}
-%
-%Show how the simple array representation for a 2-array relates to the full representation theorem \ie either can be interpreted as a sampling distribution in the \iid case or local univariate probability distributions can be encoded into the function representation at very small scales.
-
 \section{Proof of exchangeable database representation theorem}
 \label{sec:proof_database}
 
+\subsection{Background: $\pi$-exchangeability}
+
+This section reviews material from \TBD{cite Kallenberg}.
+
+Let $\pi$ be a partition of the set $\{1,\dots,n\}$ and $p = \{p^{\pi_i} : i = 1,\dots,n\}$ be a collection of permutations of $\Nats$ where $\pi_i \defas \{I \in \pi : i \in I\}$.
+We say that an array $X^r$ representing relation $r$ is $\pi$-exchangeable if 
+\begin{equation}
+  X^{r\circ p} \eqd X
+\end{equation}
+for all collections $p$ of permutations of $\Nats$ of the form given above.
+Note that this is precisely the type of symmetry we encountered for exchangeable databases.
+
+We say that a $\pi$-exchangeable array $X$ is simple if it admits a functional representation of the form
+\begin{equation}
+  X_{\bi} = F(U, U^{\pi_1}_{\bi_1}, \dots, U^{\pi_n}_{\bi_n})
+\end{equation}
+where $F$ is a measurable function and $U, U^{\pi_j}_{\bi_j}$ are \iid Uniform$[0,1]$ random variables.
+
+\begin{prop}[Borel hypercube]
+  \label{prop:hypercube}
+  Result about encoding arbitrarily many random variables with functions and a uniform random variable
+\end{prop}
+
+\begin{thm}[$\pi$-exchangeability representation theorem]
+  \label{thm:piex}
+  Let $X$ be a $\pi$-exchangeable array.
+  Then there exist some simple $\pi$-exchangeable arrays $X_1$ , $X_2$ , \dots such that
+  $\Law(\chi_m X_n) \sim \Law(\chi_m X)$ for all $m,n \in \Nats$ and the associated densities tend
+  uniformly to 1 as $n \to \infty$ for fixed $m$.
+\end{thm}
+
+where $\Law$ represents the distribution or law of a random variable, $X \sim Y$ indicates that the distributions $X$ and $Y$ are mutually absolutely continuous and $\chi_m$ is the array subset operation such that $\chi_m X \defas \{X_{\bi} : \bi \in \{1,\dots,m\}^n$.
+
+We say that an exchangeable database $(X^{r_j})_{j=1}^R$ is simple if it admits a functional representation of the form
+\begin{equation}
+  X^{r_j}_{\bi} = F^{r_j}(U, U^{s_{r_j}(1)}_{\bi_1},\dots,U^{s_{r_j}(n_j)}_{\bi_{n_j}}) \,\, \forall \,\, \bi \in \Nats^{n_j} \,\, \forall \,\, j \in {1,\dots,R}.
+\end{equation}
+
+We can now state and prove the simple database representation theorem.
+
+\begin{thm}[Simple exchangeable database representation theorem]
+  \label{thm:simple-database}
+  Let $(X^{r_j})_{j=1}^R$ be an exchangeable database.
+  Then there exist some simple exchangeable databases $(X^{r_j,1})_{j=1}^R$ , $(X^{r_j,2})_{j=1}^R$ , \dots such that
+  $\Law(\chi_m (X^{r_j,n})_{j=1}^R) \sim \Law(\chi_m (X^{r_j})_{j=1}^R)$ for all $m,n \in \Nats$ and the associated densities tend
+  uniformly to 1 as $n \to \infty$ for fixed $m$.
+\end{thm}
+
+\begin{proof}
+  Each array $(X^{r_j})$ is $\pi$-exchangeable where $\pi$ is given by the blocks of $\{1,\dots,n_j\}$ whose signature have the same type.
+  We can therefore apply theorem~\ref{thm:piex} to each array separately resulting in representations
+\begin{equation}
+  G^{r_j,n}(U^j,U^{s_{r_j}(1),j}_{\bi_1},\dots,U^{s_{r_j}(n_j),j}_{\bi_{n_j}})
+\end{equation}
+We tie these representation together by applying proposition~\ref{prop:hypercube} to the collections of uniforms $(U^{t,j}_{\bi})_{j=1}^R$, encoding them as a single uniform random variable
+\begin{equation}
+  U^t_{\bi_n} = H^t(U^{t,1}_{\bi_n},\dots,U^{t,R}_{\bi_n})
+\end{equation}
+where $H^t$ is bi-measurable and similarly for $U = H^t(U^{1},\dots,U^{R})$.
+Notice that $U_{\bi}, U^t_{\bi}$ are independent by construction.
+We now define functions
+\begin{equation}
+F^{r_j,n}(U,U^{s_{r_j}(1)}_{\bi_1},\dots,U^{s_{r_j}(n_j)}_{\bi_{n_j}}) = G^{r_j,n}(U^j,U^{s_{r_j}(1),j}_{\bi_1},\dots,U^{s_{r_j}(n_j),j}_{\bi_{n_j}})
+\end{equation}
+which are measurable by the measurability of $G$ and $H$.
+We are now essentially done.
+\end{proof}
+
+\begin{rem}[simpler proof mechanisms that do not work]
+\label{rem:randfunc}
+\NA{
+The above proof mechanism is somewhat concise and feels a little bit non-constuctive when invoking the Borel hypercube isomorphism theorem.
+}
+\end{rem}
+
 \section{An almost sure representation theorem}
 \label{sec:almost_sure}
+
+To prove an almost sure representational theorem will require some considerably more difficult notation.
+We have followed the notation in \NA{Kallenberg} but we have also tried to make it easier to understand.
+However, there is only so much we can do so we provide corollaries of the theorem after its statement and proof to demonstrate that behind the notation are some fairly simple concepts.
+Brace yourself.
 
 \section{A generic generative model}
 
@@ -465,6 +329,10 @@ F^r & \sim  \mathcal{F}^r \\
 W^j_{\bi} & \defas F^j(\AHvar^{s_j(1)}_{i_1},\cdots,\AHvar^{s_j(n)}_{i_n}) \\
 X^{r_j}_{\bi} \given W & \sim  L(W^j_{\bi}) \qquad \text{independently across $j$ and $\bi$.}
 \]
+
+\subsection{Generic discriminative models as well}
+
+\TBD{Demonstrate this remark on regression problems to show that this thinking applies to commonplace practices}
 
 \subsection{Prior work using models of this form}
 
