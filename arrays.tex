@@ -10,7 +10,7 @@ For networks, we assumed that the ordering of the nodes contained no information
 For user--item data we assumed that the order of both users and items were irrelevant to the meaning of the data.
 
 In this chapter we extend these ideas of exchangeability to any data that can be stored in a relational database.
-We demonstrate that extensions of the \NA{Aldous--Hoover} theorem to $n$-arrays due to Kallenberg \NA{cite} are self strengthening to the case of exchangeable databases.
+We demonstrate that extensions of the \NA{Aldous--Hoover} theorem to $n$-arrays due to Kallenberg \NA{cite} can be extended to the case of exchangeable databases.
 These new theorems reveal a natural parameter space for data stored in relational databases elucidating how to construct appropriate statistical models for such data.
 
 This chapter is largely based on collaborations with Zoubin Ghahramani, Peter Orbanz and Daniel Roy.
@@ -20,7 +20,7 @@ In particular, the theorems presented in this chapter appeared at \NA{BNP} and \
 
 Relational databases are an extremely common data structure so it is natural to want to perform statistical tasks with such data \eg predicting unobserved data or identifying latent structure.
 In particular, network data is rarely encountered in isolation \eg in a social network one will often have access to side information about each user.
-To perform a statistical analysis of such data we need to estimate parameters of a probabilistic model, but it is not immediately clear what an appropriate parameter space for such a model is.
+To perform a statistical analysis of such data we will typically need to estimate parameters of a probabilistic model, but it is not immediately clear what an appropriate parameter space for such a model is.
 The choice of parameter space is important because it indicates the targets of statistical inference and shows where we can share statistical strength between different aspects of the data.
 
 We demonstrate that the weak assumption of an appropriate form of exchangeability can provide a natural parameter space.
@@ -115,16 +115,13 @@ The following result characterises the distribution of any exchangeable database
    \]
 \end{cor}
 
-This a corollary of a stronger theorem presented in section~\ref{sec:proof_database} which states that the law of fixed subarrays are mutually absolutely continuous and the associated Radon-Nikodym derivatives converge uniformly to $1$ as $n \to \infty$.
-We also preset an almost-sure representational result which requires some heavy notation which we build up in subsequent sections.
-
-%are mutually absolutely continuous for all $m,n \in \Nats$ and the as
-%   $\Law((\chi_m X^{j,n})_{j=1\ldots R})$ and $\Law((\chi_m X^{r_j})_{j=1\ldots R})$ are mutually absolutely continuous for all $m,n \in \Nats$ and the associated Radon--Nikodym derivatives converge uniformly to 1 as $n \to \infty$ for fixed $m$.
-%\end{thm}
+This is a corollary of theorem~\ref{thm:simple-database} proven in section~\ref{sec:proof_database} which states that the law of fixed subarrays are mutually absolutely continuous and the associated Radon-Nikodym derivatives converge uniformly to $1$ as $n \to \infty$.
+We also present an almost-sure representational result which requires some heavy notation which we build up in subsequent sections.
 
 To demonstrate this theorem, we present two special cases of this result applicable to modelling a network with side information for each node and a social network with associated user-item data.
 
 \begin{cor}
+  \label{cor:network-side-simple}
   Consider an exchangeable database with one object type, one unary relationship, and one binary relationship; denote the binary relationship by the array $X=(X_{i,j})_{i,j\in\Nats}$ and the unary relationship with the sequence $C=(C_i)_{i\in\Nats}$.
    Then there exists a sequence of pairs of random measurable functions $(F^n, G^n)_{n\in\Nats}$ and a collection of \iid Uniform$[0,1]$ random variables $(\AHvar_{i})_{i\in\Nats}$ such that if we define the arrays $X^1,X^2,\dotsc$ and sequences $C^1,C^2,\dotsc$ by
    \[ 
@@ -144,30 +141,9 @@ To demonstrate this theorem, we present two special cases of this result applica
    then $(X^n,Y^n)$ converges in distribution to $(X,Y)$ as $n \to \infty$.
 \end{cor}
 
-%\begin{cor}
-%  Consider an exchangeable database with one object type, a unary relationship and a binary relationship; denote the binary relationship by the array $(X_{ij})$ and the unary relationship with the sequence $(C_i)$.
-%   Then there exists a sequence of pairs of random measurable functions $(F_n, G_n)_{n\in\Nats}$ and a collection of \iid Uniform$[0,1]$ random variables $(\AHvar_{i})_{i\in\Nats}$ such that if we define
-%   \begin{equation}
-%     ((X_n), (C_n)) := ((F_n(\AHvar_{i},\AHvar_{j}))_{i,j\in\Nats},(G_n(\AHvar_{i}))_{i\in\Nats})
-%   \end{equation}
-%   then $\Law((\chi_m X_n),(\chi_m C_n)) \textrm{ and } \Law((\chi_m X),(\chi_m C))$ are mutually absolutely continuous for all $m,n \in \Nats$ and the associated Radon--Nikodym derivatives converge uniformly to 1 as $n \to \infty$ for fixed $m$.
-%\end{cor}
-
-%\emph{Proof mechanism:}
-%
-%Each of the arrays $(X^r)$ is $\pi$-exchangeable (see \cite{kallenberg1999multivariate}).
-%The collection of arrays can be collected into one larger array (with many duplicated entries) which is still $\pi$-exchangeable.
-%We then appeal to theorem 2 of \cite{kallenberg1999multivariate} to get a functional representation of the distribution of the larger array.
-%The redundancy of the representation in the larger array can be removed by integrating over the redundant elements.
-%These integrals constitute the functions $(F^r_n)$ and the proof concludes by demonstrating the reuqired properties of these functions.\hfill{$\square$}
-
 \begin{rem}[uniform distributions]\label{rem:uniform}
 The uniform distributions in the theorem are canonical but the theorem still holds with any non-atomic probability measure on a Borel space \eg Gaussian distributions.
 \end{rem}
-%\begin{rem}[Characteristing the distribution exactly]\label{rem:exact}
-%The Aldous--Hoover theorem \cite{Aldous1981a, Hoover1979} for exchangeable arrays demonstrates the existence of functional representations that are equal in distribution to exchanegable arrays.
-%A generalisation to exchangeable databases that is analagous to theorem~\ref{thm:simple-database} can be derived but is omitted for brevity since it is significantly more cumbersome to express.
-%\end{rem}
 
 \begin{rem}[random functions]\label{rem:randfunc}
 \TBD{Explain precisely what is meant by a random function}
@@ -419,27 +395,93 @@ almost surely.
 
 That is, this is the Aldous--Hoover representation for a jointly exchangeable array and the Kallenberg representation of a $\pi$-exchangeable array at the same time, but with coupled uniform random variables due to the shared objects underlying the data.
 
-\section{A generic generative model}
+\section{A generic statistical model template}
 
-In analogy to the work of \cite{Hoff2007a, Roy2009, Lloyd2012} on exchangeable arrays, theorem~\ref{thm:simple-database} naturally inspires a generic generative model of exchangeable databases.
-Each object in the database is associated with an \iid sample, $\AHvar_i^t$, from some distribution $\mathcal{U}$ \eg Uniform, Gaussian.
-For each relation $r_1,\dotsc,r_R$ we independently sample a random function $F^j$ from some distribution $\mathcal{F}^j$, \eg Gaussian process, random (bi/tri/\ldots)linear function.
+In analogy to the work of \cite{Hoff2007-ja, Roy2009-ge, Lloyd2012-sb} on exchangeable arrays, theorem~\ref{thm:simple-database} naturally inspires a generic generative model of exchangeable databases.
+Each object of type $t$ in the database is associated with an \iid sample, $\AHvar_i^t$, from some distribution $\mathcal{U}$ \eg Uniform, Gaussian.
+For each relation $r_1,\dotsc,r_R$ we sample a random function $F^j$ from some distribution $\mathcal{F}^j$, \eg Gaussian process, random (bi/tri/\ldots)linear functions.
 We denote the evaluation of these functions at the corresponding values of $(\AHvar_i^t)$ by $W^j$.
-$W^j$ can then be used to index into a family of observation distribution $L(\cdot)$, \eg Gaussian distributions, to model the value of the relation $r_j$.
+$W^j$ can then be passed through a link function and distribution $L^j(\cdot)$ to model the observed value of the relation $r_j$.
 \[
 (\AHvar_i^t) & \simiid  \mathcal{U} \\
-F^r & \sim  \mathcal{F}^r \\
+F^j & \sim  \mathcal{F}^j \\
 W^j_{\bi} & \defas F^j(\AHvar^{s_j(1)}_{i_1},\cdots,\AHvar^{s_j(n)}_{i_n}) \\
-X^{r_j}_{\bi} \given W & \sim  L(W^j_{\bi}) \qquad \text{independently across $j$ and $\bi$.}
+X^{r_j}_{\bi} \given W & \sim  L^j(W^j_{\bi}) \qquad \text{independently across $j$ and $\bi$.}
 \]
 
-\subsection{Generic discriminative models as well}
+\begin{rem}[dependence between functions]
+In general, the functions $F^j$ may be dependent.
+However, the representation results presented in this chapter provide no guidance on the form of this dependence; stronger assumptions than exchangeability would have to be made.
+In practice one may model the functions to be independent a priori at the risk of wasting statistical strength.
+\end{rem}
 
-\TBD{Demonstrate this remark on regression problems to show that this thinking applies to commonplace practices}
+\subsection{Discriminative models as well}
+
+Consider the representation result for a social network with side information on each user presented in corollary~\ref{cor:network-side-simple}. The natural generative model for such data inspired by the is representation is
+\[
+  U_i & \simiid \mathcal{U} \\
+  F & \sim \mathcal{F} \\
+  G & \sim \mathcal{G} \\
+  X_{ij} & \sim L^X(F(U_i, U_j)) \\
+  C_{i} & \sim L^C(G(U_i))
+\]
+but in the situation where $C$ is fully observed and the task is to predict missing entries of $X$ it may be unnecessary to learn a model of $C$.
+Indeed, if $C$ is assumed to be noiselessly observed, then we have $C_i = L^C(G(U_i))$ where $L^C(G(.))$ is a deterministic function.
+We can then choose to model $X$ as follows
+\[
+  F'(U_i, U_j, C_i, C_j) & = F'(U_i, U_j, L^C(G(U_i)), L^C(G(U_j))) = F(U_i, U_j) \\
+  X_{ij} & \sim L^X(F'(U_i, U_j, C_i, C_j)).
+\]
+Furthermore we could choose $F'$ to not depend on $U_i, U_j$ resulting in the model
+\[
+  X_{ij} & \sim L^X(F''(C_i, C_j))
+\]
+which is simply a regression model.
+
+Indeed, the same logic can be applied to applied to exchangeable sequences to derive more standard regression models.
+Suppose that $(X_i, Y_i)$ is an exchangeable sequence.
+By DeFinetti's theorem we can model this as
+\[
+  U_i & \sim \mathcal{U} \\
+  F & \sim \mathcal{F} \\
+  G & \sim \mathcal{G} \\
+  X_i & \sim L^X(F(U_i)) \\
+  Y_i & \sim L^Y(G(U_i))
+\]
+and by similar arguments to those above, if we were to assume that $X$ was noiselessly observed we could model $Y$ as
+\[
+  Y_i & \sim L^Y(G(X_i))
+\]
+which is a standard regression model, or
+\[
+  Y_i & \sim L^Y(G(U_i, X_i))
+\]
+which is halfway between latent variable modelling and regression.
+An example of this model structure can be found in \cite{Wang2012-rc} but is otherwise surprisingly uncommon.
 
 \subsection{Higher order dependencies}
 
-\TBD{Talk about those cross terms and how they could be used. What about dependence between functions?}
+So far we have only considered probabilistic models inspired by the simple array versions of exchangeability theorems.
+Do the almost sure representation theorems with their more detailed latent variable representations tell us anything?
+Consider the following dataset: we have a social network $X_{ij}$ and a ternary relation $Y_{ijk}$ that records if both person $i$ and person $j$ have been to location $k$.
+The simple array inspired representation of this data is of the form
+\[
+  X_{ij} & \sim L^X(F(U_i, U_j)) \\
+  Y_{ijk} & \sim L^Y(G(U_i, U_j, V_k))
+\]
+and in contrast the almost sure result would a more elaborate model of the form
+\[
+  X_{ij} & \sim L^X(F(U_i, U_j, U_{\{ij\}})) \\
+  Y_{ijk} & \sim L^Y(G(U_i, U_j, U_{\{ij\}}, V_k, W_{ik}, W_{jk}, Z_{\{ij\}k})).
+\]
+Now suppose that $X$ included information on the type of relations in the social network, and that people $i$ and $j$ were in a romantic relationship.
+This knowledge would make it more likely for this couple to visit \eg restaurants typically frequented by couples.
+In the almost sure representation this information could easily be transferred from $X$ to the modelling of $Y$ via the shared latent variable $U_{\{i,j\}}$.
+In the simple array representation this knowledge would somehow have to be encoded in the latent variables $U_i$ and $U_j$ meaning that the problem of sharing this information is at least as hard as producing an effective generative model of which pairs of people are in a relationship which could be difficult given limited information.
+
+I am however unaware of any standard probabilistic models making use of this type of dependence.
+This is most probably due to the potentially large computational barrier to storing and inferring the values of latent variables for each pair of objects.
+There may however be use in this type of relationship on small datasets where one can afford relatively high computational costs to perform a more detailed analysis of a dataset.
 
 \subsection{Prior work using models of this form}
 
@@ -451,6 +493,8 @@ Many, but not all, of these models have been extended to model $d$-arrays.
 A summary of models using linear forms of $F$ is given in \cite{Kolda2009}; non-linear models include \cite{Xu2012}.
 
 For full databases, the literature is limited to clustering models \cite{Kemp2006} and models using linear forms for the $F^r$ \citep[e.g.][]{Acar, Acar2012, Acar2013, Andersen2013, Davison, Ermis1958, Gallinari2011, Jimeng2009, Kong2010, Lippert2008, Networks, Nickel2011, Shangguan2012, Singh, Singha, Singh2008}.
+
+\TBD{A great big table of literature review}
 
 \section{Discussion}
 
