@@ -260,7 +260,7 @@ full range of inference methods available for these models.
 
 
 \section{Related work}
-\label{sec:Related}
+\label{sec:networks:related}
 
 Our model has some noteworthy relations to Gaussian process latent variable models (GPLVM), a dimension-reduction technique
 \citep[e.g.][]{Lawrence2009}.  GPLVMs can be applied to relational data, which however requires
@@ -311,6 +311,26 @@ Some examples of the various available models can be succinctly summarized as fo
 %\bottomrule
 \end{tabular}
 \label{table:ModelComparison}
+\end{table}
+
+\begin{table}
+      \begin{tabular}{l|ccc}
+      & $W_{ij}$ & $\kernel$ & $U_i \sim \, .$ \\% & $\dataspace$\\ 
+      \midrule
+      Random function model & $\phi(U_i)'\Lambda$ & $\kernel_{U\times U}$ & Gaussian\\% & All\\
+      SMGB, InfTucker & $\phi(\AHvar_i)'\Lambda\phi(\AHvar_j)$ & $\kernel_U \otimes \kernel_U$ & Laplace \\% & $\{0,1\},\, \Reals$\\
+      GPLVM & $\phi(\AHvar_i)'\Lambda$ & $\kernel_\AHvar \otimes \delta$ & Gaussian \\% & All\\
+      Eigenmodel & $\AHvar_i'\Lambda \AHvar_j$ & $L_U \otimes L_U$ & Gaussian \\% & All\\
+      Linear relational GP & $\AHvar_i'\Lambda \AHvar_j$ & $L_U \otimes L_U$ & Gaussian \\% & $\{0,1\}$\\
+      PCA, PMF & $\AHvar_i'\Lambda$ & $L_U \otimes \delta$ & Gaussian \\% & $\Reals$\\
+      Latent distance & $-|\AHvar_i - \AHvar_j|$ & * & Gaussian \\% & $\{0,1\}$\\
+      Mondrian process based & Decision tree & * & Uniform \\% & All\\
+      \midrule
+      Latent class & $\Lambda_{\AHvar_i\AHvar_j}$ & $\delta_{U\times U}$ & Multinomial \\% & $\{0,1\}$\\
+      IRM, IHRM &$\Lambda_{\AHvar_i\AHvar_j}$ & $\delta_{U\times U}$ & CRP \\% & $\{0,1\}$\\
+      BMF, LFRM  & $\AHvar_i'\Lambda \AHvar_j$ & $L_U \otimes L_U$ & IBP \\% & $\Reals$\\
+      ILA & $\sum_d \mathbb{I}_{U_{id}}\mathbb{I}_{U_{jd}}\Lambda^{(d)}_{U_{id}U_{jd}}$ & * & CRP $+$ IBP \\% &$\{0,1\}$ \\
+    \end{tabular}
 \end{table}
 
 The representation \eqref{eq:decomposition:sampling} 

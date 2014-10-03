@@ -459,6 +459,55 @@ which is a standard regression model, or
 which is halfway between latent variable modelling and regression.
 An example of this model structure can be found in \cite{Wang2012-rc} but is otherwise surprisingly uncommon.
 
+Now suppose we perfectly observe a binary relation; what can this tell us about modelling a related unary relation?
+We now demonstrate how we could reconstruct an example model presented in \cite{Friedman1999-mo}.
+They present a simple genetic model where one's maternal chromosome depends on your mother's maternal and paternal chromosomes and similarly for one's paternal chromosome.
+In this example we have two binary relations, mother-of and father-of and two unary relations, maternal and paternal chromosomes.
+We write this as $X_{ij} = 1 \iff$ person $i$ is the mother of person $j$ and $Y_{ij} = 1 \iff$ person $i$ is the father of person $j$\fTBD{Change this to case notation to show that it is zero otherwise}.
+Further let $M_i$ and $P_i$ be the maternal and paternal chromosomes of person $i$ respectively.
+A potential form of a model for this data is
+\[
+  U_i & \sim \mathcal{U} \\
+  F & \sim \mathcal{F} \\
+  G & \sim \mathcal{G} \\
+  H & \sim \mathcal{H} \\
+  J & \sim \mathcal{J} \\
+  X_{ij} & \sim L^X(F(U_i, U_j)) \\
+  Y_{ij} & \sim L^Y(G(U_i, U_j)) \\
+  M_i & \sim L^M(H(U_i)) \\
+  P_i & \sim L^P(J(U_i))
+\]
+Applying similar arguments to before we can replace $U_i$ by $U_i'  \defas (U_i, V_i, M_i, P_i)$.
+We could then define
+\begin{align}
+L^X(F(U_i',U_j')) &= 
+  \begin{cases}
+    1 & \textrm{if } (M_i, P_i) = U_j \\
+    0 & \textrm{otherwise}  
+  \end{cases}\\
+L^Y(G(U_i',U_j')) &=
+  \begin{cases}
+    1 & \textrm{if } (M_i, P_i) = V_j \\
+    0 & \textrm{otherwise}  
+  \end{cases}
+\end{align}
+Performing inference in this model we would then find that in the posterior $U_i = (M_j, P_j)$ where person $j$ is the mother of person $i$ and similarly for $V_i$.
+This would then allow the functions $H$ and $J$ to specify that the maternal chromosome of person $i$ depend probabilistically on the chromosomes of their mother and similarly for their paternal chromosome.
+We have therefore shown how this particular probabilistic relational model can be cast in the form guaranteed to exist by the theorems presented in this chapter.
+In principle, suitable prior distributions on the latent variables and functions could learn such a representation purely from data, although in this situation it is sensible to use prior knowledge.
+
+However, the canny reader will have noticed that the functions $L^X(F(.,.))$ and $L^Y(G(.,.))$ defined above are almost everywhere zero.
+This is exactly because the relations mother-of and father-of define sparse graphs with in-degrees of at most one.
+As remarked before\TBD(reference), any not almost everywhere zero representing function will imply density when modelling a graph.
+The above exercise is certainly quite a contortion that is only clear when one knows the model one is aiming at.
+General representation results for sparse graphs that can usefully imply model structures are still unknown.
+
+\NA{
+All this suggests to me that we should try an observed and latent hybrid model of some sort.
+I wonder to what extent this has been attempted?
+The idea would be that all objects have some latent variables attached to them that can explain features of objects, noisy relations of objects and features or noisy relations of related objects.
+}
+
 \subsection{Higher order dependencies}
 
 So far we have only considered probabilistic models inspired by the simple array versions of exchangeability theorems.
@@ -485,7 +534,7 @@ There may however be use in this type of relationship on small datasets where on
 
 \subsection{Prior work using models of this form}
 
-It was demonstrated in \cite{Lloyd2012} that many models of single 2-arrays fit the form of the generic model presented above.
+In section~\ref{sec:networks:related} it was demonstrated that many models of single 2-arrays fit the form of the generic model presented above.
 In particular there are models that assume $F$ is linear \citep[e.g.][]{Hoff2007a, Meeds2007, Salakhutdinov2008, Yu2008, Miller2009}, that $F$ is Gaussian process distributed \citep[e.g.][]{Lawrence2009, Yan2011, Lloyd2012} and other non-linear forms for $F$ \citep[e.g.][]{Hoff2002, Roy2009}.
 In addition to this there has been a line of work that uses increasingly more expressive forms of the distribution $\mathcal{U}$ \citep[e.g.][]{Wang1987, Nowicki2001, Kemp2006, Xu2006, Meeds2007, Miller2009, Palla2012}.
 
@@ -493,6 +542,30 @@ Many, but not all, of these models have been extended to model $d$-arrays.
 A summary of models using linear forms of $F$ is given in \cite{Kolda2009}; non-linear models include \cite{Xu2012}.
 
 For full databases, the literature is limited to clustering models \cite{Kemp2006} and models using linear forms for the $F^r$ \citep[e.g.][]{Acar, Acar2012, Acar2013, Andersen2013, Davison, Ermis1958, Gallinari2011, Jimeng2009, Kong2010, Lippert2008, Networks, Nickel2011, Shangguan2012, Singh, Singha, Singh2008}.
+
+We now summarise these models in a table - maybe eventually like the one below.
+
+\begin{table}
+      \begin{tabular}{l|ccc}
+      & $W_{ij}$ & $\kernel$ & $U_i \sim \, .$ \\% & $\dataspace$\\ 
+      \midrule
+      Random function model & $\phi(U_i)'\Lambda$ & $\kernel_{U\times U}$ & Gaussian\\% & All\\
+      SMGB, InfTucker & $\phi(\AHvar_i)'\Lambda\phi(\AHvar_j)$ & $\kernel_U \otimes \kernel_U$ & Laplace \\% & $\{0,1\},\, \Reals$\\
+      GPLVM & $\phi(\AHvar_i)'\Lambda$ & $\kernel_\AHvar \otimes \delta$ & Gaussian \\% & All\\
+      Eigenmodel & $\AHvar_i'\Lambda \AHvar_j$ & $L_U \otimes L_U$ & Gaussian \\% & All\\
+      Linear relational GP & $\AHvar_i'\Lambda \AHvar_j$ & $L_U \otimes L_U$ & Gaussian \\% & $\{0,1\}$\\
+      PCA, PMF & $\AHvar_i'\Lambda$ & $L_U \otimes \delta$ & Gaussian \\% & $\Reals$\\
+      Latent distance & $-|\AHvar_i - \AHvar_j|$ & * & Gaussian \\% & $\{0,1\}$\\
+      Mondrian process based & Decision tree & * & Uniform \\% & All\\
+      \midrule
+      Latent class & $\Lambda_{\AHvar_i\AHvar_j}$ & $\delta_{U\times U}$ & Multinomial \\% & $\{0,1\}$\\
+      IRM, IHRM &$\Lambda_{\AHvar_i\AHvar_j}$ & $\delta_{U\times U}$ & CRP \\% & $\{0,1\}$\\
+      BMF, LFRM  & $\AHvar_i'\Lambda \AHvar_j$ & $L_U \otimes L_U$ & IBP \\% & $\Reals$\\
+      ILA & $\sum_d \mathbb{I}_{U_{id}}\mathbb{I}_{U_{jd}}\Lambda^{(d)}_{U_{id}U_{jd}}$ & * & CRP $+$ IBP \\% &$\{0,1\}$ \\
+    \end{tabular}
+\end{table}
+
+But first, some notes on how all of these models do what they do.
 
 \TBD{A great big table of literature review}
 
