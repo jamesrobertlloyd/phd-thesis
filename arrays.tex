@@ -506,6 +506,8 @@ General representation results for sparse graphs that can usefully imply model s
 All this suggests to me that we should try an observed and latent hybrid model of some sort.
 I wonder to what extent this has been attempted?
 The idea would be that all objects have some latent variables attached to them that can explain features of objects, noisy relations of objects and features or noisy relations of related objects.
+Yes, the learning PRMs paper suggests this and has a handful of references but says it is in general an interesting problem without remarking much on how it might look in real life - actually the references just consider entirely hidden nodes.
+However, \cite{Menon2011-ku} considers using both side information and latent factors for matrix factorisation.
 }
 
 \subsection{Higher order dependencies}
@@ -532,42 +534,47 @@ I am however unaware of any standard probabilistic models making use of this typ
 This is most probably due to the potentially large computational barrier to storing and inferring the values of latent variables for each pair of objects.
 There may however be use in this type of relationship on small datasets where one can afford relatively high computational costs to perform a more detailed analysis of a dataset.
 
+\subsection{A brief word about longitudinal data}
+
+We won't say much not the matter, but it is worth mentioning how all of the modelling paradigms presented here can be extended to longitudinal data (\ie time varying).
+For example, consider longitudinal measurements of a social network $X_{ij}^t$.
+Let $Y_{ij} \defas \{X_{ij}^t : t \in \mathcal{T}\}$ where $\mathcal{T}$ represents some period of time.
+Then $Y_{ij}$ can be assumed to be exchangeable meaning that we can represent its distribution as
+\[
+  Y_{ij} = G(U_i, U_j)
+\]
+which in turn means
+\[
+  X_{ij}^t = G^t(U_i, U_j)
+\]
+or more conventionally
+\[
+  X_{ij}^t = F(U_i, U_j, t)
+\]
+meaning that we can represent the distribution of the time evolving social network with fixed latent variables for each node but a time varying representing function.
+The form of the time varying function is completely general, but it could be constrained further by assumptions of continuity, Markov assumptions or Markov exchangeability for example.
+It is more typical however to assume that the latent variables also evolve through time (this still produces an exchangeable distribution) with the representing function potentially static.
+\TBD{
+Mention that only the functions need vary in time, but typically it makes life easier if the latent variables also get to change in time.
+Reference Ryan Adams basketball work and Dunson's work on this.
+}
+It may be advantageous however to have fixed latent variables when one is jointly modelling both time evolving and static data.
+
 \subsection{Prior work using models of this form}
 
+Don't forget this early block model variant \cite{Hoffman_undated-ri}.
+
 In section~\ref{sec:networks:related} it was demonstrated that many models of single 2-arrays fit the form of the generic model presented above.
-In particular there are models that assume $F$ is linear \citep[e.g.][]{Hoff2007a, Meeds2007, Salakhutdinov2008, Yu2008, Miller2009}, that $F$ is Gaussian process distributed \citep[e.g.][]{Lawrence2009, Yan2011, Lloyd2012} and other non-linear forms for $F$ \citep[e.g.][]{Hoff2002, Roy2009}.
+In particular there are models that assume $F$ is linear \citep[e.g.][]{Hoff2007a, Meeds2007, Salakhutdinov2008, Yu2008, Miller2009}, that $F$ is Gaussian process distributed \citep[e.g.][]{Lawrence2009, Yan2011, Lloyd2012} and other non-linear forms for $F$ both parametric \citep[e.g.][]{Hoff2002} and nonparametric \citep[e.g.][]{Roy2009}.
 In addition to this there has been a line of work that uses increasingly more expressive forms of the distribution $\mathcal{U}$ \citep[e.g.][]{Wang1987, Nowicki2001, Kemp2006, Xu2006, Meeds2007, Miller2009, Palla2012}.
 
 Many, but not all, of these models have been extended to model $d$-arrays.
-A summary of models using linear forms of $F$ is given in \cite{Kolda2009}; non-linear models include \cite{Xu2012}.
+A summary of models using linear forms of $F$ is given in \cite{Kolda2009-ba}; non-linear models include \cite{Xu2012} (cite the latest inftucker stuff).
 
-For full databases, the literature is limited to clustering models \cite{Kemp2006} and models using linear forms for the $F^r$ \citep[e.g.][]{Acar, Acar2012, Acar2013, Andersen2013, Davison, Ermis1958, Gallinari2011, Jimeng2009, Kong2010, Lippert2008, Networks, Nickel2011, Shangguan2012, Singh, Singha, Singh2008}.
+For full databases, the literature is limited to clustering / block / latent class models \cite{Kemp2006} \TBD{don't forget IHRM} and models using linear forms for the $F^r$ \citep[e.g.][]{Acar, Acar2012, Acar2013, Andersen2013, Davison, Ermis1958, Gallinari2011, Jimeng2009, Kong2010, Lippert2008, Networks, Nickel2011, Shangguan2012, Singh, Singha, Singh2008}.
 
-We now summarise these models in a table - maybe eventually like the one below.
-
-\begin{table}
-      \begin{tabular}{l|ccc}
-      & $W_{ij}$ & $\kernel$ & $U_i \sim \, .$ \\% & $\dataspace$\\ 
-      \midrule
-      Random function model & $\phi(U_i)'\Lambda$ & $\kernel_{U\times U}$ & Gaussian\\% & All\\
-      SMGB, InfTucker & $\phi(\AHvar_i)'\Lambda\phi(\AHvar_j)$ & $\kernel_U \otimes \kernel_U$ & Laplace \\% & $\{0,1\},\, \Reals$\\
-      GPLVM & $\phi(\AHvar_i)'\Lambda$ & $\kernel_\AHvar \otimes \delta$ & Gaussian \\% & All\\
-      Eigenmodel & $\AHvar_i'\Lambda \AHvar_j$ & $L_U \otimes L_U$ & Gaussian \\% & All\\
-      Linear relational GP & $\AHvar_i'\Lambda \AHvar_j$ & $L_U \otimes L_U$ & Gaussian \\% & $\{0,1\}$\\
-      PCA, PMF & $\AHvar_i'\Lambda$ & $L_U \otimes \delta$ & Gaussian \\% & $\Reals$\\
-      Latent distance & $-|\AHvar_i - \AHvar_j|$ & * & Gaussian \\% & $\{0,1\}$\\
-      Mondrian process based & Decision tree & * & Uniform \\% & All\\
-      \midrule
-      Latent class & $\Lambda_{\AHvar_i\AHvar_j}$ & $\delta_{U\times U}$ & Multinomial \\% & $\{0,1\}$\\
-      IRM, IHRM &$\Lambda_{\AHvar_i\AHvar_j}$ & $\delta_{U\times U}$ & CRP \\% & $\{0,1\}$\\
-      BMF, LFRM  & $\AHvar_i'\Lambda \AHvar_j$ & $L_U \otimes L_U$ & IBP \\% & $\Reals$\\
-      ILA & $\sum_d \mathbb{I}_{U_{id}}\mathbb{I}_{U_{jd}}\Lambda^{(d)}_{U_{id}U_{jd}}$ & * & CRP $+$ IBP \\% &$\{0,1\}$ \\
-    \end{tabular}
-\end{table}
-
-But first, some notes on how all of these models do what they do.
-
-\TBD{A great big table of literature review}
+We should certainly expect to see new research using some of the more advanced forms proposed for networks being applied to higher order arrays or full databases.
+However, rather than proposing yet more specific models it would be very interesting to see automated model building techniques applied to these domains, potentially combined with model forms inspired by probabilistic relational models.
 
 \section{Discussion}
 
