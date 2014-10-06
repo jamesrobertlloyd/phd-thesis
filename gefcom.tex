@@ -1,33 +1,50 @@
 \input{common/header.tex}
 \inbpdocument
 
-\chapter{GEFCom}
+\chapter{Application of compositional kernels to a data mining competition}
 \label{ch:gefcom}
 
 In this chapter I will discuss how I used Gaussian processes with compositionally constructed kernels as part of an ensemble of predictors in a data mining competition.
 In particular, this competition involved forecasting hourly loads of a US energy utility as part of the load forecasting track of the Global Energy Forecasting Competition 2012 hosted on Kaggle.
 This work was completed before the work described in chapter~\ref{ch:construction} hence the construction of kernels was not automated.
+The techniques described in this chapter are relatively simple, but they were sufficient to be ranked \nth{2} in the competition.
 At the end of this chapter\fTBD{ref} I will discuss how the kernels could have been automatically constructed which will identify some short comings in the literature on approximation inference methods for Gaussian processes.
 
 \section{Introduction}
 
-This report details the methods I used when competing in the load forecasting track of GEFCom2012\footnotemark.
-\footnotetext{\url{http://www.gefcom.org/}}
-It is split into sections describing each technique used for forecasting temperatures and loads.
+\subsection{Competition and data}
+
+The data for this competition consisted of an hourly time series of energy utility loads at 20 zones with unknown location and temperatures at 13 stations also with unknown location.
+The data stretched over a period of 4.5 years and 8 non-consecutive weeks of load data were missing.
+The task of the competition was to fill in the missing 8 weeks (backcasting) and to predict loads for the week following the extent of the data where temperature data was not available (forecasting); use of additional sources of temperature data was expressly prohibited by the competition organisers.
+
+The evaluation metric of the competition (weighted root mean squared error) was heavily biased towards good performance on the forecasting task.
+Whilst the competition was running, contestants could submit predictions to the website Kaggle and obtain the value of the evaluation metric evaluated on 25\% of the held out data.
+This value was known as the public score since it was published during the competition.
+Perhaps not too surprisingly this resulted in many participants overfitting heavily to this particular split of the data; the leaderboard changed substantially when final scores were evaluated on the remaining 75\% of the data; the private scores.
+Further details can be found in the competition summary paper \citep{Hong2014-yf}.
+
+\subsection{Structure of chapter}
+
+This chapter is split into sections describing each technique used for forecasting temperatures and loads.
 Within each section I have motivated the particular choice of algorithm, discussed how it was used and described how to replicate the results using the spreadsheets and scripts accompanying this report\footnotemark.
+The source code is not necessary for understanding this chapter, it is referenced purely for those interested in replicating my work (submissions to the competition were required to be entirely replicable).
+Many readers can safely ignore references to code and replication.
 
 \footnotetext{Source code available at \url{https://github.com/jamesrobertlloyd/GEFCOM2012/}}
+
+\subsection{Methodology}
 
 I approached the competition in the spirit of a data mining competition.
 Consequently, some of the choices detailed below were based on intuition to save time and focus on the aspects of the data most likely to give the largest increases in performance.
 Many of these choices could have been replaced by appropriate searches and cross validation; where more complex techniques would be required I have briefly described how one could perform a more objective analysis.
+In general this chapter is much less rigorous then the rest of this thesis but it is hoped it provides an interesting example of the practical uses of the techniques described in chapter~\ref{ch:construction} and also highlights how data analysis actually proceeds when there are strict time deadlines and the only measure of success is predictive performance.
 
 My methodology for load back / forecasting was to try different general purpose regression algorithms and then ensemble (average) the predictions.
 The final ensemble comprised predictions from a gradient boosting machine (GBM), Gaussian process (GP) regression and the benchmark solution provided by the competition organisers (a linear model).
 
 This chapter is organised as follows.
 Section \ref{sec:cleans} discusses data cleansing, section \ref{sec:temp} is on temperature forecasting, sections \ref{sec:gbm} and \ref{sec:gp} introduce the GBM and GP forecasting methodologies respectively and section \ref{sec:ensemble} discusses how the final ensemble prediction was formed.
-A brief introduction to Gaussian processes is provided in \ref{sec:gp_appendix}.
 
 \section{Data cleansing}
 
@@ -47,7 +64,7 @@ This was performed for both temperature and load data using the spreadsheets \te
 This visual analysis revealed a large discontinuity in load series 10 and atypical dynamics in series 9 (see figure~\ref{fig:load} and others for comparison).
 No other large anomalies were detected during the first inspection of the data and smaller irregularities were not revisited since the algorithms detailed below performed acceptably well without further data cleansing.
 
-No adjustments were made for holidays or other irregular events such as black-outs.
+No adjustments were made for holidays or other irregular events such as electricity black-outs.
 Ignoring them was merely a practicality of time constraints rather than a design choice.
 
 \section{Temperature forecasting}
@@ -78,9 +95,9 @@ For simplicity, I modelled the smooth trend and daily periodicity separately and
 
 \subsection{Methodology}
 
-The smooth trend was estimated within the data using local linear regression \citep[e.g. chapter 6 of][]{Hastie2009} with a bandwidth of one day.
-I assumed that the smooth trend would probably smoothly return to the historical average.
-A suitable modelling technique that would give this type of prediction is Gaussian process regression \citep[e.g.][]{Rasmussen2006} (see the appendix for a very brief introduction); the difference between the smoothed temperature and its historical average was regressed against time using a squared exponential kernel and zero mean function.
+The smooth trend was estimated within the data using local linear regression \citep[e.g. chapter 6 of][]{Hastie2009-hj} with a bandwidth of one day; see section~\ref{sec:gefcom:auto} for a discussion of how this method could have been usefully replaced by Gaussian process regression.
+I assumed that the smooth temperature trend would, on average, smoothly return to the historical average.
+A suitable modelling technique that would give this type of prediction is Gaussian process regression; the difference between the smoothed temperature and its historical average was regressed against time using a kernel of the form $\kSE + \kWN$ \ie a smooth function plus noise.
 
 In Figure~\ref{fig:temp_pred}, the thick blue dashed curve shows the historical average of smoothed temperatures and the thick green dotted line shows the current smoothed temperature and prediction.
 The parameters of the GP model (length scale and scale factor of the squared exponential kernel) were tuned by hand, initially choosing sensible values based on plots of the data and then trying to optimise the public test score of derived load predictions.
@@ -102,7 +119,7 @@ The method described above is implemented by the MATLAB script \texttt{predict\_
 
 The red curve in Figure~\ref{fig:temp_pred} shows the result of the methodology applied to temperature station 1.
 The fit to the data is far from perfect but it has captured the broad features of the data.
-I am unfamiliar with the temperature / weather forecasting literature but I am quite certain that far better methods exist!
+Given the time constraints of this competition I did not investigate the temperature / weather forecasting literature; far better methods must certainly exist!
 
 \section{Gradient boosting machines}
 
@@ -130,7 +147,7 @@ All zones were modelled independently for simplicity.
 
 \subsection{Methodology}
 
-A standard `black-box' technique for learning an unknown regression function is that of using gradient boosting machines (GBM) \citep[e.g. chapter 10 of][]{Hastie2009}.
+A standard `black-box' technique for learning an unknown regression function is that of using gradient boosting machines (GBM) \citep[e.g. chapter 10 of][]{Hastie2009-hj}.
 For each zone I used all of the data to train a GBM and then used that to predict all outputs \ie I learnt a global function for each zone.
 
 I used a standard R implementation of GBM using most of the default settings\footnotemark.
@@ -148,7 +165,7 @@ The R script \texttt{basic\_gbm.R} then performs the method described above to p
 
 \subsection{Discussion}
 
-The time series for zone 10 had a very large discontinuity (see left of Figure~\ref{fig:load}).
+The time series for zone 10 had a very large discontinuity (see left of figure~\ref{fig:load}).
 GBM was used as a global prediction method which means it will have produced very bad predictions for zone 10.
 I later fixed this by modelling the loads either side of the discontinuity separately.
 Perversely, this resulted in a worse public test score.
@@ -161,28 +178,27 @@ However, this change resulted in a much improved private test score; in hindsigh
 \subsection{Initial analysis and remarks}
 
 The observations made about the load data in section~\ref{sec:gbm_init_anal} (\ie smooth trends, near periodic variations, dependence on temperature) can be modelled using Gaussian process regression.
-Specifying the kernel function of a Gaussian process allows one to encode these structural assumptions into a regression model.
-%into a Bayesian nonparametric analysis that can learn the details of the regression function from the data.
-See the appendix for a brief introduction to the effect of choosing different kernels.
+As demonstrated in chapter~\ref{ch:construction} specifying the kernel function of a Gaussian process allows one to encode these structural assumptions into a regression model.
 
 \subsection{Methodology}
 
 Three different kernel functions were used; one for backcasting, one for forecasting and one for backcasting zone 9.
 The form of the three kernels used were as follows\footnotemark
 \footnotetext{See source code for parameter values}
-\begin{eqnarray}
-\SE_t + \SE_S + \SE_t \times \SE_T \times \Per_t \label{eqn:kernel1}\\
-\SE_t + \SE_t + \Per_t \label{eqn:kernel2}\\
-\SE_t + \SE_S + \SE_T \times \Per_t\label{eqn:kernel3}
-\end{eqnarray}
-where $\SE$ refers to a squared exponential kernel, $\Per$ is a periodic kernel and the subscripts indicate which dimension the kernel acts upon; (t)ime, (T)emperature or (S)moothed temperature.
+\[
+& \kSE_t + \kSE_S + \kSE_t \times \kSE_T \times \kPer_t \label{eqn:kernel1}\\
+& \kSE_t + \kSE_t + \kPer_t \label{eqn:kernel2}\\
+& \kSE_t + \kSE_S + \kSE_T \times \kPer_t \label{eqn:kernel3}
+\]
+where the subscripts indicate which dimension the kernel acts upon; (t)ime, (T)emperature or (S)moothed temperature.
 For backcasting, the model was applied to the 1000 surrounding data points; for forecasting the last 500 data points were used.
 Only one temperature station was used in this method; for each back / forecasting region the marginal likelihood of the model was computed for each temperature station.
-Bayesian model averaging \citep[e.g.][]{Hoeting1999} was then used to combine the predictions (in practice, this was usually numerically equivalent to selecting the model / temperature station with the highest marginal likelihood).
+Bayesian model averaging \citep[e.g.][]{Hoeting1999-tn} was then used to combine the predictions.
+In practice this was usually numerically equivalent to selecting the model / temperature station with the highest marginal likelihood.
 
 Kernel~\eqref{eqn:kernel1} encodes the assumptions that loads can be explained as a smoothly varying trend and an approximately periodic component.
 The smooth trend is the sum of a smooth function of smoothed temperature and a smooth function of time (to explain any deviations from the trend implied by temperature).
-The periodic component can vary through time and by being multiplied by $\SE_t$ and $\SE_T$ the shape of the periodicity will be more similar to recent times and points in time with similar temperatures.
+The periodic component can vary through time and by being multiplied by $\SE_t$ and $\SE_T$ the shape of the periodicity will be more similar to recent times and any points in time with similar temperatures.
 This kernel was used for backcasting all zones apart from zone 9.
 An example of this kernel in action is shown in Figure~\ref{fig:load_pred}.
 The left plot shows the load data (black solid) and the prediction (red dashed).
@@ -216,9 +232,9 @@ The MATLAB script \texttt{gp\_elec.m} performs the methodology described above, 
 
 \subsection{Discussion}
 
-Selecting the form and parameters of the kernels by hand requires a moderate amount of familiarity with Gaussian processes.
-Automatic selection of kernel functions is an active area of research; recent publications include an automated search over a generative grammar of kernel expressions by \cite{duvenaud2013structure}, using deep neural networks to learn a kernel function by \cite{salakhutdinov2008using} and a new class of kernels designed to have good extrapolation performance by \cite{wilson2013gaussian}.
-It is likely that better performance could have been achieved by a larger and more principled search over kernel functions.
+Selecting the form and parameters of the kernels by hand required a moderate amount of familiarity with Gaussian processes.
+It is likely that better performance could have been achieved by the larger and more principled search over kernel functions introduced in chapter~\ref{ch:construction}.
+Barriers to its immediate application are however discussed in section~\ref{sec:gefcom:auto}.
 
 \section{Selecting the final ensemble}
 
@@ -231,7 +247,7 @@ Ensembling is a very powerful technique for combining predictions from separate 
 If two predictions (viewed as random quantities) are statistically uncorrelated then their average will have lower variance than either one separately.
 
 In practice, different algorithms are correlated and ensembling highly correlated predictions will rarely lead to improved performance.
-In particular, I also tried the random forest algorithm but the predictions were too correlated with gradient boosting machines (they are both based on an ensemble of decision trees) to be a useful addition to the ensemble.
+In particular, I also tried the random forest algorithm\fTBD{ref} but the predictions were too correlated with gradient boosting machines (they are both based on an ensemble of decision trees) to be a useful addition to the ensemble.
 
 \subsection{Methodology}
 
@@ -248,61 +264,24 @@ The output of this spreadsheet was then copied in \texttt{ensemble\_creator.xlsx
 
 This method could have been been slightly improved by programmatically selecting the ensemble weights, optimising some form of validation metric.
 One could also have tried to optimise the public test score directly.
-Since only 2 submissions could be tested per day, one would want to use an optimisation technique that made very efficient use of data \citep[e.g.][]{Osborne2009, snoek2012practical}.
+Since only 2 submissions could be tested per day, one would want to use an optimisation technique that made very efficient use of data \citep[e.g.][]{Osborne2009-ti, Snoek2012-ri}.
 
 Larger improvements could likely be achieved by considering a larger number of base predictions.
 It is likely that the algorithms used by other competitors in GEFCom2012 would provide useful additions to the ensemble of predictions.
+See \cite{Hong2014-yf} and the references therein for an overview of the methods used by other participants.
+
+\section{Constructing the composite kernels automatically}
+\label{sec:gefcom:auto}
+
+My participation in this data mining competition partially inspired  
+
+Could the composite kernels have been constructed by the kernel search algorithm presented in chapter~\ref{ch:construction} and would they have perhaps have been better.
 
 \section{Conclusion}
 
 In this competition I applied general purpose machine learning / regression algorithms and made few adjustments for the specific domain the data arose from.
 Despite this, the resulting predictions were highly competitive.
 It is hoped that this report shows that simple techniques can be very effective for predictive modelling and can inspire practical techniques for load forecasting.
-
-% use section* for acknowledgement
-\section*{Acknowledgments}
-
-I would like to thank Alex Davies for guidance into the ways of data mining and David Duvenaud for advice on the practicalities of using Gaussian processes.
-
-\appendix
-
-\section{A very brief introduction to Gaussian processes}
-
-\label{sec:gp_appendix}
-
-For a much richer introduction, see \cite{Rasmussen2006}.
-A Gaussian process, $(f(x))_{x \in X}$ is a set of random variables such that any finite collection has a jointly Gaussian distribution.
-A Gaussian process can be completely specified by a mean function $m(x)$ and kernel function $\kappa (x, x')$ such that
-\begin{eqnarray}
-\text{Expectation}(f(x)) & = & m(x) \\
-\text{Covariance}(f(x), f(x')) & = & \kappa (x, x').
-\end{eqnarray}
-
-Gaussian processes can be used to specify a prior distribution on functions and then be used in a Bayesian analysis.
-They are nonparametric and can learn any function given sufficient data.
-
-\begin{figure}[ht]
-  \begin{center}
-    \input{figures/gefcom/GP_samples.tex}
-  \end{center}
-  \caption{Left: Draws form a Gaussian process with squared exponential kernel with differing length scales. Right: Draws using a squared exponential and periodic product kernel.}
-  \label{fig:gp_samples}
-\end{figure}
-
-The kernel function encodes the structure of a Gaussian process.
-The left plot in Figure~\ref{fig:gp_samples} shows samples (random draws) from a Gaussian process distribution using squared exponential kernels; this function encodes an assumption of smoothness.
-Intuitively, these plots show the types of functions that will most easily / quickly be learned using Gaussian process regression.
-One parameter of a squared exponential kernel is a length scale which controls how quickly the value of the Gaussian process varies.
-The blue line in the left plot has a short length scale which results in quick variations of the function.
-The green line has a long length scale and consequently the Gaussian process is visually much smoother.
-
-The right plot in Figure~\ref{fig:gp_samples} shows samples from a Gaussian process with a more complicated kernel function.
-The kernel function is the product of a squared exponential kernel and a periodic kernel.
-This encodes the assumption that the Gaussian process is roughly periodic, and that the shape of the periodicity changes smoothly.
-
-By constructing more advanced kernel functions one can specify more complex structures as desired.
-Kernel functions depend on parameters and they are typically chosen by maximising the marginal likelihood of training data given the parameter choices (all gradients can be computed analytically).
-One can also perform a fully Bayesian analysis by integrating over parameter values; this typically requires approximate inference techniques.
 
 \outbpdocument{
 \bibliographystyle{plainnat}
