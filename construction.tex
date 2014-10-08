@@ -159,16 +159,16 @@ In addition to the examples given in figure~\ref{fig:kernels}, many common motif
 \begin{tabular}{l|l}
 Bayesian linear regression & $\Lin$ \\
 Bayesian polynomial regression & $\Lin \times \Lin \times \ldots$\\
-Generalized Fourier decomposition & $\Per + \Per + \ldots$ \\
+Generalised Fourier decomposition & $\Per + \Per + \ldots$ \\
 Additive smoothing & $\sum_{d=1}^D \SE_d$ \\
 Automatic relevance determination & $\prod_{d=1}^D \SE_d$ \\
 Linear regression with correlated residuals & $\Lin + \SE$ \\
 \end{tabular}
 
-We use the term `generalized Fourier decomposition' to express that the periodic functions expressible by a \gp{} with a periodic kernel are not limited to sinusoids.
+We use the term `generalised Fourier decomposition' to express that the periodic functions expressible by a \gp{} with a periodic kernel are not limited to sinusoids.
 
 \section{Searching over kernel families}
-\label{sec:Search}
+\label{sec:construction:search}
 
 We have demonstrated that we can construct a wide variety of kernel structures compositionally by adding and multiplying a small number of base kernels.
 In particular, we consider the four base kernel families discussed in Section \ref{sec:Structure}: \kSE, \kPer, \kLin, and \kRQ.
@@ -554,30 +554,50 @@ All \gp{} kernel parameter estimation was performed by automated calls to the GP
 \section{Discussion}
 \label{sec:construction:discussion}
 
-%In a fully Bayesian approach, we would put priors over the parameters and compute the marginal likelihood of the models with all the parameters integrated out.
-%However, as this would be difficult to do across our space of models, we approximate this integral by choosing the parameters to optimize the marginal likelihood, and then apply the Bayesian information criterion (BIC) to penalize model complexity. \fTBD{If true, say we got similar results using Laplace}
-%To avoid an expensive integration over kernel parameters, we used the Bayesian information criterion \citep{schwarz1978estimating} as an approximation.
-%We note that other model selection criteria could be used with our search procedure.
-%For instance, random cross-validation could be used when the goal is interpolation.
-
 Towards the goal of automating the choice of kernel family, we introduced a space of composite kernels defined compositionally as sums and products of a small number of base kernels.  
 The set of models included in this space includes many standard regression models.
-We proposed a search procedure for this space of kernels which parallels the process of scientific discovery.
+We proposed a search procedure for this space of kernels which parallels human model building strategies.
 
 We found that the learned structures are often capable of accurate extrapolation in complex time-series datasets, and are competitive with widely used kernel classes and kernel combination methods on a variety of prediction tasks.
 The learned kernels often yield decompositions of a signal into diverse and interpretable components, enabling visual model criticism of complex nonparametric models.
 We believe that a data-driven approach to choosing kernel structures automatically can help make nonparametric regression and classification methods accessible to non-experts.
 
 However, there are a number of improvements that could be made to the procedure described in this chapter.
-Some of those improvements are implemented in the work described in chapter~\ref{ch:description} but we now discuss some other issues.
+Some of those improvements are implemented in the work described in chapter~\ref{ch:description} but we now discuss two other shortcomings and discuss potential future work to overcome them.
 
 \subsection{Estimating marginal likelihoods}
 
-\TBD{Stuff}
+In section~\ref{sec:construction:search} it was stated that we used the Bayesian information criterion (BIC) to approximate the model evidence of a kernel family.
+In an exact and fully Bayesian approach we would put priors over the kernel parameters and compute the model evidence of the kernel families with all the parameters integrated out.
+Since the relevant equations of Bayes' rule are analytically intractable in this case we must turn to approximate inference techniques.
+
+The majority of approximate inference research taking a fully Bayesian approach to Gaussian process regression has focused on producing approximate samples from the posterior distribution \TBD{Cite some classic papers} over the kernel parameters and function, but has ignored the estimation of the model evidence.
+In general, while there is active research within the machine learning and statistics communities on attempts to perform approximate posterior sampling for arbitrary probabilistic models \TBD{cite prob prog}, the same cannot be said about efforts to approximate marginal likelihoods in all circumstances.
+Interesting research in this direction was started by the introduction of nested sampling \TBD{cite Skilling} which has been taken up by the astronomy \TBD{or cosmology?} community amongst others.
+
+Alternative approaches to approximate inference for Gaussian process regression have included variational Bayesian methods \TBD{cite} and expectation propagation \TBD{cite}.
+These methods naturally produce an estimate or lower bound of the model evidence, but condition on kernel parameters which are then optimised which means we are still faced with the problem of appropriately penalising our optimisation of a growing number of kernel parameters.
+
+A simple method that we attempted to utilise was the Laplace approximation to the model evidence \TBD{cite something like Bishop maybe}.
+This method approximates the log-likelihood function as a quadratic with centre at a mode of the likelihood and curvature at the mode matched to that of the true log-likelihood.
+In order to work, one must be sufficiently close to a mode of the likelihood in order to be able to produce a numerical estimate of the curvature that is strictly negative definite (\ie defining an appropriate turning point of the likelihood).
+As shown in figure \TBD{make a figure}, if one is not quite at the mode of a distribution one cannot hope to calculate a meaningful curvature estimate.
+
+The situation of not quite being at the mode however is not just a numerical annoyance, it is becoming increasingly common.
+We found that the conjugate gradients solver used within the kernel search algorithm could become confused by numerical noise and would terminate before it reached a mode.
+Also, as data sets become increasingly large and computation and time constraints of algorithms become increasingly important it will often be irrational to run optimisers to completion, when being almost an optimum is often good enough given certain time and computation budgets \TBD{cite Bayes optimisation, Russell - rational something}.
+
+A potential way forward is to imagine a more general version of the Laplace approximation.
+The Laplace approximation attempts to approximate the log-likehood with a quadratic; this can be achieved without exactly having found the mode simply by performing regression using a quadratic regression function
+This could be viewed as a simple version of Bayesian quadrature \TBD{cite} with potentially attractive computational time savings.
+A full analysis of this idea would also likely interact with recent reinterpretations of classic optimisation algorithms as approximate inference in probabilistic models \TBD{cite Hennig}.
 
 \subsection{Model selection rather than model averaging}
 
-\TBD{Stuff}
+In this chapter we have demonstrated that selecting the model with the highest model evidence encountered along the search was sufficient to achieve good empirical performance on the moderate dimensional datasets considered.
+However, much like BIC guided linear model selection will fail on high dimensional problems \TBD{cite elements of stat learning?} so will the kernel search as currently described.
+Staying within the Bayesian paradigm it is conceptually simple to alleviate this problem by instead computing a Bayes model average \TBD{cite something} over kernel families.
+The natural search objective would then change from optimising the model evidence of a single kernel family, to that of the sum of model evidences of all kernel families visited by the search, appropriately weighted by a prior over kernel families.
 
 \outbpdocument{
 \bibliographystyle{plainnat}
