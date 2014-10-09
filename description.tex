@@ -4,79 +4,218 @@
 \chapter{Natural-language description of Gaussian process models}
 \label{ch:description}
 
-This chapter\dots
+In chapter~\ref{ch:construction} we demonstrated that the models produced by the Gaussian process kernel search could yield interpretable decompositions of regression models when applied to time series.
+We now justify this claim of interpretability by demonstrating that the models produced by the kernel search can be automatically interpreted.
+In particular we show that the grammar generated language of kernel families neatly maps onto natural-language sentences describing the properties of the functions these kernels encode for.
+
+This chapter is based upon joint work with David Duvenaud, Roger Grosse, Joshua Tenenbaum and Zoubin Ghahramani \citep{Lloyd2014-nz}.
+I performed the majority of experiments; all were involved with the writing.
 
 \section{Introduction}
 
-Automating the process of statistical modeling would have a tremendous impact on fields that currently rely on expert statisticians, machine learning researchers, and data scientists.
-While fitting simple models (such as linear regression) is largely automated by standard software packages, there has been little work on the automatic construction of flexible but interpretable models. 
-What are the ingredients required for an artificial intelligence system to be able to perform statistical modeling automatically? 
-In this paper we conjecture that the following ingredients may be useful for building an AI system for statistics, and we develop a working system which incorporates them:
-\begin{itemize}
-\item {\bf An open-ended language of models} expressive enough to capture many of the modeling assumptions and model composition techniques  applied by human statisticians to capture real-world phenomena
-\item {\bf A search procedure} to efficiently explore the space of models spanned by the language
-\item {\bf A principled method for evaluating models} in terms of their complexity and their degree of fit to the data
-\item {\bf A procedure for automatically generating reports} which explain and visualize different factors underlying the data, make the chosen modeling assumptions explicit, and quantify how each component improves the predictive power of the model 
-\end{itemize}
+The kernel search procedure introduced in chapter~\ref{ch:construction} can be viewed as an approximately Bayesian agent performing an exploratory data analysis.
+Given no information about a data set other than the data itself the kernel search explores a large space of potential statistical models, reporting those which appear to be the most parsimonious description of the data.
+Viewed either as an autonomous agent or as a tool, this type of system has the potential to significantly aid those without expert machine learning or statistical knowledge to perform exploratory analyses of novel data sets.
 
-\begin{figure}[t]
-\centering
-\fbox{\includegraphics[trim=0cm 4.75cm 0cm 1.0cm, clip, width=0.98\columnwidth]{\descriptionfigsdir/solarpages/pg_0007-crop}}
-\caption{
-Extract from an automatically-generated report describing the model components discovered by \procedurename{}.
-This part of the report isolates and describes the approximately 11-year sunspot cycle, also noting its disappearance during the 16th century, a time known as the Maunder minimum \citep{lean1995reconstruction}.
-}
-\label{fig:periodic}
+However, while graphical descriptions can convey some of the patterns encoded by a statistical model, much of the detail of the properties of the statistical model are expressed by the forms of the kernels; within the broader context of scientific fields in general there are very few people who can interpret the meaning of Gaussian processes with novel kernel functions.
+It is therefore natural to ask to what extent any kernel produced by the kernel search algorithm can be explained in relatively simple terms.
+
+In this chapter we demonstrate that the compositional structure of the kernels produced by the search algorithm neatly map onto compositionally generated natural-language descriptions of the types of functions they encode for.
+In attempting to produce an algorithm that can describe arbitrary kernel expressions we discover that some kernel expressions are much less easy to intuitively describe than others.
+In response we revise the language of kernel functions which in turn leads to more interpretable models being produced by the search.
+
+Combining the kernel search with automatic descriptions, predictions and model criticism (see chapter~\ref{ch:criticism}) we introduce a system for modelling time-series data which we call the Automatic Bayesian Covariance Discovery (ABCD) system.
+A flow chart for the operation of the system is shown in figure \ref{fig:description:flow}.
+
+\begin{figure}[ht]
+  \centering
+  \tikzstyle{block} = [rectangle, draw, fill=blue!20, 
+                       text width=5em, text centered, rounded corners, minimum height=3em]
+  \tikzstyle{line} = [draw, -latex']
+  \tikzstyle{cloud} = [draw, ellipse,fill=red!20,minimum height=2em]
+    
+  \begin{tikzpicture}[node distance = 2.5cm]
+    \footnotesize
+    % Place nodes
+    \node [cloud] (data) {Data};
+    \node [block, right of=data] (search) {Search};
+    \node [cloud, above of=search] (language) {Language of models};
+    \node [block, below of=search] (eval) {Evaluation};
+    \node [cloud, right of=search] (model) {Model};
+    \node [block, right of=model] (pred) {Prediction};
+    \node [block, above of=pred] (trans) {Description};
+    \node [block, below of=pred] (checking) {Criticism};
+    \node [cloud, right of=pred] (report) {Report};
+    % Draw edges
+    \path [line] (data) -- (search);
+    \path [line] (language) -- (search);
+    \path [line] (search) -- (model);
+    \path [line] (search) -- (model);
+    \path [line] (model.north east) -- (trans.south west);
+    \path [line] (model.east) -- (pred.west);
+    \path [line] (model.south east) -- (checking.north west);
+    \path [line] (trans.south east) -- (report.north west);
+    \path [line] (pred.east) -- (report.west);
+    \path [line] (checking.north east) -- (report.south west);
+    \draw[->,] (search.south east) .. controls (3.75,-1.25) .. (eval.north east);
+    \draw[->,] (eval.north west) .. controls (1.25,-1.25) .. (search.south west);
+  \end{tikzpicture}
+  \caption{Flow chart of the \procedurename{} system.
+  An open-ended language of Gaussian process models is defined by a compositional grammar.
+  The space is searched greedily, using marginal likelihood and the Bayesian Information Criterion (BIC) to evaluate models.
+  The  compositional structure of the language allows us to develop a method for automatically translating components of the model into natural-language descriptions of patterns in the data.
+  These descriptions are then combined with predictions from the model and model criticism to form a report describing the data.}
+  \label{fig:description:flow}
 \end{figure}
 
-In this paper we introduce a system for modeling time-series data containing the above ingredients which we call the Automatic Bayesian Covariance Discovery (ABCD) system.
-The system defines an open-ended language of Gaussian process models via a compositional grammar.
-The space is searched greedily, using marginal likelihood and the Bayesian Information Criterion (BIC) to evaluate models.
-The  compositional structure of the language allows us to develop a method for automatically translating components of the model into natural-language descriptions of patterns in the data.
+\section{Improvements and additions to the language of kernels}
+\label{sec:design}
 
-We show examples of automatically generated reports which highlight interpretable features discovered in a variety of data sets (\eg figure~\ref{fig:periodic}).
-The supplementary material to this paper includes 13 complete reports automatically generated by ABCD.
+\subsection{Improvements to interpretability}
 
-Good statistical modeling requires not only interpretability but also predictive accuracy.
-We compare ABCD against existing model construction techniques in terms of predictive performance at extrapolation, and we find state-of-the-art performance on 13 time series.
+We now demonstrate that some of the kernel expressions that can be reached by the search procedure described in chapter~\ref{ch:description} do not lend themselves to automatic description in natural language.
+Furthermore, at their worst they can produce posterior distributions over functions that are highly uninterpretable or unusual.
+We find that removing or modifying these kernels makes automatic description possible; we believe a priori that it is beneficial to be able to explain complex statistical models in words as well as with graphical representations.
+Furthermore, removing and modifying these kernels has the potentially unexpected benefit of improving the interpretability of the resulting statistical models.
 
-\section{A language of regression models}
-\label{sec:improvements}
+\paragraph{Removal of the rational quadratic kernel}
 
-Regression consists of learning a function $f$ mapping from some input space $\mathcal{X}$ to some output space $\mathcal{Y}$.
-We desire an expressive language which can represent both simple parametric forms of $f$ such as linear or polynomial and also complex nonparametric functions specified in terms of properties such as smoothness or periodicity.
-Gaussian processes (\gp{}s) provide a very general and analytically tractable way of capturing both simple and complex functions. 
+The squared exponential ($\kSE$)  kernel encodes for probability distributions over smooth functions; the rational quadratic ($\kRQ$) kernel also encodes for smooth functions and can be expressed as a scale mixture of infinitely many $\kSE$ kernels.
+Kernels such as $\kSE \kerntimes \kRQ$ and $\kRQ \kerntimes \kRQ$ also encode for yet more variations on smooth functions.
+It seems unlikely that there can be simple descriptions of all of these different types of smoothness (there are only so many synonyms) without resorting to equations or graphs of the kernels; neither of these are easy to interpret even by experts.
 
-\gp{}s are distributions over functions such that any
-finite set of function evaluations, $(f(x_1), f(x_2), \ldots
-f(x_N))$, have a jointly Gaussian distribution
-\citep{rasmussen38gaussian}. A \gp{} is completely specified by its
-mean function, $\mu(x)=\mathbb{E}(f(x))$ and kernel (or covariance) function
-$\kernel(x,x') = \Cov(f(x),f(x'))$.
-It is common practice to assume zero mean,
-since marginalizing over an unknown mean function can be equivalently
-expressed as a zero-mean \gp{} with a new kernel. The structure of the
-kernel captures high-level properties of the unknown function, $f$,
-which in turn determines how the model generalizes or extrapolates to
-new data.  We can therefore define a language of regression models by
-specifying a language of kernels.
+For this reason we remove the rational quadratic kernel from our set of base kernels with which we form the language of kernel families.
+As we will see in section~\ref{sec:description:description} this will allow us to only have to describe one type of smoothness making the task of automatic description into natural language much simpler.
+In addition to this, we avoid the occasionally pathological behaviour of the rational quadratic to capture multiple scales of variation in a single function.
+The left of figure~\ref{fig:rq} shows the posterior of a component involving a rational quadratic kernel produced by the procedure of chapter~\ref{ch:construction} on the Mauna Loa data set.
+This component has captured both a medium term trend and short term variation.
+This is both visually unappealing and difficult to describe simply.
+In contrast, the right of figure~\ref{fig:rq} shows two of the components produced by \procedurename{} on the same data set which clearly separate the medium term trend and short term deviations.
 
-The elements of this language are a set of  base
-kernels capturing different function properties, and a set of
-composition rules which combine kernels to yield other valid kernels.
-Our base kernels are white noise ($\kWN$), constant ($\kC$), linear ($\kLin$), squared exponential ($\kSE$) and periodic ($\kPer$), which on their own encode for uncorrelated noise, constant functions, linear functions, smooth functions and periodic functions respectively\footnote{Definitions of kernels are in the supplementary material.}.
-The composition rules are addition and multiplication:
-\begin{align}
-(k_1 + k_2)(x,x') =& \,\, k_1(x,x') + k_2(x,x')\\
-(k_1 \times k_2)(x,x') =& \,\, k_1(x,x') \times k_2(x,x')
-\end{align}
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[]
+  \begin{scope}[xshift=0.0\textwidth]
+    \node [mybox] (box){
+      \fbox{\includegraphics[trim=0cm 0cm 0cm 0cm, clip, width=0.35\columnwidth]{\descriptionfigsdir/old-gpss/03-mauna2003-s_3.pdf}}
+    };
+  \end{scope}  
+  \begin{scope}[xshift=0.25\columnwidth]
+  \draw[->,thick] (-0.04\columnwidth,0.05\columnwidth) -- (0.04\columnwidth,0.11\columnwidth); 
+  \draw[->,thick] (-0.04\columnwidth,-0.05\columnwidth) -- (0.04\columnwidth,-0.11\columnwidth); 
+  \end{scope}
+  \begin{scope}[xshift=0.5\columnwidth]
+    \begin{scope}[yshift=+0.15\columnwidth]
+    \node [mybox] (box){
+      \fbox{\includegraphics[trim=0cm 0cm 0cm 0cm, clip, width=0.35\columnwidth]{\descriptionfigsdir/03-mauna/03-mauna_3}}
+    };
+    \end{scope}
+    \node[font=\LARGE] at (0,0) {$+$};
+    \begin{scope}[yshift=-0.15\columnwidth]
+    \node [mybox] (box){
+      \fbox{\includegraphics[trim=0cm 0cm 0cm 0cm, clip, width=0.35\columnwidth]{\descriptionfigsdir/03-mauna/03-mauna_5}}
+    };
+    \end{scope}
+  \end{scope}
+\end{tikzpicture}
+\caption{
+Left: Posterior of rational quadratic component of model for Mauna Loa data from \citet{Duvenaud2013-dn}.
+Right: Posterior of two components found by \procedurename{} - the different scales of variation have been separated.
+}
+\label{fig:rq}
+\end{figure}
 
-Combining kernels using these operations can yield kernels encoding for richer structures such as approximate periodicity ($\kSE \times \kPer$) or smooth functions with linear trends ($\kSE + \kLin$).
+An even more extreme pathological behaviour can be seen in figure~\ref{fig:description:rq_per} where a kernel of the form $\kRQ \kerntimes \kPer$ has explained a data set which \procedurename{} has more naturally describes as a sum of a periodic component and uncorrelated noise.
+For these reasons we exclude the rational quadratic kernel and also do not include similar kernels such as the Mat\'ern kernel \citep[e.g.][]{Rasmussen2006-ml} used by \citet{Kronberger_undated-vf}.
 
-This kernel composition framework (with different base kernels) was described by \citet{DuvLloGroetal13}.
-We extend and adapt this framework in several ways.
-In particular, we have found that incorporating changepoints into the language is essential for
-realistic models of time series (\eg figure~\ref{fig:periodic}). 
+\begin{figure}[ht]
+\centering
+\caption{
+A picture of those mink fur sales and the weird rational quadratic.
+}
+\label{fig:description:rq_per}
+\end{figure}
+
+At this point one may reasonably ask what the definition of `more natural' is.
+I am using these phrases in the sense of attempting to produce a language of statistical models that match my own subjective biases.
+By finding these pathological examples we are finding consequences of the grammar of kernels that do not match our subjective beliefs about the types of functions we expect to see.
+While subjectivity is often less desirable than some form of objectivity when beginning a scientific investigation, it is probably better than biasing an analysis towards mathematically convenient forms that go against our subjective biases unless they can be proven to have good properties.
+We discuss these philosophical points at greater length in section~\ref{sec:description:discussion}.
+
+\paragraph{Subtraction of unnecessary constants}
+
+The typical definition of the periodic ($\kPer$) kernel \citep[e.g.][]{Rasmussen2006-ml} used by \citet{Duvenaud2013-dn}, \citet{Kronberger_undated-vf} and in chapter~\ref{ch:construction} is always greater than zero.
+This is not necessary for the kernel to be positive semidefinite; we can subtract a constant from this kernel.
+Similarly, the linear kernel used by \citet{Duvenaud2013-dn} and in chapter~\ref{ch:construction} contains a constant term that can be subtracted.
+
+Without these constants subtracted we observe two main problems.
+First, descriptions of products of kernels would become convoluted \eg $(\kPer + \kC) \times (\kLin + \kC) = \kC + \kPer + \kLin + \kPer \times \kLin$ is a sum of four qualitatively different functions (see section~\ref{sec:description:description} for justification that each of these kernels encodes for a distinct type of function).
+Second, the constant functions can result in anti-correlation between components in the posterior, resulting in unnecessarily inflated credible intervals for each component which is shown in figure~\ref{fig:constant}.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[]
+  \begin{scope}[xshift=0.0\textwidth]
+    \begin{scope}[yshift=+0.15\columnwidth]
+    \node [mybox] (box){
+      \fbox{\includegraphics[trim=0cm 0cm 0cm 0cm, clip, width=0.35\columnwidth]{\descriptionfigsdir/old-gpss/01-airline-months_1.pdf}}
+    };
+    \end{scope}
+    \node[font=\LARGE] at (0,0) {$+$};
+    \begin{scope}[yshift=-0.15\columnwidth]
+    \node [mybox] (box){
+      \fbox{\includegraphics[trim=0cm 0cm 0cm 0cm, clip, width=0.35\columnwidth]{\descriptionfigsdir/old-gpss/01-airline-months_2.pdf}}
+    };
+    \end{scope}
+  \end{scope}  
+  \begin{scope}[xshift=0.25\columnwidth]
+  \draw[->,thick] (-0.04\columnwidth,0.15\columnwidth) -- (0.04\columnwidth,0.15\columnwidth); 
+  \draw[->,thick] (-0.04\columnwidth,-0.15\columnwidth) -- (0.04\columnwidth,-0.15\columnwidth); 
+  \end{scope}
+  \begin{scope}[xshift=0.5\columnwidth]
+    \begin{scope}[yshift=+0.15\columnwidth]
+    \node [mybox] (box){
+      \fbox{\includegraphics[trim=0cm 0cm 0cm 0cm, clip, width=0.35\columnwidth]{\descriptionfigsdir/01-airline/01-airline_1}}
+    };
+    \end{scope}
+    \node[font=\LARGE] at (0,0) {$+$};
+    \begin{scope}[yshift=-0.15\columnwidth]
+    \node [mybox] (box){
+      \fbox{\includegraphics[trim=0cm 0cm 0cm 0cm, clip, width=0.35\columnwidth]{\descriptionfigsdir/01-airline/01-airline_2}}
+    };
+    \end{scope}
+  \end{scope}
+\end{tikzpicture}
+\caption[Fake caption]{
+Left: Posterior of first two components for the airline passenger data from \citet{DuvLloGroetal13}.
+Right: Posterior of first two components found by \procedurename{} - removing the constants from $\kLin$ and $\kPer$ has removed the inflated credible intervals due to anti-correlation in the posterior.
+}
+\label{fig:constant}
+\end{figure}
+
+\subsection{Properties of the new periodic kernel}
+
+The newly defined periodic kernel is given by
+\[
+  \kPer(\inputVar, \inputVar') =&  \sigma^2\frac{\exp\left(\frac{\cos\frac{2 \pi (\inputVar - \inputVar')}{p}}{\ell^2}\right) - I_0\left(\frac{1}{\ell^2}\right)}{\exp\left(\frac{1}{\ell^2}\right) - I_0\left(\frac{1}{\ell^2}\right)}
+\]
+A simple application of l'H\^opital's rule shows that
+\begin{equation}
+\kPer(x, x') \to \sigma^2\cos\left(\frac{2 \pi (x - x')}{p}\right) \quad \textrm{as} \quad\ell \to \infty.
+\end{equation}
+This limiting form is written as the cosine kernel ($\cos$).
+It was recently demonstrated \citep{WilAda13} that any stationary kernel can be arbitrarily well approximated by kernels with expressions of the form
+\begin{equation}
+\sum \kSE \times \cos
+\end{equation}
+by appealing to Bochner's theorem \citep{bochner1959lectures}.
+By using this new periodic kernel our language of kernels also attains this completeness property.
+
+Note that the infinite lengthscale ($\ell$) limit of the more common definition of the periodic kernel is a constant.
+
+\subsection{Addition of the changepoint and changewindow operators}
+
+In addition to these changes to the base kernels we also introduce changepoints into the language since they are a common phenomenon in time series (\eg figure~\ref{fig:periodic}). 
 We define changepoints through addition and multiplication with sigmoidal functions:
 \begin{align}
 \kCP(\kernel_1, \kernel_2) = \kernel_1 \times \boldsymbol\sigma + \kernel_2 \times \boldsymbol{\bar\sigma}
@@ -85,7 +224,51 @@ We define changepoints through addition and multiplication with sigmoidal functi
 where $\boldsymbol\sigma = \sigma(x)\sigma(x')$ and $\boldsymbol{\bar\sigma} = (1-\sigma(x))(1-\sigma(x'))$.
 We define changewindows $\kCW(\cdot,\cdot)$ similarly by replacing $\sigma(x)$ with a product of two sigmoids.
 
-We also expanded and reparametrised the set of base kernels so that they were more amenable to automatic description (see section~\ref{sec:design} for details) and to extend the number of common regression models included in the language.
+\TBD{Expand me}
+
+\subsection{Including heteroscedasticity}
+
+In the language of kernels introduced in chapter~\ref{ch:construction} homoscedastic Gaussian noise was assumed for all models.
+Gaussian noise is also a Gaussian process so we can introduce the noise model into the modelling language by introducing the white noise kernel ($\kWN$) defined in section~\ref{sec:description:base} as a base kernel and replacing the model likelihood with a delta function.
+
+Introducing the white noise kernel as a base kernel allows for the modelling language to express some forms of heteroscedasticity.
+In particular, a $\kWN \kerntimes \kLin$ kernel encodes for uncorrelated Gaussian noise with linearly varying standard deviation.
+The changepoint and changewindow operators also allow for heteroscedasticity when the noise model is included in the kernel.
+
+\section{An updated language of  and search over regression models}
+\label{sec:description:language}
+
+%\gp{}s are distributions over functions such that any
+%finite set of function evaluations, $(f(x_1), f(x_2), \ldots
+%f(x_N))$, have a jointly Gaussian distribution
+%\citep{rasmussen38gaussian}. A \gp{} is completely specified by its
+%mean function, $\mu(x)=\mathbb{E}(f(x))$ and kernel (or covariance) function
+%$\kernel(x,x') = \Cov(f(x),f(x'))$.
+%It is common practice to assume zero mean,
+%since marginalizing over an unknown mean function can be equivalently
+%expressed as a zero-mean \gp{} with a new kernel. The structure of the
+%kernel captures high-level properties of the unknown function, $f$,
+%which in turn determines how the model generalizes or extrapolates to
+%new data.  We can therefore define a language of regression models by
+%specifying a language of kernels.
+
+Since we have a slightly updated set of base kernels and operators we review the base kernels and search operators.
+
+\subsection{Base kernels}
+\label{sec:description:base}
+
+For scalar-valued inputs, the white noise ($\kWN$), constant ($\kC$), linear ($\kLin$), squared exponential ($\kSE$), and periodic kernels ($\kPer$) are defined as follows:
+\begin{eqnarray}
+\kWN(\inputVar, \inputVar') =& \sigma^2\delta_{\inputVar, \inputVar'} \\
+\kC(\inputVar, \inputVar') =& \sigma^2 \\
+\kLin(\inputVar, \inputVar') =& \sigma^2(\inputVar - \ell)(\inputVar' - \ell) \\
+\kSE(\inputVar, \inputVar') =& \sigma^2\exp\left(-\frac{(\inputVar - \inputVar')^2}{2\ell^2}\right) \\
+\kPer(\inputVar, \inputVar') =&  \sigma^2\frac{\exp\left(\frac{\cos\frac{2 \pi (\inputVar - \inputVar')}{p}}{\ell^2}\right) - I_0\left(\frac{1}{\ell^2}\right)}{\exp\left(\frac{1}{\ell^2}\right) - I_0\left(\frac{1}{\ell^2}\right)}
+\end{eqnarray}
+where $\delta_{\inputVar, \inputVar'}$ is the Kronecker delta function, $I_0$ is the modified Bessel function of the first kind of order zero and other symbols are parameters of the kernel functions.
+
+\subsection{A larger language of regression models}
+
 Table~\ref{table:motifs} lists common regression models that can be expressed by our language.
 \begin{table}[ht]
 \centering
@@ -110,21 +293,46 @@ $\cos$ is a special case of our reparametrised $\kPer$.
 \label{table:motifs}
 \end{table}
 
-\section{Model Search and Evaluation}
+\TBD{Something about why we initially look at 1$d$ things and how everything should extend fairly simply}
 
-As in \citet{DuvLloGroetal13} we explore the space of regression models using a greedy search.
-We use the same search operators, but also include additional operators to incorporate changepoints; a complete list is contained in the supplementary material. 
+\subsection{Search operators}
 
-After each model is proposed its kernel parameters are optimised by conjugate gradient descent.
-We evaluate each optimized model, $M$, using the Bayesian Information Criterion (BIC) \citep{schwarz1978estimating}:
-\begin{equation}
-\textrm{BIC}(M) = -2 \log p(D\given M) + |M| \log n
-\end{equation}
-where $|M|$ is the number of kernel parameters, $p(D|M)$ is the marginal likelihood of the data, $D$, and $n$ is the number of data points.
-BIC trades off model fit and complexity and implements what is known as ``Bayesian Occam's Razor'' \citep[e.g.][]{rasmussen2001occam,mackay2003information}.
+The search operators introduced in chapter~\ref{ch:construction} are as follows:
+%
+\begin{eqnarray}
+\mathcal{S} &\to& \mathcal{S} + \mathcal{B} \\
+\mathcal{S} &\to& \mathcal{S} \times \mathcal{B} \\
+\mathcal{B} &\to& \mathcal{B'}
+\end{eqnarray}
+%
+where $\mathcal{S}$ represents any kernel subexpression and $\mathcal{B}$ is any base kernel within a kernel expression \ie the search operators represent addition, multiplication and replacement.
+
+To accommodate changepoint/window operators we introduce the following additional operators
+%
+\begin{eqnarray}
+\mathcal{S} &\to& \kCP(\mathcal{S},\mathcal{S}) \\
+\mathcal{S} &\to& \kCW(\mathcal{S},\mathcal{S}) \\
+\mathcal{S} &\to& \kCW(\mathcal{S},\kC) \\
+\mathcal{S} &\to& \kCW(\kC,\mathcal{S})
+\end{eqnarray}
+%
+where $\kC$ is the constant kernel.
+The last two operators result in a kernel only applying outside or within a certain region.
+
+Based on experience with typical paths followed by the search algorithm we introduced the following operators
+%
+\begin{eqnarray}
+\mathcal{S} &\to& \mathcal{S} \times (\mathcal{B} + \kC)\\
+\mathcal{S} &\to& \mathcal{B}\\
+\mathcal{S} + \mathcal{S'} &\to& \mathcal{S}\\
+\mathcal{S} \times \mathcal{S'} &\to& \mathcal{S}
+\end{eqnarray}
+%
+where $\mathcal{S'}$ represents any other kernel expression.
+Their introduction is currently not rigorously justified.
 
 \section{Automatic description of regression models}
-\label{sec:description}
+\label{sec:description:description}
 
 \paragraph{Overview}
 
@@ -154,7 +362,7 @@ and $\prod_i\kernel^{(i)}$ denotes a product of kernels, each with different par
 
 \paragraph{Sums of kernels are sums of functions}
 Formally, if $f_1(x) \dist \gp{}(0, \kernel_1)$ and independently $f_2(x) \dist \gp{}(0, \kernel_2)$ then ${f_1(x) + f_2(x) \dist \gp{}(0, \kernel_1 + \kernel_2)}$.
-This lets us describe each product of kernels separately.
+This lets us describe each product of kernels separately just as we plotted separate additive components in chapter~\ref{ch:construction}
 
 \paragraph{Each kernel in a product modifies a model in a consistent way}
 This allows us to describe the contribution of each kernel as a modifier of a noun phrase.
@@ -272,14 +480,14 @@ Finally, the third component is described as `An approximately periodic function
 \section{Example descriptions of time series}
 \label{sec:examples}
 We demonstrate the ability of our procedure to discover and describe a variety of patterns on two time series.
-Full automatically-generated reports for 13 data sets are provided as supplementary material.
+An example of a full automatically-generated report is provided in appendix \TBD{add and make reference}.
 
 \subsection{Summarizing 400 Years of Solar Activity}
 \label{sec:solar}
 
 \begin{figure}[h]
 \centering
-\includegraphics[trim=0.2cm 18.0cm 8cm 2cm, clip, width=0.98\columnwidth]{\descriptionfigsdir/solarpages/pg_0002-crop}
+\includegraphics[trim=0.2cm 18.0cm 8cm 2cm, clip, width=0.8\columnwidth]{\descriptionfigsdir/solarpages/pg_0002-crop}
 \caption{
 Solar irradiance data.}
 \label{fig:solar}
@@ -287,7 +495,7 @@ Solar irradiance data.}
 
 We show excerpts from the report automatically generated on annual solar irradiation data from 1610 to 2011 (figure~\ref{fig:solar}).
 This time series has two pertinent features: a roughly 11-year cycle of solar activity, and a period lasting from 1645 to 1715 with much smaller variance than the rest of the dataset.
-This flat region corresponds to the Maunder minimum, a period in which sunspots were extremely rare \citep{lean1995reconstruction}.
+This flat region is known as the Maunder minimum, a period in which sunspots were extremely rare \citep{Lean1995-vp}.
 \procedurename{} clearly identifies these two features, as discussed below.
 
 \begin{figure}[h]
@@ -315,6 +523,16 @@ The third component corresponds to long-term trends, as visualized in figure~\re
 \fbox{\includegraphics[trim=0cm 4.75cm 0cm 1cm, clip, width=0.98\columnwidth]{\descriptionfigsdir/solarpages/pg_0006-crop}}
 \caption{Characterizing the medium-term smoothness of solar activity levels.  By allowing other components to explain the periodicity, noise, and the Maunder minimum, \procedurename{} can isolate the part of the signal best explained by a slowly-varying trend.}
 \label{fig:smooth}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\fbox{\includegraphics[trim=0cm 4.75cm 0cm 1.0cm, clip, width=0.98\columnwidth]{\descriptionfigsdir/solarpages/pg_0007-crop}}
+\caption{
+Extract from an automatically-generated report describing the model components discovered by \procedurename{}.
+This part of the report isolates and describes the approximately 11-year sunspot cycle, also noting its disappearance during the 16th century, a time known as the Maunder minimum \citep{Lean1995-vp}.
+}
+\label{fig:periodic}
 \end{figure}
 
 \subsection{Finding heteroscedasticity in air traffic data}
@@ -377,143 +595,14 @@ The learned function for the airline passenger data is
 which captures the approximately linear trend, and the periodic component with approximately linearly (logistic) increasing amplitude.
 However, the annual cycle is heavily approximated by a sinusoid and the model does not capture heteroscedasticity.
 
-\section{Designing kernels for interpretability}
-\label{sec:design}
-
-The span of the language of kernels used by \procedurename{} is similar to those explored by \citet{DuvLloGroetal13} and \citet{kronberger2013evolution}.
-However, \procedurename{} uses a different set of base kernels which are chosen to significantly improve the interpretability of the models produced by our method which we now discuss.
-
-\paragraph{Removal of rational quadratic kernel}
-
-The rational quadratic kernel \citep[e.g.][]{rasmussen38gaussian} can be expressed as a mixture of infinitely many $\kSE$ kernels.
-This can have the unattractive property of capturing both long term trends and short term variation in one component.
-
-The left of figure~\ref{fig:rq} shows the posterior of a component involving a rational quadratic kernel produced by the procedure of \citet{DuvLloGroetal13} on the Mauna Loa data set (see supplementary material).
-This component has captured both a medium term trend and short term variation.
-This is both visually unappealing and difficult to describe simply.
-In contrast, the right of figure~\ref{fig:rq} shows two of the components produced by \procedurename{} on the same data set which clearly separate the medium term trend and short term deviations.
-
-We do not include the Mat\'ern kernel \citep[e.g.][]{rasmussen38gaussian} used by \citet{kronberger2013evolution} for similar reasons.
-
-\begin{figure}[ht]
-\centering
-\begin{tikzpicture}[]
-  \begin{scope}[xshift=0.0\textwidth]
-    \node [mybox] (box){
-      \fbox{\includegraphics[trim=0cm 0cm 0cm 0cm, clip, width=0.35\columnwidth]{\descriptionfigsdir/old-gpss/03-mauna2003-s_3.pdf}}
-    };
-  \end{scope}  
-  \begin{scope}[xshift=0.25\columnwidth]
-  \draw[->,thick] (-0.04\columnwidth,0.05\columnwidth) -- (0.04\columnwidth,0.11\columnwidth); 
-  \draw[->,thick] (-0.04\columnwidth,-0.05\columnwidth) -- (0.04\columnwidth,-0.11\columnwidth); 
-  \end{scope}
-  \begin{scope}[xshift=0.5\columnwidth]
-    \begin{scope}[yshift=+0.15\columnwidth]
-    \node [mybox] (box){
-      \fbox{\includegraphics[trim=0cm 0cm 0cm 0cm, clip, width=0.35\columnwidth]{\descriptionfigsdir/03-mauna/03-mauna_3}}
-    };
-    \end{scope}
-    \node[font=\LARGE] at (0,0) {$+$};
-    \begin{scope}[yshift=-0.15\columnwidth]
-    \node [mybox] (box){
-      \fbox{\includegraphics[trim=0cm 0cm 0cm 0cm, clip, width=0.35\columnwidth]{\descriptionfigsdir/03-mauna/03-mauna_5}}
-    };
-    \end{scope}
-  \end{scope}
-\end{tikzpicture}
-\caption{
-Left: Posterior of rational quadratic component of model for Mauna Loa data from \citet{DuvLloGroetal13}.
-Right: Posterior of two components found by \procedurename{} - the different lenthscales have been separated.
-}
-\label{fig:rq}
-\end{figure}
-
-\paragraph{Subtraction of unnecessary constants}
-
-The typical definition of the periodic kernel \citep[e.g.][]{rasmussen38gaussian} used by \citet{DuvLloGroetal13} and \citet{kronberger2013evolution} is always greater than zero.
-This is not necessary for the kernel to be positive semidefinite; we can subtract a constant from this kernel.
-Similarly, the linear kernel used by \citet{DuvLloGroetal13} contained a constant term that can be subtracted.
-
-If we had not subtracted these constant, we would have observed two main problems.
-First, descriptions of products would become convoluted \eg $(\kPer + \kC) \times (\kLin + \kC) = \kC + \kPer + \kLin + \kPer \times \kLin$ is a sum of four qualitatively different functions.
-Second, the constant functions can result in anti-correlation between components in the posterior, resulting in inflated credible intervals for each component which is shown in figure~\ref{fig:constant}.
-
-\begin{figure}[ht]
-\centering
-\begin{tikzpicture}[]
-  \begin{scope}[xshift=0.0\textwidth]
-    \begin{scope}[yshift=+0.15\columnwidth]
-    \node [mybox] (box){
-      \fbox{\includegraphics[trim=0cm 0cm 0cm 0cm, clip, width=0.35\columnwidth]{\descriptionfigsdir/old-gpss/01-airline-months_1.pdf}}
-    };
-    \end{scope}
-    \node[font=\LARGE] at (0,0) {$+$};
-    \begin{scope}[yshift=-0.15\columnwidth]
-    \node [mybox] (box){
-      \fbox{\includegraphics[trim=0cm 0cm 0cm 0cm, clip, width=0.35\columnwidth]{\descriptionfigsdir/old-gpss/01-airline-months_2.pdf}}
-    };
-    \end{scope}
-  \end{scope}  
-  \begin{scope}[xshift=0.25\columnwidth]
-  \draw[->,thick] (-0.04\columnwidth,0.15\columnwidth) -- (0.04\columnwidth,0.15\columnwidth); 
-  \draw[->,thick] (-0.04\columnwidth,-0.15\columnwidth) -- (0.04\columnwidth,-0.15\columnwidth); 
-  \end{scope}
-  \begin{scope}[xshift=0.5\columnwidth]
-    \begin{scope}[yshift=+0.15\columnwidth]
-    \node [mybox] (box){
-      \fbox{\includegraphics[trim=0cm 0cm 0cm 0cm, clip, width=0.35\columnwidth]{\descriptionfigsdir/01-airline/01-airline_1}}
-    };
-    \end{scope}
-    \node[font=\LARGE] at (0,0) {$+$};
-    \begin{scope}[yshift=-0.15\columnwidth]
-    \node [mybox] (box){
-      \fbox{\includegraphics[trim=0cm 0cm 0cm 0cm, clip, width=0.35\columnwidth]{\descriptionfigsdir/01-airline/01-airline_2}}
-    };
-    \end{scope}
-  \end{scope}
-\end{tikzpicture}
-\caption[Fake caption]{
-Left: Posterior of first two components for the airline passenger data from \citet{DuvLloGroetal13}.
-Right: Posterior of first two components found by \procedurename{} - removing the constants from $\kLin$ and $\kPer$ has removed the inflated credible intervals due to anti-correlation in the posterior.
-}
-\label{fig:constant}
-\end{figure}
-
 \section{Related work}
 \label{sec:related-work}
 
-\paragraph{Building Kernel Functions}
-\cite{rasmussen38gaussian} devote 4 pages to manually constructing a composite kernel to model a time series of carbon dioxode concentrations.
-In the supplementary material, we include a report automatically generated by \procedurename{} for this dataset; our procedure chose a model similar to the one they constructed by hand.
-Other examples of papers whose main contribution is to manually construct and fit a composite \gp{} kernel are \cite{klenske2012nonparametric} and \cite{lloydgefcom2012}.
-
-\citet{diosan2007evolving, bing2010gp} and \citet{kronberger2013evolution} search over a similar space of models as \procedurename{} using genetic algorithms but do not interpret the resulting models.
-Our procedure is based on the model construction method of \citet{DuvLloGroetal13} which automatically decomposed models but components were interpreted manually and the space of models searched over was smaller than that in this work.
-
-\paragraph{Kernel Learning}
-
-Sparse spectrum \gp{}s \citep{lazaro2010sparse} approximate the spectral density of a stationary kernel function using delta functions; this corresponds to kernels of the form $\sum \cos$.
-Similarly, \citet{WilAda13} introduce spectral mixture kernels which approximate the spectral density using a scale-location mixture of Gaussian distributions corresponding to kernels of the form $\sum \kSE \times \cos$.
-Both demonstrate, using Bochner's theorem \citep{bochner1959lectures}, that these kernels can approximate any stationary covariance function.
-Our language of kernels includes both of these kernel classes (see table~\ref{table:motifs}).
-
-There is a large body of work attempting to construct rich kernels through a weighted sum of base kernels called multiple kernel learning (MKL) \citep[e.g.][]{bach2004multiple}.
-These approaches find the optimal solution in polynomial time but only if the component kernels and parameters are pre-specified.
-We compare to a Bayesian variant of MKL in section~\ref{sec:numerical} which is expressed as a restriction of our language of kernels.
-
-\paragraph{Equation learning}
-\cite{todorovski1997declarative}, \cite{washio1999discovering} and \cite{schmidt2009distilling} learn parametric forms of functions specifying time series, or relations between quantities.
-In contrast, \procedurename{} learns a parametric form for the covariance, allowing it to model functions without a simple parametric form.
-
-\paragraph{Searching over open-ended model spaces}
-
-This work was inspired by previous successes at searching over open-ended model spaces: matrix decompositions \citep{grosse2012exploiting} and graph structures \citep{kemp2008discovery}.
-In both cases, the model spaces were defined compositionally through a handful of components and operators, and models were selected using criteria which trade off model complexity and goodness of fit.
-Our work differs in that our procedure automatically interprets the chosen model, making the results accessible to non-experts.
+See section~\ref{sec:construction:related_work} for work relating to the construction of statistical models.
 
 \paragraph{Natural-language output}
 To the best of our knowledge, our procedure is the first example of automatic description of nonparametric statistical models.
-However, systems with natural language output have been built in the areas of video interpretation \citep{barbu2012video} and automated theorem proving \citep{GanesalingamG13}.
+However, systems with natural language output have been built in the areas of video interpretation \citep{Barbu2012-wv} and automated theorem proving \citep{Ganesalingam_undated-us}.
 
 \section{Predictive Accuracy}
 \label{sec:numerical}
@@ -540,8 +629,7 @@ We evaluate the performance of the algorithms listed below on 13 real time-serie
 
 We compare \procedurename{} to equation learning using Eureqa \citep{Eureqa} and six other regression algorithms: linear regression, \gp{} regression with a single $\kSE$ kernel (squared exponential), a Bayesian variant of multiple kernel learning (MKL) \citep[e.g.][]{bach2004multiple}, change point modeling \citep[e.g.][]{garnett2010sequential, saatcci2010gaussian, FoxDunson:NIPS2012}, spectral mixture kernels \citep{WilAda13} (spectral kernels) and trend-cyclical-irregular models \citep[e.g.][]{lind2006basic}.
 
-\procedurename{} is based on the work of \citet{DuvLloGroetal13}, but with a focus on producing interpretable models.
-As noted in section~\ref{sec:design}, the spans of the languages of kernels of these two methods are very similar.
+The spans of the languages of kernels of the language used by \procedurename{} and the kernel search introduced in chapter~\ref{ch:description} are very similar; the changes are close to being only a change of basis.
 Consequently their predictive accuracy is nearly identical so we only include \procedurename{} in the results for brevity.
 
 We use the default mean absolute error criterion when using Eureqa.
@@ -558,7 +646,7 @@ Constructing a language for this class of time-series model would be an interest
 
 BIC trades off model fit and complexity by penalizing the number of parameters in a kernel expression.
 This can result in \procedurename{} favoring kernel expressions with nested products of sums, producing descriptions involving many additive components.
-While these models have good predictive performance the large number of components can make them less interpretable.
+While these models have good predictive performance the large number of components can make them less easy to interpret.
 We experimented with distributing all products over addition during the search, causing models with many additive components to be more heavily penalized by BIC.
 We call this procedure \procedurename{}-interpretability, in contrast to the unrestricted version of the search, \procedurename{}-accuracy.
 
@@ -577,15 +665,112 @@ Not shown on the plot are large outliers for spectral kernels, Eureqa, squared e
 All of these outliers occurred on a data set with a large discontinuity (see the call centre data in the supplementary material).
 
 \paragraph{Interpolation}
+
 To test the ability of the methods to interpolate, we randomly divided each data set into equal amounts of training data and testing data.
-The results are similar to those for extrapolation and are included in the supplementary material.
+We trained each algorithm on the training half of the data, produced predictions for the remaining half and then computed the root mean squared error (RMSE).
+The values of the RMSEs are then standardised by dividing by the smallest RMSE for each data set \ie the best performance on each data set will have a value of 1.
 
-\section{Conclusion}
+Figure~\ref{fig:box_interp} shows the standardised RMSEs for the different algorithms.
+The box plots show that all quartiles of the distribution of standardised RMSEs are lower for both versions of \procedurename{}.
+The median for \procedurename{}-accuracy is 1; it is the best performing algorithm on 7 datasets.
+The largest outliers of \procedurename{} and spectral kernels are similar in value.
 
-Towards the goal of automating statistical modeling we have presented a system which constructs an appropriate model from an open-ended language and automatically generates detailed reports that describe patterns in the data captured by the model.
+\begin{figure*}[ht]
+\centering
+\includegraphics[width=\textwidth]{\descriptionfigsdir/box_interp}
+\caption{
+Box plot of standardised RMSE (best performance = 1) on 13 interpolation tasks.
+}
+\label{fig:box_interp}
+\end{figure*}
+
+Changepoints performs slightly worse than MKL despite being strictly more general than Changepoints.
+The introduction of changepoints allows for more structured models, but it introduces parametric forms into the regression models (\ie the sigmoids expressing the changepoints).
+This results in worse interpolations at the locations of the change points, suggesting that a more robust modeling language would require a more flexible class of changepoint shapes or improved inference (\eg fully Bayesian inference over the location and shape of the changepoint).
+
+Eureqa is not suited to this task and performs poorly.
+The models learned by Eureqa tend to capture only broad trends of the data since the fine details are not well explained by parametric forms.
+
+\subsection{Tabels of standardised RMSEs}
+
+See table~\ref{table:interp} for raw interpolation results and table~\ref{table:extrap} for raw extrapolation results. 
+The rows follow the order of the datasets in the rest of the supplementary material.
+The following abbreviations are used: \procedurename{}-accuracy (\procedurename{}-acc), \procedurename{}-interpretability ((\procedurename{}-int), Spectral kernels (SP), Trend-cyclical-irregular (TCI), Bayesian MKL (MKL), Eureqa (EL), Changepoints (CP), Squared exponential (SE) and Linear regression (Lin).
+
+\begin{table*}[ht]
+\center
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+\procedurename{}-acc & \procedurename{}-int & SP & TCI & MKL & EL & CP & SE & Lin \\
+\hline
+1.04 & 1.00 & 2.09 & 1.32 & 3.20 & 5.30 & 3.25 & 4.87 & 5.01\\
+1.00 & 1.27 & 1.09 & 1.50 & 1.50 & 3.22 & 1.75 & 2.75 & 3.26\\
+1.00 & 1.00 & 1.09 & 1.00 & 2.69 & 26.20 & 2.69 & 7.93 & 10.74\\
+1.09 & 1.04 & 1.00 & 1.00 & 1.00 & 1.59 & 1.37 & 1.33 & 1.55\\
+1.00 & 1.06 & 1.08 & 1.06 & 1.01 & 1.49 & 1.01 & 1.07 & 1.58\\
+1.50 & 1.00 & 2.19 & 1.37 & 2.09 & 7.88 & 2.23 & 6.19 & 7.36\\
+1.55 & 1.50 & 1.02 & 1.00 & 1.00 & 2.40 & 1.52 & 1.22 & 6.28\\
+1.00 & 1.30 & 1.26 & 1.24 & 1.49 & 2.43 & 1.49 & 2.30 & 3.20\\
+1.00 & 1.09 & 1.08 & 1.06 & 1.30 & 2.84 & 1.29 & 2.81 & 3.79\\
+1.08 & 1.00 & 1.15 & 1.19 & 1.23 & 42.56 & 1.38 & 1.45 & 2.70\\
+1.13 & 1.00 & 1.42 & 1.05 & 2.44 & 3.29 & 2.96 & 2.97 & 3.40\\
+1.00 & 1.15 & 1.76 & 1.20 & 1.79 & 1.93 & 1.79 & 1.81 & 1.87\\
+1.00 & 1.10 & 1.03 & 1.03 & 1.03 & 2.24 & 1.02 & 1.77 & 9.97\\
+\hline
+\end{tabular}
+\caption{Interpolation standardised RMSEs}
+\label{table:interp}
+\end{table*}
+
+\begin{table*}[ht]
+\center
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+\procedurename{}-acc & \procedurename{}-int & SP & TCI & MKL & EL & CP & SE & Lin \\
+\hline
+1.14 & 2.10 & 1.00 & 1.44 & 4.73 & 3.24 & 4.80 & 32.21 & 4.94\\
+1.00 & 1.26 & 1.21 & 1.03 & 1.00 & 2.64 & 1.03 & 1.61 & 1.07\\
+1.40 & 1.00 & 1.32 & 1.29 & 1.74 & 2.54 & 1.74 & 1.85 & 3.19\\
+1.07 & 1.18 & 3.00 & 3.00 & 3.00 & 1.31 & 1.00 & 3.03 & 1.02\\
+1.00 & 1.00 & 1.03 & 1.00 & 1.35 & 1.28 & 1.35 & 2.72 & 1.51\\
+1.00 & 2.03 & 3.38 & 2.14 & 4.09 & 6.26 & 4.17 & 4.13 & 4.93\\
+2.98 & 1.00 & 11.04 & 1.80 & 1.80 & 493.30 & 3.54 & 22.63 & 28.76\\
+3.10 & 1.88 & 1.00 & 2.31 & 3.13 & 1.41 & 3.13 & 8.46 & 4.31\\
+1.00 & 2.05 & 1.61 & 1.52 & 2.90 & 2.73 & 3.14 & 2.85 & 2.64\\
+1.00 & 1.45 & 1.43 & 1.80 & 1.61 & 1.97 & 2.25 & 1.08 & 3.52\\
+2.16 & 2.03 & 3.57 & 2.23 & 1.71 & 2.23 & 1.66 & 1.89 & 1.00\\
+1.06 & 1.00 & 1.54 & 1.56 & 1.85 & 1.93 & 1.84 & 1.66 & 1.96\\
+3.03 & 4.00 & 3.63 & 3.12 & 3.16 & 1.00 & 5.83 & 5.35 & 4.25\\
+\hline
+\end{tabular}
+\caption{Extrapolation standardised RMSEs}
+\label{table:extrap}
+\end{table*}
+
+\section{Discussion}
+\label{sec:description:discussion}
+
+Towards the goal of automating exploratory statistical analyses we have presented a system which constructs an appropriate model from an open-ended language and automatically generates detailed reports that describe patterns in the data captured by the model.
 We have demonstrated that our procedure can discover and describe a variety of patterns on several time series.
 Our procedure's extrapolation and interpolation performance on time-series are state-of-the-art compared to existing model construction techniques.
 We believe this procedure has the potential to make powerful statistical model-building techniques accessible to non-experts.
+
+\subsection{Linguistic and subjective biases}
+
+\TBD{
+Biasing the search to linguistically simple concepts seems to have moved the language closer to my own subjective beliefs.
+This seems better than biasing the search towards mathematically convenient forms.
+One may want to be objective but this endeavour has failed before (I should really read about reference priors).
+These linguistically simple concepts have become simple due to their common use and therefore common occurrence.
+However, one could imagine some system starting from scratch and being exposed to many data sets and over time learning a language of functions that most parsimoniously captured what it had seen.
+This could add some objectivity to the language chosen and would be very interesting to see if it picked the same things as humans have or perhaps teaches us some new and important concepts.
+PARAGRAPH.
+Essentially the claims are.
+My subjective beliefs are better than mathematically convenient forms.
+Linguistically simple concepts are closer to my subjective beliefs than mathematically convenient forms.
+Of course, the language is not entirely well aligned with my subjective beliefs; I believe in monotonic functions but I cannot express these with Gaussian processes.
+Also, language can be ambiguous and therefore one must be aware that its usefulness as a guide will be limited.
+}
 
 \outbpdocument{
 \bibliographystyle{plainnat}
