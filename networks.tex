@@ -5,29 +5,26 @@
 \label{ch:networks}
 
 In all of the chapters preceding this one, our data can naturally be viewed as a sequence or a list.
-Of course, there are many different types of data, such as those which are most naturally represented as a network.
+Of course, there are many other types and structures of data, such as those which are most naturally represented as a network.
 In this chapter we make the distinction between these types of data precise by symmetry arguments and invoke a theorem due to Aldous and Hoover to demonstrate appropriate forms of statistical model for these data types.
 In particular, we use the Aldous--Hover theorem to demonstrate the appropriate form of statistical models for certain types of network and propose a nonparametric model as a literal interpretation of the theorem.
 In chapter~\ref{ch:arrays} we extend these results to yet more data structures.
 
-This chapter is based on joint work with Peter Orbanz, Zoubin Ghahramani and Daniel Roy \TBD{cite}.
+This chapter is based on joint work with Peter Orbanz, Zoubin Ghahramani and Daniel Roy \citep{Lloyd2012-sb}.
 
 \section{Introduction}
 
-Relational data records relations between entities in a given set. Such data
-arises in a variety of contexts, including graph-valued data 
-\citep[e.g.][]{Airoldi2008,Hoff2002}, micro-array data, tensor data 
-\citep[e.g.][]{Xu:Yan:Qi:2012} and collaborative filtering
-\citep[e.g.][]{Salakhutdinov2008}.
-Pairwise relations can be summarized in a 2-dimensional array (a matrix);
+Relational data records relations between entities.
+Such data arises in a variety of contexts, including graph-valued data \citep[e.g.][]{Airoldi2008-fr,Hoff2002-vy}, micro-array data, tensor data \citep[e.g.][]{Xu2012-ub} and collaborative filtering \citep[e.g.][]{Salakhutdinov2008-tp}.
+Pairwise relations can be summarized in a 2-dimensional array (often also called a matrix);
 more generally, relations between $d$-tuples are recorded as $d$-dimensional arrays.
-We consider statistical models of infinite 2-arrays $(\darray_{ij})_{i,j\in\Nats}$\fTBD{make consistent with other set notation}, where entries $\darray_{ij}$ take values in a space $\dataspace$. 
+We consider probabilistic models of infinite 2-arrays $\{\darray_{ij} : i,j\in\Nats\}$, where entries $\darray_{ij}$ take values in a space $\dataspace$. 
 Each entry $\darray_{ij}$ describes the relation between objects $i$ and $j$. Finite
 samples---relational measurements for $n$ objects---are $n\times n$-arrays. As the sample size increases, the data aggregates into
 a larger and larger array. 
 Graph-valued data, for example, corresponds to the case $\dataspace=\lbrace{0,1}\rbrace$.
-In collaborative filtering problems, the set of objects
-is subdivided into two disjoint sets, \eg users and items. This corresponds to a bipartite graph if the relations are additionally binary.
+In collaborative filtering problems, the set of objects is subdivided into two disjoint sets, \eg users and items.
+This corresponds to a bipartite graph if the relations are additionally binary.
 
 Latent variable models for relational data explain observations by means of an underlying structure
 or summary,
@@ -45,11 +42,11 @@ that random arrays which satisfy an exchangeability property can be represented 
 function. These representations have been further developed in discrete analysis for the
 special case of graphs \citep{Lovasz:Szegedy:2006}; this case is illustrated in Fig.~\ref{fig:W:graph}.
 The results can be regarded as a generalization of de Finetti's theorem to array-valued data.
-Their implication for Bayesian modelling is that
-\emph{we can specify a probability distribution for an exchangeable random array model by specifying a probability distribution on (measurable) functions}.
+Their implication for probabilistic modelling is that
+\emph{we can specify a probability distribution for an exchangeable random array by specifying a probability distribution on (measurable) functions}.
 %The prior is in general a distribution on the space of all functions which can arise in the representation result, and the dimension of this space is infinite.
 % A prior must hence be nonparametric to have reasonably large support; a parametric prior concentrates on a finite-dimensional subset.
-In the following, we model the representing function explicitly using a nonparametric distribution over functions.
+In the following, we model this function explicitly using a nonparametric distribution over functions.
 
 \begin{figure}
  \begin{center}
@@ -66,14 +63,11 @@ In the following, we model the representing function explicitly using a nonparam
 \end{figure}
 
 
-\section{Background: Exchangeable graphs and arrays}
+\section{Background: Exchangeable sequences and arrays}
 \label{sec:background}
 
-%A fundamental assumption %\fTBD{Perhaps... or not.  Regardless, this point seems rather unrelated to the task at hand.} 
-%of Bayesian modeling is that there exists a random variable $\AHfunction$, the parameter of the model, which in some suitable sense decouples the data.
-
 The data considered so far in this thesis has been in the form of a sequence or a list \eg $\{X_1, X_2, \dots\}$ where $X_i$ represents both inputs and outputs of a data point.
-More interestingly, any probabilistic model of this data would assign equal probabilities or densities to any permutation of this data.
+More interestingly, any probabilistic model of this data considered thus far would assign equal probabilities or densities to any permutation of this data.
 De Finetti's theorem \citep[e.g.][]{Kallenberg:2005} characterises all probability distributions of sequences with this property.
 Let $\darray_1,\darray_2,\ldots$ be a sequence of random variables, each taking values in a common space $\dataspace$.
 This sequence is called \emph{exchangeable} if its joint distribution  is invariant under arbitrary permutation of the indices, \ie if
@@ -86,11 +80,12 @@ De Finetti's theorem states that, $(\darray_i)_{i\in\Nats}$ is exchangeable if a
 In other words, observations are conditionally \iid given $\AHfunction$.
 For the purposes of statistical modelling, this implies that $\AHfunction$ represents common structure in the observed data---the target of statistical inference---whereas $\darray_i|\AHfunction$ represents remaining, independent randomness in each observation. 
 
-\subsection{De Finetti-type representations for random matrices}
+\subsection{De Finetti-type representations for exchangeable arrays}
 
-To specify probabilistic models for graph- or array-valued data, we need a suitable counterpart to de Finetti's theorem applicable when the infinite random sequences in \eqref{eq:exchangeability} are substituted by infinite random arrays $\darray=(\darray_{ij})_{i,j\in\Nats}$.
+To specify probabilistic models for graph- or array-valued data, it would be helpful to have a suitable counterpart to de Finetti's theorem applicable when the infinite random sequences in \eqref{eq:exchangeability} are substituted by infinite random arrays $\darray=(\darray_{ij})_{i,j\in\Nats}$.
 For such data, the invariance assumption \eqref{eq:exchangeability} is typically too restrictive: In the graph case $\darray_{ij}\in\lbrace 0,1\rbrace$, for example, the probability of $\darray$ would then depend only on the proportion of present edges in the graph, but not on the graph structure.
-Instead, we define exchangeability of random 2-arrays in terms of the \emph{simultaneous} application of a permutation to rows and columns. More precisely:
+Instead, we define exchangeability of random 2-arrays in terms of the \emph{simultaneous} application of a permutation to rows and columns.
+More precisely:
 \begin{definition}
   An array $\darray=(\darray_{ij})_{i,j\in\Nats}$ is called an \emph{exchangeable array} if 
   \begin{equation}
@@ -98,7 +93,12 @@ Instead, we define exchangeability of random 2-arrays in terms of the \emph{simu
     (\darray_{ij})\eqdist(\darray_{\pi(i)\pi(j)}) \qquad\text{ for every }\pi\in\SGinf\;.
   \end{equation}
 \end{definition}
-Since this weakens the hypothesis \eqref{eq:exchangeability} by demanding invariance only under a subset of all permutations of $\Nats^2$---those of the form $(i,j)\mapsto(\pi(i),\pi(j))$---we can no longer expect de Finetti's theorem to hold.
+
+The assumption of equation stated in~\eqref{eq:exchangeability} states that the order of the data does not matter.
+In contrast, array exchangeability is a statement of indifference to any ordering of the entities or objects that the data measures relations between.
+In fact, exchangeable sequences can be viewed in this way too, the difference is that data is measured at individual entities or objects rather than at pairs.
+
+Since this form of exchangeability weakens the hypothesis \eqref{eq:exchangeability} by demanding invariance only under a subset of all permutations of $\Nats^2$---those of the form $(i,j)\mapsto(\pi(i),\pi(j))$---we can no longer expect de Finetti's theorem to hold.
 The relevant generalization of the de Finetti theorem to this case is the following:
 \begin{thm}[Aldous, Hoover]
   \label{theorem:ah}
@@ -108,7 +108,6 @@ The relevant generalization of the de Finetti theorem to this case is the follow
     (\darray_{ij})\eqdist (F(\AHvar_i,\AHvar_j,\AHvar_{ij})) \qquad\text{ for all }i,j\in\Nats\;.
   \end{equation}
 \end{thm}
-
 
 \subsection{Random graphs}
 
@@ -128,17 +127,15 @@ Each variable $\AHvar_i$ is associated with a vertex, each variable $\AHvar_{ij}
 The representation \eqref{eq:ah:graphon:case} is equivalent to the sampling scheme
 \begin{equation}
   \label{eq:W:graph}
-  \AHvar_1,\AHvar_2,\dots\simiid\Uniform[0,1]\qquad\text{and}\qquad (i,j)\sim\Bernoulli(\AHfunction(\AHvar_i,\AHvar_j))\;,
+  \AHvar_1,\AHvar_2,\dots\simiid\Uniform[0,1]\qquad\text{and}\qquad X_{i,j}\sim\Bernoulli(\AHfunction(\AHvar_i,\AHvar_j))\;,
 \end{equation}
 which is illustrated in Fig.~\ref{fig:W:graph}. If the graph is undirected, edges are sampled only for unordered index pairs as $\AHvar_{\lbrace ij\rbrace}$,
 and it is sufficient to consider symmetric functions $\AHfunction$.
 
-Recent work in discrete analysis shows that any
-measurable function $[0,1]^2\rightarrow[0,1]$ can be regarded as a (suitably defined) limit of adjacency matrices
-of graphs of increasing size \citep{Lovasz:Szegedy:2006}---intuitively speaking, 
+Recent work in discrete analysis shows that any measurable function $[0,1]^2\rightarrow[0,1]$ can be regarded as a (suitably defined) limit of adjacency matrices of graphs of increasing size \citep{Lovasz2004-hc}---intuitively speaking, 
 as the number of rows and columns increases, the
 matrix in Fig.~\ref{fig:W:graph} (right) converges to the heat map in Fig.~\ref{fig:W:graph} (middle).
-The figure also illustrates that convergence, and hence the parametrization of the random graph distribution
+The figure also illustrates that convergence, and hence the parametrisation of the random graph distribution
 by $\AHfunction$, are only unique up to a reordering of rows and columns.
 
 In particular, if we fix an instance ${\AHfunction=\theta_0}$ and generate a random graph according to \eqref{eq:W:graph},
@@ -148,7 +145,7 @@ numbers, guaranteeing that a distribution can asymptotically be recovered from a
 \subsection{The general case: $d$-arrays}
 
 Theorem \ref{theorem:ah} can in fact be stated in a more general setting than matrices, namely for random $d$-arrays, which are collections
-of random variables of the form $(\darray_{i_1\dots i_d})_{i_1,\dots,i_d\in\Nats}$. Thus, a sequence is a $1$-array, a matrix a $2$-array. A $d$-array 
+of random variables of the form ${\{\darray_{i_1\dots i_d} i_1,\dots,i_d\in\Nats\}}$. Thus, a sequence is a $1$-array, a matrix a $2$-array. A $d$-array 
 can be interpreted as an encoding of a relation between $d$-tuples.
 In this general case, Theorem \ref{theorem:ah} still holds, but the random function $F$ in \eqref{eq:ah} is in general more complex:
 In addition to the collections $\AHvar_{\lbrace i\rbrace}$ and $\AHvar_{\lbrace ij\rbrace}$ of uniform variables, the representation requires an additional
@@ -163,12 +160,13 @@ For a discussion of convergence properties of general arrays similar to those sk
 \citep{Aldous:2009}.
 
 Since we do not explicitly consider the case $d>2$ in our experiments in this chapter, we restrict 
-our presentation throughout to the matrix-valued case for simplicity. We note, however, that the model and inference algorithms described in the
-following are applicable to general array-valued data.
+our presentation throughout to the matrix-valued case for simplicity.
+We note, however, that the model and inference algorithms described in the following are applicable to general array-valued data.
+In chapter \ref{ch:arrays} we extend these representation results to arbitrary collections of arrays.
 
 \section{A nonparametric model of exchangeable arrays}
 
-To define a probabilistic model for matrix\fTBD{Change me to array throughout}- or graph-valued data, we start with Theorem \ref{theorem:ah}: A distribution on exchangeable matrices
+To define a probabilistic model for array- or graph-valued data, we start with Theorem \ref{theorem:ah}: A distribution on exchangeable matrices
 can be specified by specifying a distribution on measurable functions $[0,1]^3\rightarrow\dataspace$. 
 We decompose the function $F$ into two functions 
 ${\AHfunction:[0,1]^2\rightarrow\latentspace}$ 
@@ -183,7 +181,7 @@ Equivalently, there is a conditional probability $P[\,.\,|\AHfunction]$ on $\dat
   \label{eq:decomposition:sampling}
   F(\AHvar_i,\AHvar_j,\AHvar_{ij})\sim P[\,.\,|\AHfunction(\AHvar_i,\AHvar_j)]\;.
 \end{equation}
-Thus, \eqref{eq:decomposition} can be interpreted as a decomposition into a variable $\AHfunction$---the model parameter in terms of Bayesian statistics---which captures the structure of the underlying graph or array,
+Thus, \eqref{eq:decomposition} can be interpreted as a decomposition into a variable $\AHfunction$---the model parameter---which captures the structure of the underlying graph or array,
 and random noise represented by $H$ or $P$, respectively.
 
 To define a model, we assume $\AHfunction$ to be continuous, and to be distributed according to a Gaussian process. More precisely,
@@ -232,9 +230,8 @@ $H$ in \eqref{eq:decomposition} is of the form
   H(\AHvar_{ij},\AHfunction(\AHvar_i,\AHvar_j))\eqdist \AHfunction(\AHvar_i,\AHvar_j)+\varepsilon_{ij} \qquad\text{ where }\qquad \varepsilon_{ij}\sim\mbox{Normal}(0,\sigma)\;.
 \end{equation}
 
-The Gaussian process prior favors smooth functions, which will in general result in more interpretable latent space embeddings.
-Inference in Gaussian processes is a well-understood problem, and the choice of a Gaussian prior allows us to leverage the 
-full range of inference methods available for these models.
+The Gaussian process prior favors smooth functions, which may result in interpretable latent space embeddings.
+Inference in Gaussian processes is a well-understood problem, and the choice of a Gaussian prior allows us to leverage the full range of inference methods available for these models.
 
 
 
@@ -247,88 +244,169 @@ full range of inference methods available for these models.
   $O(pn^2)=O(n^2)$). Analogous representation theorems for sparse random graphs are to date an open problem in probability.
 \end{rem}
 
+\section{A summary of related work}
+\label{sec:Related}
 
+%\fTBD{I have modified much of this - bigger changes are separately noted}
+%Our model has some noteworthy relations to the Gaussian process latent variable model (GPLVM); a dimensionality-reduction technique \citep[e.g.][]{Lawrence2005}.
+%GPLVMs can be applied to relational data, but doing so makes the assumption that either the rows or the columns of the random matrix are independent \cite{Lawrence2009}. 
+%In terms of our model, this corresponds to choosing kernels of the form $\kernel_\AHvar \otimes \delta_\AHvaralt$, where $\otimes$ represents the Kronecker matrix product and $\delta$ represents an `identity' kernel (\ie the corresponding kernel matrix is the identity matrix).
+%From this perspective, the application of our model to separately exchangeable real-valued matrices can be interpreted as a form of co-dimensionality reduction. 
 
-\section{Related work}
-\label{sec:networks:related}
+%A related parametric model is the eigenmodel of \citet{Hoff2007a}.
+%This model, also justified by exchangeability arguments, approximates a matrix with a bilinear form, followed by some link function and distribution depending on the type of data.
+%We show in proposition \ref{prop:matrixfactorisation} that this can be represented in the form of our model by using a kernel function of the form $L_\AHvar \otimes L_\AHvaralt$ where $L$ represents the dot product kernel (\ie the kernel that gives rise to linear functions).
 
-Our model has some noteworthy relations to Gaussian process latent variable models (GPLVM), a dimension-reduction technique
-\citep[e.g.][]{Lawrence2009}.  GPLVMs can be applied to relational data, which however requires
-the assumption that either the rows or the columns of the random matrix are mutually independent \cite{Lawrence2009}. 
-In terms of our model, this
-corresponds to kernels of the form $\kernel_\AHvar \otimes I$, where $\otimes$ represents the Kronecker matrix product. From this perspective, the application of our model
-to bipartite real-valued matrices with $P[\,.\,|\larray_{ij}]=\mbox{Normal}(\larray_{ij},\sigma)$ can be interpreted as 
-a form of co-dimensionality reduction.
+%\fTBD{To be reviewed - also mentions nonparametric matrix factorisation}
+%Available models for graph data include the parametric mixed membership stochastic blockmodel (MMSB) \citep{Airoldi2008} and nonparametric infinite relational model (IRM) \cite{Kemp2006}, latent feature relational model (LFRM) \cite{Miller2009}, infinite latent attribute model \cite{Palla2012} and many others.
+%\NA{
+%Similar models also exist for real valued matrices, including the infinite hidden relational model (IHRM) \citep{Xu2006} which is a counterpart to the IRM and binary matrix factorisation (BMF) \citep{Meeds2007} which is a counterpart to the LFRM.
+%}
 
-For graph data, a flexible parametric model is the eigenmodel of \citet{Hoff2007a}. Available nonparametric models include
-nonparametric latent class models \cite{Kemp2006}, the mixed membership stochastic blockmodel (MMSB) \citep{Airoldi2008}.
-A recent development is the approach of \citet{Yan:Xu:Qi:2011:1}, referred to by the authors as
-sparse matrix-variate Gaussian process blockmodel (SMGB). Although not formalized in terms of exchangeability,
-this model does not impose an independence assumptions on either rows or columns, in contrast to the GPLVM and other models.
-The approach is by construction restricted to kernels of the form $\kernel_\AHvar^1 \otimes \kernel_\AHvar^2$ which prevents 
-explicit modeling of symmetric arrays.
-Roy and Teh \citep{Roy2009} present a nonparametric Bayesian model of relational data that approximates 
-$\AHfunction$ by a piece-wise constant function whose hierarchical structure is a Mondrian process.
+%Roy and Teh \citep{Roy2009} present a nonparametric Bayesian model of relational data that approximates $\AHfunction$ by a piece-wise constant function whose hierarchical structure is a Mondrian process. In contrast, we approximate $\AHfunction$ by a smooth function.
 
-Some examples of the various available models can be succinctly summarized as follows:
+%A recent development is the Sparse Matrix Variate Gaussian Process Blockmodel (SMGB) of Yan, Xu and Qi \cite{Yan2011}, and the extension to higher order arrays \cite{Xu2012} (InfTucker).
+%Although not motivated in terms of exchangeability, these Gaussian process models do not impose independence assumptions on either rows or columns, in contrast to the GPLVM.
+%These models can be represented as placing a prior ${\AHfunction \dist \GP\,(0, \kernel_1 \otimes \kernel_2)}$ on the function $\AHfunction$ in \eqref{eq:decomposition}.
+%\fTBD{Needs review}
+%This prior is equivalent to \eqref{eq:model} for some common choices of kernel $\kernel$ (\eg squared exponential) but excludes others such as those that give rise to symmetric functions or additive kernels.
+%Existing efficient algorithms for Gaussian processes of this form \citep[e.g.][]{Saatci2011} perform calculations using a complete grid of data, which results in computational complexities that depend on the size of the array.
+%Our work suggests that it may not be necessary to impose Kronecker product structure on the kernel, which allows for inference with improved scaling.
 
+\fTBD{To be reviewed}
+\NA{
+The representations \eqref{eq:decomposition} and \eqref{eq:decomposition:sampling} allow for a common perspective on a range of models in the literature depending on how they construct $(W_{ij})$ or place a prior over $\AHfunction$.
+The following proposition allows us to specify many models in both forms.
+%In fact, one can show an equivalence between these different ways of specifying a model as described in the following proposition which is a trivial extension of a similar result linking linear regression and Gaussian process regression \cite[Bishop book?].
+}
+
+\begin{prop}
+\label{prop:matrixfactorisation}
+A matrix factorisation model defined as
+\begin{equation}
+W_{ij} = \AHvar_i\Lambda\AHvaralt_j' \quad \quad \Lambda_{ij} \simiid \Normal (0, 1)
+\end{equation}
+is equivalent to
+\begin{equation}
+W_{ij} = \AHfunction\,(\AHvar_i, \AHvaralt_j) \quad \quad \AHfunction \sim \GP\,(0, L_\AHvar \otimes L_\AHvaralt)
+\end{equation}
+where $L_U(\AHvar_i, \AHvar_j) = \AHvar_{i_1}\AHvar_{i_2}'$ and similarly for $L_V$.
+\end{prop}
+
+\begin{proof}
+For a finite collection of $(W_{ij})$, the Gaussian process model can be written as
+\begin{equation}
+(W_{ij}) \sim \Normal\,(0, K_U \otimes K_V)
+\end{equation}
+where $K$ is the kernel matrix corresponding to the kernel function $L$ and $\otimes$ represents a Kronecker product.
+In the matrix factorisation, $W_{ij}$ is a linear combination of Gaussian distributed random variables and hence is Gaussian distributed itself. Thus, we need only show that it has zero mean and the required covariance structure. This is trivial,
+\begin{eqnarray}
+\mathbb{E} (W_{ij} \given \AHvar_i, \AHvaralt_j) = \AHvar_i\mathbb{E}(\Lambda)\AHvaralt_j' & = & 0 \\
+\textrm{Cov} (W_{i_1j_1}, W_{i_2j_2} \given \AHvar_i, \AHvaralt_j) & = & \mathbb{E} (W_{i_1j_1} W_{i_2j_2} \given \AHvar_i, \AHvaralt_j ) \nonumber \\
+%& = & \mathbb{E}\bigg(\Big(\sum_{k_1,l_1} u_{i_1k_1}v_{j_1l_1}\lambda_{k_1,l_1}\Big)\Big(\sum_{k_2,l_2} u_{i_2k_2}v_{j_2l_2}\lambda_{k_2l_2}\Big)\bigg) \nonumber \\
+& = & \sum_{k_1,l_1,k_2,l_2} u_{i_1k_1}v_{j_1l_1}u_{i_2k_2}v_{j_2l_2}\mathbb{E}(\lambda_{k_1,l_1}\lambda_{k_2l_2}) \nonumber \\
+& = & \Big(\sum_k u_{i_1k}u_{i_2k}\Big)\Big(\sum_l v_{j_1l}v_{j_2l}\Big) \nonumber \\
+& = & \AHvar_{i_1}\AHvar_{i_2}' \times \AHvaralt_{j_1}\AHvaralt_{j_2}'.
+\end{eqnarray}
+\end{proof}
+
+This correspondence between matrix factorisation and priors on functions can be kernelized by mapping $\AHvar_i, \AHvaralt_j$ through functions $\phi_U, \phi_V$ respectively.
+Thus, we see that a Gaussian process model using a tensor product of general kernels is equivalent to kernelized matrix factorisation.
+
+This correspondence allows us to succinctly summarize many of the models in the literature review in table \ref{table:ModelComparison} below (the model introduced here is referred to as the random function model).
+\fTBD{Reintroduce references as a footnote}
 \begin{table}[h]
   \centering
-  \begin{tabular}{lccl} 
+  \begin{tabular}{l|ccc}%c} 
 %    \toprule
-    \multicolumn{4}{c}{Graph data}\\
+    & $W_{ij}$ & $\kernel$ & $U_i, V_j \in \, .$ \\% & $\dataspace$\\ 
+    %\multicolumn{4}{c}{Graph data}\\
     \midrule
     %\addlinespace[2pt]
     %\textcolor{red}{Random function model} 
-    Random function model & $\AHfunction$ & $\sim$ & $\GP\,(0, \kernel)$\\
-    Latent class \cite{Wang1987} & $\larray_{ij}$ & $=$ & $m_{\AHvar_i\AHvar_j}\,\textrm{where} \,\AHvar_i \in \{1,\ldots,K\}$\\
-    Nonparametric latent class \cite{Kemp2006} & $\larray_{ij}$ & $=$ & $m_{\AHvar_i\AHvar_j}\,\textrm{where} \,\AHvar_i \in \{1,\ldots,\infty\}$\\
-    Latent distance \cite{Hoff2002} & $\larray_{ij}$ & $=$ & $-|\AHvar_i - \AHvar_j|$\\
-    Eigenmodel \cite{Hoff2007a} &$\larray_{ij}$ & $=$ & $\AHvar_i'\Lambda \AHvar_j$\\
-    MMSB \cite{Airoldi2008} &$\larray_{ij}$ & $=$ & $z_i'\Lambda z_j\,\textrm{where} \,z_i \sim \textrm{Multinomial}(\AHvar_i)$\\
-    Nonparametric latent feature \cite{Miller2009} & $\larray_{ij}$ & $=$ & $\AHvar_i'\Lambda \AHvar_j\,\textrm{where} \,\AHvar_i \in \{0,1\}^\infty$\\
-    SMGB \cite{Yan:Xu:Qi:2011:1} & $\AHfunction$ & $\dist$ & $\GP\,(0, \kernel_1 \otimes \kernel_2)$ \\
-    %\midrule
-    \addlinespace[4pt]
-    \multicolumn{4}{c}{Real-valued matrix data}\\
+    Random function model & $\phi(U_i, V_j)\Lambda$ & $\kernel_{U\times V}$ & $\Reals^d \, , \, [0,1]$\\% & All\\
+    SMGB, InfTucker & $\phi(\AHvar_i)'\Lambda\phi(\AHvaralt_j)$ & $\kernel_U \otimes \kernel_V$ & $\Reals^d$\\% & $\{0,1\},\, \Reals$\\
+    GPLVM, Kernel PCA & $\phi(\AHvar_i)\Lambda$ & $\kernel_\AHvar \otimes \delta_V$ & $\Reals^d$ \\% & All\\
+    Eigenmodel & $\AHvar_i\Lambda \AHvaralt_j'$ & $L_U \otimes L_V$ & $\Reals^d$ \\% & All\\
+    Linear relational GP & $\AHvar_i\Lambda \AHvaralt_j'$ & $L_U \otimes L_V$ & $\Reals^d$ \\% & $\{0,1\}$\\
+    PMF & $\AHvar_i V_j'$ & 0 & $\Reals^d$ \\% & $\Reals$\\
+    PCA, Factor analysis, etc. & $\AHvar_i\Lambda$ & $L_U \otimes \delta_V$ & $\Reals^d$ \\% & $\Reals$\\
+    Latent distance & $-|\AHvar_i - \AHvar_j|$ & 0 & $\Reals^d$ \\% & $\{0,1\}$\\
+    Mondrian process based & Decision tree & * & $[0, 1]^d$ \\% & All\\
     \midrule
+    Latent class & $\Lambda_{\AHvar_i\AHvar_j}$ & $\delta_{U\times U}$ & $\{1,\ldots,d\}$ \\% & $\{0,1\}$\\
+    IRM &$\Lambda_{\AHvar_i\AHvar_j}$ & $\delta_{U\times U}$ & $\{1,\ldots,\infty\}$ \\% & $\{0,1\}$\\
+    IHRM  &$\Lambda_{\AHvar_i\AHvaralt_j}$ & $\delta_{U\times V}$ & $\{1,\ldots,\infty\}$ \\% & $\Reals$\\
+    BMF  & $\AHvar_i\Lambda \AHvaralt_j'$ & $L_U \otimes L_V$ & $\{0,1\}^\infty$ \\% & $\Reals$\\
+    LFRM  & $\AHvar_i\Lambda \AHvar_j'$ & $L_U \otimes L_U$ & $\{0,1\}^\infty$ \\% & $\{0,1\}$\\
+    ILA & $\sum_d \mathbb{I}_{U_{id}}\mathbb{I}_{U_{jd}}\Lambda^{(d)}_{U_{id}U_{jd}}$ & * & $\{0,\ldots,\infty\}^\infty$ \\% &$\{0,1\}$ \\
+    %\midrule
+    %\addlinespace[4pt]
+    %\multicolumn{4}{c}{Real-valued matrix data}\\
+    %\midrule
     %\textcolor{red}{Random function model} 
-    Random function model & $\AHfunction$ & $\sim$ & $\GP\,(0, \kernel)$\\
-    Mondrian process~\cite{Roy2009} & $\AHfunction$ & = & piece-wise constant random function\\
-    PMF~\cite{Salakhutdinov2008} & $\larray_{ij}$ & $=$ & $\AHvar_i'V_j$\\
-    GPLVM~\cite{Lawrence2009} & $\AHfunction$ & $\sim$ & $\GP\,(0, \kernel \otimes I)$\\
-    Linear relational GP~\cite{Yu} & $\AHfunction$ & $\sim$ & $\GP\,(0, \kernel_1 \otimes \kernel_2)\,\textrm{where} \,\kernel_i\,\textrm{is linear} $\\
 %\bottomrule
 \end{tabular}
+\caption{
+Summary of models classified by equation for $W_{ij}$, equivalent kernel $\kernel$ in GP representation and domain of latent variables $(U_i), (V_j)$.
+$\Lambda$ is a matrix $\phi$ is some mapping into a feature space and $\mathbb{I}_A$ is the indicator function of the event $A>0$.
+$\kernel$ represents any kernel function, $\delta$ the identity kernel function, $L$ the simple dot product kernel function and $L^k$ is the dot product kernel applied only to the $k$th components of its arguments.
+}
 \label{table:ModelComparison}
 \end{table}
 
-\begin{table}
-      \begin{tabular}{l|ccc}
-      & $W_{ij}$ & $\kernel$ & $U_i \sim \, .$ \\% & $\dataspace$\\ 
-      \midrule
-      Random function model & $\phi(U_i)'\Lambda$ & $\kernel_{U\times U}$ & Gaussian\\% & All\\
-      SMGB, InfTucker & $\phi(\AHvar_i)'\Lambda\phi(\AHvar_j)$ & $\kernel_U \otimes \kernel_U$ & Laplace \\% & $\{0,1\},\, \Reals$\\
-      GPLVM & $\phi(\AHvar_i)'\Lambda$ & $\kernel_\AHvar \otimes \delta$ & Gaussian \\% & All\\
-      Eigenmodel & $\AHvar_i'\Lambda \AHvar_j$ & $L_U \otimes L_U$ & Gaussian \\% & All\\
-      Linear relational GP & $\AHvar_i'\Lambda \AHvar_j$ & $L_U \otimes L_U$ & Gaussian \\% & $\{0,1\}$\\
-      PCA, PMF & $\AHvar_i'\Lambda$ & $L_U \otimes \delta$ & Gaussian \\% & $\Reals$\\
-      Latent distance & $-|\AHvar_i - \AHvar_j|$ & * & Gaussian \\% & $\{0,1\}$\\
-      Mondrian process based & Decision tree & * & Uniform \\% & All\\
-      \midrule
-      Latent class & $\Lambda_{\AHvar_i\AHvar_j}$ & $\delta_{U\times U}$ & Multinomial \\% & $\{0,1\}$\\
-      IRM, IHRM &$\Lambda_{\AHvar_i\AHvar_j}$ & $\delta_{U\times U}$ & CRP \\% & $\{0,1\}$\\
-      BMF, LFRM  & $\AHvar_i'\Lambda \AHvar_j$ & $L_U \otimes L_U$ & IBP \\% & $\Reals$\\
-      ILA & $\sum_d \mathbb{I}_{U_{id}}\mathbb{I}_{U_{jd}}\Lambda^{(d)}_{U_{id}U_{jd}}$ & * & CRP $+$ IBP \\% &$\{0,1\}$ \\
-    \end{tabular}
-\end{table}
+The above necessarily glosses over many details (\eg choice of priors, inference methods), but it is hoped that it reveals the structural similarities between many models in the literature.
+Also, we have included principal component analysis (PCA) as a linear counterpart to the non-linear GPLVM.
 
-The representation \eqref{eq:decomposition:sampling} 
-thus provides a common perspective on a range of models in the literature. All models based 
-on Gaussian priors and assume $\AHfunction$ to be continuous.
-Continuous functions are dense in the space of measurable functions, \ie any measurable function can be arbitrarily well approximated 
-by a continuous one. The potentially critical smoothness assumption is therefore not continuity assumption, but rather the 
-lengthscale of the Gaussian process.
+This table reveals that the majority of models included here model $\AHfunction$ as linear or bilinear (potentially kernalized).
+The Mondrian process \cite{Roy2009} is a notable exception since it models $\AHfunction$ as a piecewise constant random function which is fundamentally different from our approach of modelling $\AHfunction$ to be continuous.
+For simplicity we have refrained from writing down the kernel corresponding to the Mondrian process based model; it could be described as an indicator function of the equivalence class induced by the Mondrian process.
+We also see that the ILA model is significantly more flexible in its specification of $\AHfunction$ than other models using discrete latent variables.
+Again, we refrain from writing down what would be a fairly complicated kernel function corresponding to this model.
+
+This table could be interpreted as revealing that our model is a small modification of other models that use latent variables in $\Reals^d$.
+However, we would argue that our work is a joint generalisation rather than a modification.
+Despite being more general, our model is arguably simpler and firmly rooted in the relevant theory (and achieves superior empirical performance as shown in section \ref{sec:experiments}).
+
+We note that the nonparametric Gaussian process prior on $\AHfunction$ in the random function models means that, if supported by the data, the posterior distribution of $\AHfunction$ could approximate any of the functions specified by other models.
+This is of course true of the other nonparametric models; particular priors will influence the rate at which different forms of $\AHfunction$ can be inferred.
+
+\fTBD{Other table killed}
+%\TBD{Can we kiil the original version of the table - keeping only the above and deleting the below?}
+
+%Some examples of the various available models can be succinctly summarized in the following table.
+
+%\begin{table}[h]
+%  \centering
+%  \begin{tabular}{lccl} 
+% %    \toprule
+%    \multicolumn{4}{c}{Graph data}\\
+%    \midrule
+%    %\addlinespace[2pt]
+%    %\textcolor{red}{Random function model} 
+%    Random function model & $\AHfunction$ & $\sim$ & $\GP\,(0, \kernel)$\\
+%    Latent class \cite{Wang1987} & $\larray_{ij}$ & $=$ & $m_{\AHvar_i\AHvar_j}\,\textrm{where} \,\AHvar_i \in \{1,\ldots,K\}$\\
+%    IRM \cite{Kemp2006} & $\larray_{ij}$ & $=$ & $m_{\AHvar_i\AHvar_j}\,\textrm{where} \,\AHvar_i \in \{1,\ldots,\infty\}$\\
+%    Latent distance \cite{Hoff2002} & $\larray_{ij}$ & $=$ & $-|\AHvar_i - \AHvar_j|$\\
+%    Eigenmodel \cite{Hoff2007a} &$\larray_{ij}$ & $=$ & $\AHvar_i'\Lambda \AHvar_j$\\
+%    MMSB \cite{Airoldi2008} &$\larray_{ij}$ & $=$ & $z_i'\Lambda z_j\,\textrm{where} \,z_i \sim \textrm{Multinomial}(\AHvar_i)$\\
+%    Nonparametric latent feature \cite{Miller2009} & $\larray_{ij}$ & $=$ & $\AHvar_i'\Lambda \AHvar_j\,\textrm{where} \,\AHvar_i \in \{0,1\}^\infty$\\
+%    SMGB \cite{Yan2011}, InfTucker \cite{Xu2012} & $\AHfunction$ & $\dist$ & $\GP\,(0, \kernel_1 \otimes \kernel_2)$ \\
+%    %\midrule
+%    \addlinespace[4pt]
+%    \multicolumn{4}{c}{Real-valued matrix data}\\
+%    \midrule
+%    %\textcolor{red}{Random function model} 
+%    Random function model & $\AHfunction$ & $\sim$ & $\GP\,(0, \kernel)$\\
+%    Mondrian process~\cite{Roy2009} & $\AHfunction$ & = & piece-wise constant random function\\
+%    PMF~\cite{Salakhutdinov2008} & $\larray_{ij}$ & $=$ & $\AHvar_i'V_j$\\
+%    GPLVM~\cite{Lawrence2009} & $\AHfunction$ & $\sim$ & $\GP\,(0, \kernel \otimes I)$\\
+%    Linear relational GP~\cite{Yu} & $\AHfunction$ & $\sim$ & $\GP\,(0, \kernel_1 \otimes \kernel_2)\,\textrm{where} \,\kernel_i\,\textrm{is linear} $\\
+%    InfTucker \cite{Xu2012} & $\AHfunction$ & $\dist$ & $\GP\,(0, \kernel_1 \otimes \kernel_2)$ \\
+% %\bottomrule
+%\end{tabular}
+%\label{table:ModelComparison}
+%\end{table}
 
 %% The strategy pursued in the model's definition---start with an exchangeability theorem and define a prior distribution on
 %% the representing function---is analogs to more canonical approaches in the de Finetti case, which define priors with
@@ -339,89 +417,277 @@ lengthscale of the Gaussian process.
 %% discrete measures \cite{}. To this day, such general priors remain elusive \cite{}.
 %% In contrast, nonparametric priors that impose sufficiently strong assumptions to guarantee tractability have proven a very fruitful
 
-
-
-
 \section{Posterior computation}
 \label{sec:Inference}
 
-In this section, we describe Markov Chain Monte Carlo (MCMC) algorithms for generating approximate samples from the posterior distribution of the model parameters given a partially observed array.  Most importantly, we describe a random subset-of-regressors approximation that scales to graphs with hundreds of nodes and tens of thousands of edge observations. Given the relatively straightforward nature of the proposed algorithms and approximations, we refer the reader to other papers whenever appropriate.
+In this section we describe Markov Chain Monte Carlo (MCMC) algorithms for generating approximate samples from the posterior distribution of the model parameters given a partially observed array.  Most importantly, we describe a random subset-of-regressors approximation that scales to graphs with hundreds of nodes and tens of thousands of edge observations. Given the relatively straightforward nature of the proposed algorithms and approximations, we refer the reader to other papers whenever appropriate.
 
 \subsection{Latent space and kernel}
-
-The random function representation in Theorem \ref{theorem:ah} is not contingent on the use of uniform distributions 
-for the variables $\AHvar_i$ and $\AHvar_{ij}$. From a theoretical point of view, any non-atomic
-probability measure on a Borel space is valid. For the presentation in Sec.~\ref{sec:background}, 
+\label{sec:Kernel}
+The random function representation in theorem \ref{theorem:ah} is not restricted to the use of uniform distributions for the variables $\AHvar_i$ and $\AHvar_{ij}$.
+The uniform distributions arise in the proof of the theorem as generic distributions with which one can encode the information of other random variables via a measurable function.
+Therefore, the proof remains unchanged if one replaces the uniform distributions with any isomorphic probability distribution \ie any non-atomic
+probability measure on a Borel space. For the presentation in section~\ref{sec:background}, 
 the domain $[0,1]^2$ of the uniform provides an intuitive analogy
 with adjacency matrices. For the purposes of inference, normal distributions are more convenient, and we henceforth use
-${\AHvar \dist \Normal(0, I_r)}$ for some integer $r$.
+${\AHvar_{1},\AHvar_{2},\ldots\; \simiid \Normal(0, I_r)}$ for some integer $r$.
 
-Since we focus on undirected graphical data, we require the symmetry condition $\AHfunction_{ij} = \AHfunction_{ji}$. This can be achieved by constructing the kernel function in the following way
+Since we focus on undirected graphical data, we require the symmetry condition $\larray_{ij} = \larray_{ji}$. This can be achieved by constructing the kernel function in the following way
 \begin{eqnarray}
 \kernel(\inputpoints_1, \inputpoints_2) & = & \frac{1}{2}\big(\bar\kernel(\inputpoints_1, \inputpoints_2) + \bar\kernel(\inputpoints_1, \bar\inputpoints_2)\big) + \sigma^2I \quad \quad \textrm{(Symmetry + noise)} \\
 \bar\kernel(\inputpoints_1, \inputpoints_2) & = & \scalefactor^2\exp(-|\inputpoints_1 - \inputpoints_2|^2/(2\lengthscale^2)) \quad \quad \quad \quad \quad \textrm{(RBF kernel)}
 \end{eqnarray}
-where $\inputpoints_k = (\AHvar_{i_k}, \AHvar_{j_k})$, $\bar\inputpoints_k= (\AHvar_{j_k}, \AHvar_{i_k})$ and $\scalefactor, \lengthscale, \sigma$ represent a scale factor, length scale and noise respectively. This construction can be justified as the limit of a basis function argument with the symmetry condition enforced, analogous to arguments for other kernel functions.
+where $\inputpoints_k = (\AHvar_{i_k}, \AHvar_{j_k})$, $\bar\inputpoints_k= (\AHvar_{j_k}, \AHvar_{i_k})$ and $\scalefactor, \lengthscale, \sigma$ represent a scale factor, length scale and noise respectively (see \citep[e.g.][]{Rasmussen2006} for a discussion of kernel functions). We collectively denote the kernel parameters by $\covhyppar$.
+Also, as remark~\ref{remsym} points out, for undirected data one can model only the upper triangular part of the adjacency matrix.
+
+%This construction can be justified as the limit of a basis function argument with the symmetry condition enforced, analogous to arguments for other kernel functions.
 %, but the construction of kernels that preserve certain symmetries is potentially an interesting area for future research.
 
 
 \subsection{Sampling without approximating the model}
 
-\newcommand{\numobs}{\mathsf o}
-\newcommand{\numnodes}{\mathsf n}
+\newcommand{\numobs}{\mathrm O}
+\newcommand{\numnodes}{\mathrm N}
 In the simpler case of a real-valued array $\darray$, we construct an MCMC algorithm over the variables $(\AHvar,\covhyppar, \sigma_\darray)$ by repeatedly slice sampling \citep{MR1994729} from the conditional distributions
 \[
 \covhyppar_i \given \covhyppar_{-i}, \sigma_\darray, \AHvar, \darray
 \qquad\quad
 \sigma_\darray \given \covhyppar, \AHvar, \darray
 \qquad\quad \text{and} \qquad\quad
-\AHvar_j \given \AHvar_{-j}, \covhyppar, \sigma_\darray, \darray.
+\AHvar_j \given \AHvar_{-j}, \covhyppar, \sigma_\darray, \darray
 \]
+where \fTBD{added a reminder about $\sigma_\darray$}$\sigma_\darray$ is the noise variance parameter used when modelling real valued data introduced in section \ref{sec:Model}.
 Let $\numnodes = |\AHvar_{\lbrace i\rbrace}|$ denote the number of rows in the observed array,
 let $\inputpoints$ be the set of all pairs $(\AHvar_i,\AHvar_j)$ for all observed relations $\darray_{ij}$, 
 let $\numobs = |\inputpoints|$ denote the number of observed relations,
 and 
-let $\kernel$ represent the $\numobs \times \numobs$ kernel matrix between all points in $\inputpoints$. Changes to $\covhyppar$ affect every entry in the kernel matrix $K$ and so, naively, the computation of the Gaussian likelihood of $\darray$ takes $\CompOrder(\numobs^3)$ time.  Likewise, changes to $\AHvar$ also affect entries in $K$. Naively reevaluating the Gaussian likelihood term again takes $\CompOrder(\numobs^3)$ time, and so, across all $\numnodes$ rows, we expend $\CompOrder(\numobs^3 \numnodes)$ time. Whether or not this can be improved by exploiting structure in the modifications, the cubic dependence on $\numobs$ seems unavoidable, and thus this naive algorithm is unusable for all but small data sets. 
+let $K$ represent the $\numobs \times \numobs$ kernel matrix between all points in $\inputpoints$. Changes to $\covhyppar$ affect every entry in the kernel matrix $K$ and so, naively, the computation of the Gaussian likelihood of $\darray$ takes $\CompOrder(\numobs^3)$ time.  Likewise, changes to $\AHvar$ also affect entries in $K$. Naively reevaluating the Gaussian likelihood term again takes $\CompOrder(\numobs^3)$ time, and so, across all $\numnodes$ rows, we expend $\CompOrder(\numobs^3 \numnodes)$ time. Whether or not this can be improved by exploiting structure in the modifications, the cubic dependence on $\numobs$ seems unavoidable, and thus this naive algorithm is unusable for all but small data sets. 
 
 
 \subsection{A random subset-of-regressor approximation}
 
-In order to scale the method to much larger graphs, we applied a sparse approximation method known as Subsets-of-Regressors, or simply SoR \citep{Smola01,Wahba99,Silverman1985}. (See \citep{Quinonero-Candela:2005} for an excellent survey of this and other sparse approximations.)  The SoR approximation replaces the infinite dimensional GP with a finite dimensional approximation. Our approach is to treat both the inputs and outputs of the GP as latent variables.
+In order to scale the method to much larger graphs, we applied a variation of a sparse approximation method known as Subsets-of-Regressors, or simply SoR \citep{Smola01,Wahba99,Silverman1985}. (See \citep{Quinonero-Candela2005} for an excellent survey of this and other sparse approximations.)  The SoR approximation replaces the infinite dimensional GP with a finite dimensional approximation. Our approach is to treat both the inputs and outputs of the GP as latent variables.
 %, a random version of the SoR approximation appears to work very well, even with few pseudoinputs (see below).
 
 In particular, 
 introduce $k$ Gaussian distributed pseudoinputs $\pseudopoints=(\pseudopoints_1,\dotsc,\pseudopoints_k)$, and, for each $j=1,\dotsc,k$, define target values ${\targets_j = \AHfunction(\pseudopoints_j)}$.  In other words, writing $K_{\pseudopoints\pseudopoints}$ for the kernel matrix formed from the pseudoinputs $\pseudopoints$, we have
 \[
-\pseudopoints \dist \Normal(0,I_{2r}) \qquad\text{and}\qquad
-\targets \given \pseudopoints \dist \Normal(0,K_{\pseudopoints\pseudopoints}).
+(\pseudopoints_i) \simiid \Normal(0,1) \qquad\text{and}\qquad
+\targets \given \pseudopoints \sim \Normal(0,K_{\pseudopoints\pseudopoints}).
 \]
 The idea of the SoR approximation is to replace $\larray_{ij}$ with the posterior mean conditioned on $(\pseudopoints,\targets)$,
 \[
 \larray = K_{\inputpoints\pseudopoints} K_{\pseudopoints\pseudopoints}^{-1}\targets,
 \label{eqn:GPConditional}
 \]
-where $K_{\inputpoints\pseudopoints}$ is the kernel matrix between the latent embeddings $\inputpoints$ and the pseudoinputs $\pseudopoints$.  By considering random pseudoinputs, we construct an MCMC variant of the techniques proposed in~\cite{Titsias2008}.
+where $K_{\inputpoints\pseudopoints}$ is the kernel matrix between the latent embeddings $\inputpoints$ and the pseudoinputs $\pseudopoints$.  By considering random pseudoinputs, we construct an MCMC analogue of the techniques proposed in~\cite{Titsias2008}.
 % in be seen to be doing a Bayesian version of sparse variational techniques proposed by Titsias and Lawrence \cite{Titsias2010}.
 
-Given this approximate model, the conditional distribution $\targets \given \AHvar, \pseudopoints, \covhyppar, (\sigma_\darray), \darray$ is amenable to elliptical slice sampling \citep{murray2010}, for both real valued and binary $\darray$. All other random parameters can again be sampled from their full conditional distributions using slice sampling.  The sampling algorithms require that one computes expressions involving~\eqref{eqn:GPConditional}. As a result they cost at most $\CompOrder(k^3 \numobs)$
+Given this approximate model, the conditional distribution $\targets \given \AHvar, \pseudopoints, \covhyppar, (\sigma_\darray), \darray$ is amenable to elliptical slice sampling \citep{murray2010}, for both real valued and binary $\darray$. All other random parameters, including the $(U_i)$\fTBD{Added $U_i$ reminder}, can again be sampled from their full conditional distributions using slice sampling.  The sampling algorithms require that one computes expressions involving~\eqref{eqn:GPConditional}. As a result they cost at most $\CompOrder(k^3 \numobs)$.
 
 %These sampling algorithms now require that one recomputes at most $K_{\pseudopoints\pseudopoints}^{-1}$ (or more precisely the Cholesky decomposition) and $K_{\inputpoints\pseudopoints}^{-1}$.  As a result, they cost at most $\Theta(k^3 \numobs)$ time. 
 
 \section{Experiments}
-
+\label{sec:experiments}
 We evaluate the model on three different network data sets. Two of these data sets---the high school and NIPS co-authorship data---have been extensively
-analyzed in the literature. The third data set, a protein interactome, was previously noted by \citet{Hoff2007a}
- to exhibit block structure and transitivity.
+analyzed in the literature.
+The third data set, a protein interactome, was previously noted by \citet{Hoff2007a} to be of interest since it exhibits both block structure and transitivity.
 
 \begin{center}
   \begin{tabular}{l  l  c  l}
     Data set & Recorded data & Vertices & Reference\\
     \midrule
     High school & high school social network & 90 & e.g.\ \cite{Hoff2007a} \\
-    NIPS & densely connected subset of coauthorship network & 234 & e.g.\ \cite{Miller2009} \\
+    NIPS & subset of coauthorship network & 234 & e.g.\ \cite{Miller2009} \\
     Protein & protein interactome & 230 & e.g.\ \cite{Hoff2007a}\\
   \end{tabular}
 \end{center}
+
+We compare performance of our model on these data sets to three other models, probabilistic matrix factorization (PMF) \citep{Salakhutdinov2008},
+Hoff's eigenmodel \citep{Hoff2007a}, and the GPLVM \citep{Lawrence2005}. The models are chosen for comparability, since they all embed nodes into a Euclidean latent space.
+%All of these models represent nodes as being embedded in a latent space, although the approaches vary considerably.
+Experiments for all three models were performed using reference implementations by the respective 
+authors.\footnotemark
+
+\footnotetext{Implementations are available for PMF at
+http://www.mit.edu/\texttildelow rsalakhu/software.html;
+for the eigenmodel at
+http://cran.r-project.org/src/contrib/Descriptions/eigenmodel.html;
+and for the GPLVM at
+http://www.cs.man.ac.uk/\texttildelow neill/collab/ .}
+
+\begin{center}
+  \begin{tabular}{l  l  c  l }
+    Model & Method & Iterations [burn-in] & Parameters\\
+    \midrule
+    PMF & stochastic gradient & 1000 & author defaults
+    \\
+    Eigenmodel & MCMC & 10000 [250] & author defaults
+    \\
+    GPLVM & stochastic gradient  & 20 sweeps & author defaults
+    \\
+    Random function model & MCMC & 1000 [200] & (see below)
+  \end{tabular}
+  %\label{table:DataSets}
+  %\end{table}
+\end{center}
+
+We use standard normal priors on the latent variables $\AHvar$ and pseudo points $\pseudopoints$, and log normal priors for kernel parameters.
+\vspace{-0.18cm}
+\parpic(7cm,3.9cm)[r]{
+\begin{minipage}[h]{8cm}
+\begin{center}
+  \begin{tabular}{c | c c c}
+    {} & exp mean & std & width \\
+    \midrule
+    length scale & 1 & 0.5 & 0.5 \\
+    scale factor & 2 & 0.5 & 0.5 \\
+    target noise & 0.1 & 0.5 & 0.1 \\
+    $\AHvar$ & - & - & 4 \\
+    $\pseudopoints$ & - & - & 2
+  \end{tabular}
+\end{center}
+\end{minipage}}
+Slice sampling parameters are chosen to favor slice sampling acceptance after a reasonable number of iterations, as evaluated over a range of data sets.
+Specific values of prior and sampling parameters are summarized in the table on the right.
+To balance the computational demands of the different sampling steps, we sampled $\targets$ 50 times per iteration whilst all other variables were sampled once per iteration.
+
+In all experiments, we partitioned the edge data into 5 equally sized partitions and performed 5-fold cross validation, predicting the links in one held out partition given the other 4. 
+Where the models did not restrict their outputs to values between 0 and 1, we truncated any predictions lying outside this range.
+The following table reports average AUC (area under receiver operating characteristic) for the various models, with numbers for the top performing model set in bold.
+Significance of results is evaluated by means of a $t$-test with a $p$-value of 0.05; results for models not distinguishable from the top performing model in terms of this $t$-test are also set in bold.
+
+%\fTBD{Should we indicate the new results as something special or just replace? Dan votes special, Zoubin and Peter vote replace.}
+%\begin{center}
+%  \begin{tabular}{r | r r r | r r r | r r r}
+%    \multicolumn{10}{c}{AUC results} \\
+%    \addlinespace[2pt]
+%    Data set & \multicolumn{3}{c|}{High school} & \multicolumn{3}{c|}{NIPS} & \multicolumn{3}{c}{Protein} \\
+%    Latent dimensions & 1 & 2 & 3 & 1 & 2 & 3 & 1 & 2 & 3 \\
+%    \midrule
+%    PMF                   & 0.747 & 0.792 & 0.792 & 0.729 & 0.789 & 0.820 & 0.787 & 0.810 & 0.841 \\
+%    Eigenmodel            & 0.742 & \textbf{0.806} & \textbf{0.806} & 0.789 & 0.818 & 0.845 & 0.805 & 0.866 & 0.882 \\
+%    GPLVM                 & 0.744 & 0.775 & 0.782 & \textbf{0.888} & 0.876 & 0.883 & 0.877 & \textbf{0.883} & 0.873 \\
+%    RFM & \textbf{0.780} & \textbf{0.813} & 0.654 & \textbf{0.902} & \textbf{0.930} & \textbf{0.926} & \textbf{0.898} & \textbf{0.891} & \textbf{0.901} \\
+%    \color{gray}
+%    \textit{RFM} & \color{gray}\textit{0.815} & \color{gray}\textit{0.827} & \color{gray}\textit{0.820} & \color{gray}\textit{0.907} & \color{gray}\textit{0.914} & \color{gray}\textit{0.919} & \color{gray}\textit{0.903} & \color{gray}\textit{0.910} & \color{gray}\textit{0.912}
+%  \end{tabular}
+%\end{center}
+
+\fTBD{Should we indicate the new results as something special or just replace? Dan votes special, Zoubin and Peter vote replace.}
+\begin{center}
+  \begin{tabular}{r | r r r | r r r | r r r}
+    \multicolumn{10}{c}{AUC results} \\
+    \addlinespace[2pt]
+    Data set & \multicolumn{3}{c|}{High school} & \multicolumn{3}{c|}{NIPS} & \multicolumn{3}{c}{Protein} \\
+    $d$\footnotemark & 1 & 2 & 3 & 1 & 2 & 3 & 1 & 2 & 3 \\
+    \midrule
+    PMF                   & 0.747 & 0.792 & 0.792 & 0.729 & 0.789 & 0.820 & 0.787 & 0.810 & 0.841 \\
+    Eigenmodel            & 0.742 & 0.806 & 0.806 & 0.789 & 0.818 & 0.845 & 0.805 & 0.866 & 0.882 \\
+    GPLVM                 & 0.744 & 0.775 & 0.782 & 0.888 & 0.876 & 0.883 & 0.877 & 0.883 & 0.873 \\
+    RFM & \textbf{0.815} & \textbf{0.827} & \textbf{0.820} & \textbf{0.907} & \textbf{0.914} & \textbf{0.919} & \textbf{0.903} & \textbf{0.910} & \textbf{0.912}
+  \end{tabular}
+\end{center}
+
+\footnotetext{$d$ is the dimensionality of the latent variables}
+
+%The random function model outperforms the other models in almost all tests.
+The random function model outperforms the other models in \emph{all} tests.
+%We also note that in most experiments, a single latent dimension suffices to achieve better performance, even when the other models use additional latent dimensions.
+We also note that in all experiments, a single latent dimension suffices to achieve better performance, even when the other models use additional latent dimensions.
+%\fTBD{Remove this sentence, if we just go with the new experiments}
+%\NA{
+%Since our first experiments, we investigated the single poor result observed on the High school data set (3 dimensions).
+%The weak performance in this case was due to slow mixing of $\AHvar$ and $\pseudopoints$ as identified by Geweke tests \citep{Geweke2004}.
+%We have subsequently found that sampling these variables on each iteration greatly improves mixing.
+%We have shown the numerical results for this improved MCMC schedule in {\color{gray}\textit{gray italics}} to avoid mixing training and testing.
+%With this more sensible MCMC schedule the random function model outperforms the other models across the board.
+%}
+
+\fTBD{Needs review}
+In general, a more general model of data will not necessarily improve empirical performance compared to simpler models.
+However, our results provide empirical evidence that the flexibility of a general nonparametric model can make an important difference for the problems considered here.
+
+The posterior distribution of $\AHfunction$ favors functions defining random array distributions that explain the data well.
+In this sense, our model fits a probability distribution.
+The standard inference methods for GPLVM and PMF applied to relational data, in contrast, are designed to fit mean squared error, and should therefore be expected to show stronger performance under a mean squared error metric.
+As the following table shows, this is indeed the case.
+The reported values are RMSE results, with significance evaluated as above.
+
+%\begin{center}
+%  \begin{tabular}{r | r r r | r r r | r r r}
+%    \multicolumn{10}{c}{RMSE results} \\
+%    \addlinespace[2pt]
+%    Data set & \multicolumn{3}{c|}{High school} & \multicolumn{3}{c|}{NIPS} & \multicolumn{3}{c}{Protein} \\
+%    Latent dimensions & 1 & 2 & 3 & 1 & 2 & 3 & 1 & 2 & 3 \\
+%    \midrule
+%    PMF                   & 0.245 & 0.242 & 0.240 & 0.141 & 0.135 & 0.130 & 0.151 & 0.142 & 0.139 \\
+%    Eigenmodel            & 0.244 & \textbf{0.238} & \textbf{0.236} & 0.141 & 0.132 & 0.124 & 0.149 & 0.142 & \textbf{0.138} \\
+%    GPLVM                 &0.244 & 0.241 & 0.239 & \textbf{0.112} & \textbf{0.109} & \textbf{0.106} & \textbf{0.139} & \textbf{0.137} & \textbf{0.138} \\
+%    RFM & \textbf{0.241} & \textbf{0.236} & 0.248 & 0.126 & \textbf{0.115} & \textbf{0.109} & 0.144 & 0.141 & 0.140 \\
+%    \color{gray}
+%    \textit{RFM} & \color{gray}\textit{0.239} & \color{gray}\textit{0.234} & \color{gray}\textit{0.235} & \color{gray}\textit{0.114} & \color{gray}\textit{0.111} & \color{gray}\textit{0.110} & \color{gray}\textit{0.138} & \color{gray}\textit{0.136} & \color{gray}\textit{0.136}
+%  \end{tabular}
+%\end{center}
+
+\begin{center}
+  \begin{tabular}{r | r r r | r r r | r r r}
+    \multicolumn{10}{c}{RMSE results} \\
+    \addlinespace[2pt]
+    Data set & \multicolumn{3}{c|}{High school} & \multicolumn{3}{c|}{NIPS} & \multicolumn{3}{c}{Protein} \\
+    $d$ & 1 & 2 & 3 & 1 & 2 & 3 & 1 & 2 & 3 \\
+    \midrule
+    PMF                   & 0.245 & 0.242 & 0.240 & 0.141 & 0.135 & 0.130 & 0.151 & 0.142 & 0.139 \\
+    Eigenmodel            & 0.244 & 0.238 & \textbf{0.236} & 0.141 & 0.132 & 0.124 & 0.149 & 0.142 & \textbf{0.138} \\
+    GPLVM                 &0.244 & 0.241 & 0.239 & \textbf{0.112} & \textbf{0.109} & \textbf{0.106} & \textbf{0.139} & \textbf{0.137} & \textbf{0.138} \\
+    RFM & \textbf{0.239} & \textbf{0.234} & \textbf{0.235} & \textbf{0.114} & \textbf{0.111} & \textbf{0.110} & \textbf{0.138} & \textbf{0.136} & \textbf{0.136}
+  \end{tabular}
+\end{center}
+
+An arguably more suitable metric is comparison in terms of conditional edge probability \ie ${\likelihood(\darray_{\lbrace ij \rbrace} \given \larray_{\lbrace ij \rbrace})}$ for all $i,j$ in the held out data. These cannot, however, be computed in a meaningful manner for
+models such as PMF and GPLVM, which assign a Gaussian likelihood to data. The next table hence reports only comparisons to the eigenmodel.
+%This table is negative conditional log likelihood * 1000 / (number of predicted links).
+%\begin{center}
+%  \begin{tabular}{r | r r r | r r r | r r r}
+%     \multicolumn{10}{c}{Negative log conditional edge probability\footnotemark} \\
+%     \addlinespace[2pt]
+%     Data set & \multicolumn{3}{c|}{High school} & \multicolumn{3}{c|}{NIPS} & \multicolumn{3}{c}{Protein} \\
+%    Latent dimensions & 1 & 2 & 3 & 1 & 2 & 3 & 1 & 2 & 3 \\
+%    \midrule
+%    Eigenmodel & 220 & \textbf{210} & \textbf{200} & 88 & 81 & 75 & 96 & 92 & 86 \\
+%    RFM        & \textbf{210} & \textbf{200} & 240 & \textbf{71} & \textbf{58} & \textbf{55} & \textbf{83} & \textbf{81} & \textbf{79}  \\
+%    \color{gray}
+%    \textit{RFM} & \color{gray}\textit{205} & \color{gray}\textit{199} & \color{gray}\textit{201} & \color{gray}\textit{65} & \color{gray}\textit{57} & \color{gray}\textit{56} & \color{gray}\textit{78} & \color{gray}\textit{75} & \color{gray}\textit{75}
+%  \end{tabular}
+%\end{center}
+
+\begin{center}
+  \begin{tabular}{r | r r r | r r r | r r r}
+     \multicolumn{10}{c}{Negative log conditional edge probability\footnotemark} \\
+     \addlinespace[2pt]
+     Data set & \multicolumn{3}{c|}{High school} & \multicolumn{3}{c|}{NIPS} & \multicolumn{3}{c}{Protein} \\
+    $d$ & 1 & 2 & 3 & 1 & 2 & 3 & 1 & 2 & 3 \\
+    \midrule
+    Eigenmodel & 220 & 210 & \textbf{200} & 88 & 81 & 75 & 96 & 92 & 86 \\
+    RFM & \textbf{205} & \textbf{199} & \textbf{201} & \textbf{65} & \textbf{57} & \textbf{56} & \textbf{78} & \textbf{75} & \textbf{75}
+  \end{tabular}
+\end{center}
+
+\footnotetext{The precise calculation implemented is $-\log(\likelihood(\darray_{\lbrace ij \rbrace} \given \larray_{\lbrace ij \rbrace})) \times 1000 \, / \,(\textrm{Number of held out edges})$. }
+
+%\textcolor{red}{Wrap-up sentence here.}
+
+\begin{rem}[Model complexity and lengthscales]
+\label{rem:lengthscale}  
+\fTBD{Needs review}
+Figure~\ref{fig:(R)GPLVM_Comparison} provides a visualisation of $\AHfunction$ when modeling the protein interactome data using 1 latent dimension.
+The most prominent feature of the plot is the smooth peak in the top left of the adjacency matrix.
+The likelihood of such a feature is sensitive to the lengthscale of the Gaussian process representation of $\AHfunction$; smaller lengthscales will encourage more complex functions and vice versa.
+It was noted in section~\ref{sec:Model} that the choice of a Gaussian process prior introduces the assumption that $\AHfunction$ is continuous.
+However, continuous functions are dense in the space of measurable functions, \ie any measurable function can be arbitrarily well approximated by a continuous one.
+The assumption of continuity is therefore not restrictive, but rather the lengthscale of the Gaussian process determines the complexity of the model a priori.
+The nonparametric prior placed on $\AHfunction$ allows the posterior to approximate any function if supported by the data, but by sampling the lengthscale we allow the model to quickly select an appropriate level of complexity.
+\end{rem}
 
 \begin{figure}[]
   \centering
@@ -435,121 +701,6 @@ analyzed in the literature. The third data set, a protein interactome, was previ
   }
   \label{fig:(R)GPLVM_Comparison}
 \end{figure}
-
-
-We compare performance of our model on these data sets to three other models, probabilistic matrix factorization (PMF) \cite{Salakhutdinov2008},
-Hoff's eigenmodel, which models the adjacency matrix using a low-rank approximation, followed by a sigmoid transformation, and the GPLVM (see also Sec.~\ref{sec:Related}). The models are chosen for comparability, since they all embed nodes into a Euclidean latent space.
-%All of these models represent nodes as being embedded in a latent space, although the approaches vary considerably.
-Experiments for all three models were performed using reference implementations by the respective 
-authors.\footnotemark
-
-\footnotetext{Implementations are available for PMF at
-http://www.mit.edu/\texttildelow rsalakhu/software.html;
-for the eignmodel at
-http://cran.r-project.org/src/contrib/Descriptions/eigenmodel.html;
-and for the GPLVM at
-http://www.cs.man.ac.uk/\texttildelow neill/collab/ .}
-
-\begin{center}
-  \begin{tabular}{l  l  c  l }
-    Model & Method & Iterations [burn-in] & Algorithm parameters\\
-    \midrule
-    PMF \cite{Salakhutdinov2008} & stochastic gradient & 1000 & author defaults
-    \\
-    Eigenmodel \cite{Hoff2007a} & MCMC & 10000 [250] & author defaults
-    \\
-    GPLVM \cite{Lawrence2009} & stochastic gradient  & 20 sweeps & author defaults
-    \\
-    Random function model & MCMC & 1000 [200] & (see below)
-  \end{tabular}
-  %\label{table:DataSets}
-  %\end{table}
-\end{center}
-
-
-Common practice for many latent variable models relying on MCMC is to inatialise the sampler using 
-result from another model to reduce mixing time. Experiments show that results for our inference algorithm
-do not depend strongly on the choice of initialization method, provided that the initialization is reasonable.
-The results reported here are initialized using a GPLVM embedding.
-We use standard normal 
-priors on the latent variables $\AHvar$ and $\AHvaralt$, and log normal priors for kernel parameters.
-\vspace{-0.32cm}
-\parpic(6cm,2.7cm)[r]{
-\begin{minipage}[h]{8cm}
-\begin{center}
-  \begin{tabular}{c | c c c}
-    {} & log mean & std & width \\
-    \midrule
-    length scale & 1 & 0.5 & 0.5 \\
-    scale factor & 2 & 0.5 & 0.5 \\
-    target noise & 0.1 & 0.5 & 0.1 \\
-    $\AHvar$ & - & - & 4 \\
-    $\pseudopoints$ & - & - & 2
-  \end{tabular}
-\end{center}
-\end{minipage}}
-Slice sampling parameters are chosen to favor slice sampling acceptance after a reasonable number of iterations, as evaluated over
-a range of data sets. Specific values of prior and sampling parameters are summarized in the table on the right.
-
-In all experiments, we partitioned the edge data into 5 equally sized partitions and performed 5-fold cross validation, predicting the links in one held out partition given the other 4. 
-Where the models did not restrict their outputs to values between 0 and 1, we truncated any predictions lying outside this range.
-The following table reports average AUC (area under ROC) for the various models, with numbers for the top performing model set in bold.
-Significance of results is evaluated by means of a $t$-test with a $p$-value of 0.05; results for models not distinguishable from the top performing model
-in terms of this $t$-test are also set in bold. \fPROBLEM{The erroneous 0.494 (PMF, NIPS 3) should actually be 0.820}
-
-\begin{center}
-  \begin{tabular}{r | r r r | r r r | r r r}
-    \multicolumn{10}{c}{AUC results} \\
-    \addlinespace[2pt]
-    Data set & \multicolumn{3}{c|}{High school} & \multicolumn{3}{c|}{NIPS} & \multicolumn{3}{c}{Protein} \\
-    Latent dimensions & 1 & 2 & 3 & 1 & 2 & 3 & 1 & 2 & 3 \\
-    \midrule
-    PMF                   & 0.747 & 0.792 & 0.792 & 0.729 & 0.789 & 0.494 & 0.787 & 0.810 & 0.841 \\
-    Eigenmodel            & 0.742 & \textbf{0.806} & \textbf{0.806} & 0.789 & 0.818 & 0.845 & 0.805 & 0.866 & 0.882 \\
-    GPLVM                 & 0.744 & 0.775 & 0.782 & \textbf{0.888} & 0.876 & 0.883 & 0.877 & \textbf{0.883} & 0.873 \\
-    RFM & \textbf{0.780} & \textbf{0.813} & 0.654 & \textbf{0.902} & \textbf{0.930} & \textbf{0.926} & \textbf{0.898} & \textbf{0.891} & \textbf{0.901} \\
-  \end{tabular}
-\end{center}
-
-The random function model outperforms the other models in almost all tests. We also note that in most experiments, a single latent dimension
-suffices to achieve better performance, even when the other models use additional latent dimensions.
-
-The posterior distribution of $\AHfunction$ favors functions defining random array distributions which explain the data well. In this sense,
-our model fits a probability distribution. The standard inference methods for GPLVM and PMF applied to relational data, in contrast, are designed to fit mean squared error, and should therefore
-be expected to show stronger performance under a mean squared error metric. As the following table shows, this is indeed the case.
-The reported values are RMSE results,  with significance evaluated as above.
-
-\begin{center}
-  \begin{tabular}{r | r r r | r r r | r r r}
-    \multicolumn{10}{c}{RMSE results} \\
-    \addlinespace[2pt]
-    Data set & \multicolumn{3}{c|}{High school} & \multicolumn{3}{c|}{NIPS} & \multicolumn{3}{c}{Protein} \\
-    Latent dimensions & 1 & 2 & 3 & 1 & 2 & 3 & 1 & 2 & 3 \\
-    \midrule
-    PMF                   & 0.245 & 0.242 & 0.240 & 0.141 & 0.135 & 0.130 & 0.151 & 0.142 & 0.139 \\
-    Eigenmodel            & 0.244 & \textbf{0.238} & \textbf{0.236} & 0.141 & 0.132 & 0.124 & 0.149 & 0.142 & \textbf{0.138} \\
-    GPLVM                 &0.244 & 0.241 & 0.239 & \textbf{0.112} & \textbf{0.109} & \textbf{0.106} & \textbf{0.139} & \textbf{0.137} & \textbf{0.138} \\
-    RFM & \textbf{0.241} & \textbf{0.236} & 0.248 & 0.126 & \textbf{0.115} & \textbf{0.109} & 0.144 & 0.141 & 0.140 \\
-  \end{tabular}
-\end{center}
-
-An arguably more suitable metric is comparison in terms of log-likelihoods. These cannot, however, be computed in a meaningful manner for
-models such as PMF and GPLVM, which assign a Gaussian likelihood to data. The next table hence reports only comparisons to the eigenmodel.
-%This table is negative conditional log likelihood * 1000 / (number of predicted links).
-\begin{center}
-  \begin{tabular}{r | r r r | r r r | r r r}
-     \multicolumn{10}{c}{Negative conditional log-likelihood} \\
-     \addlinespace[2pt]
-     Data set & \multicolumn{3}{c|}{High school} & \multicolumn{3}{c|}{NIPS} & \multicolumn{3}{c}{Protein} \\
-    Latent dimensions & 1 & 2 & 3 & 1 & 2 & 3 & 1 & 2 & 3 \\
-    \midrule
-    Eigenmodel & 220 & \textbf{210} & \textbf{200} & 88 & 81 & 75 & 96 & 92 & 86 \\
-    RFM        & \textbf{210} & \textbf{200} & 240 & \textbf{71} & \textbf{58} & \textbf{55} & \textbf{83} & \textbf{81} & \textbf{79}  \\
-  \end{tabular}
-\end{center}
-
-%\textcolor{red}{Wrap-up sentence here.}
-
 
 \section{Discussion and conclusions}
 
