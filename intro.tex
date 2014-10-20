@@ -4,7 +4,34 @@
 \chapter{Introduction}
 \label{ch:intro}
 
-Introduction
+This thesis concerns probabilistic modelling of data.
+
+\section{A brief word about Bayesian statistics}
+
+All chapters of this thesis apart from chapter~\ref{ch:criticism} take an entirely (or at least approximately) Bayesian approach to statistical inference.
+The situations in which it is wise to perform inference in a Bayesian manner as opposed to using a method justified by its frequentist properties is still poorly understood.
+As a result, many people still talk about a Bayesians versus frequentists debate as if one paradigm could be declared better than the other \TBD{cite \url{http://www.reddit.com/r/statistics/comments/1ye692/a_fervent_defense_of_frequentist_statistics/} \url{http://lesswrong.com/lw/jne/a_fervent_defense_of_frequentist_statistics/} \url{https://news.ycombinator.com/item?id=7263490} Tibshirani}.
+I will therefore devote a small amount of space to the justification of Bayesian inference and also discuss its limitations.
+
+How should we perform rational inferences with uncertain information?
+A solution to this question is provided by Cox's theorem\fTBD{cite} which derives a calculus of reasoning from three simple axioms of rational behaviour.
+A version of these axioms are colloquially stated by \citet{Edwin2003-jh} as
+\begin{enumerate}
+  \item Degrees of plausibility are represented by real numbers
+  \item Qualitative correspondence with common sense
+  \item Consistency of reasoning
+\end{enumerate}
+The calculus that one can derive from these axioms alone is isomorphic to probability theory; plausabilities satisfy the sum and product rules that are traditionally used as the definition of probability theory\fTBD{cite e.g. Kolmogorov}.
+
+This result tells us that if we can accurately specify our beliefs as probability distributions then there is only one way to rationally (in the sense of Cox's axioms) update those beliefs in the light of new data \ie by using probability theory (which includes Bayes' rule).
+
+\section{An introduction to exchangeability}
+
+Stuff
+
+\section{An introduction to using Gaussian processes to model functions}
+
+Stuff
 
 \outbpdocument{
 \bibliographystyle{plainnat}
