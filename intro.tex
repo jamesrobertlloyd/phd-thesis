@@ -4,12 +4,12 @@
 \chapter{Introduction}
 \label{ch:intro}
 
-This thesis concerns probabilistic modelling of data.
+This thesis concerns the problem of inference from uncertain data.
 
 \section{A brief word about Bayesian statistics}
 
 All chapters of this thesis apart from chapter~\ref{ch:criticism} take an entirely (or at least approximately) Bayesian approach to statistical inference.
-The situations in which it is wise to perform inference in a Bayesian manner as opposed to using a method justified by its frequentist properties is still poorly understood.
+The situations in which it is wise to perform inference in a Bayesian manner as opposed to using a method justified by its frequentist properties is commonly poorly understood.
 As a result, many people still talk about a Bayesians versus frequentists debate as if one paradigm could be declared better than the other \TBD{cite \url{http://www.reddit.com/r/statistics/comments/1ye692/a_fervent_defense_of_frequentist_statistics/} \url{http://lesswrong.com/lw/jne/a_fervent_defense_of_frequentist_statistics/} \url{https://news.ycombinator.com/item?id=7263490} Tibshirani}.
 I will therefore devote a small amount of space to the justification of Bayesian inference and also discuss its limitations.
 
@@ -24,14 +24,65 @@ A version of these axioms are colloquially stated by \citet{Edwin2003-jh} as
 The calculus that one can derive from these axioms alone is isomorphic to probability theory; plausabilities satisfy the sum and product rules that are traditionally used as the definition of probability theory\fTBD{cite e.g. Kolmogorov}.
 
 This result tells us that if we can accurately specify our beliefs as probability distributions then there is only one way to rationally (in the sense of Cox's axioms) update those beliefs in the light of new data \ie by using probability theory (which includes Bayes' rule).
+Thus, we are compelled to perform inference using the rules of probability theory when the following three conditions hold
+\begin{enumerate}
+  \item We are willing to follow Cox's axioms
+  \item We can faithfully express our prior beliefs about a problem using probability distributions
+  \item Exact probabilistic inference or a sufficiently close approximation is computationally tractable
+\end{enumerate}
+There are some who have argued against Cox's axioms\fTBD{Cite from Jaynes} but no widely acceptable alternatives currently exist.
+Conditions 2 and 3 however are often false; in response one may wish to develop or use a method with frequentist guarantees or one could attempt research which makes them true in a larger number of situations\footnotemark{}.
+This thesis is concerned with the latter strategy.
 
-\section{An introduction to exchangeability}
+\footnotetext{
+Or one could attempt to revise statistical theory in such a way as to take account of computational and epistemic limitations.
+These lines of enquiry is potentially very fruitful but still in its infancy\TBD{ Cite Jordan and Swedes and others?}.
+}
 
-Stuff
+Chapters~\ref{ch:networks}~and~\ref{ch:arrays} are concerned with the problem of specifying an appropriate form of a probabilistic model based on symmetry arguments.
+Chapters~\ref{ch:construction}~and~\ref{ch:description} are concerned with producing probability distributions over functions that better match our prior beliefs about the types of function we expect to encounter in data.
+Chapters~\ref{ch:gefcom}~and~\ref{ch:criticism} consider problems where we have good reason to believe that at leats one of conditions 2 and 3 do not hold.
+In particular, chapter~\ref{ch:gefcom} applies the techniques of chapter~\ref{ch:construction} to a data mining competition which reveals some areas where improvements can be made.
+Chapter~\ref{ch:criticism} develops new techniques to investigate probabilistic models where we know that we were unable to specify our prior beliefs faithfully.
+
+\section{An introduction to exchangeability and representation theorems}
+
+Suppose one receives a sequence of data $(X_1, X_2, \dots)$ and we wish to specify our beliefs about this data with a probability distribution.
+An often reasonable prior assumption is that we do not believe the order of the data contains any information, or rather that any probability distribution encoding our beliefs about this data is invariant to reorderings of the data.
+That is, we may often assume that our data is an exchangeable sequence:
+\[
+  \label{eq:intro:exch}
+  (X_1, X_2, \dots) \eqdist (X_{p(1)}, X_{p(2)}, \dots) \qquad \forall\, p\in\SGinf
+\]
+where $\eqdist$ denotes equality in distribution, and $\SGinf$ is the set of all permutations of $\Nats$ which permute at most a finite number of elements.
+
+De Finetti's theorem \citep[e.g.][]{Kallenberg:2005} characterises all probability distributions of sequences with this property;  $(X_i)_{i\in\Nats}$ is an exchangeable sequence if and only if there exists a random probability measure $\AHfunction$ such that $\darray_1,\darray_2,\ldots\simiid\AHfunction$.
+In other words, observations are conditionally \iid given some random $\AHfunction$.
+For the purposes of probabilistic modelling, this implies that our beliefs about exchangeable sequences of data can be expressed in the form of a distribution over probability measures.
+We will refer to De Finetti's theorem and related results as representation theorems. 
+
+In chapter~\ref{ch:networks} we demonstrate that a generalisation of De Finetti's theorem due to Aldous and Hoover can be used to construct probability distributions of networks and arrays where weaker symmetry assumptions may be appropriate.
+In chapter~\ref{ch:arrays} we use results by Kallenberg to extend the results of Aldous and Hoover to the case of probability dsitributions for general databases.
+We also demonstrate how these representation theorems are also compatible with other formalisms and assumptions \eg longitudinal / time-varying data or conditional probability distributions.
 
 \section{An introduction to using Gaussian processes to model functions}
 
-Stuff
+There are a great many introductions to Gaussian processes in the literature\fTBD{Cite a bunch}.
+Rather than repeat them, I will state the key facts required to understand this thesis after giving an intuitive derivation.
+Those with an understanding of Gaussian processes may safely skip this chapter and those interested in further details are directed to the following reference books\fTBD{cite Rasmussed and Williams and maybe Kallenberg as a nice (lol) contrast}.
+I will however give an intuitive introduction for those unfamiliar with Gaussian processes and not wishing to read a more lengthy formal introduction at this point in time.
+
+To gain intuition let us consider a simple version of Bayesian linear regression.
+Suppose we have a data set $D$ consisting of real-valued (input, output) pairs denoted $D = \{(x_i, y_i) \in \Reals^2 : i = 1,\dots,n\}$.
+A simple probabilistic linear regression model of this data could be of the form.
+\[
+  m &\sim \Normal(0,1) \\
+  \varepsilon_i &\simiid \Normal(0,\sigma_\varepsilon^2) \\
+  y_i &= m x_i + \varepsilon_i
+\]
+\ie we believe our data will be linearly related by a line passing through the origin.
+
+For this prior belief it is trivial to update our beliefs in the light of data according to the calculus of probability theory.
 
 \outbpdocument{
 \bibliographystyle{plainnat}
