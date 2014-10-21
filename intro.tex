@@ -69,20 +69,78 @@ We also demonstrate how these representation theorems are also compatible with o
 
 There are a great many introductions to Gaussian processes in the literature\fTBD{Cite a bunch}.
 Rather than repeat them, I will state the key facts required to understand this thesis after giving an intuitive derivation.
-Those with an understanding of Gaussian processes may safely skip this chapter and those interested in further details are directed to the following reference books\fTBD{cite Rasmussed and Williams and maybe Kallenberg as a nice (lol) contrast}.
+Those with an understanding of Gaussian processes may safely skip this section and those interested in further details are directed to the following reference books\fTBD{cite Rasmussed and Williams and maybe Kallenberg as a nice (lol) contrast}.
 I will however give an intuitive introduction for those unfamiliar with Gaussian processes and not wishing to read a more lengthy formal introduction at this point in time.
 
 To gain intuition let us consider a simple version of Bayesian linear regression.
 Suppose we have a data set $D$ consisting of real-valued (input, output) pairs denoted $D = \{(x_i, y_i) \in \Reals^2 : i = 1,\dots,n\}$.
 A simple probabilistic linear regression model of this data could be of the form.
 \[
-  m &\sim \Normal(0,1) \\
+  m &\sim \Normal(0,1) \label{eq:intro:prior_m} \\
   \varepsilon_i &\simiid \Normal(0,\sigma_\varepsilon^2) \\
   y_i &= m x_i + \varepsilon_i
 \]
 \ie we believe our data will be linearly related by a line passing through the origin.
 
-For this prior belief it is trivial to update our beliefs in the light of data according to the calculus of probability theory.
+For this prior belief it is trivial to update our beliefs in the light of data according to the calculus of probability theory upon which we find
+\[
+  m \given D &\sim \Normal\bigg(\frac{\sum_i x_i y_i}{\sum_i x_i^2 + \sigma_\varepsilon^2}, \frac{\sigma_\varepsilon^2}{\sum_i x_i^2 + \sigma_\varepsilon^2}\bigg) \label{eq:intro:posterior_m} \\
+  y_j \given D &\sim \Normal\bigg(\frac{x_j \sum_i x_i y_i}{\sum_i x_i^2 + \sigma_\varepsilon^2}, \frac{x_j^2 \sigma_\varepsilon^2}{\sum_i x_i^2 + \sigma_\varepsilon^2} + \sigma_\varepsilon^2\bigg) \quad \textrm{where } j \notin \{1,\dots,n\}.
+\]
+The updates of the prior belief for $m$ \eqref{eq:intro:prior_m} into the posterior belief \eqref{eq:intro:posterior_m} is demonstrated visually in figure~\ref{fig:intro:lin_reg}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.3\columnwidth]{\introfigsdir/prior}
+\includegraphics[width=0.3\columnwidth]{\introfigsdir/bayes_5}
+\includegraphics[width=0.3\columnwidth]{\introfigsdir/bayes_15}
+\caption{
+Bayesian linear regression.
+\textit{Left}: Visualisation of prior distribution on gradient $m$.
+Lines are random samples from the prior probability distribution, the red shading is a representation of the probability distribution.
+\textit{Middle}: Visualiation of the posterior distribution for the gradient $m$ after 5 samples of data have been observed.
+\textit{Right}: The posterior after 15 observations.
+}
+\label{fig:intro:lin_reg}
+\end{figure}
+
+We now rewrite the equations for the noisy linear relationship between $y$ and $x$ in an equivalent form
+\[
+  y_i &\sim \mathcal{N}(0, x_i^2 + \sigma_\varepsilon^2) \\
+  \Cov(y_i, y_j) &= x_i x_j \quad \forall\,i\neq j
+\]
+\ie the prior distribution for $y$ has been assumed to be a multivariate Gaussian distribution
+\[
+  y \sim \Normal(0, K)
+\]
+where $K_{ij} = x_i x_j + \delta_{ij} \sigma_\varepsilon^2$ where $\delta_{ij}$ is the Kronecker delta.
+Note that we can write this equation for the covariance as a function of pairs of inputs
+\[
+K_{ij} = k(x_i, x_j) = x_i x_j + \delta_{x_i=x_j} \sigma_\varepsilon^2
+\]
+and this relationship holds for datasets of arbitrary finite size\footnotemark{}.
+We now may reasonably ask whether or not we could define a probability distribution over $y$ when $x$ is infinite \eg when $x = \Reals$.
+The answer to this question is yes.
+
+\footnotetext{
+We are implicitly assuming that the $x_i$ are disjoint.
+This can be relaxed without any conceptual difficulty.
+}
+
+\begin{definition}[Gaussian process]
+  A Gaussian process is a collection of random variables, any finite subset of which have a joint Gaussian distribution.
+\end{definition}
+
+To specify a Gaussian process we must specify the mean and covariance of any finite subset of random variables which we achieve with a mean function $\mu : \mathcal{X} \to \Reals$ and a convariance function or kernel $k : \mathcal{X}^2 \to \Reals$ where $\mathcal{X}$ is the space inhabited by the inputs $x$ which can be written
+\[
+  y_i &\sim \mathcal{N}(\mu(x_i), k(x_i, x_i)) \\
+  \Cov(y_i, y_j) &= k(x_i, x_j)
+\]
+or more succinctly
+\[
+  y \sim \Normal(0, K)
+\]
+where $K_{ij} = k(x_i, x_j)$
 
 \outbpdocument{
 \bibliographystyle{plainnat}
