@@ -4,11 +4,18 @@
 \chapter{Introduction}
 \label{ch:intro}
 
-This thesis concerns the problem of inference from uncertain data.
+This thesis concerns the challenge of drawing inferences from uncertain data.
+We take a probabilistic and Bayesian approach throughout  which is the natural extension of drawing logical inferences from certain information~\citep[e.g.][]{Edwin2003-jh}.
+To perform probabilistic inference one must be able to express all of one's prior information about some task probabilistically.
+In chapters~\ref{ch:networks}~and~\ref{ch:arrays} we demonstrate how to construct probability distribution that respect certain symmetry conditions.
+In chapters~\ref{ch:construction}~and~\ref{ch:description} we develop expressive probability distributions over functions and demonstrate that they express patterns that can be easily understood by humans.
+In chapter~\ref{ch:gefcom} we demonstrate the application of these distributions over functions to a data mining competition.
+Finally, chapter~\ref{ch:criticism} considers the problem of criticising a probabilistic model when we have reason to believe that we were either unable to express our prior information probabilistically or perform inference to a sufficient level of accuracy.
+We elaborate on these points in the rest of this chapter.
 
 \section{A brief word about Bayesian statistics}
 
-All chapters of this thesis apart from chapters~\ref{ch:criticism}~and~\ref{ch:gefcom} take an entirely (or at least approximately) Bayesian approach to statistical inference.
+All chapters of this thesis apart from chapters~\ref{ch:criticism}~and~\ref{ch:gefcom} take an entirely (or at least approximately) Bayesian (or more generally probabilistic) approach to statistical inference.
 The situations in which it is wise to perform inference in a Bayesian manner as opposed to using a method justified by its frequentist properties is commonly poorly understood.
 As a result, many people still talk about a Bayesians versus frequentists debate as if one paradigm could be declared better than the other \TBD{cite \url{http://www.reddit.com/r/statistics/comments/1ye692/a_fervent_defense_of_frequentist_statistics/} \url{http://lesswrong.com/lw/jne/a_fervent_defense_of_frequentist_statistics/} \url{https://news.ycombinator.com/item?id=7263490} Tibshirani}.
 I will therefore devote a small amount of space to the justification of Bayesian inference and also discuss its limitations.
@@ -21,7 +28,7 @@ A version of these axioms are colloquially stated by \citet{Edwin2003-jh} as
   \item Qualitative correspondence with common sense
   \item Consistency of reasoning
 \end{enumerate}
-The calculus that one can derive from these axioms alone is isomorphic to probability theory; plausabilities satisfy the sum and product rules that are traditionally used as the axioms of probability theory\fTBD{cite e.g. Kolmogorov}.
+The calculus that one can derive from these axioms alone is isomorphic to probability theory; plausabilities satisfy the sum and product rules that are traditionally stated as the axioms of probability theory\fTBD{cite e.g. Kolmogorov}.
 
 This result tells us that if we can accurately specify our beliefs as probability distributions then there is only one way to rationally (in the sense of Cox's axioms) update those beliefs in the light of new data \ie by using probability theory (which includes Bayes' rule).
 Thus, we are compelled to perform inference using the rules of probability theory when the following three conditions hold
@@ -39,11 +46,11 @@ Or one could attempt to revise statistical theory in such a way as to take accou
 These lines of enquiry is potentially very fruitful but still in its infancy\TBD{ Cite Jordan and Swedes and others?}.
 }
 
-Chapters~\ref{ch:networks}~and~\ref{ch:arrays} are concerned with the problem of specifying an appropriate mathematical form of probabilistic model based on symmetry arguments.
-Chapters~\ref{ch:construction}~and~\ref{ch:description} are concerned with producing probability distributions over functions that better match our prior beliefs about the types of function we expect to encounter in data.
-Chapters~\ref{ch:gefcom}~and~\ref{ch:criticism} consider problems where we have good reason to believe that at leats one of conditions 2 and 3 do not hold.
-In particular, chapter~\ref{ch:gefcom} applies the techniques of chapter~\ref{ch:construction} to a data mining competition which reveals some areas where improvements can be made.
-Chapter~\ref{ch:criticism} develops new techniques to investigate probabilistic models where we know that we were unable to specify our prior beliefs faithfully.
+%Chapters~\ref{ch:networks}~and~\ref{ch:arrays} are concerned with the problem of specifying an appropriate mathematical form of probabilistic model based on symmetry arguments.
+%Chapters~\ref{ch:construction}~and~\ref{ch:description} are concerned with producing probability distributions over functions that better match our prior beliefs about the types of function we expect to encounter in data.
+%Chapters~\ref{ch:gefcom}~and~\ref{ch:criticism} consider problems where we have good reason to believe that at leats one of conditions 2 and 3 do not hold.
+%In particular, chapter~\ref{ch:gefcom} applies the techniques of chapter~\ref{ch:construction} to a data mining competition which reveals some areas where improvements can be made.
+%Chapter~\ref{ch:criticism} develops new techniques to investigate probabilistic models where we know that we were unable to specify our prior beliefs faithfully.
 
 \section{An introduction to exchangeability and representation theorems}
 
@@ -113,10 +120,10 @@ We now rewrite the equations for the noisy linear relationship between $y$ and $
 \[
   y \sim \Normal(0, K)
 \]
-where $K_{ij} = x_i x_j + \delta_{ij} \sigma_\varepsilon^2$ where $\delta_{ij}$ is the Kronecker delta.
+where $K_{ij} = x_i x_j + \delta_{ij} \sigma_\varepsilon^2$ and $\delta_{ij}$ is the Kronecker delta.
 Note that we can write this equation for the covariance as a function of pairs of inputs
 \[
-K_{ij} = k(x_i, x_j) = x_i x_j + \delta_{x_i=x_j} \sigma_\varepsilon^2 \label{eq:intro:lin_noise_k}
+K_{ij} = k(x_i, x_j) = x_i x_j + \delta_{x_ix_j} \sigma_\varepsilon^2 \label{eq:intro:lin_noise_k}
 \]
 and this relationship holds for datasets of arbitrary finite size\footnotemark{}.
 We now may reasonably ask whether or not we could define a probability distribution over $y$ when $x$ is infinite \eg when $x = \Reals$.
@@ -172,14 +179,26 @@ The distribution over linear functions was constructed using a covariance of the
   k(x_i, x_j) = x_i x_j
 \]
 which is the same as that in equation~\eqref{eq:intro:lin_noise_k} with the noise variance equal to zero.
+
 The distribution over smooth functions was constructed with a kernel of the form
 \[
-  k(x_i, x_j) = \exp(-|x_i - x_j|^2)
+  k(x_i, x_j) = \exp(-\alpha|x_i - x_j|^2)
 \]
+where $\alpha$ is a constant.
+When the distance between $x_i$ and $x_j$ is small, the covariance (and correlation) between $f(x_i)$ and $f(x_j)$ will be approximately equal to 1.
+As a result, nearby values of the function will be similar to each other.
+As the distance $|x_i - x_j|$ increases the correlation monotonically decreases to zero; the exact way in which the correlation decreases determines the characteristic smoothness one observes in figure~\ref{fig:intro:samples}.
+
+Finally, the distribution over periodic functions was constructed using a covariance of the form
+\[
+  k(x_i, x_j) = \exp\left(-\frac{2\sin^2 (\pi(x_i - x_j)/p)}{\ell^2}\right)
+\]
+where $\ell$ and $p$ are constants.
+
 
 In chapter~\ref{ch:construction} we demonstrate how to learn an appropriate kernel for a particular dataset by constructing new kernels from old.
 In chapter~\ref{ch:gefcom} we demonstrate how these ideas were applied to a data mining competition and where this reveals scope for future work.
-Finally, in chapter~\ref{ch:description} we demonstrate that by carefully choosing which kernels we compose with each other we can always automatically produce natural language descriptions of the probability distributions they encode for.
+In chapter~\ref{ch:description} we demonstrate that by carefully choosing which kernels we compose with each other we can always automatically produce natural language descriptions of the probability distributions they encode for.
 
 \outbpdocument{
 \bibliographystyle{plainnat}
