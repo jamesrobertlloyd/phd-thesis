@@ -4,7 +4,7 @@
 \chapter{Statistical models for networks}
 \label{ch:networks}
 
-In all of the chapters preceding this one, our data can naturally be viewed as a sequence or a list.
+In much of the machine learning literature, data can naturally be viewed as a sequence or a list.
 Of course, there are many other types and structures of data, such as those which are most naturally represented as a network.
 In this chapter we make the distinction between these types of data precise by symmetry arguments and invoke a theorem due to Aldous and Hoover to demonstrate appropriate forms of statistical model for these data types.
 In particular, we use the Aldous--Hover theorem to demonstrate the appropriate form of statistical models for certain types of network and propose a nonparametric model as a literal interpretation of the theorem.
@@ -66,28 +66,43 @@ In the following, we model this function explicitly using a nonparametric distri
 \section{Background: Exchangeable sequences and arrays}
 \label{sec:background}
 
-The data considered so far in this thesis has been in the form of a sequence or a list \eg $\{X_1, X_2, \dots\}$ where $X_i$ represents both inputs and outputs of a data point.
-More interestingly, any probabilistic model of this data considered thus far would assign equal probabilities or densities to any permutation of this data.
-De Finetti's theorem \citep[e.g.][]{Kallenberg:2005} characterises all probability distributions of sequences with this property.
-Let $\darray_1,\darray_2,\ldots$ be a sequence of random variables, each taking values in a common space $\dataspace$.
-This sequence is called \emph{exchangeable} if its joint distribution  is invariant under arbitrary permutation of the indices, \ie if
-\begin{equation}
-  \label{eq:exchangeability}
-  (\darray_1,\darray_2,\ldots) \eqdist (\darray_{\pi(1)},\darray_{\pi(2)},\ldots) \qquad\text{ for all } \pi\in\SGinf\;.
-\end{equation}
-Here, $\eqdist$ denotes equality in distribution, and $\SGinf$ is the set of all permutations of $\Nats$ which permute at most a finite number of elements.
-De Finetti's theorem states that, $(\darray_i)_{i\in\Nats}$ is exchangeable if and only if there exists a random probability measure $\AHfunction$ on $\dataspace$ such that $\darray_1,\darray_2,\ldots\simiid\AHfunction$.
-In other words, observations are conditionally \iid given $\AHfunction$.
-For the purposes of statistical modelling, this implies that $\AHfunction$ represents common structure in the observed data---the target of statistical inference---whereas $\darray_i|\AHfunction$ represents remaining, independent randomness in each observation. 
+\subsection{Reminder: de Finetti's theorem}
 
-\subsection{De Finetti-type representations for exchangeable arrays}
+%The data considered so far in this thesis has been in the form of a sequence or a list \eg $\{X_1, X_2, \dots\}$ where $X_i$ represents both inputs and outputs of a data point.
+%More interestingly, any probabilistic model of this data considered thus far would assign equal probabilities or densities to any permutation of this data.
+%de Finetti's theorem \citep[e.g.][]{Kallenberg:2005} characterises all probability distributions of sequences with this property.
+%Let $\darray_1,\darray_2,\ldots$ be a sequence of random variables, each taking values in a common space $\dataspace$.
+%This sequence is called \emph{exchangeable} if its joint distribution  is invariant under arbitrary permutation of the indices, \ie if
+%\begin{equation}
+%  \label{eq:exchangeability}
+%  (\darray_1,\darray_2,\ldots) \eqdist (\darray_{\pi(1)},\darray_{\pi(2)},\ldots) \qquad\text{ for all } \pi\in\SGinf\;.
+%\end{equation}
+%Here, $\eqdist$ denotes equality in distribution, and $\SGinf$ is the set of all permutations of $\Nats$ which permute at most a finite number of elements.
+%de Finetti's theorem states that, $(\darray_i)_{i\in\Nats}$ is exchangeable if and only if there exists a random probability measure $\AHfunction$ on $\dataspace$ such that $\darray_1,\darray_2,\ldots\simiid\AHfunction$.
+%n other words, observations are conditionally \iid given $\AHfunction$.
+%For the purposes of statistical modelling, this implies that $\AHfunction$ represents common structure in the observed data---the target of statistical inference---whereas $\darray_i|\AHfunction$ represents remaining, independent randomness in each observation. 
+
+Repeating from the main introduction to this thesis, suppose one receives a sequence of data $(X_1, X_2, \dots)$ and we wish to specify our beliefs about this data with a probability distribution.
+An often reasonable prior assumption is that we do not believe the order of the data contains any information, or rather that any probability distribution encoding our beliefs about this data should be invariant to reorderings of the data.
+That is, we may often believe that our data is an exchangeable sequence:
+\[
+  \label{eq:networks:exch}
+  (X_1, X_2, \dots) \eqdist (X_{p(1)}, X_{p(2)}, \dots) \qquad \forall\, p\in\SGinf
+\]
+where $\eqdist$ denotes equality in distribution, and $\SGinf$ is the set of all permutations of $\Nats$ which permute at most a finite number of elements.
+
+de Finetti's theorem \citep[e.g.][]{Kallenberg:2005} characterises all probability distributions of sequences with this property;  $(X_i)_{i\in\Nats}$ is an exchangeable sequence if and only if there exists a random probability measure $\AHfunction$ such that $\darray_1,\darray_2,\ldots\simiid\AHfunction$.
+In other words, observations are conditionally \iid given some random $\AHfunction$.
+For the purposes of probabilistic modelling, this implies that our beliefs about exchangeable sequences of data can be expressed in the form of a distribution over probability measures.
+
+\subsection{de Finetti-type representations for exchangeable arrays}
 
 To specify probabilistic models for graph- or array-valued data, it would be helpful to have a suitable counterpart to de Finetti's theorem applicable when the infinite random sequences in \eqref{eq:exchangeability} are substituted by infinite random arrays $\darray=(\darray_{ij})_{i,j\in\Nats}$.
 For such data, the invariance assumption \eqref{eq:exchangeability} is typically too restrictive: In the graph case $\darray_{ij}\in\lbrace 0,1\rbrace$, for example, the probability of $\darray$ would then depend only on the proportion of present edges in the graph, but not on the graph structure.
 Instead, we define exchangeability of random 2-arrays in terms of the \emph{simultaneous} application of a permutation to rows and columns.
 More precisely:
 \begin{definition}
-  An array $\darray=(\darray_{ij})_{i,j\in\Nats}$ is called an \emph{exchangeable array} if 
+  An array $\darray=(\darray_{ij})_{i,j\in\Nats}$ is called a \emph{jointly exchangeable array} if 
   \begin{equation}
     \label{eq:jointly:ex}
     (\darray_{ij})\eqdist(\darray_{\pi(i)\pi(j)}) \qquad\text{ for every }\pi\in\SGinf\;.
