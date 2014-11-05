@@ -7,7 +7,7 @@
 In much of the machine learning literature, data can naturally be viewed as a sequence or a list.
 Of course, there are many other types and structures of data, such as those which are most naturally represented as a network.
 In this chapter we make the distinction between these types of data precise by symmetry arguments and invoke a theorem due to Aldous and Hoover to demonstrate appropriate forms of statistical model for these data types.
-In particular, we use the Aldous--Hover theorem to demonstrate the appropriate form of statistical models for certain types of network and propose a nonparametric model as a literal interpretation of the theorem.
+In particular, we propose a nonparametric model of networks as a literal interpretation of this theorem.
 In chapter~\ref{ch:arrays} we extend these results to yet more data structures.
 
 This chapter is based on joint work with Peter Orbanz, Zoubin Ghahramani and Daniel Roy \citep{Lloyd2012-sb}.
@@ -46,7 +46,7 @@ Their implication for probabilistic modelling is that
 \emph{we can specify a probability distribution for an exchangeable random array by specifying a probability distribution on (measurable) functions}.
 %The prior is in general a distribution on the space of all functions which can arise in the representation result, and the dimension of this space is infinite.
 % A prior must hence be nonparametric to have reasonably large support; a parametric prior concentrates on a finite-dimensional subset.
-In the following, we model this function explicitly using a nonparametric distribution over functions.
+In this chapter, we model this function explicitly using a nonparametric distribution over functions.
 
 \begin{figure}
  \begin{center}
@@ -67,20 +67,6 @@ In the following, we model this function explicitly using a nonparametric distri
 \label{sec:background}
 
 \subsection{Reminder: de Finetti's theorem}
-
-%The data considered so far in this thesis has been in the form of a sequence or a list \eg $\{X_1, X_2, \dots\}$ where $X_i$ represents both inputs and outputs of a data point.
-%More interestingly, any probabilistic model of this data considered thus far would assign equal probabilities or densities to any permutation of this data.
-%de Finetti's theorem \citep[e.g.][]{Kallenberg:2005} characterises all probability distributions of sequences with this property.
-%Let $\darray_1,\darray_2,\ldots$ be a sequence of random variables, each taking values in a common space $\dataspace$.
-%This sequence is called \emph{exchangeable} if its joint distribution  is invariant under arbitrary permutation of the indices, \ie if
-%\begin{equation}
-%  \label{eq:exchangeability}
-%  (\darray_1,\darray_2,\ldots) \eqdist (\darray_{\pi(1)},\darray_{\pi(2)},\ldots) \qquad\text{ for all } \pi\in\SGinf\;.
-%\end{equation}
-%Here, $\eqdist$ denotes equality in distribution, and $\SGinf$ is the set of all permutations of $\Nats$ which permute at most a finite number of elements.
-%de Finetti's theorem states that, $(\darray_i)_{i\in\Nats}$ is exchangeable if and only if there exists a random probability measure $\AHfunction$ on $\dataspace$ such that $\darray_1,\darray_2,\ldots\simiid\AHfunction$.
-%n other words, observations are conditionally \iid given $\AHfunction$.
-%For the purposes of statistical modelling, this implies that $\AHfunction$ represents common structure in the observed data---the target of statistical inference---whereas $\darray_i|\AHfunction$ represents remaining, independent randomness in each observation. 
 
 Repeating from the main introduction to this thesis, suppose one receives a sequence of data $(X_1, X_2, \dots)$ and we wish to specify our beliefs about this data with a probability distribution.
 An often reasonable prior assumption is that we do not believe the order of the data contains any information, or rather that any probability distribution encoding our beliefs about this data should be invariant to reorderings of the data.
@@ -105,24 +91,39 @@ More precisely:
   An array $\darray=(\darray_{ij})_{i,j\in\Nats}$ is called a \emph{jointly exchangeable array} if 
   \begin{equation}
     \label{eq:jointly:ex}
-    (\darray_{ij})\eqdist(\darray_{\pi(i)\pi(j)}) \qquad\text{ for every }\pi\in\SGinf\;.
+    (\darray_{ij})\eqdist(\darray_{p(i)p(j)}) \qquad\text{ for every }pi\in\SGinf\;.
   \end{equation}
 \end{definition}
 
-The assumption of equation stated in~\eqref{eq:exchangeability} states that the order of the data does not matter.
+The assumption of exchangeability stated in~\eqref{eq:exchangeability} states that the order of the data does not matter.
 In contrast, array exchangeability is a statement of indifference to any ordering of the entities or objects that the data measures relations between.
 In fact, exchangeable sequences can be viewed in this way too, the difference is that data is measured at individual entities or objects rather than at pairs.
 
-Since this form of exchangeability weakens the hypothesis \eqref{eq:exchangeability} by demanding invariance only under a subset of all permutations of $\Nats^2$---those of the form $(i,j)\mapsto(\pi(i),\pi(j))$---we can no longer expect de Finetti's theorem to hold.
-The relevant generalization of the de Finetti theorem to this case is the following:
+Since this form of exchangeability weakens the hypothesis \eqref{eq:exchangeability} by demanding invariance only under a subset of all permutations of $\Nats^2$---those of the form $(i,j)\mapsto(p(i),p(j))$---we can no longer expect de Finetti's theorem to hold.
+The relevant generalisation of the de Finetti theorem to this case is the following:
 \begin{thm}[Aldous, Hoover]
   \label{theorem:ah}
-  A random matrix $(\darray_{ij})$ is exchangeable if and only if there is a random (measurable) function ${F:[0,1]^3\rightarrow\dataspace}$ such that the following holds: If $(\AHvar_i)_{i\in\Nats}$ and $(\AHvar_{ij})_{ij\in\Nats}$ are \iid sequences of ~$\Uniform[0,1]$ random variables, then
+  A random array $(\darray_{ij})$ is jointly exchangeable if and only if there is a random (measurable) function ${F:[0,1]^3\rightarrow\dataspace}$ such that the following holds: If $(\AHvar_i)_{i\in\Nats}$ and $(\AHvar_{\{ij\}})_{ij\in\Nats}$ are \iid sequences of ~$\Uniform[0,1]$ random variables, then
   \begin{equation}
     \label{eq:ah}
-    (\darray_{ij})\eqdist (F(\AHvar_i,\AHvar_j,\AHvar_{ij})) \qquad\text{ for all }i,j\in\Nats\;.
+    (\darray_{ij})\eqdist (F(\AHvar_i,\AHvar_j,\AHvar_{\{ij\}})) \qquad\text{ for all }i,j\in\Nats\;.
   \end{equation}
 \end{thm}
+
+\begin{rem}%\fTBD{To be reviewed. I have made reference to simplicity}
+\label{rem:U_ij}
+Note that the symmetry of $(U_{\{ij\}})$ is not restrictive, in the sense that a representation where \eg $U_{ij}$ and $U_{ji}$ are \iid is trivially jointly exchangeable and thus can be given a representation of the above form.
+%\NA{In section \ref{sec:simple} we describe a representation result which does not involve $(U_{ij})$ and thus the symmetry does not place a restriction on potential models of $\darray$.}\fTBD{DR: Need to think about this.}
+\end{rem}
+%\begin{rem}[symmetric arrays]\label{remsym}
+%When modeling a symmetric array $X$, one can reduce the index set from ordered pairs $(i,j)$ to unordered pairs $\{i,j\}$.  
+%In this case, $(X_{\{i,j\}}) \eqdist (F(U_i,U_j,U_{\{i,j\}}))$ where $F(\cdot,\cdot,d)$ is symmetric for every fixed value $d$.
+%\end{rem}
+\begin{rem}[separately exchangeable arrays]\label{remsep}
+We say that an array $(X_{ij})$ is \emph{separately exchangeable} when $(X_{ij}) \eqdist (X_{p(i)p'(j)})$ for every pair $p,p' \in \SGinf$ of permutations. 
+Such symmetry would be appropriate when modelling, e.g., a collaborative filtering task where the order of users and items are simultaneously irrelevant.
+A separately exchangeable array can be seen to correspond with an off-diagonal subarray of a jointly exchangeable array, and thus can be shown to have the representation $(X_{ij}) \eqdist (F(U_i,V_j,W_{ij}))$, where $(U_i)$, $(V_j)$ and $(W_{ij})_{i,j\in\Nats}$ are \iid $\Uniform[0,1]$ random variables.
+\end{rem}
 
 \subsection{Random graphs}
 
@@ -177,7 +178,7 @@ For a discussion of convergence properties of general arrays similar to those sk
 Since we do not explicitly consider the case $d>2$ in our experiments in this chapter, we restrict 
 our presentation throughout to the matrix-valued case for simplicity.
 We note, however, that the model and inference algorithms described in the following are applicable to general array-valued data.
-In chapter \ref{ch:arrays} we extend these representation results to arbitrary collections of arrays.
+In chapter \ref{ch:arrays} we extend these representation results to arbitrary collections of arrays of arbitrary size.
 
 \section{A nonparametric model of exchangeable arrays}
 
@@ -215,10 +216,9 @@ We assume the following generative model:
 \end{equation}
 Additionally, the kernel may depend on parameters, which we denote by $\covhyppar$.
 
-The decomposition of $F$ introduces a natural set of latent variables $W_{ij}:=\AHfunction(\AHvar_i,\AHvar_j)$, conditional on which the
-data is explained as $\darray_{ij}\sim\likelihood[\,.\,|\larray_{ij}]$. 
+The decomposition of $F$ introduces a natural set of latent variables $W_{ij}:=\AHfunction(\AHvar_i,\AHvar_j)$, conditioned on which the data is explained as $\darray_{ij}\sim\likelihood[\,.\,|\larray_{ij}]$. 
 The parameter space of the model is the infinite-dimensional space $\cfspace_{\latentspace}$.
-Hence, the model is nonparametric.
+%Hence, the model is nonparametric.
 
 The choice of $P$ depends on the type of data considered, and we are here interested in two cases, graphs and 
 real-valued matrices.
@@ -259,34 +259,36 @@ Inference in Gaussian processes is a well-understood problem, and the choice of 
   $O(pn^2)=O(n^2)$). Analogous representation theorems for sparse random graphs are to date an open problem in probability.
 \end{rem}
 
-\section{A summary of related work}
-\label{sec:Related}
+\section{Related work}
+\label{sec:networks:related}
 
-%\fTBD{I have modified much of this - bigger changes are separately noted}
-%Our model has some noteworthy relations to the Gaussian process latent variable model (GPLVM); a dimensionality-reduction technique \citep[e.g.][]{Lawrence2005}.
-%GPLVMs can be applied to relational data, but doing so makes the assumption that either the rows or the columns of the random matrix are independent \cite{Lawrence2009}. 
-%In terms of our model, this corresponds to choosing kernels of the form $\kernel_\AHvar \otimes \delta_\AHvaralt$, where $\otimes$ represents the Kronecker matrix product and $\delta$ represents an `identity' kernel (\ie the corresponding kernel matrix is the identity matrix).
-%From this perspective, the application of our model to separately exchangeable real-valued matrices can be interpreted as a form of co-dimensionality reduction. 
+Our model has some noteworthy relations to the Gaussian process latent variable model (GPLVM); a dimensionality-reduction technique \citep[e.g.][]{Lawrence2005}.
+GPLVMs can be applied to relational data \citep{Lawrence2009}, but doing so makes the assumption that either the rows or the columns of the random matrix are independent. 
+In terms of our model, this corresponds to choosing kernels of the form $\kernel_\AHvar \otimes \delta_\AHvaralt$, where $\otimes$ represents the Kronecker matrix product and $\delta$ represents an `identity' kernel (\ie the corresponding kernel matrix is the identity matrix).
+From this perspective, the application of our model to separately exchangeable real-valued matrices can be interpreted as a form of co-dimensionality reduction. 
 
-%A related parametric model is the eigenmodel of \citet{Hoff2007a}.
-%This model, also justified by exchangeability arguments, approximates a matrix with a bilinear form, followed by some link function and distribution depending on the type of data.
-%We show in proposition \ref{prop:matrixfactorisation} that this can be represented in the form of our model by using a kernel function of the form $L_\AHvar \otimes L_\AHvaralt$ where $L$ represents the dot product kernel (\ie the kernel that gives rise to linear functions).
+A related parametric model is the eigenmodel of \citet{Hoff2007a}.
+This model, also justified by exchangeability arguments, approximates a matrix with a bilinear form, followed by some link function and distribution depending on the type of data.
+We show in proposition \ref{prop:matrixfactorisation} that this can be represented in the form of our model by using a kernel function of the form $L_\AHvar \otimes L_\AHvaralt$ where $L$ represents the dot product kernel (\ie the kernel that gives rise to linear functions).
 
 %\fTBD{To be reviewed - also mentions nonparametric matrix factorisation}
-%Available models for graph data include the parametric mixed membership stochastic blockmodel (MMSB) \citep{Airoldi2008} and nonparametric infinite relational model (IRM) \cite{Kemp2006}, latent feature relational model (LFRM) \cite{Miller2009}, infinite latent attribute model \cite{Palla2012} and many others.
+Available models for graph data include the parametric mixed membership stochastic blockmodel (MMSB) \citep{Airoldi2008} and nonparametric infinite relational model (IRM) \cite{Kemp2006}, latent feature relational model (LFRM) \cite{Miller2009}, infinite latent attribute model \cite{Palla2012} and many others.
 %\NA{
-%Similar models also exist for real valued matrices, including the infinite hidden relational model (IHRM) \citep{Xu2006} which is a counterpart to the IRM and binary matrix factorisation (BMF) \citep{Meeds2007} which is a counterpart to the LFRM.
+Similar models also exist for real valued matrices, including the infinite hidden relational model (IHRM) \citep{Xu2006} which is a counterpart to the IRM and binary matrix factorisation (BMF) \citep{Meeds2007} which is a counterpart to the LFRM.
 %}
 
-%Roy and Teh \citep{Roy2009} present a nonparametric Bayesian model of relational data that approximates $\AHfunction$ by a piece-wise constant function whose hierarchical structure is a Mondrian process. In contrast, we approximate $\AHfunction$ by a smooth function.
+Roy and Teh \citep{Roy2009} present a nonparametric Bayesian model of relational data that approximates $\AHfunction$ by a piece-wise constant function whose hierarchical structure is a Mondrian process. In contrast, we approximate $\AHfunction$ by a smooth function.
 
-%A recent development is the Sparse Matrix Variate Gaussian Process Blockmodel (SMGB) of Yan, Xu and Qi \cite{Yan2011}, and the extension to higher order arrays \cite{Xu2012} (InfTucker).
-%Although not motivated in terms of exchangeability, these Gaussian process models do not impose independence assumptions on either rows or columns, in contrast to the GPLVM.
-%These models can be represented as placing a prior ${\AHfunction \dist \GP\,(0, \kernel_1 \otimes \kernel_2)}$ on the function $\AHfunction$ in \eqref{eq:decomposition}.
+A recent development is the Sparse Matrix Variate Gaussian Process Blockmodel (SMGB) of Yan, Xu and Qi \cite{Yan2011}, and the extension to higher order arrays \cite{Xu2012} (InfTucker).
+Although not motivated in terms of exchangeability, these Gaussian process models do not impose independence assumptions on either rows or columns, in contrast to the GPLVM.
+These models can be represented as placing a prior ${\AHfunction \dist \GP\,(0, \kernel_1 \otimes \kernel_2)}$ on the function $\AHfunction$ in \eqref{eq:decomposition}.
 %\fTBD{Needs review}
-%This prior is equivalent to \eqref{eq:model} for some common choices of kernel $\kernel$ (\eg squared exponential) but excludes others such as those that give rise to symmetric functions or additive kernels.
-%Existing efficient algorithms for Gaussian processes of this form \citep[e.g.][]{Saatci2011} perform calculations using a complete grid of data, which results in computational complexities that depend on the size of the array.
-%Our work suggests that it may not be necessary to impose Kronecker product structure on the kernel, which allows for inference with improved scaling.
+This prior is equivalent to \eqref{eq:model} for some common choices of kernel $\kernel$ (\eg squared exponential) but excludes others such as those that give rise to symmetric functions or additive kernels.
+Existing efficient algorithms for Gaussian processes of this form \citep[e.g.][]{Saatci2011} perform calculations using a complete grid of data, which results in computational complexities that depend on the size of the array.
+Our work suggests that it may not be necessary to impose Kronecker product structure on the kernel, which allows for inference with improved scaling when data is sparsely observed.
+\TBD{That said, their most recent work is very scaling.}
+
+\subsection{A common perspective on the literature}
 
 \fTBD{To be reviewed}
 \NA{
@@ -386,52 +388,6 @@ Despite being more general, our model is arguably simpler and firmly rooted in t
 We note that the nonparametric Gaussian process prior on $\AHfunction$ in the random function models means that, if supported by the data, the posterior distribution of $\AHfunction$ could approximate any of the functions specified by other models.
 This is of course true of the other nonparametric models; particular priors will influence the rate at which different forms of $\AHfunction$ can be inferred.
 
-\fTBD{Other table killed}
-%\TBD{Can we kiil the original version of the table - keeping only the above and deleting the below?}
-
-%Some examples of the various available models can be succinctly summarized in the following table.
-
-%\begin{table}[h]
-%  \centering
-%  \begin{tabular}{lccl} 
-% %    \toprule
-%    \multicolumn{4}{c}{Graph data}\\
-%    \midrule
-%    %\addlinespace[2pt]
-%    %\textcolor{red}{Random function model} 
-%    Random function model & $\AHfunction$ & $\sim$ & $\GP\,(0, \kernel)$\\
-%    Latent class \cite{Wang1987} & $\larray_{ij}$ & $=$ & $m_{\AHvar_i\AHvar_j}\,\textrm{where} \,\AHvar_i \in \{1,\ldots,K\}$\\
-%    IRM \cite{Kemp2006} & $\larray_{ij}$ & $=$ & $m_{\AHvar_i\AHvar_j}\,\textrm{where} \,\AHvar_i \in \{1,\ldots,\infty\}$\\
-%    Latent distance \cite{Hoff2002} & $\larray_{ij}$ & $=$ & $-|\AHvar_i - \AHvar_j|$\\
-%    Eigenmodel \cite{Hoff2007a} &$\larray_{ij}$ & $=$ & $\AHvar_i'\Lambda \AHvar_j$\\
-%    MMSB \cite{Airoldi2008} &$\larray_{ij}$ & $=$ & $z_i'\Lambda z_j\,\textrm{where} \,z_i \sim \textrm{Multinomial}(\AHvar_i)$\\
-%    Nonparametric latent feature \cite{Miller2009} & $\larray_{ij}$ & $=$ & $\AHvar_i'\Lambda \AHvar_j\,\textrm{where} \,\AHvar_i \in \{0,1\}^\infty$\\
-%    SMGB \cite{Yan2011}, InfTucker \cite{Xu2012} & $\AHfunction$ & $\dist$ & $\GP\,(0, \kernel_1 \otimes \kernel_2)$ \\
-%    %\midrule
-%    \addlinespace[4pt]
-%    \multicolumn{4}{c}{Real-valued matrix data}\\
-%    \midrule
-%    %\textcolor{red}{Random function model} 
-%    Random function model & $\AHfunction$ & $\sim$ & $\GP\,(0, \kernel)$\\
-%    Mondrian process~\cite{Roy2009} & $\AHfunction$ & = & piece-wise constant random function\\
-%    PMF~\cite{Salakhutdinov2008} & $\larray_{ij}$ & $=$ & $\AHvar_i'V_j$\\
-%    GPLVM~\cite{Lawrence2009} & $\AHfunction$ & $\sim$ & $\GP\,(0, \kernel \otimes I)$\\
-%    Linear relational GP~\cite{Yu} & $\AHfunction$ & $\sim$ & $\GP\,(0, \kernel_1 \otimes \kernel_2)\,\textrm{where} \,\kernel_i\,\textrm{is linear} $\\
-%    InfTucker \cite{Xu2012} & $\AHfunction$ & $\dist$ & $\GP\,(0, \kernel_1 \otimes \kernel_2)$ \\
-% %\bottomrule
-%\end{tabular}
-%\label{table:ModelComparison}
-%\end{table}
-
-%% The strategy pursued in the model's definition---start with an exchangeability theorem and define a prior distribution on
-%% the representing function---is analogs to more canonical approaches in the de Finetti case, which define priors with
-%% large support on the random measure $\AHfunction$ in de Finetti's theorem. Defining a prior that can generate any measurable function
-%% $F$ would constitute a ``fully nonparametric'' model, in analogy to early work in Bayesian nonparametrics which attempted to
-%% define completely general priors on random measures; 
-%% the Dirichlet process was originally conceived with this purpose in mind, but soon turned out to concentrate on the subset of
-%% discrete measures \cite{}. To this day, such general priors remain elusive \cite{}.
-%% In contrast, nonparametric priors that impose sufficiently strong assumptions to guarantee tractability have proven a very fruitful
-
 \section{Posterior computation}
 \label{sec:Inference}
 
@@ -442,22 +398,18 @@ In this section we describe Markov Chain Monte Carlo (MCMC) algorithms for gener
 The random function representation in theorem \ref{theorem:ah} is not restricted to the use of uniform distributions for the variables $\AHvar_i$ and $\AHvar_{ij}$.
 The uniform distributions arise in the proof of the theorem as generic distributions with which one can encode the information of other random variables via a measurable function.
 Therefore, the proof remains unchanged if one replaces the uniform distributions with any isomorphic probability distribution \ie any non-atomic
-probability measure on a Borel space. For the presentation in section~\ref{sec:background}, 
-the domain $[0,1]^2$ of the uniform provides an intuitive analogy
-with adjacency matrices. For the purposes of inference, normal distributions are more convenient, and we henceforth use
-${\AHvar_{1},\AHvar_{2},\ldots\; \simiid \Normal(0, I_r)}$ for some integer $r$.
+probability measure on a Borel space.
+For the presentation in section~\ref{sec:background}, the domain $[0,1]^2$ of the pairs of uniforms provides an intuitive analogy
+with adjacency matrices.
+For the purposes of inference, normal distributions are more convenient, and we henceforth use ${\AHvar_{1},\AHvar_{2},\ldots\; \simiid \Normal(0, I_r)}$ for some integer $r$.
 
-Since we focus on undirected graphical data, we require the symmetry condition $\larray_{ij} = \larray_{ji}$. This can be achieved by constructing the kernel function in the following way
+Since we focus on undirected graphical data, we require the symmetry condition $\larray_{ij} = \larray_{ji}$. This can be achieved by constructing the kernel function in the following way\fTBD{Cite Duvenaud thesis}
 \begin{eqnarray}
 \kernel(\inputpoints_1, \inputpoints_2) & = & \frac{1}{2}\big(\bar\kernel(\inputpoints_1, \inputpoints_2) + \bar\kernel(\inputpoints_1, \bar\inputpoints_2)\big) + \sigma^2I \quad \quad \textrm{(Symmetry + noise)} \\
 \bar\kernel(\inputpoints_1, \inputpoints_2) & = & \scalefactor^2\exp(-|\inputpoints_1 - \inputpoints_2|^2/(2\lengthscale^2)) \quad \quad \quad \quad \quad \textrm{(RBF kernel)}
 \end{eqnarray}
 where $\inputpoints_k = (\AHvar_{i_k}, \AHvar_{j_k})$, $\bar\inputpoints_k= (\AHvar_{j_k}, \AHvar_{i_k})$ and $\scalefactor, \lengthscale, \sigma$ represent a scale factor, length scale and noise respectively (see \citep[e.g.][]{Rasmussen2006} for a discussion of kernel functions). We collectively denote the kernel parameters by $\covhyppar$.
-Also, as remark~\ref{remsym} points out, for undirected data one can model only the upper triangular part of the adjacency matrix.
-
-%This construction can be justified as the limit of a basis function argument with the symmetry condition enforced, analogous to arguments for other kernel functions.
-%, but the construction of kernels that preserve certain symmetries is potentially an interesting area for future research.
-
+For undirected data one can model only the upper triangular part of the adjacency matrix.
 
 \subsection{Sampling without approximating the model}
 
@@ -476,7 +428,7 @@ Let $\numnodes = |\AHvar_{\lbrace i\rbrace}|$ denote the number of rows in the o
 let $\inputpoints$ be the set of all pairs $(\AHvar_i,\AHvar_j)$ for all observed relations $\darray_{ij}$, 
 let $\numobs = |\inputpoints|$ denote the number of observed relations,
 and 
-let $K$ represent the $\numobs \times \numobs$ kernel matrix between all points in $\inputpoints$. Changes to $\covhyppar$ affect every entry in the kernel matrix $K$ and so, naively, the computation of the Gaussian likelihood of $\darray$ takes $\CompOrder(\numobs^3)$ time.  Likewise, changes to $\AHvar$ also affect entries in $K$. Naively reevaluating the Gaussian likelihood term again takes $\CompOrder(\numobs^3)$ time, and so, across all $\numnodes$ rows, we expend $\CompOrder(\numobs^3 \numnodes)$ time. Whether or not this can be improved by exploiting structure in the modifications, the cubic dependence on $\numobs$ seems unavoidable, and thus this naive algorithm is unusable for all but small data sets. 
+let $K$ represent the $\numobs \times \numobs$ kernel matrix between all points in $\inputpoints$. Changes to $\covhyppar$ affect every entry in the kernel matrix $K$ and so, naively, the computation of the Gaussian likelihood of $\darray$ takes $\CompOrder(\numobs^3)$ time.  Likewise, changes to $\AHvar$ also affect entries in $K$. Naively re-evaluating the Gaussian likelihood term again takes $\CompOrder(\numobs^3)$ time, and so, across all $\numnodes$ rows, we expend $\CompOrder(\numobs^3 \numnodes)$ time. Whether or not this can be improved by exploiting structure in the modifications, the cubic dependence on $\numobs$ seems unavoidable, and thus this naive algorithm is unusable for all but small data sets. 
 
 
 \subsection{A random subset-of-regressor approximation}
@@ -660,7 +612,7 @@ The reported values are RMSE results, with significance evaluated as above.
 \end{center}
 
 An arguably more suitable metric is comparison in terms of conditional edge probability \ie ${\likelihood(\darray_{\lbrace ij \rbrace} \given \larray_{\lbrace ij \rbrace})}$ for all $i,j$ in the held out data. These cannot, however, be computed in a meaningful manner for
-models such as PMF and GPLVM, which assign a Gaussian likelihood to data. The next table hence reports only comparisons to the eigenmodel.
+standard versions of models such as PMF and GPLVM, which assign a Gaussian likelihood to data. The next table hence reports only comparisons to the eigenmodel.
 %This table is negative conditional log likelihood * 1000 / (number of predicted links).
 %\begin{center}
 %  \begin{tabular}{r | r r r | r r r | r r r}
@@ -690,21 +642,13 @@ models such as PMF and GPLVM, which assign a Gaussian likelihood to data. The ne
 
 \footnotetext{The precise calculation implemented is $-\log(\likelihood(\darray_{\lbrace ij \rbrace} \given \larray_{\lbrace ij \rbrace})) \times 1000 \, / \,(\textrm{Number of held out edges})$. }
 
-%\textcolor{red}{Wrap-up sentence here.}
+\subsection{Inferred representing functions}
 
-\begin{rem}[Model complexity and lengthscales]
-\label{rem:lengthscale}  
-\fTBD{Needs review}
-Figure~\ref{fig:(R)GPLVM_Comparison} provides a visualisation of $\AHfunction$ when modeling the protein interactome data using 1 latent dimension.
-The most prominent feature of the plot is the smooth peak in the top left of the adjacency matrix.
-The likelihood of such a feature is sensitive to the lengthscale of the Gaussian process representation of $\AHfunction$; smaller lengthscales will encourage more complex functions and vice versa.
-It was noted in section~\ref{sec:Model} that the choice of a Gaussian process prior introduces the assumption that $\AHfunction$ is continuous.
-However, continuous functions are dense in the space of measurable functions, \ie any measurable function can be arbitrarily well approximated by a continuous one.
-The assumption of continuity is therefore not restrictive, but rather the lengthscale of the Gaussian process determines the complexity of the model a priori.
-The nonparametric prior placed on $\AHfunction$ allows the posterior to approximate any function if supported by the data, but by sampling the lengthscale we allow the model to quickly select an appropriate level of complexity.
-\end{rem}
+We now discuss what can be learned about a network by inspecting the posterior for the representing function $\Theta$.
+Figure~\ref{fig:(R)GPLVM_Comparison} shows a visualisation of the protein interactome (left), its adjacency matrix (middle) and approximate maximum a posteriori (MAP) estimate of $\Theta$ (right).
+The adjacency matrix has been sorted by the values of the approximate MAP $(U_i)$.
 
-\begin{figure}[]
+\begin{figure}[ht]
   \centering
   \input{\networksfigsdir/fig_interactome.tex}
   \vspace{-0.5cm}
@@ -716,6 +660,107 @@ The nonparametric prior placed on $\AHfunction$ allows the posterior to approxim
   }
   \label{fig:(R)GPLVM_Comparison}
 \end{figure}
+
+The sorted adjacency matrix and MAP estimate of $\Theta$ reveal many qualitatively different structures present in the network.
+The bottom right of the adjacency matrix reveals a densely connected block of nodes; this is highlighted and visualised in figure~\ref{fig:networks:block}.
+In contrast, figure~\ref{fig:networks:sparse} highlights many nodes which display patterns of transitivity although the overall connectivity is sparse.
+A pair of hub nodes are also revealed as demonstrated in figure~\ref{fig:networks:hub}.
+
+\begin{figure}[ht]
+  \centering
+\begin{tikzpicture}[]
+  \begin{scope}[xshift=0.0\textwidth]
+    \node [mybox] (box){
+      \includegraphics[width=0.45\textwidth]{\networksfigsdir/interactome_adjacency_mathematica.pdf}
+    };
+    \draw [dashed, ultra thick, red, opacity=0.7] (0.15\textwidth,-0.150\textwidth) -- (0.15\textwidth,-0.22\textwidth) -- (0.220\textwidth,-0.22\textwidth) -- (0.220\textwidth,-0.150\textwidth) -- (0.15\textwidth,-0.150\textwidth);
+  \end{scope}  
+  \begin{scope}[xshift=0.5\textwidth]
+    \node [mybox] (box){
+      \includegraphics[width=0.45\textwidth]{\networksfigsdir/interactome_clique.pdf}
+    };
+  \end{scope}
+\end{tikzpicture}
+  \caption{Caption}
+  \label{fig:networks:block}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+\begin{tikzpicture}[]
+  \begin{scope}[xshift=0.0\textwidth]
+    \node [mybox] (box){
+      \includegraphics[width=0.45\textwidth]{\networksfigsdir/interactome_adjacency_mathematica.pdf}
+    };
+    \draw [dashed, ultra thick, red, opacity=0.7] (0.15\textwidth,-0.150\textwidth) -- (0.15\textwidth,+0.1\textwidth) -- (-0.1\textwidth,+0.1\textwidth) -- (-0.1\textwidth,-0.150\textwidth) -- (0.15\textwidth,-0.150\textwidth);
+  \end{scope}  
+  \begin{scope}[xshift=0.5\textwidth]
+    \node [mybox] (box){
+      \includegraphics[width=0.45\textwidth]{\networksfigsdir/interactome_sparse.pdf}
+    };
+  \end{scope}
+\end{tikzpicture}
+  \caption{Caption}
+  \label{fig:networks:sparse}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+\begin{tikzpicture}[]
+  \begin{scope}[xshift=0.0\textwidth]
+    \node [mybox] (box){
+      \includegraphics[width=0.45\textwidth]{\networksfigsdir/interactome_adjacency_mathematica.pdf}
+    };
+    \draw [dashed, ultra thick, red, opacity=0.7] (0.205\textwidth,0.22\textwidth) -- (0.205\textwidth,-0.22\textwidth) -- (0.220\textwidth,-0.22\textwidth) -- (0.220\textwidth,0.22\textwidth) -- (0.205\textwidth,0.22\textwidth);
+  \end{scope}  
+  \begin{scope}[xshift=0.5\textwidth]
+    \node [mybox] (box){
+      %\includegraphics[width=0.45\textwidth]{\networksfigsdir/interactome_hub.pdf}
+      \includegraphics[width=0.45\textwidth]{\networksfigsdir/two_hub.pdf}
+    };
+  \end{scope}
+\end{tikzpicture}
+  \caption{Caption}
+  \label{fig:networks:hubs}
+\end{figure}
+
+Finally, the prominent feature at the top left of the adjacency matrix is visualised in figure~\ref{fig:networks:butterfly}.
+The sorted adjacency matrix has revealed three blocks of nodes which we will refer to as the left, right and top blocks according to the right hand side of figure~\ref{fig:networks:butterfly}.
+Ignoring the top block, the left and right blocks are nearly bipartite.
+The top block is almost a clique and is much more strongly connected to the right block than the left.
+The degree distribution of the left and right blocks is also of interest; the variation is larger than expected by a block model (assuming that the probability of a link between different blocks is constant).
+
+\begin{figure}[ht]
+  \centering
+\begin{tikzpicture}[]
+  \begin{scope}[xshift=0.0\textwidth]
+    \node [mybox] (box){
+      \includegraphics[width=0.45\textwidth]{\networksfigsdir/interactome_adjacency_mathematica.pdf}
+    };
+    \draw [dashed, ultra thick, red, opacity=0.7] (-0.22\textwidth,+0.220\textwidth) -- (-0.22\textwidth,+0.1\textwidth) -- (-0.1\textwidth,+0.1\textwidth) -- (-0.1\textwidth,+0.22\textwidth) -- (-0.22\textwidth,+0.220\textwidth);
+    \draw [dotted, ultra thick, red, opacity=0.9] (-0.185\textwidth,+0.185\textwidth) -- (-0.185\textwidth,+0.16\textwidth) -- (-0.16\textwidth,+0.16\textwidth) -- (-0.16\textwidth,+0.185\textwidth) -- (-0.185\textwidth,+0.185\textwidth);
+  \end{scope}  
+  \begin{scope}[xshift=0.5\textwidth]
+    \node [mybox] (box){
+      \includegraphics[width=0.45\textwidth]{\networksfigsdir/butterfly.pdf}
+    };
+  \end{scope}
+\end{tikzpicture}
+  \caption{Caption}
+  \label{fig:networks:butterfly}
+\end{figure}
+
+\begin{rem}[Model complexity and lengthscales]
+\label{rem:lengthscale}  
+\fTBD{Needs review}
+Figure~\ref{fig:(R)GPLVM_Comparison} provides a visualisation of $\AHfunction$ when modelling the protein interactome data using 1 latent dimension.
+The most prominent feature of the plot is the smooth peak in the top left of the adjacency matrix.
+The likelihood of such a feature is sensitive to the lengthscale of the Gaussian process representation of $\AHfunction$; smaller lengthscales will encourage more complex functions and vice versa.
+It was noted in section~\ref{sec:Model} that the choice of a Gaussian process prior introduces the assumption that $\AHfunction$ is continuous.
+However, continuous functions are dense in the space of measurable functions, \ie any measurable function can be arbitrarily well approximated by a continuous one.
+The assumption of continuity is therefore not restrictive, but rather the lengthscale of the Gaussian process determines the complexity of the model a priori.
+The nonparametric prior placed on $\AHfunction$ allows the posterior to approximate any function if supported by the data, but by sampling the lengthscale we allow the model to quickly select an appropriate level of complexity.
+\end{rem}
 
 \section{Discussion and conclusions}
 
@@ -740,27 +785,21 @@ The nonparametric prior placed on $\AHfunction$ allows the posterior to approxim
 %% and continuous models, such as our model and most of the models surveyed in Sec.~\ref{sec:Related}.
 %% The Gaussian process prior proposed here
 
-
-
-
 There has been a tremendous amount of research into modelling matrices, arrays, graphs and relational data, but nonparametric
-Bayesian modeling of such data is essentially uncharted territory. 
+Bayesian modeling of such data has only recently been explored.
 In most modelling circumstances, the assumption of exchangeability amongst data objects is natural and fundamental to the model.
 In this case, the representation results 
 \citep{Aldous:1981,Hoover:1979,Kallenberg:1992} 
-precisely map out the scope of possible Bayesian models for exchangeable arrays:
+precisely map out the scope of possible probabilistic models for exchangeable arrays:
 Any such model can be interpreted as a prior on random measurable functions on a suitable space.
 
 Nonparametric Bayesian statistics provides a number of possible priors on random functions, but the Gaussian process
 and its modifications are the only well-studied model for almost surely continuous functions.
-For this choice of prior, our work provides a general and simple modeling approach that can be motivated directly by the
+For this choice of prior, our work provides a general and simple modelling approach that can be motivated directly by the
 relevant representation results.
 %Inference is then possible using an efficient MCMC algorithm for this model. 
 The model results in both interpretable representations for networks, such as a visualisation of a protein interactome, and has 
 competitive predictive performance on benchmark data.
-
-
-
 
 %% There has been a tremendous amount of research into modelling matrices, arrays, graphs and relational data. 
 %% In most modelling circumstances, the assumption of exchangeability amongst data objects is natural and fundamental to the model.
