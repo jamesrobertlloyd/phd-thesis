@@ -750,17 +750,17 @@ The degree distribution of the left and right blocks is also of interest; the va
   \label{fig:networks:butterfly}
 \end{figure}
 
-\begin{rem}[Model complexity and lengthscales]
-\label{rem:lengthscale}  
-\fTBD{Needs review}
-Figure~\ref{fig:(R)GPLVM_Comparison} provides a visualisation of $\AHfunction$ when modelling the protein interactome data using 1 latent dimension.
-The most prominent feature of the plot is the smooth peak in the top left of the adjacency matrix.
-The likelihood of such a feature is sensitive to the lengthscale of the Gaussian process representation of $\AHfunction$; smaller lengthscales will encourage more complex functions and vice versa.
-It was noted in section~\ref{sec:Model} that the choice of a Gaussian process prior introduces the assumption that $\AHfunction$ is continuous.
-However, continuous functions are dense in the space of measurable functions, \ie any measurable function can be arbitrarily well approximated by a continuous one.
-The assumption of continuity is therefore not restrictive, but rather the lengthscale of the Gaussian process determines the complexity of the model a priori.
-The nonparametric prior placed on $\AHfunction$ allows the posterior to approximate any function if supported by the data, but by sampling the lengthscale we allow the model to quickly select an appropriate level of complexity.
-\end{rem}
+%\begin{rem}[Model complexity and lengthscales]
+%\label{rem:lengthscale}  
+%\fTBD{Needs review}
+%Figure~\ref{fig:(R)GPLVM_Comparison} provides a visualisation of $\AHfunction$ when modelling the protein interactome data using 1 latent dimension.
+%The most prominent feature of the plot is the smooth peak in the top left of the adjacency matrix.
+%The likelihood of such a feature is sensitive to the lengthscale of the Gaussian process representation of $\AHfunction$; smaller lengthscales will encourage more complex functions and vice versa.
+%It was noted in section~\ref{sec:Model} that the choice of a Gaussian process prior introduces the assumption that $\AHfunction$ is continuous.
+%However, continuous functions are dense in the space of measurable functions, \ie any measurable function can be arbitrarily well approximated by a continuous one.
+%The assumption of continuity is therefore not restrictive, but rather the lengthscale of the Gaussian process determines the complexity of the model a priori.
+%The nonparametric prior placed on $\AHfunction$ allows the posterior to approximate any function if supported by the data, but by sampling the lengthscale we allow the model to quickly select an appropriate level of complexity.
+%\end{rem}
 
 \section{Discussion and conclusions}
 
