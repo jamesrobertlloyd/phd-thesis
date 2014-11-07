@@ -728,7 +728,7 @@ Finally, the prominent feature at the top left of the adjacency matrix is visual
 The sorted adjacency matrix has revealed three blocks of nodes which we will refer to as the left, right and top blocks according to the right hand side of figure~\ref{fig:networks:butterfly}.
 Ignoring the top block, the left and right blocks are nearly bipartite.
 The top block is almost a clique and is much more strongly connected to the right block than the left.
-The degree distribution of the left and right blocks is also of interest; the variation is larger than expected by a block model (assuming that the probability of a link between different blocks is constant).
+The degree distribution of the left and right blocks is also of interest; the variation is larger than expected by a block model (assuming that the probability of a link between different blocks is constant).\fTBD{Try to find out what these functional groups are - one block is enzymes IIRC}
 
 \begin{figure}[ht]
   \centering
@@ -748,6 +748,28 @@ The degree distribution of the left and right blocks is also of interest; the va
 \end{tikzpicture}
   \caption{Caption}
   \label{fig:networks:butterfly}
+\end{figure}
+
+Similar but less complicated structures are observed in the NIPS and Highschool datasets.
+Figure~\ref{fig:networks:nips} shows unsorted (left) and sorted (right) adjacency matrices for the NIPS coauthorship network.
+The map embedding of the $U_i$ has identified clear block structures of densely connected groups of authors.\fTBD{Try to comment on these blocks}
+However, there are many authors (in the middle of the adjacency matrix) for which there is no block structure, only transitivity (coauthors of coauthors are likely to be coauthors).
+Similarly, the sorted high school social network adjacency matrix in figure~\ref{fig:networks:highschool} mostly shows patterns of transitivity with most links along the diagonal.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.45\textwidth]{\networksfigsdir/nips_unsorted}
+  \includegraphics[width=0.45\textwidth]{\networksfigsdir/nips_sorted}
+  \caption{Caption}
+  \label{fig:networks:nips}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.45\textwidth]{\networksfigsdir/highschool_unsorted}
+  \includegraphics[width=0.45\textwidth]{\networksfigsdir/highschool_sorted}
+  \caption{Caption}
+  \label{fig:networks:highschool}
 \end{figure}
 
 %\begin{rem}[Model complexity and lengthscales]
