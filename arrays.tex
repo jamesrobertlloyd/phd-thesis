@@ -227,7 +227,7 @@ We define for each $k \in \Nats^d$ and $I \subset \{1,\ldots,d\}$ a set $k_I \su
 \begin{equation}
 k_I = \{k_i: i \in I\}, \quad k \in \Nats^d
 \end{equation}
-\ie $k_I$ only includes certain indices.
+\ie $k_I$ only includes the indices in $I$.
 
 We further define $k_{\pi I}$ by
 \begin{equation}
@@ -321,7 +321,7 @@ We start with an exchangeable database $(X^{r_j})_{j=1}^R$.
 Assume w.l.o.g.\ that the types are ordered (\eg type 1, type 2,\dots) and the types in each signature respect this ordering (\eg $s = (1,1,2,3,3,\dots)$).
 Define the multiplicity of a type $t$ in signature $s$ by the number of times the type appears in the signature, and denote this by $m_{t}^s$.
 Define the maximum multiplicity of a type $t$ in a database as $m_t = \max_j m_t^{s_j}$.
-Let $d = \sum_{t\in T} m_t$ be the sum of the multiplicities.
+Let $d = \sum_{t\in T} m_t$ be the sum of the maximum multiplicities.
 Let $d_j = \sum_{t\in T} m_t^{s_j}$ be the sum of the multiplicities for a particular signature.
 Let $\pi$ be the partition of $\{1,\ldots,d\}$ consisting of consecutive blocks of integers with sizes equal to $\{m_1,\ldots,m_T\}$.
 For a signature $s$ let $I_s$ be the subset of $\{1,\ldots,d\}$ that contains the first $m_1^s$ integers and then not the next $m_1 - m_1^s$ integers, then the next $m_2^s$ integers, and then not the next $m_2 - m_2^s$ integers and so on.
