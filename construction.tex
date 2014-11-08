@@ -4,11 +4,13 @@
 \chapter{Compositionally constructed kernels for Gaussian process models}
 \label{ch:construction}
 
+In the introduction we demonstrated that Gaussian processes can be used to express probability distributions over functions.
+The properties of these distributions very much depended on the choice of kernel; different kernels where shown to yield probability distributions over smooth, linear and periodic functions.
 In this chapter we address the problem of selecting which kernel to use in a Gaussian process model.
-Our approach is to define an open ended space of potential kernel functions via a generative grammar and then perform model selection in this space using a simple search strategy.
+Our approach is to define an open ended space of potential kernel functions via a generative grammar and then perform model selection combined with a simple search strategy to explore the space of models.
 
 This chapter is based upon joint work with David Duvenaud, Roger Grosse, Joshua Tenenbaum and Zoubin Ghahramani \citep{Duvenaud2013-dn}.
-The initial ideas were formed during discussions with Roger and David.
+The initial ideas were formed during discussions between Roger, David and myself.
 I performed the majority of experiments; all were involved with the writing.
 
 \section{Introduction}
@@ -23,10 +25,10 @@ By defining the measure of similarity between inputs, the kernel determines the 
 However, to apply existing kernel learning algorithms, the user must typically specify the parametric form of the kernel, and this can require considerable expertise and / or several iterations of trial and error.
 
 To make kernel learning more generally applicable we propose an automatic procedure to select an appropriate parametric form of a kernel.
-In particular, we formulate a space of kernel structures defined compositionally in terms of sums and products of a small number of base kernel parametric forms.
+In particular, we formulate a space of kernel structures defined compositionally in terms of sums and products of a small number of base kernels.
 This produces an expressive modelling language which concisely captures many widely used techniques for constructing kernels.
-We focus on Gaussian process regression, where the kernel specifies a covariance function, because the Bayesian framework provides natural methods by which to select between models (see section \TBD{reference intro}).
-Borrowing discrete search techniques which have proved successful in equation discovery \cite{Todorovski1997-st} and unsupervised learning \cite{Grosse2012-zi}, we automatically search over this space of kernel structures using model evidence as the search criterion.
+We focus on Gaussian process regression, where the kernel specifies a covariance function, because the Bayesian framework provides natural methods by which to select between models.
+Borrowing discrete search techniques which have proved successful in equation discovery \citep{Todorovski1997-st} and unsupervised learning \citep{Grosse2012-zi}, we automatically search over this space of kernel structures using model evidence as the search criterion.
 
 We found that our kernel search algorithm is able to automatically recover known structures from synthetic data as well as plausible structures for a variety of real-world datasets. 
 On a variety of time series datasets, the learned kernels yield decompositions of the unknown function into interpretable components that enable accurate extrapolation beyond the range of the observations.
@@ -40,13 +42,11 @@ We hope that the algorithm developed in this chapter and the refinements made in
 
 Gaussian process regression models use a kernel to define the covariance between any two function values: ${\textrm{Cov}(\outputVar, \outputVar') = \kernel(\inputVar,\inputVar')}$.
 The kernel specifies which structures are likely under the \gp{} prior, which in turn determines the generalisation properties of the model.
-In this section, we review the ways in which kernel families\footnotemark can be composed to express diverse probability distributions over functions. 
-\footnotetext{When unclear from context, we use `kernel family' to refer to the parametric forms of the functions given in the appendix. A kernel is a kernel family with all of the parameters specified.}  
+In this section, we review the ways in which kernel families\footnotemark{} can be composed to express diverse probability distributions over functions. 
+\footnotetext{When unclear from context, we use `kernel family' to refer to the parametric forms of the kernel functions. A kernel is a kernel family with all of the parameters specified.}  
 
 There has been significant work on constructing kernels for use with Gaussian processes \citep[e.g. chapter 4 of][]{Rasmussen2006-ml}.
 Commonly used kernel families include the squared exponential (\kSE)\footnotemark, periodic (\kPer), linear (\kLin), and rational quadratic (\kRQ) which are defined as follows:
-\paragraph{Kernel definitions}
-For scalar-valued inputs, the squared exponential (\kSE), periodic (\kPer), linear (\kLin), and rational quadratic (\kRQ) kernels are defined as follows:
 \[
 \kSE(\inputVar, \inputVar') =& \sigma^2\exp\left(-\frac{(\inputVar - \inputVar')^2}{2\ell^2}\right) \\
 \kPer(\inputVar, \inputVar') =& \sigma^2\exp\left(-\frac{2\sin^2 (\pi(\inputVar - \inputVar')/p)}{\ell^2}\right) \\
@@ -87,8 +87,9 @@ The x-axis has the same range on all plots.}
 \end{figure}
 
 \paragraph{Composing Kernels}
-Positive semidefinite kernels (\ie those which define valid covariance functions) are closed under addition and multiplication.
+Positive semidefinite kernels (\ie those which define valid covariance functions) are closed under addition and multiplication\footnotemark{}.
 We can therefore use these two operations to create new kernels from old.
+\footnotetext{And other operations \citep[e.g.][]{Rasmussen2006-ml}}
 
 In particular, kernels over multidimensional inputs can be constructed by summation and multiplication of kernels acting on single dimensions of the input.
 We therefore define our base kernel families to be one dimensional where we indicate the dimension the kernel applies to using subscripts e.g. $\SE_2$ represents an \kSE{} kernel over the second dimension of the input $\inputVar$.
@@ -130,13 +131,13 @@ We therefore define our base kernel families to be one dimensional where we indi
 
 \paragraph{Summation}
 
-Suppose functions $\function_1$ and $\function_2$ are samples from independent \gp{} distributions, ${\function_1 \dist \GP(\mu_1, \kernel_1)}$, ${\function_2 \dist \GP(\mu_2, \kernel_2)}$.
-Then ${\function \defas \function_1 + \function_2 \dist \GP(\mu_1 + \mu_2, \kernel_1 + \kernel_2)}$.
+Suppose functions $\function_1$ and $\function_2$ are samples from independent \gp{} distributions, ${\function_1 \dist \gp{}(\mu_1, \kernel_1)}$, ${\function_2 \dist \gp{}(\mu_2, \kernel_2)}$.
+Then ${\function \defas \function_1 + \function_2 \dist \gp{}(\mu_1 + \mu_2, \kernel_1 + \kernel_2)}$.
 This allows us to create kernels that encode for distributions over superpositions of independent functions with different properties.
 
 In a single dimension, sums of functions / kernels can express superposition of different processes, possibly operating at different scales.
 In multiple dimensions, summing kernels gives additive structure over different dimensions, similar to generalized additive models~\citep{Hastie1990-ay}.
-These two kinds of structure are demonstrated in rows 2 and 4 of figure~\ref{fig:kernels}, respectively.
+These two kinds of structure are demonstrated in rows 2 and 3 of figure~\ref{fig:kernels}, respectively.
 
 \paragraph{Multiplication}
 
@@ -144,13 +145,13 @@ Multiplying kernels allows us to account for interactions between different inpu
 For example, for multidimensional data, the multiplicative kernel $\SE_1 \times \SE_3$ encodes for a distribution over functions that vary smoothly with input dimensions 1 and 3 but is not constrained to be additive.
 In one dimension, multiplying a kernel by \kSE{} removes any long range correlations in the distribution it encodes for.
 For example, $\Per$ corresponds to globally periodic structure, whereas $\Per \times \SE$ corresponds to locally periodic structure, as shown in row 1 of figure~\ref{fig:kernels}.
-This is made more precise is section \TBD{refer to future chapter}.
+This is made more precise in chapter~\ref{ch:description}.
 
 Many architectures for learning complex functions, such as convolutional neural networks \citep[e.g.][]{LeCun1989-ba} or sum-product networks \citep{Poon2011-sc}, include units which compute AND-like and OR-like operations.
 The composite kernels defined here can be viewed similarly.
 A sum of kernels can be understood as an OR-like operation: two points are considered similar if either kernel has a high value.
 Similarly, multiplying kernels is an AND-like operation, since two points are considered similar only if both kernels have high values.
-Since we are applying these operations to the similarity functions rather than the regression functions themselves, compositions of even a few base kernels are able to capture complex relationships in data which do not have a simple parametric forms.
+Since we are applying these operations to the similarity functions rather than the regression functions themselves, compositions of even a few base kernels are able to capture complex relationships in data which do not have a simple parametric form.
 
 \paragraph{Example expressions}
 
@@ -187,14 +188,13 @@ To see this, observe that if we restricted the $+$ and $\times$ rules only to ap
 However, the more general versions of these rules allow more flexibility in the search procedure, which is useful because the CFG derivation may not be the most straightforward way to arrive at a kernel family.
 
 Our algorithm searches over this space using a greedy search: at each stage, we choose the highest scoring kernel and expand it by applying all possible operators.
-
 Our search operators are motivated by strategies researchers often use to construct kernels or other modularly constructed probabilistic models.
 In particular,
 \begin{itemize}
 \item One can look for patterns, \eg periodicity, in the residuals of a model, and then extend the model to capture this pattern.
 This corresponds to applying rule (1).
 \item One can start with a pattern, \eg linearity, which is assumed to hold globally, but find that it only holds locally.
-This corresponds to applying rule (2) to obtain the structure shown in row 1 of figure~\ref{fig:kernels}.
+This corresponds to applying rule (2) to obtain structure like those shown in the top right of figure~\ref{fig:kernels}.
 \item One can add features incrementally, analogous to algorithms like boosting, backfitting, or forward selection.
 This corresponds to applying rules (1) or (2) to dimensions not yet included in the model.
 \end{itemize}
@@ -205,9 +205,15 @@ We discuss its shortcomings and potential improvements in the discussion in sect
 \paragraph{Scoring kernel families}
 
 Choosing kernel families within the greedy search requires a criterion for evaluating them.
-We choose model evidence as our criterion, since it balances the fit and complexity of a model \citep[e.g.][]{Rasmussen2001-rv}.  Conditioned on kernel parameters, the model evidence of a \gp{} can be computed analytically.
-However, to evaluate the model evidence of an entire kernel family we must integrate over kernel parameters. 
-We approximate this intractable integral with the Bayesian information criterion \citep{Schwarz1978-wp} after first optimising to find the maximum-marginal-likelihood kernel parameters.
+We choose model evidence as our criterion, since it balances the fit and complexity of a model and implements what is known as ``Bayesian Occam's Razor'' \citep[e.g.][]{rasmussen2001occam,mackay2003information}.
+Conditioned on kernel parameters, the model evidence of a \gp{} can be computed analytically \citep[e.g.][]{Rasmussen2006-ml}.
+However, to evaluate the model evidence of an entire kernel family we must integrate over kernel parameters (after having also defined a prior distribution over them). 
+We approximate this intractable integral with the Bayesian information criterion \citep{Schwarz1978-wp} after first optimising to find the maximum-marginal-likelihood kernel parameters by conjugate gradient descent.
+For each optimized model, $M$, the Bayesian Information Criterion (BIC) is calculated as follows:
+\begin{equation}
+\textrm{BIC}(M) = -2 \log p(D\given M) + |M| \log n
+\end{equation}
+where $|M|$ is the number of kernel parameters, $p(D|M)$ is the marginal likelihood of the data, $D$, and $n$ is the number of data points.
 We note however that using the Bayesian information criterion in this context is not theoretically justified; but attempts to use a theoretically justified approximation to the marginal likelihood uncover interesting fundamental problems which we discuss in section~\ref{sec:construction:discussion}.
 
 Unfortunately, optimising over parameters is not a convex optimisation problem, and the space can have many local optima.
@@ -215,19 +221,6 @@ For example, in data with periodic structure, integer multiples of the true peri
 To alleviate this difficulty, we take advantage of our search procedure to hot start the optimisation problem: all of the parameters which were part of the previous kernel are initialised to their previous values.
 All parameters are then optimised using conjugate gradients, randomly restarting the newly introduced parameters.
 This procedure is not guaranteed to find the global optimum, but it is similar to the commonly used heuristic of iteratively modelling residuals.
-
-\TBD{Maybe include this}
-
-As in \citet{DuvLloGroetal13} we explore the space of regression models using a greedy search.
-We use the same search operators, but also include additional operators to incorporate changepoints; a complete list is contained in the supplementary material. 
-
-After each model is proposed its kernel parameters are optimised by conjugate gradient descent.
-We evaluate each optimized model, $M$, using the Bayesian Information Criterion (BIC) \citep{schwarz1978estimating}:
-\begin{equation}
-\textrm{BIC}(M) = -2 \log p(D\given M) + |M| \log n
-\end{equation}
-where $|M|$ is the number of kernel parameters, $p(D|M)$ is the marginal likelihood of the data, $D$, and $n$ is the number of data points.
-BIC trades off model fit and complexity and implements what is known as ``Bayesian Occam's Razor'' \citep[e.g.][]{rasmussen2001occam,mackay2003information}.
 
 \section{Related Work}
 \label{sec:construction:related_work}
@@ -247,16 +240,16 @@ Additive Gaussian processes \citep{Duvenaud2011-wb} are a \gp{} model whose kern
 \citet{Plate1999-xh} constructs a \gp{} with a composite kernel, summing an \kSE{} kernel along each dimension, with an SE-ARD kernel (\ie a product of \kSE{} over all dimensions).
 Both of these models can be expressed in our grammar.
 
-A closely related procedure is smoothing-splines ANOVA \cite{Wahba1990-ml, Gu2002-at, Wahba2004-fk}.
+A closely related procedure is smoothing-splines ANOVA \citep{Wahba1990-ml, Gu2002-at, Wahba2004-fk}.
 This model is a linear combination of smoothing splines along each dimension, all pairs of dimensions, and possibly higher-order combinations.
 Since the number of terms to consider grows exponentially in the order, in practice, only terms of first and second order are usually considered.
 
-Semiparametric regression \citep[e.g.][]{Ruppert2003-uq} attempts to combine interpretability with flexibility by building  a composite model out of an interpretable, parametric part (such as linear regression) and a `catch-all' nonparametric part (such as a \gp{} with a \kSE kernel).
+Semiparametric regression \citep[e.g.][]{Ruppert2003-uq} attempts to combine interpretability with flexibility by building  a composite model out of an interpretable, parametric part (such as linear regression) and a `catch-all' nonparametric part (such as a \gp{} with a $\kSE$ kernel).
 In our approach, this can be represented as a sum of \kSE{} and \kLin{}.
 
 \paragraph{Kernel learning}
 There is a large body of work attempting to construct composite kernels defined as a weighted sum of base kernels \citep[e.g.][]{Christoudias2009-an, Bach2009-hr}.
-While these approaches find the optimal solution in polynomial time, speed comes at a cost: the component kernels, as well as their parameters, must be specified in advance.
+While these approaches find the optimal solution in polynomial time, speed comes at a cost: the component kernels, as well as their parameters, are typically specified in advance.
 
 Another approach to kernel learning is to learn an embedding of the data points such that the mapping between the embedding locations and the regression function is simple (\eg linear or smooth).
 \citet{Lawrence2005-cn} learns an embedding of the data into a low-dimensional space, and constructs a fixed kernel structure over that space.
@@ -266,10 +259,10 @@ Instead we focus on domains where most of the interesting structure is in the re
 
 \citet{Wilson2013-eq} derive kernels of the form ${\SE \times \cos(x-x')}$, forming a basis for stationary kernels.
 These kernels share similarities with ${\kSE \times \kPer}$ but can express negative prior correlation.
-In section \TBD{forward reference} we introduce a modified version of the periodic kernel for which $\cos(x-x')$ is a limiting form.
+In chapter~\ref{ch:description} we introduce a new version of the periodic kernel for which $\cos(x-x')$ is a limiting form.
 
 \citet{Diosan2007-un} and \citet{Bing2010-of} learn composite kernels for support vector machines and relevance vector machines, using genetic search algorithms.
-Our work employs a Bayesian search criterion, and goes beyond this prior work by demonstrating the interpretability of the structure implied by composite kernels, and how such structure allows for extrapolation.
+We go beyond this prior work by demonstrating the interpretability of the structure implied by composite kernels, and how such structure allows for extrapolation (this latter claim is more thoroughly justified in chapter~\ref{ch:description}.
 
 \paragraph{Structure discovery}
 
@@ -279,7 +272,7 @@ Since we learn expressions describing the covariance structure rather than the f
 
 \citet{Kemp2008-ye} learned the structural form of a graph used to model human similarity judgments.
 Examples of graphs included planes, trees, and cylinders.
-Some of their discrete graph structures have continuous analogues in our own space; \eg $\SE_1 \times \SE_2$ and $\SE_1 \times \Per_2$ can be seen as mapping the data to a plane and a cylinder, respectively.
+Some of their discrete graph structures have continuous analogues in our own space; \eg $\SE_1 \times \SE_2$ and $\SE_1 \times \Per_2$ can be seen as mapping the data to a plane and a cylinder, respectively \citep[e.g.][]{Duvenaud2014-em}.
 
 \citet{Grosse2012-zi} performed a greedy search over a compositional model class for unsupervised learning, using a grammar and a search procedure which parallel our own.
 This model class contained a large number of existing unsupervised models as special cases and was able to choose appropriate models automatically from data.
@@ -379,7 +372,8 @@ While the data can be smoothly interpolated by a single base kernel model, the e
 Figure \ref{fig:mauna_decomp} shows the final model chosen by our method, together with its decomposition into additive components.
 The final model exhibits both plausible extrapolation and interpretable components: a long-term trend, annual periodicity and medium-term correlated deviations; the same components chosen by \citet{Rasmussen2006-ml}.
 We also plot the residuals, observing that there is little obvious structure left in the data.  
-On this example, our search procedure is able to automate this construction where previously two \gp{} experts devoted 4 pages of text and analysis to the development of a composite kernel.
+On this example, our search procedure is able to automate this construction where previously two \gp{} experts devoted 4 pages of text and analysis\footnotemark{} to the development of a composite kernel.
+\footnotetext{Admittedly this was intended as teaching material}
 
 \paragraph{Airline passenger data}
 
@@ -404,7 +398,6 @@ Finally, we analysed annual solar irradiation data from 1610 to 2011 \citep{lean
 \label{fig:solar_decomp}
 \end{centering}
 \end{figure}
-
 %
 The posterior and residuals of the learned kernel are shown in figure \ref{fig:solar_decomp}.
 %
@@ -509,7 +502,7 @@ As the noise increases, our method generally backs off to simpler structures.
 \label{sec:quantitative}
 
 %In addition to producing highly interpretable decompositions of regression functions, our method also produces state of the art predictions in both extrapolation and interpolation tasks.
-In addition to the qualitative evaluations in sections \TBD{fix reference}, we investigated quantitatively how our method performs on both extrapolation and interpolation tasks.
+In addition to the qualitative evaluation above, we investigated quantitatively how our method performs on both extrapolation and interpolation tasks.
 
 \subsection{Extrapolation}
 
@@ -539,8 +532,9 @@ In one dimension, the predictive means of all baseline methods in table \ref{tbl
 \subsection{High-dimensional prediction}
 
 To evaluate the predictive accuracy of our method in a high-dimensional setting, we extended the comparison of \cite{Duvenaud2011-wb} to include our method.
-We performed 10 fold cross validation on 5 datasets\footnotemark comparing 5 methods in terms of mean squared error and predictive likelihood.
-Our kernel search procedure was run up to depth 10, using the \SE{} and \RQ{} base kernel families.
+We performed 10 fold cross validation on 5 datasets\footnotemark{} comparing 5 methods in terms of mean squared error and predictive likelihood.
+Our kernel search procedure was run up to depth 10, using the \SE{} and \RQ{} base kernel families\footnotemark{}.
+\footnotetext{We did not believe a priori to find any periodicity or perfect linearity in these data sets}
 
 \footnotetext{The data sets had dimensionalities ranging from 4 to 13, and the number of data points ranged from 150 to 450.} 
 
