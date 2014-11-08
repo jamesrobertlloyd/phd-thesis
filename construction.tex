@@ -225,7 +225,7 @@ This procedure is not guaranteed to find the global optimum, but it is similar t
 \section{Related Work}
 \label{sec:construction:related_work}
 
-\paragraph{Nonparametric regression in high dimensions}
+\subsection{Nonparametric regression in high dimensions}
 Nonparametric regression methods such as smoothing splines, locally weighted regression, and \gp{} regression are popular because they are capable of learning arbitrary smooth functions of the data.
 Unfortunately, they suffer from the curse of dimensionality: it is very difficult for the basic versions of these methods to generalise well in more than a few dimensions.
 Applying nonparametric methods in high-dimensional spaces can require imposing additional structure on the model.
@@ -247,7 +247,7 @@ Since the number of terms to consider grows exponentially in the order, in pract
 Semiparametric regression \citep[e.g.][]{Ruppert2003-uq} attempts to combine interpretability with flexibility by building  a composite model out of an interpretable, parametric part (such as linear regression) and a `catch-all' nonparametric part (such as a \gp{} with a $\kSE$ kernel).
 In our approach, this can be represented as a sum of \kSE{} and \kLin{}.
 
-\paragraph{Kernel learning}
+\subsection{Kernel learning}
 There is a large body of work attempting to construct composite kernels defined as a weighted sum of base kernels \citep[e.g.][]{Christoudias2009-an, Bach2009-hr}.
 While these approaches find the optimal solution in polynomial time, speed comes at a cost: the component kernels, as well as their parameters, are typically specified in advance.
 
@@ -257,14 +257,19 @@ This model is typically used in unsupervised tasks and requires an expensive int
 \citet{Salakhutdinov2008-zt} use a deep neural network to learn an embedding; this is a flexible approach to kernel learning but relies upon finding structure in the input density, p(\inputVar).
 Instead we focus on domains where most of the interesting structure is in the regression function \function(\inputVar).
 
-\citet{Wilson2013-eq} derive kernels of the form ${\SE \times \cos(x-x')}$, forming a basis for stationary kernels.
-These kernels share similarities with ${\kSE \times \kPer}$ but can express negative prior correlation.
-In chapter~\ref{ch:description} we introduce a new version of the periodic kernel for which $\cos(x-x')$ is a limiting form.
+Sparse spectrum \gp{}s \citep{lazaro2010sparse} approximate the spectral density of a stationary kernel function using delta functions; this corresponds to kernels of the form $\sum \cos$.
+Similarly, \citet{WilAda13} introduce spectral mixture kernels which approximate the spectral density using a scale-location mixture of Gaussian distributions corresponding to kernels of the form $\sum \kSE \times \cos$.
+Both demonstrate, using Bochner's theorem \citep{bochner1959lectures}, that these kernels can approximate any stationary covariance function.
+In chapter~\ref{ch:description} we introduce a new version of the periodic kernel for which $\cos(x-x')$ is a limiting form and hence we also attain this completeness property.
 
-\citet{Diosan2007-un} and \citet{Bing2010-of} learn composite kernels for support vector machines and relevance vector machines, using genetic search algorithms.
-We go beyond this prior work by demonstrating the interpretability of the structure implied by composite kernels, and how such structure allows for extrapolation (this latter claim is more thoroughly justified in chapter~\ref{ch:description}.
+\cite{rasmussen38gaussian} devote 4 pages to manually constructing a composite kernel to model a time series of carbon dioxode concentrations.
+When applied to this dataset our procedure chose a model similar to the one they constructed by hand.
+Other examples of papers whose main contribution is to manually construct and fit a composite \gp{} kernel are \cite{klenske2012nonparametric} and \cite{lloydgefcom2012}.
 
-\paragraph{Structure discovery}
+\citet{Diosan2007-un, Bing2010-of} and \citet{kronberger2013evolution} learn composite kernels for support vector machines, relevance vector machines and Gaussian processes, using genetic search algorithms.
+We go beyond these works by demonstrating the interpretability of the structure implied by composite kernels, and how such structure allows for extrapolation (these claims are more thoroughly justified in chapter~\ref{ch:description}.
+
+\subsection{Structure discovery}
 
 There have been several attempts to uncover the structural form of a dataset by searching over a grammar of structures.
 For example, \citet{Schmidt2009-if}, \citet{Todorovski1997-st} and \citet{Washio1999-vy} attempt to learn parametric forms of equations to describe time series, or relations between quantities.
@@ -278,36 +283,9 @@ Some of their discrete graph structures have continuous analogues in our own spa
 This model class contained a large number of existing unsupervised models as special cases and was able to choose appropriate models automatically from data.
 Our work is tackling a similar problem, but in a supervised setting.
 
-\TBD{Incorporate the following}
-
-\paragraph{Building Kernel Functions}
-\cite{rasmussen38gaussian} devote 4 pages to manually constructing a composite kernel to model a time series of carbon dioxode concentrations.
-In the supplementary material, we include a report automatically generated by \procedurename{} for this dataset; our procedure chose a model similar to the one they constructed by hand.
-Other examples of papers whose main contribution is to manually construct and fit a composite \gp{} kernel are \cite{klenske2012nonparametric} and \cite{lloydgefcom2012}.
-
-\citet{diosan2007evolving, bing2010gp} and \citet{kronberger2013evolution} search over a similar space of models as \procedurename{} using genetic algorithms but do not interpret the resulting models.
-Our procedure is based on the model construction method of \citet{DuvLloGroetal13} which automatically decomposed models but components were interpreted manually and the space of models searched over was smaller than that in this work.
-
-\paragraph{Kernel Learning}
-
-Sparse spectrum \gp{}s \citep{lazaro2010sparse} approximate the spectral density of a stationary kernel function using delta functions; this corresponds to kernels of the form $\sum \cos$.
-Similarly, \citet{WilAda13} introduce spectral mixture kernels which approximate the spectral density using a scale-location mixture of Gaussian distributions corresponding to kernels of the form $\sum \kSE \times \cos$.
-Both demonstrate, using Bochner's theorem \citep{bochner1959lectures}, that these kernels can approximate any stationary covariance function.
-Our language of kernels includes both of these kernel classes (see table~\ref{table:motifs}).
-
-There is a large body of work attempting to construct rich kernels through a weighted sum of base kernels called multiple kernel learning (MKL) \citep[e.g.][]{bach2004multiple}.
-These approaches find the optimal solution in polynomial time but only if the component kernels and parameters are pre-specified.
-We compare to a Bayesian variant of MKL in section~\ref{sec:numerical} which is expressed as a restriction of our language of kernels.
-
-\paragraph{Equation learning}
+\subsection{Equation learning}
 \cite{todorovski1997declarative}, \cite{washio1999discovering} and \cite{schmidt2009distilling} learn parametric forms of functions specifying time series, or relations between quantities.
-In contrast, \procedurename{} learns a parametric form for the covariance, allowing it to model functions without a simple parametric form.
-
-\paragraph{Searching over open-ended model spaces}
-
-This work was inspired by previous successes at searching over open-ended model spaces: matrix decompositions \citep{grosse2012exploiting} and graph structures \citep{kemp2008discovery}.
-In both cases, the model spaces were defined compositionally through a handful of components and operators, and models were selected using criteria which trade off model complexity and goodness of fit.
-Our work differs in that our procedure automatically interprets the chosen model, making the results accessible to non-experts.
+In contrast, our work learns a parametric form for the covariance, allowing it to model functions without a simple parametric form.
 
 \section{Pattern discovery in time series}
 \label{sec:time_series}
