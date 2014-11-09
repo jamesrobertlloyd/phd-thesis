@@ -5,19 +5,19 @@
 \label{ch:criticism}
 
 The automatic statistical reports that were the output of the work of chapter~\ref{ch:description} all conclude with a model criticism section.
-In this section, the statistical model presented to the user is presented as a scientific hypothesis and as such it subjected to attempts to falsify its claims.
+In this section, the statistical model constructed by the kernel search algorithm is presented to the user as a hypothesis and as such it subjected to attempts to falsify its claims.
 On entering the literature of statistical model criticism I quickly found myself in the cross fire of a version of the frequentists versus Bayesians argument which appears to have been left unresolved.
 Moreover, I have found there to be little actionable advice on which methods of model criticism to use when, which presented a challenge when trying to select appropriate model criticism methods to be used by a system capable of constructing infinitely many different statistical models.
 
 This chapter is my initial response to these gaps in the literature.
-My own opinion on the correct philosophy for model criticism is still in flux so I will discuss emerging ideas at the end of this chapter.
+My own opinion on good philosophy for model criticism is still in flux so I will discuss emerging ideas at the end of this chapter.
 
 \section{Introduction}
 
 Statistical model checking or criticism\footnotemark{} is an important part of a complete statistical analysis.
-\footnotetext{We follow Box \citep{Box1980-ud} using the term `model criticism' for similar reasons to O'Hagan \citep{OHagan2003-bc}.}
+\footnotetext{We follow Box \citep{Box1980-ud} using the term `model criticism' for similar reasons to O'Hagan \citep{OHagan2003-bc}, namely ``model checking \ldots conveys to me a sense of a rather passive activity that does not expect to uncover any problems, while model criticism conveys a more vigorous and open-minded process''.}
 When one fits a linear model to a data set via least squares a complete analysis includes computing \eg Cook's distances \cite{Cook1982-eq} to identify influential points or plotting residuals against fitted values to identify non-linearity or heteroscedasticity.
-Similarly, modern approaches to Bayesian statistics view model criticism as in important component of an iterative cycle of model construction, inference and criticism \citep{Gelman2013-st}.
+Similarly, modern approaches to Bayesian statistics view model criticism as in important component of an iterative cycle of model construction, inference and criticism \citep{Gelman2013-st}\fTBD{Also cite Dave Blei}.
 
 As statistical models become more complex and diverse in response to the challenges of modern data sets there will be an increasing need for a greater range of model criticism procedures that are either automatic or generally applicable.
 This will be especially true as automatic modelling methods \citep[e.g.][]{Grosse2012-zf, Thornton2013-zg, Lloyd2014-ABCD} and probabilistic programming \citep[e.g.][]{Milch2007-dz, Goodman2012-pf, stan-software:2014} mature\fTBD{What is the canonical 1997 reference?}.
