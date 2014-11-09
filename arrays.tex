@@ -349,7 +349,7 @@ We now invoke the Borel isomorphism theorem - in particular that all uncountable
 \begin{equation}
   \xi_{\bi} = h((\xi^j_{\bi})_{j=1}^R) \,\, \forall \,\, \bi \in \prod_{J\in\pi} \Nats^{\leq |J|}
 \end{equation} 
-where $h$ is a bimeasurable function.
+where $h$ is a bimeasurable function\fTBD{Careful: potentially different dependence structures across arrays for uniforms of different indexing structure}.
 We now simply define new measurable functions that select the relevant uniforms
 \begin{equation}
   f^j(\xi_{k_{\pi_{s_j} I}} : I \subset I_{s_j}) \defas g^j(\xi^j_{k_{\pi_{s_j} I}} : I \subset I_{s_j}) \ \as, \quad k \in \Nats^d
@@ -433,6 +433,11 @@ It seems highly likely that the following representation theorem should hold.
 Unfortunately, we have not yet proven this result.
 To use the same proof strategy as the almost sure representation result would require an approximate form of Sklar's theorem to couple the various $U$-arrays appropriately.
 We presume that such a result probably exists but are yet to produce a complete proof.
+
+\TBD{
+If a proof fails to appear, we can always prove the result with $m \leq M$ for arbitrary finite $M$.
+A cop out but at least it gives more evidence as to why this conjecture might be true.
+}
 
 \section{A generic statistical model template}
 
