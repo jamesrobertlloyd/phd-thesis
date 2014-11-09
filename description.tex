@@ -195,13 +195,13 @@ Right: Posterior of first two components found by \procedurename{} - removing th
 
 \subsection{Properties of the new periodic kernel}
 
-The newly defined periodic kernel is given by
+The newly defined zero-mean periodic kernel is given by
 \[
-  \kPer(\inputVar, \inputVar') =&  \sigma^2\frac{\exp\left(\frac{\cos\frac{2 \pi (\inputVar - \inputVar')}{p}}{\ell^2}\right) - I_0\left(\frac{1}{\ell^2}\right)}{\exp\left(\frac{1}{\ell^2}\right) - I_0\left(\frac{1}{\ell^2}\right)}
+  \kZMPer(\inputVar, \inputVar') =&  \sigma^2\frac{\exp\left(\frac{\cos\frac{2 \pi (\inputVar - \inputVar')}{p}}{\ell^2}\right) - I_0\left(\frac{1}{\ell^2}\right)}{\exp\left(\frac{1}{\ell^2}\right) - I_0\left(\frac{1}{\ell^2}\right)}
 \]
 A simple application of l'H\^opital's rule shows that
 \begin{equation}
-\kPer(x, x') \to \sigma^2\cos\left(\frac{2 \pi (x - x')}{p}\right) \quad \textrm{as} \quad\ell \to \infty.
+\kZMPer(x, x') \to \sigma^2\cos\left(\frac{2 \pi (x - x')}{p}\right) \quad \textrm{as} \quad\ell \to \infty.
 \end{equation}
 This limiting form is written as the cosine kernel ($\cos$).
 It was recently demonstrated \citep{WilAda13} that any stationary kernel can be arbitrarily well approximated by kernels with expressions of the form
@@ -210,26 +210,49 @@ It was recently demonstrated \citep{WilAda13} that any stationary kernel can be 
 \end{equation}
 by appealing to Bochner's theorem \citep{bochner1959lectures}.
 By using this new periodic kernel our language of kernels also attains this completeness property.
-
 Note that the infinite lengthscale ($\ell$) limit of the more common definition of the periodic kernel is a constant.
+
+This version of the periodic kernel is now implemented in the GPML toolbox \NA{cite} and is available at \url{gaussianprocess.org/gpml/code/matlab/cov/covPeriodicNoDC.m}
 
 \subsection{Addition of the changepoint and changewindow operators}
 
-In addition to these changes to the base kernels we also introduce changepoints into the language since they are a common phenomenon in time series (\eg figure~\ref{fig:periodic}). 
-We define changepoints through addition and multiplication with sigmoidal functions:
+In addition to these changes to the base kernels we also introduce changepoints into the language of kernels since they are a common phenomenon in time series (\eg figure~\ref{fig:periodic}).
+We construct changepoints by assuming that the function we are attempting to model transitions between two different different functions with the transition controlled by a sigmoidal function $\sigma$:
+\[
+  f(x) = \sigma(x)f_1(x) + (1 - \sigma(x))f_2(x).
+\]
+If we assume that $f_1 \sim \gp{}(0, k_1)$ and $f_2 \sim \gp{}(0, k_2)$ independently then $f \sim \gp{}(0, k)$ where
+\[
+  k(x, x') = \sigma(x)\sigma(x')k_1(x, x') + (1-\sigma(x))(1-\sigma(x'))k_2(x,x').
+\]
+We therefore define the changepoint operator as
 \begin{align}
 \kCP(\kernel_1, \kernel_2) = \kernel_1 \times \boldsymbol\sigma + \kernel_2 \times \boldsymbol{\bar\sigma}
 \label{eq:cp}
 \end{align}
 where $\boldsymbol\sigma = \sigma(x)\sigma(x')$ and $\boldsymbol{\bar\sigma} = (1-\sigma(x))(1-\sigma(x'))$.
-We define changewindows $\kCW(\cdot,\cdot)$ similarly by replacing $\sigma(x)$ with a product of two sigmoids.
+We define changewindows $\kCW(\cdot,\cdot)$ similarly by replacing $\sigma(x)$ with a product of two sigmoids to create a `hat' function.
+Examples of draws from Gaussian processes with kernels constructed using the changepoint operator are shown in figure~\ref{fig:description:cp}.
 
-\TBD{Expand me}
+\begin{figure}[h]
+\centering
+\fbox{\includegraphics[width=0.22\columnwidth]{\descriptionfigsdir/cp/draw_1}}
+\fbox{\includegraphics[width=0.22\columnwidth]{\descriptionfigsdir/cp/draw_2}}
+\fbox{\includegraphics[width=0.22\columnwidth]{\descriptionfigsdir/cp/draw_3}}
+\fbox{\includegraphics[width=0.22\columnwidth]{\descriptionfigsdir/cp/draw_4}}
+\caption[Changepoint samples]{Examples of random samples from Gaussian processes with kernels constructed using the changepoint operator.}
+\label{fig:description:cp}
+\end{figure}
 
 \subsection{Including heteroscedasticity}
 
 In the language of kernels introduced in chapter~\ref{ch:construction} homoscedastic Gaussian noise was assumed for all models.
-Gaussian noise is also a Gaussian process so we can introduce the noise model into the modelling language by introducing the white noise kernel ($\kWN$) defined in section~\ref{sec:description:base} as a base kernel and replacing the model likelihood with a delta function.
+Gaussian noise is also a Gaussian process so we can introduce the noise model into the modelling language by introducing the white noise kernel
+\[
+\kWN(\inputVar, \inputVar') =& \sigma^2\delta_{\inputVar, \inputVar'}
+\]
+where $\delta_{\inputVar, \inputVar'}$ is the Kronecker delta function.
+We use this as a base kernel and replace the model likelihood with a delta function.
 
 Introducing the white noise kernel as a base kernel allows for the modelling language to express some forms of heteroscedasticity.
 In particular, a $\kWN \kerntimes \kLin$ kernel encodes for uncorrelated Gaussian noise with linearly varying standard deviation.
@@ -252,7 +275,7 @@ The changepoint and changewindow operators also allow for heteroscedasticity whe
 %new data.  We can therefore define a language of regression models by
 %specifying a language of kernels.
 
-Since we have a slightly updated set of base kernels and operators we review the base kernels and search operators.
+Since we have an updated set of base kernels and operators we review the base kernels and search operators.
 
 \subsection{Base kernels}
 \label{sec:description:base}
@@ -263,13 +286,15 @@ For scalar-valued inputs, the white noise ($\kWN$), constant ($\kC$), linear ($\
 \kC(\inputVar, \inputVar') =& \sigma^2 \\
 \kLin(\inputVar, \inputVar') =& \sigma^2(\inputVar - \ell)(\inputVar' - \ell) \\
 \kSE(\inputVar, \inputVar') =& \sigma^2\exp\left(-\frac{(\inputVar - \inputVar')^2}{2\ell^2}\right) \\
-\kPer(\inputVar, \inputVar') =&  \sigma^2\frac{\exp\left(\frac{\cos\frac{2 \pi (\inputVar - \inputVar')}{p}}{\ell^2}\right) - I_0\left(\frac{1}{\ell^2}\right)}{\exp\left(\frac{1}{\ell^2}\right) - I_0\left(\frac{1}{\ell^2}\right)}
+\kZMPer(\inputVar, \inputVar') =&  \sigma^2\frac{\exp\left(\frac{\cos\frac{2 \pi (\inputVar - \inputVar')}{p}}{\ell^2}\right) - I_0\left(\frac{1}{\ell^2}\right)}{\exp\left(\frac{1}{\ell^2}\right) - I_0\left(\frac{1}{\ell^2}\right)}
 \end{eqnarray}
 where $\delta_{\inputVar, \inputVar'}$ is the Kronecker delta function, $I_0$ is the modified Bessel function of the first kind of order zero and other symbols are parameters of the kernel functions.
 
 \subsection{A larger language of regression models}
 
 Table~\ref{table:motifs} lists common regression models that can be expressed by our language.
+In this chapter we restrict to one dimensional functions (in particular time series); the revised modelling language naturally extends into multiple dimensions in the manner described in chapter~\ref{ch:construction}.
+
 \begin{table}[ht]
 \centering
 \begin{tabular}{l|l}
@@ -278,22 +303,20 @@ Regression model & Kernel \\
 \gp{} smoothing & $\kSE + \kWN$ \\
 Linear regression & $\kC + \kLin + \kWN$ \\
 Multiple kernel learning & $\sum \kSE$ + \kWN\\
-Trend, cyclical, irregular & $\sum \kSE + \sum \kPer$ + \kWN\\
+Trend, cyclical, irregular & $\sum \kSE + \sum \kZMPer$ + \kWN\\
 Fourier decomposition* & $\kC + \sum \cos$ + \kWN\\
 Sparse spectrum \gp{}s* & $\sum \cos$ + \kWN\\
 Spectral mixture* & $\sum \SE \times \cos$ + \kWN\\
 Changepoints* & \eg $\kCP(\kSE, \kSE) + \kWN$ \\
 Heteroscedasticity* & \eg $\kSE + \kLin \times \kWN$
 \end{tabular}
-\caption[Fake caption]{
+\caption[Common regression models expressible in our language]{
 Common regression models expressible in our language.
-$\cos$ is a special case of our reparametrised $\kPer$.
-* indicates a model that could not be expressed by the language used in \citet{DuvLloGroetal13}.
+$\cos$ is a special case of $\kZMPer$.
+* indicates a model that could not be expressed by the language defined in chapter~\ref{ch:construction}.
 }
 \label{table:motifs}
 \end{table}
-
-\TBD{Something about why we initially look at 1$d$ things and how everything should extend fairly simply}
 
 \subsection{Search operators}
 
@@ -603,6 +626,8 @@ See section~\ref{sec:construction:related_work} for work relating to the constru
 \paragraph{Natural-language output}
 To the best of our knowledge, our procedure is the first example of automatic description of nonparametric statistical models.
 However, systems with natural language output have been built in the areas of video interpretation \citep{Barbu2012-wv} and automated theorem proving \citep{Ganesalingam_undated-us}.
+
+\TBD{Update me. Frequentist auto-stat work. Look for other people citing our work.}
 
 \section{Predictive Accuracy}
 \label{sec:numerical}
