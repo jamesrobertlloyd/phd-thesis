@@ -30,17 +30,17 @@ Latent variable models for relational data explain observations by means of an u
 or summary,
 such as a low-rank approximation to an observed matrix or an embedding into a Euclidean space.
 This structure is formalized as a latent (unobserved) variable.
-Examples of such models include probabilistic matrix factorization (PMF) \citep{Salakhutdinov2008}, the eigenmodel of 
-\citet{Hoff2007a}, the mixed-membership stochastic blockmodel (MMSB) \citep{Airoldi2008}
-and the Gaussian process latent variable model (GPLVM) \citep[e.g.][]{Lawrence2009}.
+Examples of such models include probabilistic matrix factorization (PMF) \citep{Salakhutdinov2008-tp}, the eigenmodel of 
+\citet{Hoff2007-ja}, the mixed-membership stochastic blockmodel (MMSB) \citep{Airoldi2008-fr}
+and the Gaussian process latent variable model (GPLVM) \citep[e.g.][]{Lawrence2009-za}.
 
-\citet{Hoff2007a} first noted that latent variable models of relational data can be justified by an exchangeability or symmetry argument.
+\citet{Hoff2007-ja} first noted that latent variable models of relational data can be justified by an exchangeability or symmetry argument.
 Building on this connection, we consider nonparametric models for graphs and arrays.
 Results of
-Aldous \cite{Aldous:1981}, Hoover \cite{Hoover:1979} and Kallenberg \cite{Kallenberg:1992} show
+Aldous \cite{Aldous1981-lg}, Hoover \cite{Hoover1979-br} and Kallenberg \cite{Kallenberg1992-gb} show
 that random arrays which satisfy an exchangeability property can be represented in terms of a random
 function. These representations have been further developed in discrete analysis for the
-special case of graphs \citep{Lovasz:Szegedy:2006}; this case is illustrated in Fig.~\ref{fig:W:graph}.
+special case of graphs \citep{Lovasz2006-hc}; this case is illustrated in Fig.~\ref{fig:W:graph}.
 The results can be regarded as a generalization of de Finetti's theorem to array-valued data.
 Their implication for probabilistic modelling is that
 \emph{we can specify a probability distribution for an exchangeable random array by specifying a probability distribution on (measurable) functions}.
@@ -77,7 +77,7 @@ That is, we may often believe that our data is an exchangeable sequence:
 \]
 where $\eqdist$ denotes equality in distribution, and $\SGinf$ is the set of all permutations of $\Nats$ which permute at most a finite number of elements.
 
-de Finetti's theorem \citep[e.g.][]{Kallenberg:2005} characterises all probability distributions of sequences with this property;  $(X_i)_{i\in\Nats}$ is an exchangeable sequence if and only if there exists a random probability measure $\AHfunction$ such that $\darray_1,\darray_2,\ldots\simiid\AHfunction$.
+de Finetti's theorem \citep[e.g.][]{Kallenberg2002-il} characterises all probability distributions of sequences with this property;  $(X_i)_{i\in\Nats}$ is an exchangeable sequence if and only if there exists a random probability measure $\AHfunction$ such that $\darray_1,\darray_2,\ldots\simiid\AHfunction$.
 In other words, observations are conditionally \iid given some random $\AHfunction$.
 For the purposes of probabilistic modelling, this implies that our beliefs about exchangeable sequences of data can be expressed in the form of a distribution over probability measures.
 
@@ -148,7 +148,7 @@ The representation \eqref{eq:ah:graphon:case} is equivalent to the sampling sche
 which is illustrated in Fig.~\ref{fig:W:graph}. If the graph is undirected, edges are sampled only for unordered index pairs as $\AHvar_{\lbrace ij\rbrace}$,
 and it is sufficient to consider symmetric functions $\AHfunction$.
 
-Recent work in discrete analysis shows that any measurable function $[0,1]^2\rightarrow[0,1]$ can be regarded as a (suitably defined) limit of adjacency matrices of graphs of increasing size \citep{Lovasz2004-hc}---intuitively speaking, 
+Recent work in discrete analysis shows that any measurable function $[0,1]^2\rightarrow[0,1]$ can be regarded as a (suitably defined) limit of adjacency matrices of graphs of increasing size \citep{Lovasz2006-hc}---intuitively speaking, 
 as the number of rows and columns increases, the
 matrix in Fig.~\ref{fig:W:graph} (right) converges to the heat map in Fig.~\ref{fig:W:graph} (middle).
 The figure also illustrates that convergence, and hence the parametrisation of the random graph distribution
@@ -262,31 +262,31 @@ Inference in Gaussian processes is a well-understood problem, and the choice of 
 \section{Related work}
 \label{sec:networks:related}
 
-Our model has some noteworthy relations to the Gaussian process latent variable model (GPLVM); a dimensionality-reduction technique \citep[e.g.][]{Lawrence2005}.
-GPLVMs can be applied to relational data \citep{Lawrence2009}, but doing so makes the assumption that either the rows or the columns of the random matrix are independent. 
+Our model has some noteworthy relations to the Gaussian process latent variable model (GPLVM); a dimensionality-reduction technique \citep[e.g.][]{Lawrence2005-cn}.
+GPLVMs can be applied to relational data \citep{Lawrence2009-za}, but doing so makes the assumption that either the rows or the columns of the random matrix are independent. 
 In terms of our model, this corresponds to choosing kernels of the form $\kernel_\AHvar \otimes \delta_\AHvaralt$, where $\otimes$ represents the Kronecker matrix product and $\delta$ represents an `identity' kernel (\ie the corresponding kernel matrix is the identity matrix).
 From this perspective, the application of our model to separately exchangeable real-valued matrices can be interpreted as a form of co-dimensionality reduction. 
 
-A related parametric model is the eigenmodel of \citet{Hoff2007a}.
+A related parametric model is the eigenmodel of \citet{Hoff2007-ja}.
 This model, also justified by exchangeability arguments, approximates a matrix with a bilinear form, followed by some link function and distribution depending on the type of data.
 We show in proposition \ref{prop:matrixfactorisation} that this can be represented in the form of our model by using a kernel function of the form $L_\AHvar \otimes L_\AHvaralt$ where $L$ represents the dot product kernel (\ie the kernel that gives rise to linear functions).
 
 %\fTBD{To be reviewed - also mentions nonparametric matrix factorisation}
-Available models for graph data include the parametric mixed membership stochastic blockmodel (MMSB) \citep{Airoldi2008} and nonparametric infinite relational model (IRM) \cite{Kemp2006}, latent feature relational model (LFRM) \cite{Miller2009}, infinite latent attribute model \cite{Palla2012} and many others.
+Available models for graph data include the parametric mixed membership stochastic blockmodel (MMSB) \citep{Airoldi2008-fr} and nonparametric infinite relational model (IRM) \cite{Kemp2006-jt}, latent feature relational model (LFRM) \cite{Miller2009-wg}, infinite latent attribute model \cite{Palla2012-ch} and many others.
 %\NA{
-Similar models also exist for real valued matrices, including the infinite hidden relational model (IHRM) \citep{Xu2006} which is a counterpart to the IRM and binary matrix factorisation (BMF) \citep{Meeds2007} which is a counterpart to the LFRM.
+Similar models also exist for real valued matrices, including the infinite hidden relational model (IHRM) \citep{Xu2006-uy} which is a counterpart to the IRM and binary matrix factorisation (BMF) \citep{Meeds2007-gd} which is a counterpart to the LFRM.
 %}
 
-Roy and Teh \citep{Roy2009} present a nonparametric Bayesian model of relational data that approximates $\AHfunction$ by a piece-wise constant function whose hierarchical structure is a Mondrian process. In contrast, we approximate $\AHfunction$ by a smooth function.
+Roy and Teh \citep{Roy2009-ge,} present a nonparametric Bayesian model of relational data that approximates $\AHfunction$ by a piece-wise constant function whose hierarchical structure is a Mondrian process. In contrast, we approximate $\AHfunction$ by a smooth function.
 
-A recent development is the Sparse Matrix Variate Gaussian Process Blockmodel (SMGB) of Yan, Xu and Qi \cite{Yan2011}, and the extension to higher order arrays \cite{Xu2012} (InfTucker).
+A recent development is the Sparse Matrix Variate Gaussian Process Blockmodel (SMGB) of Yan, Xu and Qi \cite{Yan2011-lc}, and the extension to higher order arrays \cite{Xu2012-ub} (InfTucker).
 Although not motivated in terms of exchangeability, these Gaussian process models do not impose independence assumptions on either rows or columns, in contrast to the GPLVM.
 These models can be represented as placing a prior ${\AHfunction \dist \GP\,(0, \kernel_1 \otimes \kernel_2)}$ on the function $\AHfunction$ in \eqref{eq:decomposition}.
 %\fTBD{Needs review}
 This prior is equivalent to \eqref{eq:model} for some common choices of kernel $\kernel$ (\eg squared exponential) but excludes others such as those that give rise to symmetric functions or additive kernels.
-Existing efficient algorithms for Gaussian processes of this form \citep[e.g.][]{Saatci2011} perform calculations using a complete grid of data, which results in computational complexities that depend on the size of the array.
+Existing efficient algorithms for Gaussian processes of this form \citep[e.g.][]{Saatci2011-yo} perform calculations using a complete grid of data, which results in computational complexities that depend on the size of the array.
 Our work suggests that it may not be necessary to impose Kronecker product structure on the kernel, which allows for inference with improved scaling when data is sparsely observed.
-\TBD{That said, their most recent work is very scaling.}
+\fTBD{That said, their most recent work is very scaling.}
 
 \subsection{A common perspective on the literature}
 
@@ -408,14 +408,14 @@ Since we focus on undirected graphical data, we require the symmetry condition $
 \kernel(\inputpoints_1, \inputpoints_2) & = & \frac{1}{2}\big(\bar\kernel(\inputpoints_1, \inputpoints_2) + \bar\kernel(\inputpoints_1, \bar\inputpoints_2)\big) + \sigma^2I \quad \quad \textrm{(Symmetry + noise)} \\
 \bar\kernel(\inputpoints_1, \inputpoints_2) & = & \scalefactor^2\exp(-|\inputpoints_1 - \inputpoints_2|^2/(2\lengthscale^2)) \quad \quad \quad \quad \quad \textrm{(RBF kernel)}
 \end{eqnarray}
-where $\inputpoints_k = (\AHvar_{i_k}, \AHvar_{j_k})$, $\bar\inputpoints_k= (\AHvar_{j_k}, \AHvar_{i_k})$ and $\scalefactor, \lengthscale, \sigma$ represent a scale factor, length scale and noise respectively (see \citep[e.g.][]{Rasmussen2006} for a discussion of kernel functions). We collectively denote the kernel parameters by $\covhyppar$.
+where $\inputpoints_k = (\AHvar_{i_k}, \AHvar_{j_k})$, $\bar\inputpoints_k= (\AHvar_{j_k}, \AHvar_{i_k})$ and $\scalefactor, \lengthscale, \sigma$ represent a scale factor, length scale and noise respectively (see \citep[e.g.][]{Rasmussen2006-ml} for a discussion of kernel functions). We collectively denote the kernel parameters by $\covhyppar$.
 For undirected data one can model only the upper triangular part of the adjacency matrix.
 
 \subsection{Sampling without approximating the model}
 
 \newcommand{\numobs}{\mathrm O}
 \newcommand{\numnodes}{\mathrm N}
-In the simpler case of a real-valued array $\darray$, we construct an MCMC algorithm over the variables $(\AHvar,\covhyppar, \sigma_\darray)$ by repeatedly slice sampling \citep{MR1994729} from the conditional distributions
+In the simpler case of a real-valued array $\darray$, we construct an MCMC algorithm over the variables $(\AHvar,\covhyppar, \sigma_\darray)$ by repeatedly slice sampling \citep{Neal2003-zv} from the conditional distributions
 \[
 \covhyppar_i \given \covhyppar_{-i}, \sigma_\darray, \AHvar, \darray
 \qquad\quad
@@ -433,7 +433,9 @@ let $K$ represent the $\numobs \times \numobs$ kernel matrix between all points 
 
 \subsection{A random subset-of-regressor approximation}
 
-In order to scale the method to much larger graphs, we applied a variation of a sparse approximation method known as Subsets-of-Regressors, or simply SoR \citep{Smola01,Wahba99,Silverman1985}. (See \citep{Quinonero-Candela2005} for an excellent survey of this and other sparse approximations.)  The SoR approximation replaces the infinite dimensional GP with a finite dimensional approximation. Our approach is to treat both the inputs and outputs of the GP as latent variables.
+In order to scale the method to much larger graphs, we applied a variation of a sparse approximation method known as Subsets-of-Regressors, or simply SoR \citep{Alex_J_Smola2001-ev,Wahba1999-bl,Silverman1985-ys} (See \citep{Quinonero-Candela2005-er} for an excellent survey of this and other sparse approximations).
+The SoR approximation replaces the infinite dimensional GP with a finite dimensional approximation.
+Our approach is to treat both the inputs and outputs of the GP as latent variables.
 %, a random version of the SoR approximation appears to work very well, even with few pseudoinputs (see below).
 
 In particular, 
@@ -447,10 +449,10 @@ The idea of the SoR approximation is to replace $\larray_{ij}$ with the posterio
 \larray = K_{\inputpoints\pseudopoints} K_{\pseudopoints\pseudopoints}^{-1}\targets,
 \label{eqn:GPConditional}
 \]
-where $K_{\inputpoints\pseudopoints}$ is the kernel matrix between the latent embeddings $\inputpoints$ and the pseudoinputs $\pseudopoints$.  By considering random pseudoinputs, we construct an MCMC analogue of the techniques proposed in~\cite{Titsias2008}.
+where $K_{\inputpoints\pseudopoints}$ is the kernel matrix between the latent embeddings $\inputpoints$ and the pseudoinputs $\pseudopoints$.  By considering random pseudoinputs, we construct an MCMC analogue of the techniques proposed in~\cite{Titsias2008-gp}.
 % in be seen to be doing a Bayesian version of sparse variational techniques proposed by Titsias and Lawrence \cite{Titsias2010}.
 
-Given this approximate model, the conditional distribution $\targets \given \AHvar, \pseudopoints, \covhyppar, (\sigma_\darray), \darray$ is amenable to elliptical slice sampling \citep{murray2010}, for both real valued and binary $\darray$. All other random parameters, including the $(U_i)$\fTBD{Added $U_i$ reminder}, can again be sampled from their full conditional distributions using slice sampling.  The sampling algorithms require that one computes expressions involving~\eqref{eqn:GPConditional}. As a result they cost at most $\CompOrder(k^3 \numobs)$.
+Given this approximate model, the conditional distribution $\targets \given \AHvar, \pseudopoints, \covhyppar, (\sigma_\darray), \darray$ is amenable to elliptical slice sampling \citep{Murray2010-zu}, for both real valued and binary $\darray$. All other random parameters, including the $(U_i)$\fTBD{Added $U_i$ reminder}, can again be sampled from their full conditional distributions using slice sampling.  The sampling algorithms require that one computes expressions involving~\eqref{eqn:GPConditional}. As a result they cost at most $\CompOrder(k^3 \numobs)$.
 
 %These sampling algorithms now require that one recomputes at most $K_{\pseudopoints\pseudopoints}^{-1}$ (or more precisely the Cholesky decomposition) and $K_{\inputpoints\pseudopoints}^{-1}$.  As a result, they cost at most $\Theta(k^3 \numobs)$ time. 
 
@@ -458,20 +460,20 @@ Given this approximate model, the conditional distribution $\targets \given \AHv
 \label{sec:experiments}
 We evaluate the model on three different network data sets. Two of these data sets---the high school and NIPS co-authorship data---have been extensively
 analyzed in the literature.
-The third data set, a protein interactome, was previously noted by \citet{Hoff2007a} to be of interest since it exhibits both block structure and transitivity.
+The third data set, a protein interactome, was previously noted by \citet{Hoff2007-ja} to be of interest since it exhibits both block structure and transitivity.
 
 \begin{center}
   \begin{tabular}{l  l  c  l}
     Data set & Recorded data & Vertices & Reference\\
     \midrule
-    High school & high school social network & 90 & e.g.\ \cite{Hoff2007a} \\
-    NIPS & subset of coauthorship network & 234 & e.g.\ \cite{Miller2009} \\
-    Protein & protein interactome & 230 & e.g.\ \cite{Hoff2007a}\\
+    High school & high school social network & 90 & e.g.\ \cite{Hoff2007-ja} \\
+    NIPS & subset of coauthorship network & 234 & e.g.\ \cite{Miller2009-wg} \\
+    Protein & protein interactome & 230 & e.g.\ \cite{Hoff2007-ja}\\
   \end{tabular}
 \end{center}
 
-We compare performance of our model on these data sets to three other models, probabilistic matrix factorization (PMF) \citep{Salakhutdinov2008},
-Hoff's eigenmodel \citep{Hoff2007a}, and the GPLVM \citep{Lawrence2005}. The models are chosen for comparability, since they all embed nodes into a Euclidean latent space.
+We compare performance of our model on these data sets to three other models, probabilistic matrix factorization (PMF) \citep{Salakhutdinov2008-tp},
+Hoff's eigenmodel \citep{Hoff2007a-ja}, and the GPLVM \citep{Lawrence2005-cn}. The models are chosen for comparability, since they all embed nodes into a Euclidean latent space.
 %All of these models represent nodes as being embedded in a latent space, although the approaches vary considerably.
 Experiments for all three models were performed using reference implementations by the respective 
 authors.\footnotemark
@@ -811,7 +813,7 @@ There has been a tremendous amount of research into modelling matrices, arrays, 
 Bayesian modeling of such data has only recently been explored.
 In most modelling circumstances, the assumption of exchangeability amongst data objects is natural and fundamental to the model.
 In this case, the representation results 
-\citep{Aldous:1981,Hoover:1979,Kallenberg:1992} 
+\citep{ldous1981-lg,Hoover1979-br,Kallenberg1992-gb} 
 precisely map out the scope of possible probabilistic models for exchangeable arrays:
 Any such model can be interpreted as a prior on random measurable functions on a suitable space.
 
