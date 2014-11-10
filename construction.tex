@@ -205,7 +205,7 @@ We discuss its shortcomings and potential improvements in the discussion in sect
 \paragraph{Scoring kernel families}
 
 Choosing kernel families within the greedy search requires a criterion for evaluating them.
-We choose model evidence as our criterion, since it balances the fit and complexity of a model and implements what is known as ``Bayesian Occam's Razor'' \citep[e.g.][]{rasmussen2001occam,mackay2003information}.
+We choose model evidence as our criterion, since it balances the fit and complexity of a model and implements what is known as ``Bayesian Occam's Razor'' \citep[e.g.][]{Rasmussen2001-rv, MacKay2003-rp}.
 Conditioned on kernel parameters, the model evidence of a \gp{} can be computed analytically \citep[e.g.][]{Rasmussen2006-ml}.
 However, to evaluate the model evidence of an entire kernel family we must integrate over kernel parameters (after having also defined a prior distribution over them). 
 We approximate this intractable integral with the Bayesian information criterion \citep{Schwarz1978-wp} after first optimising to find the maximum-marginal-likelihood kernel parameters by conjugate gradient descent.
@@ -257,16 +257,16 @@ This model is typically used in unsupervised tasks and requires an expensive int
 \citet{Salakhutdinov2008-zt} use a deep neural network to learn an embedding; this is a flexible approach to kernel learning but relies upon finding structure in the input density, p(\inputVar).
 Instead we focus on domains where most of the interesting structure is in the regression function \function(\inputVar).
 
-Sparse spectrum \gp{}s \citep{lazaro2010sparse} approximate the spectral density of a stationary kernel function using delta functions; this corresponds to kernels of the form $\sum \cos$.
-Similarly, \citet{WilAda13} introduce spectral mixture kernels which approximate the spectral density using a scale-location mixture of Gaussian distributions corresponding to kernels of the form $\sum \kSE \times \cos$.
-Both demonstrate, using Bochner's theorem \citep{bochner1959lectures}, that these kernels can approximate any stationary covariance function.
+Sparse spectrum \gp{}s \citep{Lazaro-gredilla2010-hc} approximate the spectral density of a stationary kernel function using delta functions; this corresponds to kernels of the form $\sum \cos$.
+Similarly, \citet{Wilson2013-eq} introduce spectral mixture kernels which approximate the spectral density using a scale-location mixture of Gaussian distributions corresponding to kernels of the form $\sum \kSE \times \cos$.
+Both demonstrate, using Bochner's theorem \citep{Bochner1959-yk}, that these kernels can approximate any stationary covariance function.
 In chapter~\ref{ch:description} we introduce a new version of the periodic kernel for which $\cos(x-x')$ is a limiting form and hence we also attain this completeness property.
 
-\cite{rasmussen38gaussian} devote 4 pages to manually constructing a composite kernel to model a time series of carbon dioxode concentrations.
+\cite{Rasmussen2006-ml} devote 4 pages to manually constructing a composite kernel to model a time series of carbon dioxode concentrations.
 When applied to this dataset our procedure chose a model similar to the one they constructed by hand.
-Other examples of papers whose main contribution is to manually construct and fit a composite \gp{} kernel are \cite{klenske2012nonparametric} and \cite{lloydgefcom2012}.
+Other examples of papers whose main contribution is to manually construct and fit a composite \gp{} kernel are \cite{Klenske_undated-ys} and \cite{Lloyd2013-yn}.
 
-\citet{Diosan2007-un, Bing2010-of} and \citet{kronberger2013evolution} learn composite kernels for support vector machines, relevance vector machines and Gaussian processes, using genetic search algorithms.
+\citet{Diosan2007-un, Bing2010-of} and \citet{Kronberger_undated-vf} learn composite kernels for support vector machines, relevance vector machines and Gaussian processes, using genetic search algorithms.
 We go beyond these works by demonstrating the interpretability of the structure implied by composite kernels, and how such structure allows for extrapolation (these claims are more thoroughly justified in chapter~\ref{ch:description}.
 
 \subsection{Structure discovery}
@@ -282,10 +282,6 @@ Some of their discrete graph structures have continuous analogues in our own spa
 \citet{Grosse2012-zi} performed a greedy search over a compositional model class for unsupervised learning, using a grammar and a search procedure which parallel our own.
 This model class contained a large number of existing unsupervised models as special cases and was able to choose appropriate models automatically from data.
 Our work is tackling a similar problem, but in a supervised setting.
-
-\subsection{Equation learning}
-\cite{todorovski1997declarative}, \cite{washio1999discovering} and \cite{schmidt2009distilling} learn parametric forms of functions specifying time series, or relations between quantities.
-In contrast, our work learns a parametric form for the covariance, allowing it to model functions without a simple parametric form.
 
 \section{Pattern discovery in time series}
 \label{sec:time_series}

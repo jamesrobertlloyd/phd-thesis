@@ -648,11 +648,11 @@ In addition to our demonstration of the interpretability of \procedurename{}, we
 
 \paragraph{Data sets}
 
-We evaluate the performance of the algorithms listed below on 13 real time-series from various domains from the time series data library \citep{TSDL}; plots of the data can be found at the beginning of the reports in the supplementary material.
+We evaluate the performance of the algorithms listed below on 13 real time-series from various domains from the time series data library \citep{Hyndman_undated-zj}; plots of the data can be found at the beginning of the reports in the supplementary material.
 
 \paragraph{Algorithms}
 
-We compare \procedurename{} to equation learning using Eureqa \citep{Eureqa} and six other regression algorithms: linear regression, \gp{} regression with a single $\kSE$ kernel (squared exponential), a Bayesian variant of multiple kernel learning (MKL) \citep[e.g.][]{bach2004multiple}, change point modeling \citep[e.g.][]{garnett2010sequential, saatcci2010gaussian, FoxDunson:NIPS2012}, spectral mixture kernels \citep{WilAda13} (spectral kernels) and trend-cyclical-irregular models \citep[e.g.][]{lind2006basic}.
+We compare \procedurename{} to equation learning using Eureqa \citep{Nutonian2011-el} and six other regression algorithms: linear regression, \gp{} regression with a single $\kSE$ kernel (squared exponential), a Bayesian variant of multiple kernel learning (MKL) \citep[e.g.][]{Bach2004-lb}, change point modeling \citep[e.g.][]{Garnett2010-rd, Saatci2010-el, Fox2012-fm}, spectral mixture kernels \citep{Wilson2013-eq} (spectral kernels) and trend-cyclical-irregular models \citep[e.g.][]{Lind2006-th}.
 
 The spans of the languages of kernels of the language used by \procedurename{} and the kernel search introduced in chapter~\ref{ch:description} are very similar; the changes are close to being only a change of basis.
 Consequently their predictive accuracy is nearly identical so we only include \procedurename{} in the results for brevity.
@@ -664,7 +664,7 @@ For squared exponential and linear regression the procedure corresponds to margi
 More advanced inference methods are typically used for changepoint modeling but we use the same inference method for all algorithms for comparability.
 \footnotetext{We experimented with using unpenalised marginal likelihood as the search criterion but observed overfitting, as is to be expected.} 
 
-We restricted to regression algorithms for comparability; this excludes models which regress on previous values of times series, such as autoregressive or moving-average models \citep[e.g.][]{box2013time}.
+We restricted to regression algorithms for comparability; this excludes models which regress on previous values of times series, such as autoregressive or moving-average models \citep[e.g.][]{Box1976-qk}.
 Constructing a language for this class of time-series model would be an interesting area for future research.
 
 \paragraph{Interpretability versus accuracy}
