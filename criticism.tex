@@ -16,15 +16,15 @@ My own opinion on good philosophy for model criticism is still in flux so I will
 
 Statistical model checking or criticism\footnotemark{} is an important part of a complete statistical analysis.
 \footnotetext{We follow Box \citep{Box1980-ud} using the term `model criticism' for similar reasons to O'Hagan \citep{OHagan2003-bc}, namely ``model checking \ldots conveys to me a sense of a rather passive activity that does not expect to uncover any problems, while model criticism conveys a more vigorous and open-minded process''.}
-When one fits a linear model to a data set via least squares a complete analysis includes computing \eg Cook's distances \cite{Cook1982-eq} to identify influential points or plotting residuals against fitted values to identify non-linearity or heteroscedasticity.
+When one fits a linear model to a data set via least squares a complete analysis includes computing \eg Cook's distances \cite{Cook1982-ia} to identify influential points or plotting residuals against fitted values to identify non-linearity or heteroscedasticity.
 Similarly, modern approaches to Bayesian statistics view model criticism as in important component of an iterative cycle of model construction, inference and criticism \citep{Gelman2013-st}\fTBD{Also cite Dave Blei}.
 
 As statistical models become more complex and diverse in response to the challenges of modern data sets there will be an increasing need for a greater range of model criticism procedures that are either automatic or generally applicable.
-This will be especially true as automatic modelling methods \citep[e.g.][]{Grosse2012-zf, Thornton2013-zg, Lloyd2014-ABCD} and probabilistic programming \citep[e.g.][]{Milch2007-dz, Goodman2012-pf, stan-software:2014} mature\fTBD{What is the canonical 1997 reference?}.
+This will be especially true as automatic modelling methods \citep[e.g.][]{Grosse2012-zi, Thornton2013-zg, Lloyd2014-nz} and probabilistic programming \citep[e.g.][]{Milch2005-qc, Goodman2008-ok, Stan_Development_Team2014-ha} mature\fTBD{What is the canonical 1997 reference?}.
 
 Model criticism typically proceeds by choosing a statistic of interest, computing it on data and comparing this to a suitable null distribution.
 Ideally these statistics are chosen to assess the utility of the statistical model under consideration (see applied examples \citep[e.g.][]{Meulders1998-xo, Gelman2013-st}) but this can require considerable expertise on the part of the modeller.
-We propose an alternative to this approach by using a statistic defined as a supremum over a broad class of measures of discrepancy between two distributions, the maximum mean discrepancy (MMD) \citep[e.g.][]{Borgwardt2006-gy, Gretton2007-ft, Gretton2008-ik}).
+We propose an alternative to this approach by using a statistic defined as a supremum over a broad class of measures of discrepancy between two distributions, the maximum mean discrepancy (MMD) \citep[e.g.][]{Borgwardt2006-gy, Gretton2007-ft, Gretton2008-gs}).
 The advantage of this approach is that the discrepancy measure attaining the supremum automatically identifies regions of the data which are most poorly represented by the statistical model fit to the data.
 
 We demonstrate this approach to model criticism on toy data sets, restricted Boltzmann machines\fTBD{what is a canonical reference?} and deep belief networks\fTBD{what is a canonical reference?} trained on MNIST digits and Gaussian process \citep[e.g.][]{Rasmussen2006-ml} regression models trained on several time series.
@@ -143,12 +143,12 @@ This means that we can interpret the witness function as showing where the estim
 The nature of the two sample test defined by the kernel MMD depends on the choice of the kernel.
 In this paper we use the radial basis function kernel, also known as the squared exponential or exponentiated quadratic.
 This kernel encodes for smooth functions characterised by a typical lengthscale \citep[e.g.][]{Rasmussen2006-ml}.
-A typical heuristic for selecting the lengthscale is to use the median distance between all points as the lengthscale \citep[e.g.][]{Gretton2008-ik}.
+A typical heuristic for selecting the lengthscale is to use the median distance between all points as the lengthscale \citep[e.g.][]{Gretton2008-gs}.
 However, since we interpret the witness function as the difference of two kernel density estimates we also consider selecting the lengthscale which gives the best density estimates (see section~\ref{sec:high_dim}).
 
 \subsection{Estimation of the null distribution}
 
-There are a number of different ways in which the null distribution of the MMD statistic~\eqref{eq:MMD_b} can be estimated \citep[e.g.][]{Gretton2008-ik}.
+There are a number of different ways in which the null distribution of the MMD statistic~\eqref{eq:MMD_b} can be estimated \citep[e.g.][]{Gretton2008-gs}.
 We use the bootstrap variant for its simplicity and general applicability.
 Note that the MMD two sample test using the bootstrap estimation of the null distribution is an example of a permutation test \TBD{reference something}.
 
@@ -192,7 +192,7 @@ However, methods that are not robust to outliers (\eg fitting a Gaussian by maxi
 The interpretability of the witness functions comes from being equal to the difference of two kernel density estimates~\eqref{eq:witness-estimate}.
 In high dimensional spaces, kernel density estimation is a very high variance procedure that can result in poor density estimates\fTBD{what is a classic citation?} which will destroy the interpretability of the method.
 In response, we consider using dimensionality reduction techniques\fTBD{what is a classic citation?} before performing two sample tests.
-Note however that the statistical test derived from the MMD still has high power in high dimensions \citep{Gretton2008-ik}.
+Note however that the statistical test derived from the MMD still has high power in high dimensions \citep{Gretton2008-gs}\fTBD{Against what?}.
 
 To test how the MMD statistic can be used for high dimensional data we generated synthetic data using the following recipe.
 5 points in a 10 dimensional space were drawn at random from a random 4 dimensional subspace\footnotemark.
@@ -228,7 +228,7 @@ However, taking the density estimate interpretation of the witness function more
 We therefore selected a lengthscale by 5 fold cross validation using predictive likelihood of the kernel density estimate as the selection criterion.
 With this lengthscale the MMD test returns a $p$-value of 0.05 and the witness function (right of figure~\ref{fig:high_mog}) clearly identifies the cluster that has been incorrectly modelled.
 
-Presented with this discrepancy a statistical modeller might try a more flexible clustering model \citep[e.g.][]{Peel2000-pv, Iwata2012-yj} (a mixture of $t$-distributions would work on this example).
+Presented with this discrepancy a statistical modeller might try a more flexible clustering model \citep[e.g.][]{Peel2000-pv, Iwata2013-yj} (a mixture of $t$-distributions would work on this example).
 However, the $p$-value of the MMD statistic can also be made non-significant by fitting a mixture of 10 Gaussians.
 We mention this as a reminder that the test proposed here does not attempt to falsify a class of models, it tests only whether or not the data could plausibly have been generated by a particular fitted model.
 
@@ -349,17 +349,17 @@ Following this observation, we might consider generating data from the plug-in c
 The only difference between this test and the MMD two sample test is that our data is generated from conditional distributions, rather than being \iid.
 The null distribution of this statistic can be trivially estimated by sampling several sets of replicate data from the plug-in predictive distribution.
 
-To demonstrate this test we apply it to 4 regression algorithms and 13 time series analysed in \cite{Lloyd2014-ABCD}.
+To demonstrate this test we apply it to 4 regression algorithms and 13 time series analysed in chapter~\ref{ch:description}.
 In this work the authors compare several methods for constructing Gaussian process \citep[e.g.][]{Rasmussen2006-ml} regression models.
 Example data sets are shown in figures~\ref{fig:SE-witness}~and~\ref{fig:ABCD-witness}.
 While it is clear that simple smoothing methods will fail to capture all of the structure in the data, it is not clear a priori how much better the more advanced methods will fair.
 
-To construct $p$-values we use held out data using the same split of training and testing data as the interpolation experiment in \cite{Lloyd2014-ABCD}.
+To construct $p$-values we use held out data using the same split of training and testing data as the interpolation experiment in chapter~\ref{ch:description}.
 Gaussian processes when applied to regression problems learn a joint distribution of all output values.
 However, this joint distribution information is rarely used; typically only the pointwise conditional distributions ${p(y\given x_i^\textrm{obs}, \hat\theta)}$ are used which is consistent with the test proposed here.
 
 Table~\ref{table:ABCD-p-values} shows a table of $p$-values for 13 data sets and 4 model construction methods.
-The four methods are Gaussian process regression using a squared exponential kernel (SE), trend-cyclical-irregular models \citep[e.g.][]{lind2006basic} (TCI), spectral mixture kernels \citep{WilAda13} (SP) and the method proposed in \cite{Lloyd2014-ABCD} (ABCD).
+The four methods are Gaussian process regression using a squared exponential kernel (SE), trend-cyclical-irregular models \citep[e.g.][]{Lind2006-th} (TCI), spectral mixture kernels \citep{Wilson2013-eq} (SP) and the method proposed in chapter~\ref{ch:description} (ABCD).
 Values in  bold indicate a positive discovery after a Benjamini--Hochberg \citep{Benjamini_undated-mh} procedure with a false discovery rate of 0.05 applied to each model construction method.
 SE, TCI and SP have a very similar pattern of significant $p$-values whereas ABCD has fewer significant $p$-values.
 
@@ -452,7 +452,7 @@ We hope that our interpretation of the differences between these methods as diff
 Plug-in and posterior predictive $p$-values test the null hypothesis that the observed data could have been generated by the fitted model or posterior predictive distribution.
 In some situations it may be more appropriate to attempt to falsify the null hypothesis that future data will be generated by the plug-in or posterior predictive distribution.
 As mentioned in section~\ref{sec:model-crit-general} this can be achieved by reserving a portion of the data to be used for model criticism alone, rather than fitting a model or updating a posterior on the full data.
-Cross validation methods have also been investigated in this context \citep{Gelfand1992-ow, Gelfand1996-vy, Marshall2007-hd}.
+Cross validation methods have also been investigated in this context \citep{Gelfand1992-ow, Marshall2007-hd}.
 
 \paragraph{Other methods for evaluating statistical models}
 
