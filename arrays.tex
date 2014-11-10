@@ -40,12 +40,12 @@ If the labeling is unimportant, then any probabilistic model of such data should
 
 Relational data are typically stored in arrays; the right hand side of figure~\ref{fig:exchangeable} shows the corresponding adjacency matrix representations of the networks on the left.
 We demonstrate that exchangeability of the objects underlying a relational database can be expressed in terms of array exchangeability.
-Prior work on array exchangeability, both theoretical \citep[e.g.][]{Hoover1979, Aldous1981a, Hoover1982, Kallenberg1999a, Diaconis2007, Aldous2010, Austin2012, Choi2012, Wolfe2013} and applied \citep[e.g.][]{Hoff2007a,Roy2009,Lloyd2012}, has focused on single exchangaeble arrays.
+Prior work on array exchangeability, both theoretical \citep[e.g.][]{Hoover1979-br, Aldous1981-lg, Hoover1982-ty, Kallenberg1999-pj, Diaconis2007-mi, Aldous2010-iw, Austin2012-jq, Choi2013-th, Wolfe2013-vs} and applied \citep[e.g.][]{Hoff2007-ja,Roy2009-ge,Lloyd2012-sb}, has focused on single exchangaeble arrays.
 We show that the representation theorems for single arrays can be used to derive representations for collections of exchangeable arrays \ie exchangeable databases.
 
 \section{Exchangeable databases}
 
-We abstractly define a database following the entity-relationship formalism \citep[e.g.][]{Ullman2002} where the values of attributes are the result of evaluating functions (relations) over a collection of entities / objects.
+We abstractly define a database following the entity-relationship formalism \citep[e.g.][]{Ullman2002-eo} where the values of attributes are the result of evaluating functions (relations) over a collection of entities / objects.
 
 \newcommand{\bi}{\bm{i}}
 \newcommand{\Types}{T}
@@ -337,6 +337,7 @@ Finally, let $\pi_s \defas \{J \cap I_s : J \in \pi\}$
 \end{thm}
 
 \begin{proof}
+\fTBD{Might need to revert to super array proof}
 Collections of arrays with this functional form are trivially exchangeable databases (see the corollaries below if the notation is confusing), so we include only the proof that exchangeable databases have this functional form\fTBD{Explain why it is trivial}.
 Each array $X^{r_j}$ in an exchangeable database is $\pi_{s_j}$-exchangeable by definition.
 Therefore, by proposition~\ref{prop:piexas} we have an almost sure representation for each array of the form
@@ -604,13 +605,13 @@ It may be advantageous however to have fixed latent variables when one is jointl
 Don't forget this early block model variant \cite{Hoffman_undated-ri}.
 
 In section~\ref{sec:networks:related} it was demonstrated that many models of single 2-arrays fit the form of the generic model presented above.
-In particular there are models that assume $F$ is linear \citep[e.g.][]{Hoff2007a, Meeds2007, Salakhutdinov2008, Yu2008, Miller2009}, that $F$ is Gaussian process distributed \citep[e.g.][]{Lawrence2009, Yan2011, Lloyd2012} and other non-linear forms for $F$ both parametric \citep[e.g.][]{Hoff2002} and nonparametric \citep[e.g.][]{Roy2009}.
-In addition to this there has been a line of work that uses increasingly more expressive forms of the distribution $\mathcal{U}$ \citep[e.g.][]{Wang1987, Nowicki2001, Kemp2006, Xu2006, Meeds2007, Miller2009, Palla2012}.
+In particular there are models that assume $F$ is linear \citep[e.g.][]{Hoff2007-ja, Meeds2007-gd, Salakhutdinov2008-zt, Yu2008-tz, Miller2009-wg}, that $F$ is Gaussian process distributed \citep[e.g.][]{Lawrence2009-za, Yan2011-lc, Lloyd2012-sb} and other non-linear forms for $F$ both parametric \citep[e.g.][]{Hoff2002-vy} and nonparametric \citep[e.g.][]{Roy2009-ge}.
+In addition to this there has been a line of work that uses increasingly more expressive forms of the distribution $\mathcal{U}$ \citep[e.g.][]{Wang1987-jd, Nowicki2001-xm, Kemp2006-jt, Xu2006-uy, Meeds2007-gd, Miller2009-wg, Palla2012-ch}.
 
 Many, but not all, of these models have been extended to model $d$-arrays.
-A summary of models using linear forms of $F$ is given in \cite{Kolda2009-ba}; non-linear models include \cite{Xu2012} (cite the latest inftucker stuff).
+A summary of models using linear forms of $F$ is given in \cite{Kolda2009-ba}; non-linear models include \cite{Xu2012-ub} \TBD{cite the latest inftucker stuff}.
 
-For full databases, the literature is limited to clustering / block / latent class models \cite{Kemp2006} \TBD{don't forget IHRM} and models using linear forms for the $F^r$ \citep[e.g.][]{Acar, Acar2012, Acar2013, Andersen2013, Davison, Ermis1958, Gallinari2011, Jimeng2009, Kong2010, Lippert2008, Networks, Nickel2011, Shangguan2012, Singh, Singha, Singh2008}.
+For full databases, the literature is limited to clustering / block / latent class models \cite{Kemp2006-jt} \TBD{don't forget IHRM} and models using linear forms for the $F^r$ \citep[e.g.][]{Acar, Acar2012, Acar2013, Andersen2013, Davison, Ermis1958, Gallinari2011, Jimeng2009, Kong2010, Lippert2008, Networks, Nickel2011, Shangguan2012, Singh, Singha, Singh2008}.
 
 We should certainly expect to see new research using some of the more advanced forms proposed for networks being applied to higher order arrays or full databases.
 However, rather than proposing yet more specific models it would be very interesting to see automated model building techniques applied to these domains, potentially combined with model forms inspired by probabilistic relational models.
@@ -620,7 +621,7 @@ However, rather than proposing yet more specific models it would be very interes
 We have demonstrated how the concept of exchangeability can be applied to databases and used to derive a natural parameter space for statistical models of such data.
 Identifying a parameter space is the first step in any statistical analysis, allowing either frequentist estimation of the parameters or Bayesian prior specification.
 This concept is well established for exchangeable sequences where de Finetti's theorem \citep[e.g.][]{Kallenberg2005} applies.
-For exchangeable arrays, the relevant representation theorems were presented by Aldous and Hoover \cite{Aldous1981a, Hoover1979} over 30 years ago but it is only recently that these results are being used to inspire Bayesian models \cite{Hoff2007a, Roy2009, Lloyd2012} and frequentist estimation procedures \cite{Kallenberg1999a,Choi2012, Wolfe2013}.
+For exchangeable arrays, the relevant representation theorems were presented by Aldous and Hoover \cite{Aldous1981a, Hoover1979} over 30 years ago but it is only recently that these results are being used to inspire probabilistic models \cite{Hoff2007a, Roy2009, Lloyd2012} and frequentist estimation procedures \cite{Kallenberg1999a,Choi2012, Wolfe2013}.
 We hope that this work will continue and be extended to the analysis of exchangeable databases.
 
 \subsection{Mention sparsity again}

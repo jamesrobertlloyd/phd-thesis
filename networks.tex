@@ -403,7 +403,7 @@ For the presentation in section~\ref{sec:background}, the domain $[0,1]^2$ of th
 with adjacency matrices.
 For the purposes of inference, normal distributions are more convenient, and we henceforth use ${\AHvar_{1},\AHvar_{2},\ldots\; \simiid \Normal(0, I_r)}$ for some integer $r$.
 
-Since we focus on undirected graphical data, we require the symmetry condition $\larray_{ij} = \larray_{ji}$. This can be achieved by constructing the kernel function in the following way\fTBD{Cite Duvenaud thesis}
+Since we focus on undirected graphical data, we require the symmetry condition $\larray_{ij} = \larray_{ji}$. This can be achieved by constructing the kernel function in the following way \citep[e.g.][]{Duvenaud2014-em}
 \begin{eqnarray}
 \kernel(\inputpoints_1, \inputpoints_2) & = & \frac{1}{2}\big(\bar\kernel(\inputpoints_1, \inputpoints_2) + \bar\kernel(\inputpoints_1, \bar\inputpoints_2)\big) + \sigma^2I \quad \quad \textrm{(Symmetry + noise)} \\
 \bar\kernel(\inputpoints_1, \inputpoints_2) & = & \scalefactor^2\exp(-|\inputpoints_1 - \inputpoints_2|^2/(2\lengthscale^2)) \quad \quad \quad \quad \quad \textrm{(RBF kernel)}
