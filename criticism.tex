@@ -5,7 +5,7 @@
 \label{ch:criticism}
 
 The automatic statistical reports that were the output of the work of chapter~\ref{ch:description} all conclude with a model criticism section.
-In this section, the statistical model constructed by the kernel search algorithm is presented to the user as a hypothesis and as such it subjected to attempts to falsify its claims.
+In this section, the statistical model constructed by the kernel search algorithm is presented to the user as a hypothesis and as such it subjected to criticism and attempts to falsify its claims.
 On entering the literature of statistical model criticism I quickly found myself in the cross fire of a version of the frequentists versus Bayesians argument which appears to have been left unresolved.
 Moreover, I have found there to be little actionable advice on which methods of model criticism to use when, which presented a challenge when trying to select appropriate model criticism methods to be used by a system capable of constructing infinitely many different statistical models.
 
@@ -16,20 +16,20 @@ My own opinion on good philosophy for model criticism is still in flux so I will
 
 Statistical model checking or criticism\footnotemark{} is an important part of a complete statistical analysis.
 \footnotetext{We follow Box \citep{Box1980-ud} using the term `model criticism' for similar reasons to O'Hagan \citep{OHagan2003-bc}, namely ``model checking \ldots conveys to me a sense of a rather passive activity that does not expect to uncover any problems, while model criticism conveys a more vigorous and open-minded process''.}
-When one fits a linear model to a data set via least squares a complete analysis includes computing \eg Cook's distances \cite{Cook1982-ia} to identify influential points or plotting residuals against fitted values to identify non-linearity or heteroscedasticity.
-Similarly, modern approaches to Bayesian statistics view model criticism as in important component of an iterative cycle of model construction, inference and criticism \citep{Gelman2013-st}\fTBD{Also cite Dave Blei}.
+When one fits a linear model to a data set via least squares a complete analysis includes computing \eg Cook's distances \citep{Cook1982-ia} to identify influential points or plotting residuals against fitted values to identify non-linearity or heteroscedasticity.
+Similarly, modern approaches to Bayesian statistics view model criticism as in important component of an iterative cycle of model construction, inference and criticism \citep[e.g.][]{Gelman2013-st, Blei2014-uz}.
 
 As statistical models become more complex and diverse in response to the challenges of modern data sets there will be an increasing need for a greater range of model criticism procedures that are either automatic or generally applicable.
-This will be especially true as automatic modelling methods \citep[e.g.][]{Grosse2012-zi, Thornton2013-zg, Lloyd2014-nz} and probabilistic programming \citep[e.g.][]{Milch2005-qc, Goodman2008-ok, Stan_Development_Team2014-ha} mature\fTBD{What is the canonical 1997 reference?}.
+This will be especially true as automatic modelling methods \citep[e.g.][]{Grosse2012-zi, Thornton2013-zg, Lloyd2014-nz} and probabilistic programming \citep[e.g.][]{Milch2005-qc, Goodman2008-ok, Stan_Development_Team2014-ha} mature.
 
 Model criticism typically proceeds by choosing a statistic of interest, computing it on data and comparing this to a suitable null distribution.
 Ideally these statistics are chosen to assess the utility of the statistical model under consideration (see applied examples \citep[e.g.][]{Meulders1998-xo, Gelman2013-st}) but this can require considerable expertise on the part of the modeller.
-We propose an alternative to this approach by using a statistic defined as a supremum over a broad class of measures of discrepancy between two distributions, the maximum mean discrepancy (MMD) \citep[e.g.][]{Borgwardt2006-gy, Gretton2007-ft, Gretton2008-gs}).
+We propose a conceptually different approach by using a statistic defined as a supremum over a broad class of measures of discrepancy between two distributions, the maximum mean discrepancy (MMD) \citep[e.g.][]{Borgwardt2006-gy, Gretton2007-ft, Gretton2008-gs}).
 The advantage of this approach is that the discrepancy measure attaining the supremum automatically identifies regions of the data which are most poorly represented by the statistical model fit to the data.
 
-We demonstrate this approach to model criticism on toy data sets, restricted Boltzmann machines\fTBD{what is a canonical reference?} and deep belief networks\fTBD{what is a canonical reference?} trained on MNIST digits and Gaussian process \citep[e.g.][]{Rasmussen2006-ml} regression models trained on several time series.
-Our proposed method identifies discrepancies between the data and fitted models that would not be apparent from the predictive performance focused metrics one typically finds in a machine learning paper\fTBD{Should we be explicitly referring to machine learning}.
-It is our belief\fTBD{I'm finding it difficult to find the right words here} that more effort shoud be expended on attempting to falsify models fitted to data, using model criticism techniques or otherwise.
+We demonstrate this approach to model criticism on toy data sets, restricted Boltzmann machines and deep belief networks trained on MNIST digits and Gaussian process \citep[e.g.][]{Rasmussen2006-ml} regression models trained on several time series.
+Our proposed method identifies discrepancies between the data and fitted models that would not be apparent from the predictive performance focused metrics one typically finds in a machine learning paper.
+It is our belief that more effort shoud be expended on attempting to falsify models fitted to data, using model criticism techniques or otherwise.
 Not only will this aid research in targeting areas for improvement but it should give greater confidence in any conclusions drawn from a model.
 
 \section{Model criticism}
@@ -105,7 +105,7 @@ The benefit of mean discrepancy measures is that we can analytically maximise th
 Consider the two sample problem. We are given samples ${X = (x_i)_{i=1\ldots m}}$ and ${Y = (y_i)_{i=1\ldots n}}$ drawn \iid from distributions $p$ and $q$ respectively.
 Can we determine if $p \neq q$?
 
-An answer to this problem is to consider maximum mean discrepancy (MMD) \citep{Gretton2008-ik} statistics (also called integral probability metrics \citep{Muller1997-vs})
+An answer to this problem is to consider maximum mean discrepancy (MMD) \citep{Gretton2008-gs} statistics (also called integral probability metrics \citep{Muller1997-vs})
 \begin{equation}
 \textrm{MMD}(\mathcal{F},p,q) = \sup_{f \in \mathcal{F}}(\mathbb{E}_{x\sim p}[f(x)] - \mathbb{E}_{y\sim q}[f(y)])
 \label{eq:MMD}
@@ -150,7 +150,7 @@ However, since we interpret the witness function as the difference of two kernel
 
 There are a number of different ways in which the null distribution of the MMD statistic~\eqref{eq:MMD_b} can be estimated \citep[e.g.][]{Gretton2008-gs}.
 We use the bootstrap variant for its simplicity and general applicability.
-Note that the MMD two sample test using the bootstrap estimation of the null distribution is an example of a permutation test \TBD{reference something}.
+Note that the MMD two sample test using the bootstrap estimation of the null distribution is an example of a permutation test, also known as exact tests.
 
 \section{Examples on toy data}
 
@@ -190,13 +190,12 @@ However, methods that are not robust to outliers (\eg fitting a Gaussian by maxi
 \label{sec:high_dim}
 
 The interpretability of the witness functions comes from being equal to the difference of two kernel density estimates~\eqref{eq:witness-estimate}.
-In high dimensional spaces, kernel density estimation is a very high variance procedure that can result in poor density estimates\fTBD{what is a classic citation?} which will destroy the interpretability of the method.
-In response, we consider using dimensionality reduction techniques\fTBD{what is a classic citation?} before performing two sample tests.
-Note however that the statistical test derived from the MMD still has high power in high dimensions \citep{Gretton2008-gs}\fTBD{Against what?}.
+In high dimensional spaces, kernel density estimation is a very high variance procedure that can result in poor density estimates which will destroy the interpretability of the method.
+In response, we consider using dimensionality reduction techniques before performing two sample tests.
 
 To test how the MMD statistic can be used for high dimensional data we generated synthetic data using the following recipe.
 5 points in a 10 dimensional space were drawn at random from a random 4 dimensional subspace\footnotemark.
-\footnotetext{The details are not especially important; code for replication will be available upon publication}
+\footnotetext{The details are not especially important; code for replication is available at \url{https://github.com/jamesrobertlloyd/kmc-research}}
 Data was generated as isotropic Gaussian distributions centred on 4 of the 5 points.
 Finally, data was centred on the fifth point drawn from an isotropic $t$-distribution with 2 degrees of freedom.
 In sum, the data is a mixture of Gaussians and a $t$-distribution.
@@ -350,9 +349,9 @@ The only difference between this test and the MMD two sample test is that our da
 The null distribution of this statistic can be trivially estimated by sampling several sets of replicate data from the plug-in predictive distribution.
 
 To demonstrate this test we apply it to 4 regression algorithms and 13 time series analysed in chapter~\ref{ch:description}.
-In this work the authors compare several methods for constructing Gaussian process \citep[e.g.][]{Rasmussen2006-ml} regression models.
+In this previous chapter we compared several methods for constructing Gaussian process regression models.
 Example data sets are shown in figures~\ref{fig:SE-witness}~and~\ref{fig:ABCD-witness}.
-While it is clear that simple smoothing methods will fail to capture all of the structure in the data, it is not clear a priori how much better the more advanced methods will fair.
+While it is clear that simple smoothing methods will fail to capture all of the structure in the data, it is not clear a priori which extra patterns the more advanced methods will and will not be able to capture.
 
 To construct $p$-values we use held out data using the same split of training and testing data as the interpolation experiment in chapter~\ref{ch:description}.
 Gaussian processes when applied to regression problems learn a joint distribution of all output values.
@@ -432,7 +431,7 @@ From left to right. Unemployment data with ABCD posterior. Witness function of A
 
 \section{Further applied examples}
 
-\TBD{Can we recreate any of Andrew Gelman's model criticism related ideas in a moderately objective manner.}
+\TBD{Can we recreate any of Andrew Gelman's model criticism related ideas in a moderately objective manner. The well data is pertinent.}
 
 \section{Discussion of model criticism and related work}
 
@@ -441,8 +440,8 @@ From left to right. Unemployment data with ABCD posterior. Witness function of A
 In section~\ref{sec:model-crit-general} we interpreted the differences between classical, Bayesian prior/posterior and plug-in $p$-values as corresponding to different null hypotheses and interpretations of the word `model'.
 In particular the classical $p$-value tests a null hypothesis that the data could have been generated by a class of distributions (\eg all normal distributions) whereas all other $p$-values test a particular probability distribution.
 
-Robins, van der Vaart \& Ventura \citep{Robins2000-oz} demonstrated that Bayesian and plug-in $p$-values are not classical $p$-values (frequentist $p$-values in their terminology) \ie they do not have a uniform distribution under the relevant null hypothesis.
-However, this was presented as a failure of these methods; in particular they demonstrated that methods proposed by Bayarri \& Berger \citep{Bayarri1999-ty} based on posterior predictive $p$-values are asymptotically classical $p$-values.
+\citet{Robins2000-oz} demonstrated that Bayesian and plug-in $p$-values are not classical $p$-values (frequentist $p$-values in their terminology) \ie they do not have a uniform distribution under the relevant null hypothesis.
+However, this was presented as a failure of these methods; in particular they demonstrated that methods proposed by \citet{Bayarri1999-ty} based on posterior predictive $p$-values are asymptotically classical $p$-values.
 
 This claimed inadequacy of posterior predictive $p$-values was rebutted \citep{Gelman2003-xx} and while their usefulness is becoming more accepted (see \eg introduction of \cite{Bayarri2007-cp}) it would appear there is still confusion on the subject \citep{Gelman2013-am}.
 We hope that our interpretation of the differences between these methods as different null hypotheses --- appropriate in different circumstances --- sheds further light on the matter.
@@ -458,11 +457,11 @@ Cross validation methods have also been investigated in this context \citep{Gelf
 
 Other typical methods of model evaluation include estimating the predictive performance of the model, analyses of sensitivities to modelling parameters / priors, graphical tests, and estimates of model utility.
 For a recent survey of Bayesian methods for model assessment, selection and comparison see \cite{Vehtari2012-oh} which phrases many techniques as estimates of the utility of a model.
-For some discussion of sensitivity analysis and graphical model comparison see \citep[e.g.][]{Gelman2013-st}.
+For some discussion of sensitivity analysis and graphical model comparison see \eg \citet{Gelman2013-st}.
 
 In this manuscript we have focused on methods that compare statistics of data with predictive distributions, ignoring parameters of the model.
 The discrepancy measures of \cite{Gelman1996-ez} compute statistics of data and parameters; examples can be found in \cite{Gelman2013-st}.
-O'Hagan \citep{OHagan2003-bc} also proposes a method and selectively reviews techniques for model criticism that also take model parameters into account.
+\citet{OHagan2003-bc} also proposes a method and selectively reviews techniques for model criticism that also take model parameters into account.
 
 In the spirit of scientific falsification \citep[e.g.][]{Popper2005-qq}, ideally all methods of assessing a model should be performed to gain confidence in any conclusions made.
 Of course, when performing multiple hypothesis tests care must be taken in the intrepretation of individual $p$-values.
@@ -488,9 +487,8 @@ Do you know how the model you are currently working with most misrepresents the 
 
 \subsection{What happened to statistical power?}
 
-In this chapter we have discussed hypothesis tests and $p$-values but have not mentioned the statistical power of these tests.
-\TBD{Define power}.
-The prevailing view of model criticism is that it is an exploratory process that can be performed when no alternative models are currently being entertained.
+In this chapter we have discussed hypothesis tests and $p$-values but have not mentioned the statistical power of these tests \ie the probability the the null hypothesis will be rejected by some procedure given that the null hypothesis is false.
+This requires us to specify an alternative to the null hypothesis but the prevailing view of model criticism is that it is an exploratory process that can be performed when no alternative models are currently being entertained.
 In particular, \citet{OHagan2003-bc} writes
 \begin{quotation}
 Model criticism \dots is intended as an open-minded phase of investigation
@@ -503,34 +501,35 @@ It is recognised that alternatives are at least loosely implicit
 in any choice of model criticism tools, but the role of model criticism is
 essentially exploratory.
 \end{quotation}
-It seems reasonable to make efforts to characterise the class of distributions against which a particular test has high power to understand the types of discrepancy the test is likely to identify.
-
-\TBD{Read about and discuss the characterisation of alternative hypotheses for MMD.}
+It seems reasonable however to make efforts to characterise the class of distributions against which a particular test has high power to understand the types of discrepancy the test is likely to identify.
+For the MMD two sample test this distribution is characterised in section 5 of \cite{Gretton2012-ss}; the test has higher power for discrepancies whose mean embedding in the relevant RKHS has large norm.
+It would make profitable study to demonstrate how different choices of kernel can identify qualitatively different types of discrepancy.
 
 \subsection{Should we not just attempt to fit ever larger models?}
 
-\TBD{Cite Gelman's view on ever larger models.}
-If after completing a statistical analysis one as the resources (intellectual, computational, \etc) to attempt to fit a larger or more complex statistical model then one should do so.
-However, at some point it will be infeasible to do so.
-At this point it may be worthwhile to consider some form of model criticism procedure since they are typically easier to create and perform than the corresponding expanded inference problem.
+If after completing a statistical analysis, one has the resources (intellectual, computational, \etc) to attempt to fit a larger, more complex or more realistic statistical model then one should do so.
+However, this process of model expansion will become infeasible for all but the simplest of problems.
+At this point one might consider cheaper alternatives to performing inference, such as model criticism techniques.
+Faced with a decision between multiple actions it seems likely that this problem should ultimately be phrased in utilitarian terms.
+However, the problem of how one should make statistical decisions in a computation bounded world is still relatively uncharted territory \citep{Jordan2013-uv}.
 
-\subsection{Perhaps a decision theoretic viewpoint will bring some rationality to the problem}
+%\subsection{Perhaps a decision theoretic viewpoint will bring some rationality to the problem}
 
-How might model criticism interact with, for example, the kernel search procedure?
-Ideally any model criticism procedures should check for discrepancies that indicate the kernel search should continue considering larger kernels and for discrepancies that cannot be helped by fancier kernels \eg outliers.
-Supposing that model criticism is very inexpensive, then after evaluating any kernel we are faced with the decision of whether or not to continue with the search, or go back to the research drawing board or stop and go to the pub.
-How do we make this decision?
-We need to estimate the utility of these actions.
-We could estimate the utility of these actions using the inexpensive model criticism techniques using some reasoning system with experience of performing this estimation.
-This reasoning system cannot be the model itself; it must be something outside the model - potentially a deep neural net or a human brain.
-Whilst the only option is a human brain we should probably stick with producing model criticism techniques that tell us interesting things.
-Perhaps a reasoning system, when being told how the statistical model is likely to be used could imagine all sorts of problems and then compute the expected consequences of these problems.
-It uses this to decide which things to test.
-I like this idea - it is kind of like playing devil's advocate - thinking of the most devious thing that could screw things up.
-Devil's advocate model criticism.
-This feels like it could go somewhere.
+%How might model criticism interact with, for example, the kernel search procedure?
+%Ideally any model criticism procedures should check for discrepancies that indicate the kernel search should continue considering larger kernels and for discrepancies that cannot be helped by fancier kernels \eg outliers.
+%Supposing that model criticism is very inexpensive, then after evaluating any kernel we are faced with the decision of whether or not to continue with the search, or go back to the research drawing board or stop and go to the pub.
+%How do we make this decision?
+%We need to estimate the utility of these actions.
+%We could estimate the utility of these actions using the inexpensive model criticism techniques using some reasoning system with experience of performing this estimation.
+%This reasoning system cannot be the model itself; it must be something outside the model - potentially a deep neural net or a human brain.
+%Whilst the only option is a human brain we should probably stick with producing model criticism techniques that tell us interesting things.
+%Perhaps a reasoning system, when being told how the statistical model is likely to be used could imagine all sorts of problems and then compute the expected consequences of these problems.
+%It uses this to decide which things to test.
+%I like this idea - it is kind of like playing devil's advocate - thinking of the most devious thing that could screw things up.
+%Devil's advocate model criticism.
+%This feels like it could go somewhere.
 
-The best philosophy of statistical model criticism is still unclear, but what is certain is that it is often easy to do and may help and should therefore be done in almost all situations that involve statistical modelling.
+%The best philosophy of statistical model criticism is still unclear, but what is certain is that it is often easy to do and may help and should therefore be done in almost all situations that involve statistical modelling.
 
 \outbpdocument{
 \bibliographystyle{plainnat}
