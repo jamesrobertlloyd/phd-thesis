@@ -269,7 +269,7 @@ See \cite{Hong2014-yf} and the references therein for an overview of the methods
 \section{An attempt to construct the composite kernels automatically}
 \label{sec:gefcom:auto}
 
-My participation in this data mining competition provided excellent experience before working on the research described in chapter~\ref{ch:construction} and \cite{Duvenaud2013-dn}.
+My participation in this data mining competition provided excellent experience before working on the research described in chapters~\ref{ch:construction}~and~\ref{ch:description}.
 A natural question to ask is whether or not the compositional kernel search could have been directly applied to this competition, potentially speeding up my development of models and improving performance.
 The answer to this question is `mostly' and reveals some interesting shortcomings in methods of approximate inference for Gaussian processes.
 We now present a detailed analysis of the temperature data.
@@ -278,13 +278,13 @@ These comments apply similarly to the load data.
 The function used to forecast temperatures displayed in figure~\ref{fig:temp_pred} can be described as
 \[
   & \textrm{ Average historical smoothed temperatures} \\
-  + & \textrm{ A smooth function } \\
+  + & \textrm{ A smooth function with a lengthscale of a few days } \\
   + & \textrm{ A daily periodic function}
 \]
 which could alternatively be described as
 \[
   & \textrm{ An annual periodic function} \\
-  + & \textrm{ A smooth function } \\
+  + & \textrm{ A smooth function with a lengthscale of a few days } \\
   + & \textrm{ A daily periodic function}
 \]
 which could be modelled by a Gaussian process with kernel $\kPer + \kSE + \kPer$ with appropriate parameters.
@@ -293,46 +293,90 @@ Exact inference for Gaussian processes has $\mathcal{O}(N^3)$  computational com
 This makes it (currently) prohibitive to perform exact inference for $N$ much larger than 1000.
 The complete GEFCom dataset contained roughly 40,000 data points meaning that one has to consider approximate inference schemes.
 
-A simple approximate inference scheme is simply to use a subset of the data \citep[e.g.][]{Quinonero-Candela2005-er}.
-Running the kernel search procedure on a randomly selected 500 data point subset of the data for temperature station 1 results in \TBD{Some stuff - ideally with pictures and descriptions produced automatically}.
-While this has captured long term trends and the annual periodicity it has failed to pick up on the daily periodicity.
-This is because when subsetting so harshly the daily periodicity is all but invisible in the data (or rather there is insufficient evidence in the data for such a complicated function).
+A simple approximate inference scheme is to use a subset of the data to perform inference\citep[e.g.][]{Quinonero-Candela2005-er}.
+Running the kernel search procedure on a randomly selected 500 data point subset of the data for temperature station 1 results in a model composed of the following additive components:
+\begin{itemize}
+  \item A very smooth function
+  \item A periodic function with a period of 1.0 years
+  \item An approximately periodic function with a period of 24.0 hours
+  \item Uncorrelated noise
+\end{itemize}
+This model has captured the long term trend of the data and the two forms of periodicity but it has failed to identify that short term (over several days) temperature fluctuations are temporally correlated (this is due to weather effects).
+This will result in short term extrapolations that are potentially separated by a discontinuity from the data\fTBD{It would be nice to plot this}.
 
-Presented with this failure one might consider instead using a contiguous subset closest to the times at which prediction will be performed.
-The results of performing this analysis are \TBD{Some stuff}.
-This automatically constructed model now picks up on the daily periodicity but since it only has access to less than 21 days of data there is no way for it to infer the annual periodicity.
-There is also insufficient data to infer that whilst the shape of periodicity changes smoothly over time there is a historical average that it should return to.
+Presented with this failure one might consider instead using a contiguous subset closest to the times at which extrapolation will be performed.
+The results of running the kernel search on this data subset is a model composed of
+\begin{itemize}
+  \item A constant
+  \item A periodic function with a period of 24.0 days
+  \item A smooth function with a lengthscale of 16.5 hours
+  \item A rapidly varying smooth function with a lengthscale of 2.0 hours
+  \item Uncorrelated noise
+\end{itemize}
+which is visualised in figure~\ref{fig:gefcom:contig}.
+This model has successfully captured the correlation in the data at a scale of days but since it only had access to about 20 days of data it is completely unaware of the annual periodicity / historical average temperatures.
+Not including the annual periodicity may result in poor extrapolations when looking more than a few days ahead.
 
-A potential compromise solution would be to use a subset of data which was a mixture of the two methods already described.
-Using this data subset results in \TBD{stuff - probably going to not notice the annual average periodicity}.
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.23\columnwidth]{\gefcomfigsdir/station1contigsubset_1}
+\includegraphics[width=0.23\columnwidth]{\gefcomfigsdir/station1contigsubset_2}
+\includegraphics[width=0.23\columnwidth]{\gefcomfigsdir/station1contigsubset_3}
+\includegraphics[width=0.23\columnwidth]{\gefcomfigsdir/station1contigsubset_4}
+\caption[Model constructed for contiguous subset of temperature data]{
+Model constructed for contiguous subset of temperature data. From left to right: Constant offset, daily periodicity and smooth functions.
+}
+\label{fig:gefcom:contig}
+\end{figure}
 
-There are myriad methods for performing approximate inference in Gaussian processes, but almost all of them either exploit the fact that long lengthscale components do not require much data to learn effectively and short lengthscale components have approximate statistical independence relationships that allow for approximate inference methods.
+What we have observed here is that different approximation strategies are appropriate for learning different types of function.
+Exactly periodic functions or smooth functions with very long lengthscales can be learnt effectively using a random subset of the data.
+In contrast, shorter lengthscale components can be learnt by assuming that the function being learnt is not strongly affected by data far away from where the function is being modelled.
+This is representative of a common theme; while there are myriad methods for performing approximate inference in Gaussian processes almost all of them either exploit the fact that long lengthscale components do not require much data to be learnt effectively and short lengthscale components have approximate statistical independence relationships that allow for local approximate inference methods.
 The above example demonstrates that approximate inference methods may need to deal with these two types of structures simultaneously.
 
-In this particular example a full description of the data might be
+Continuing with the theme of using a subset of data one could construct a subset of data which is a mixture of the two methods already described.
+Using this data subset results in a model composed of\fTBD{Update when experiment complete}
+\begin{itemize}
+  \item A very smooth function
+  \item A periodic function with a period of 1.0 years
+  \item An approximately periodic function with a period of 24.0 hours
+  \item A rapidly varying smooth function with a lengthscale of 21.7 hours
+  \item A rapidly varying smooth function with a lengthscale of 2.0 hours
+  \item Uncorrelated noise
+\end{itemize}
+By using this subset the kernel search has been able to infer both periodicities and smooth functions at multiple lengthscales.
+However, using my own prior knowledge about temperature dynamics a more complete description of the data might be
 \[
   & \textrm{ An annual periodic function} \\
   + & \textrm{ A long term smooth function } \\
   + & \textrm{ Shorter term smooth functions } \\
   + & \textrm{ A daily approximately periodic function} \\
-  + & \textrm{ A daily periodic function which is similar to previous values in previous years}
+  + & \textrm{ A daily periodic function which is similar to values in different years}
 \]
-The last term could be modelled with a Gaussian process using a kernel of the form $\kSE \kerntimes \kPer \kerntimes \kPer$.
-The most effective subset of data, or more generally type of approximation scheme, is different for all of these different functions.
-The annual periodicity and long term smooth function can be learned with a random subset of the data.
-The shorter term smooth functions and approximate daily periodicity will require more data to be learned effectively but one will eventually be able to make use of approximate statistical independence relationships between far away data points to learn the function at any point using local data.
+where the final term represents that the average daily profile of temperatures might change shape and size depending on the time of year.
+The last term could be modelled with a Gaussian process using a kernel of the form $\kSE \kerntimes \kPer \kerntimes \kPer$\footnotemark{}.
+The most effective subset of data, or more generally type of approximation scheme, is different for these different functions.
+The periodicity and long term smooth function can be learned with a random subset of the data.
+The shorter term smooth functions will require more data to be learned effectively but one will be able to make use of approximate statistical independence relationships between far away data points to learn the function at any point using local data.
 For the final function, to learn the function at any point one only needs to see data nearby in time and the corresponding time points in previous years.
+\footnotetext{
+This term was not inferred on any subsets of data.
+It is possible that the data does not actually display this changing periodicity pattern that I expect; it seems more likely however that 500 data points were insufficient evidence for such a complicated structure to be inferred.
+}
 
-One could imagine a type of backfitting algorithm that can exploit the appropriate way to perform approximate inference most effectively for each component function, but perhaps there are methods that avoid the potentially costly iterations of back fitting and also provide estimates of marginal likelihood.
-\TBD{Maybe give an example on this data}
+It has previously been remarked that approximate inference strategies should be able to capture both global and local functions \citep[e.g.][]{Snelson2007-mj, Vanhatalo2012-yr}.
+However, I am unaware of any approximate inference strategy that attempts to exploit more than two lengthscales simultaneously.
+It seems reasonable that approximate inference strategies that exploit all aspects of structured kernels would make for profitable research.
 
 \section{Conclusion}
-
-\NA{Rewrite in the light of additional experiments}
 
 In this competition I applied general purpose machine learning / regression algorithms and made few adjustments for the specific domain the data arose from.
 Despite this, the resulting predictions were highly competitive.
 It is hoped that this report shows that simple techniques can be very effective for predictive modelling and can inspire practical techniques for load forecasting.
+
+With the benefit of hindsight I also demonstrated that some of the models used in this competition could have been automatically constructed using the methods described in chapters~\ref{ch:construction}~and~\ref{ch:description}.
+However, to do so required a careful choice of approximate inference strategy and revealed a potential area for future research in approximate inference methods for Gaussian processes.
 
 \outbpdocument{
 \bibliographystyle{plainnat}
