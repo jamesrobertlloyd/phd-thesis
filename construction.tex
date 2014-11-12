@@ -592,12 +592,12 @@ These methods naturally produce an estimate or lower bound of the model evidence
 
 A simple method that we attempted to utilise was the Laplace approximation to the model evidence \TBD{cite something like Bishop maybe}.
 This method approximates the log-likelihood function as a quadratic with centre at a mode of the likelihood and curvature at the mode matched to that of the true log-likelihood.
-In order to work, one must be sufficiently close to a mode of the likelihood in order to be able to produce a numerical estimate of the curvature that is strictly negative definite (\ie defining an appropriate turning point of the likelihood).
+To be able to calculate this approximation one must be sufficiently close to a mode of the likelihood in order to be able to produce a numerical estimate of the curvature that is strictly negative definite (\ie defining an appropriate turning point of the likelihood).
 As shown in figure \TBD{make a figure}, if one is not quite at the mode of a distribution one cannot hope to calculate a meaningful curvature estimate.
 
 The situation of not quite being at the mode however is not just a numerical annoyance, it is becoming increasingly common.
 We found that the conjugate gradients solver used within the kernel search algorithm could become confused by numerical noise and would terminate before it reached a mode.
-Also, as data sets become increasingly large and computation and time constraints of algorithms become increasingly important it will often be irrational to run optimisers to completion, when being almost an optimum is often good enough given certain time and computation budgets \TBD{cite Bayes optimisation, Russell - rational something}.
+Also, as data sets become increasingly large and computation and time constraints of algorithms become increasingly important it will often be irrational to run optimisers to completion, when being almost at an optimum is often good enough given certain time and computation budgets \TBD{cite Bayes optimisation, Russell - rational something, Jordan algorithmic weakening}.
 
 A potential way forward is to imagine a more general version of the Laplace approximation.
 The Laplace approximation attempts to approximate the log-likehood with a quadratic; this can be achieved without exactly having found the mode simply by performing regression using a quadratic regression function
