@@ -9,7 +9,7 @@ We now justify this claim of interpretability by demonstrating that the models p
 In particular we show that the grammar generated language of kernel families neatly maps onto natural-language sentences describing the properties of the functions these kernels encode for.
 
 This chapter is based upon joint work with David Duvenaud, Roger Grosse, Joshua Tenenbaum and Zoubin Ghahramani \citep{Lloyd2014-nz}.
-I performed the majority of experiments; all were involved with the writing.
+I performed all experiments; all were involved with the writing.
 
 \section{Introduction}
 
@@ -17,7 +17,8 @@ The kernel search procedure introduced in chapter~\ref{ch:construction} can be v
 Given no information about a data set other than the data itself the kernel search explores a large space of potential statistical models, reporting those which appear to be the most parsimonious description of the data.
 Viewed either as an autonomous agent or as a tool, this type of system has the potential to significantly aid those without expert machine learning or statistical knowledge to perform exploratory analyses of novel data sets.
 
-However, while graphical descriptions can convey some of the patterns encoded by a statistical model, much of the detail of the properties of the statistical model are expressed by the forms of the kernels; within the broader context of scientific fields in general there are very few people who can interpret the meaning of Gaussian processes with novel kernel functions.
+However, while graphical descriptions can convey some of the patterns encoded by a statistical model, much of the detail of the properties of the statistical model are expressed by the forms of the kernels.
+However, there are very few people even who can interpret the meaning of Gaussian processes with novel kernel functions.
 It is therefore natural to ask to what extent any kernel produced by the kernel search algorithm can be explained in relatively simple terms.
 
 In this chapter we demonstrate that the compositional structure of the kernels produced by the search algorithm neatly map onto compositionally generated natural-language descriptions of the types of functions they encode for.
@@ -69,20 +70,20 @@ A flow chart for the operation of the system is shown in figure \ref{fig:descrip
 \end{figure}
 
 \section{Improvements and additions to the language of kernels}
-\label{sec:design}
+\label{sec:description:design}
 
 \subsection{Improvements to interpretability}
 
 We now demonstrate that some of the kernel expressions that can be reached by the search procedure described in chapter~\ref{ch:description} do not lend themselves to automatic description in natural language.
 Furthermore, at their worst they can produce posterior distributions over functions that are highly uninterpretable or unusual.
-We find that removing or modifying these kernels makes automatic description possible; we believe a priori that it is beneficial to be able to explain complex statistical models in words as well as with graphical representations.
+We find that removing or modifying these kernels makes automatic description possible.
 Furthermore, removing and modifying these kernels has the potentially unexpected benefit of improving the interpretability of the resulting statistical models.
 
 \paragraph{Removal of the rational quadratic kernel}
 
 The squared exponential ($\kSE$)  kernel encodes for probability distributions over smooth functions; the rational quadratic ($\kRQ$) kernel also encodes for smooth functions and can be expressed as a scale mixture of infinitely many $\kSE$ kernels.
 Kernels such as $\kSE \kerntimes \kRQ$ and $\kRQ \kerntimes \kRQ$ also encode for yet more variations on smooth functions.
-It seems unlikely that there can be simple descriptions of all of these different types of smoothness (there are only so many synonyms) without resorting to equations or graphs of the kernels; neither of these are easy to interpret even by experts.
+It seems unlikely that there can be simple descriptions of all of these different types of smoothness (there are only so many synonyms) without resorting to equations or graphs of the kernels; neither of these are easy to interpret, even by experts.
 
 For this reason we remove the rational quadratic kernel from our set of base kernels with which we form the language of kernel families.
 As we will see in section~\ref{sec:description:description} this will allow us to only have to describe one type of smoothness making the task of automatic description into natural language much simpler.
@@ -125,8 +126,8 @@ Right: Posterior of two components found by \procedurename{} - the different sca
 \label{fig:rq}
 \end{figure}
 
-An even more extreme pathological behaviour can be seen in figure~\ref{fig:description:rq_per} where a kernel of the form $\kRQ \kerntimes \kPer$ has explained a data set which \procedurename{} has more naturally describes as a sum of a periodic component and uncorrelated noise.
-For these reasons we exclude the rational quadratic kernel and also do not include similar kernels such as the Mat\'ern kernel \citep[e.g.][]{Rasmussen2006-ml} used by \citet{Kronberger_undated-vf}.
+An even more extreme pathological behaviour can be seen in figure~\ref{fig:description:rq_per}\fTBD{Find / make me} where a kernel of the form $\kRQ \kerntimes \kPer$ has explained a data set which \procedurename{} has more naturally described as a sum of a periodic component and uncorrelated noise.
+For these reasons we exclude the rational quadratic kernel from our language.
 
 \begin{figure}[ht]
 \centering
@@ -144,7 +145,7 @@ We discuss these philosophical points at greater length in section~\ref{sec:desc
 
 \paragraph{Subtraction of unnecessary constants}
 
-The typical definition of the periodic ($\kPer$) kernel \citep[e.g.][]{Rasmussen2006-ml} used by \citet{Duvenaud2013-dn}, \citet{Kronberger_undated-vf} and in chapter~\ref{ch:construction} is always greater than zero.
+The typical definition of the periodic ($\kPer$) kernel \citep[e.g.][]{Rasmussen2006-ml} used by \citet{Duvenaud2013-dn}, \citet{Kronberger_undated-vf} and in chapter~\ref{ch:construction}\footnote{and almost every other application of Gaussian processes to periodic data} is always greater than zero.
 This is not necessary for the kernel to be positive semidefinite; we can subtract a constant from this kernel.
 Similarly, the linear kernel used by \citet{Duvenaud2013-dn} and in chapter~\ref{ch:construction} contains a constant term that can be subtracted.
 
@@ -217,7 +218,7 @@ This version of the periodic kernel is now implemented in the GPML toolbox \NA{c
 \subsection{Addition of the changepoint and changewindow operators}
 
 In addition to these changes to the base kernels we also introduce changepoints into the language of kernels since they are a common phenomenon in time series (\eg figure~\ref{fig:periodic}).
-We construct changepoints by assuming that the function we are attempting to model transitions between two different different functions with the transition controlled by a sigmoidal function $\sigma$:
+We construct changepoints by assuming that the function we are attempting to model transitions between two different functions with the transition controlled by a sigmoidal function $\sigma$:
 \[
   f(x) = \sigma(x)f_1(x) + (1 - \sigma(x))f_2(x).
 \]
@@ -275,7 +276,7 @@ The changepoint and changewindow operators also allow for heteroscedasticity whe
 %new data.  We can therefore define a language of regression models by
 %specifying a language of kernels.
 
-Since we have an updated set of base kernels and operators we review the base kernels and search operators.
+Since we have an updated set of base kernels and operators we review them.
 
 \subsection{Base kernels}
 \label{sec:description:base}
@@ -293,7 +294,7 @@ where $\delta_{\inputVar, \inputVar'}$ is the Kronecker delta function, $I_0$ is
 \subsection{A larger language of regression models}
 
 Table~\ref{table:motifs} lists common regression models that can be expressed by our language.
-In this chapter we restrict to one dimensional functions (in particular time series); the revised modelling language naturally extends into multiple dimensions in the manner described in chapter~\ref{ch:construction}.
+In this chapter we restrict to one dimensional functions (in particular, time series); the revised modelling language naturally extends into multiple dimensions in the manner described in chapter~\ref{ch:construction}.
 
 \begin{table}[ht]
 \centering
@@ -328,7 +329,7 @@ The search operators introduced in chapter~\ref{ch:construction} are as follows:
 \mathcal{B} &\to& \mathcal{B'}
 \end{eqnarray}
 %
-where $\mathcal{S}$ represents any kernel subexpression and $\mathcal{B}$ is any base kernel within a kernel expression \ie the search operators represent addition, multiplication and replacement.
+where $\mathcal{S}$ represents any kernel subexpression and $\mathcal{B}$ is any base kernel \ie the search operators represent addition, multiplication and replacement.
 
 To accommodate changepoint/window operators we introduce the following additional operators
 %
@@ -404,6 +405,7 @@ Formally, if ${f_1(x) \dist \gp{}(0, \kernel_1)}$ and ${f_2(x) \dist \gp{}(0, \k
 \begin{align}
 {\textrm{Cov} \left[f_1(x)f_2(x), f_1(x')f_2(x') \right] = k_1(x,x')k_2(x,x')}.\nonumber
 \end{align}
+We note however that since this multiplication affects only the correlation structure, the description given in table~\ref{table:modifiers} is somewhat loose.
 \end{itemize}
 
 \begin{table}[ht]
@@ -780,22 +782,28 @@ We have demonstrated that our procedure can discover and describe a variety of p
 Our procedure's extrapolation and interpolation performance on time-series are state-of-the-art compared to existing model construction techniques.
 We believe this procedure has the potential to make powerful statistical model-building techniques accessible to non-experts.
 
-\subsection{Linguistic and subjective biases}
+\subsection{We should probably stop using the squared exponential kernel}
 
-\TBD{
-Biasing the search to linguistically simple concepts seems to have moved the language closer to my own subjective beliefs.
-This seems better than biasing the search towards mathematically convenient forms.
-One may want to be objective but this endeavour has failed before (I should really read about reference priors).
-These linguistically simple concepts have become simple due to their common use and therefore common occurrence.
-However, one could imagine some system starting from scratch and being exposed to many data sets and over time learning a language of functions that most parsimoniously captured what it had seen.
-This could add some objectivity to the language chosen and would be very interesting to see if it picked the same things as humans have or perhaps teaches us some new and important concepts.
-PARAGRAPH.
-Essentially the claims are.
-My subjective beliefs are better than mathematically convenient forms.
-Linguistically simple concepts are closer to my subjective beliefs than mathematically convenient forms.
-Of course, the language is not entirely well aligned with my subjective beliefs; I believe in monotonic functions but I cannot express these with Gaussian processes.
-Also, language can be ambiguous and therefore one must be aware that its usefulness as a guide will be limited.
-}
+With only the squared exponential kernel representing smoothness in the language, any kernel expression will have this one type of smoothness since the product of two $\kSE$ kernels is another $\kSE$ with different parameters.
+This is a cute mathematical property, but a different kernel encoding for smoothness could have been chosen and the langauge of kernels restricted to only having one of these kernels in each product.
+In this sense the $\kSE$ kernel has been used purely for convenience, rather than truly reflecting our beliefs about functions.
+\citet{Stein1999-ps} recommends instead the Mat\'ern class of kernels, which possibly have more realistic smoothness assumptions than the squared exponential kernel in many situations.
+
+%\subsection{Linguistic and subjective biases}
+
+%Some of the changes to the language of kernels 
+%Biasing the search to linguistically simple concepts seems to have moved the language closer to my own subjective beliefs.
+%This seems better than biasing the search towards mathematically convenient forms.
+%One may want to be objective but this endeavour has failed before (I should really read about reference priors).
+%These linguistically simple concepts have become simple due to their common use and therefore common occurrence.
+%However, one could imagine some system starting from scratch and being exposed to many data sets and over time learning a language of functions that most parsimoniously captured what it had seen.
+%This could add some objectivity to the language chosen and would be very interesting to see if it picked the same things as humans have or perhaps teaches us some new and important concepts.
+%PARAGRAPH.
+%Essentially the claims are.
+%My subjective beliefs are better than mathematically convenient forms.
+%Linguistically simple concepts are closer to my subjective beliefs than mathematically convenient forms.
+%Of course, the language is not entirely well aligned with my subjective beliefs; I believe in monotonic functions but I cannot express these with Gaussian processes.
+%Also, language can be ambiguous and therefore one must be aware that its usefulness as a guide will be limited.
 
 \outbpdocument{
 \bibliographystyle{plainnat}
