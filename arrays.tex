@@ -24,7 +24,6 @@ To perform a statistical analysis of such data we will typically need to estimat
 The choice of parameter space is important because it indicates the targets of statistical inference and determines where we can share statistical strength between different aspects of the data.
 
 We demonstrate that the weak assumption of an appropriate form of exchangeability can provide a natural parameter space.
-%Exchangeability is a reasonable assumption whenever we can faithfully model our data as being a random finite sample from some theoretical infinite population where the order of sampling does not matter.
 This form of exchangeability is appropriate when the order of the objects underlying a relational database (\eg users and movies in a database of ratings data) is arbitrary or unimportant.
 For example, the left hand side of figure~\ref{fig:exchangeable} shows the same network but with differently labeled nodes.
 If the labeling is unimportant, then any probabilistic model of such data should assign them the same probability.
@@ -72,7 +71,6 @@ Define a \defn{database} to be a collection of $R$ relations $r_1,\dotsc,r_R$ of
 
 We may encode a database as a collection of arrays $(X^{r_j})_{j=1}^R$, where $X^{r_j}$ encodes the relation $r_j$.  
 For notational simplicity, we will often refer to the collection of arrays $(X^{r_j})_{j=1}^R$ as if it were the database itself.
-%For notational simplicity, we will sometimes write $(X^r)$ to denote such a collection of arrays.
 
 Permuting the ordering of objects within a database results in a permutation of the indices of several of the arrays encoding its relations.
 For each type $t \in \Types$, let $p_t \in \SGinf$ be a permutation of $\Nats$. 
@@ -88,8 +86,6 @@ If $X^r$ is the encoding of a relation $r$ with signature $s \in \Types^d$, then
 X^{r \circ p}_{\bi} = X^r_{p^s(\bi)}, \qquad \text{for } \bi \in \Nats^d.
 \]
 
-%The permutation of a database $(X^r)$ by $p$ is simply the database $(X^r \circ p)$.
-
 \begin{definition}[exchangeable database]
 We say that a random database $(X^{r_j})_{j=1}^R$ is \emph{exchangeable} when it has the same distribution as $(X^{r_j\circ p})_{j=1}^R$ for every $p \in \SGinf^T$.
 \end{definition}
@@ -98,113 +94,114 @@ We say that a random database $(X^{r_j})_{j=1}^R$ is \emph{exchangeable} when it
 
 %\PROBLEM{Here}
 
+\subsection{A simplified representation theorem}
+
 %Let $\Law(Y)$ be the law (distribution) of a random variable $Y$ and define $\chi_m X \defas (X_{i_1\ldots i_d}; \ i_j \le m )$.
+The following result characterises the distribution of any exchangeable database to arbitrary accuracy.
 
-%The following result characterises the distribution of any exchangeable database to arbitrary accuracy.
+\begin{cor}[functional representation for exchangeable databases]
+  \label{cor:simple-database}
+   Let $(X^{r_j})_{j=1}^R$ be an exchangeable random database.
+   Then there exists a sequence of random measurable functions $F^{j,1}, F^{j,2}, \dotsc$ for 
+   every $j=1\ldots R$ and collection of \iid Uniform$[0,1]$ random variables $(\AHvar^t_i)_{i\in\Nats,t \in \Types}$ such that 
+   the random databases $(X^{r_j,n})_{j=1}^R$
+    converge in distribution to $(X^{r_j})_{j=1\ldots R}$ as $n\to \infty$ for all fixed $m$, where   
+   the sequence of arrays $X^{j,1},X^{j,2},\dotsc$, for $j \in \{1,\dotsc,R\}$ are given by
+   \[
+     X^{r_j,n}_{\bi} := F^{j,n}(\AHvar^{s_j(1)}_{i_1},\dotsc,\AHvar^{s_j(d)}_{i_d}), \qquad \text{for } \bi \in \Nats^d.
+   \]
+\end{cor}
 
-%\begin{cor}[functional representation for exchangeable databases]
-%  \label{cor:simple-database}
-%   Let $(X^{r_j})_{j=1}^R$ be an exchangeable random database.
-%   Then there exists a sequence of random measurable functions $F^{j,1}, F^{j,2}, \dotsc$ for 
-%   every $j=1\ldots R$ and collection of \iid Uniform$[0,1]$ random variables $(\AHvar^t_i)_{i\in\Nats,t \in \Types}$ such that 
-%   the random databases $(X^{r_j,n})_{j=1}^R$
-%    converge in distribution to $(X^{r_j})_{j=1\ldots R}$ as $mn\to \infty$, where   
-%   the sequence of arrays $X^{j,1},X^{j,2},\dotsc$, for $j \in \{1,\dotsc,R\}$, given by
-%   \[
-%     X^{r_j,n}_{\bi} := F^{j,n}(\AHvar^{s_j(1)}_{i_1},\dotsc,\AHvar^{s_j(d)}_{i_d}), \qquad \text{for } \bi \in \Nats^d.
-%   \]
-%\end{cor}
+This is a corollary of theorem~\ref{thm:simple-database} proven in section~\ref{sec:proof_database} which states that the law of fixed subarrays are mutually absolutely continuous and the associated Radon-Nikodym derivatives converge uniformly to $1$ as $n \to \infty$.
+We also present an almost-sure representational result which requires some heavy notation which we build up in subsequent sections.
 
-%This is a corollary of theorem~\ref{thm:simple-database} proven in section~\ref{sec:proof_database} which states that the law of fixed subarrays are mutually absolutely continuous and the associated Radon-Nikodym derivatives converge uniformly to $1$ as $n \to \infty$.
-%We also present an almost-sure representational result which requires some heavy notation which we build up in subsequent sections.
+To demonstrate this theorem, we present two special cases of this result applicable to modelling a network with side information for each node and a social network with associated user-item data.
 
-%To demonstrate this theorem, we present two special cases of this result applicable to modelling a network with side information for each node and a social network with associated user-item data.
+\begin{cor}
+  \label{cor:network-side-simple}
+  Consider an exchangeable database with one object type, one unary relationship, and one binary relationship; denote the binary relationship by the array $X=(X_{i,j})_{i,j\in\Nats}$ and the unary relationship with the sequence $C=(C_i)_{i\in\Nats}$.
+   Then there exists a sequence of pairs of random measurable functions $(F^n, G^n)_{n\in\Nats}$ and a collection of \iid Uniform$[0,1]$ random variables $(\AHvar_{i})_{i\in\Nats}$ such that if we define the arrays $X^1,X^2,\dotsc$ and sequences $C^1,C^2,\dotsc$ by
+   \[ 
+     X^n_{i,j} &\defas F^n(\AHvar_{i},\AHvar_{j}), \qquad \text{for } i,j,n\in\Nats, \\
+     C^n_{i} &\defas G^n(\AHvar_{i}), \qquad \text{for } i,n\in\Nats,
+    \]
+   then $(X^n,C^n)$ converges in distribution to $(X,C)$ as $n \to \infty$.
+\end{cor}
 
-%\begin{cor}
-%  \label{cor:network-side-simple}
-%  Consider an exchangeable database with one object type, one unary relationship, and one binary relationship; denote the binary relationship by the array $X=(X_{i,j})_{i,j\in\Nats}$ and the unary relationship with the sequence $C=(C_i)_{i\in\Nats}$.
-%   Then there exists a sequence of pairs of random measurable functions $(F^n, G^n)_{n\in\Nats}$ and a collection of \iid Uniform$[0,1]$ random variables $(\AHvar_{i})_{i\in\Nats}$ such that if we define the arrays $X^1,X^2,\dotsc$ and sequences $C^1,C^2,\dotsc$ by
-%   \[ 
-%     X^n_{i,j} &\defas F^n(\AHvar_{i},\AHvar_{j}), \qquad \text{for } i,j,n\in\Nats, \\
-%     C^n_{i} &\defas G^n(\AHvar_{i}), \qquad \text{for } i,n\in\Nats,
-%    \]
-%   then $(X^n,C^n)$ converges in distribution to $(X,C)$ as $n \to \infty$.
-%\end{cor}
-
-%\begin{cor}
-%  Consider an exchangeable database with two object types, one binary relation between two objects of the first type and a binary relation between objects of different types;  denote the first relation by the array $X=(X_{i,j})_{i,j\in\Nats}$ and the second by $Y=(Y_{i,k})_{i,k\in\Nats}$.
-%   Then there exists a sequence of pairs of random measurable functions $(F^n, G^n)_{n\in\Nats}$ and a collection of \iid Uniform$[0,1]$ random variables $(\AHvar_{i})_{i\in\Nats}, (\AHvaralt_{i})_{i\in\Nats}$ such that if we define the arrays $X^1,X^2,\dotsc$ and  $Y^1,Y^2,\dotsc$ by
-%   \[ 
-%     X^n_{i,j} &\defas F^n(\AHvar_{i},\AHvar_{j}), \qquad \text{for } i,j,n\in\Nats, \\
-%     Y^n_{i,k} &\defas G^n(\AHvar_{i}, \AHvaralt_{k}), \qquad \text{for } i,k,n\in\Nats,
-%    \]
-%   then $(X^n,Y^n)$ converges in distribution to $(X,Y)$ as $n \to \infty$.
-%\end{cor}
+\begin{cor}
+  Consider an exchangeable database with two object types, one binary relation between two objects of the first type and a binary relation between objects of different types;  denote the first relation by the array $X=(X_{i,j})_{i,j\in\Nats}$ and the second by $Y=(Y_{i,k})_{i,k\in\Nats}$.
+   Then there exists a sequence of pairs of random measurable functions $(F^n, G^n)_{n\in\Nats}$ and a collection of \iid Uniform$[0,1]$ random variables $(\AHvar_{i})_{i\in\Nats}, (\AHvaralt_{i})_{i\in\Nats}$ such that if we define the arrays $X^1,X^2,\dotsc$ and  $Y^1,Y^2,\dotsc$ by
+   \[ 
+     X^n_{i,j} &\defas F^n(\AHvar_{i},\AHvar_{j}), \qquad \text{for } i,j,n\in\Nats, \\
+     Y^n_{i,k} &\defas G^n(\AHvar_{i}, \AHvaralt_{k}), \qquad \text{for } i,k,n\in\Nats,
+    \]
+   then $(X^n,Y^n)$ converges in distribution to $(X,Y)$ as $n \to \infty$.
+\end{cor}
 
 %\begin{rem}[uniform distributions]\label{rem:uniform}
 %The uniform distributions in the theorem are canonical but the theorem still holds with any non-atomic probability measure on a Borel space \eg Gaussian distributions.
 %\end{rem}
 
-%\begin{rem}[random functions]\label{rem:randfunc}
-%\TBD{Explain precisely what is meant by a random function}
-%\end{rem}
+\begin{rem}[random functions]\label{rem:randfunc}
+\TBD{Explain precisely what is meant by a random function}
+\end{rem}
 
-%\subsection{Intepretation and examples}
+\subsection{Interpretation and examples}
 
-%Corollary~\ref{for:simple-database} states that the joint distribution of an exchangeable database can be arbitrarily well approximated by a collection of random measurable functions and uniform random variables.
-%This functional form provides a set of parameters to be estimated that are naturally hierarchical.
-%The functions $(F^{j,n})$ capture properties of entire relations whilst the $(U^t_i)$ represent randomness associated with particular objects underlying the relational data.
+Corollary~\ref{for:simple-database} states that the joint distribution of an exchangeable database can be arbitrarily well approximated by a collection of random measurable functions and uniform random variables.
+This functional form provides a set of parameters to be estimated that are naturally hierarchical.
+The functions $(F^{j,n})$ capture properties of entire relations whilst the $(U^t_i)$ represent randomness associated with particular objects underlying the relational data.
 
-%\subsubsection{Example : Exchangeable networks}
+\subsubsection{Example : Exchangeable networks}
 
-%Consider modeling a single binary relation which indicates whether or not two nodes in a network are connected or not.
-%This data is typically represented in the form of an adjacency matrix $(X_{ij})$ where $X_{ij} = 1$ if and only if node $i$ is connected to node $j$.
-%Theorem~\ref{thm:simple-database} states that if the distribution of $X$ is exchanegable then it can be arbitrarily well approximated by
-%\begin{equation}
-%(F(\AHvar_i, \AHvar_j))
-%\end{equation}
-%where $F$ is a random measurable function and $(U_i)$ are \iid Uniform$[0,1]$ random variables.
-%This special case has been used previously by \cite{Hoff2007a,Roy2009,Lloyd2012} to inspire probabilistic models of networks of the form
-%\begin{eqnarray}
-%(\AHvar_i) & \simiid & \textrm{\eg Gaussian} \\
-%F & \sim & \textrm{\eg Gaussian process, bilinear function}\ldots \\
-%W_{ij} & := & F(\AHvar_i, \AHvar_j) \\
-%X_{ij} | W_{ij} & \sim & \textrm{Bernoulli}(\sigma(W_{ij}))\label{eq:graphon}.
-%\end{eqnarray}
-%This is demonstrated pictorially in figure~\ref{fig:graphon}; in this case $F$ can be interpreted as a blurred adjacency matrix.
+Consider modeling a single binary relation which indicates whether or not two nodes in a network are connected or not.
+This data is typically represented in the form of an adjacency matrix $(X_{ij})$ where $X_{ij} = 1$ if and only if node $i$ is connected to node $j$.
+Theorem~\ref{thm:simple-database} states that if the distribution of $X$ is exchangeable then it can be arbitrarily well approximated by
+\begin{equation}
+(F(\AHvar_i, \AHvar_j))
+\end{equation}
+where $F$ is a random measurable function and $(U_i)$ are \iid Uniform$[0,1]$ random variables.
+This special case was used previously by \cite{Hoff2007a,Roy2009,Lloyd2012} and in chapter~\ref{ch:networks} to inspire probabilistic models of networks of the form
+\begin{eqnarray}
+(\AHvar_i) & \simiid & \textrm{\eg Gaussian} \\
+F & \sim & \textrm{\eg Gaussian process, bilinear function}\ldots \\
+W_{ij} & := & F(\AHvar_i, \AHvar_j) \\
+X_{ij} | W_{ij} & \sim & \textrm{Bernoulli}(\sigma(W_{ij}))\label{eq:graphon}.
+\end{eqnarray}
+This is demonstrated pictorially in figure~\ref{fig:graphon}; in this case $F$ can be interpreted as a blurred adjacency matrix.
 
-%\begin{figure}[ht]
-%\centering
-%\begin{tabular}{c}
-%\input{\arraysfigsdir/fig_graphon_wide}
-%\end{tabular}
-%\caption{
-%A pictorial representation of a model for network data inspired by the Aldous--Hover representation theorem.
-%The left shows a random sample of a binary network (represented by an adjacency matrix) generated by a model of the form given by equation~\eqref{eq:graphon}.
-%}
-%\label{fig:graphon}
-%\end{figure}
+\begin{figure}[ht]
+\centering
+\begin{tabular}{c}
+\input{\arraysfigsdir/fig_graphon_wide}
+\end{tabular}
+\caption{
+A pictorial representation of a model for network data inspired by the Aldous--Hover representation theorem.
+The left shows a random sample of a binary network (represented by an adjacency matrix) generated by a model of the form given by equation~\eqref{eq:graphon}.
+}
+\label{fig:graphon}
+\end{figure}
 
-%\subsubsection{Example : A simple database}
+\subsubsection{Example : A simple database}
 
-%Consider the simple database shown on the left hand side of figure~\ref{fig:multi-rel-seq}.
-%There are two objects, students and courses, and three relations, the unary relation `age' acting on students, the binary relation `friends' acting on pairs of students and the binary relation `grade' that acts on students and courses.
-%Sample data encoded in arrays is shown at the bottom of this figure.
+Consider the simple database shown on the left hand side of figure~\ref{fig:multi-rel-seq}.
+There are two objects, students and courses, and three relations, the unary relation `age' acting on students, the binary relation `friends' acting on pairs of students and the binary relation `grade' that acts on students and courses.
+Sample data encoded in arrays is shown at the bottom of this figure.
 
-%Exchangeability of this database means that the entries of the leftmost table, the rows and columns of the second table and the rows of the third table can be arbitrarily permuted without changing the distribution of the database when viewed as a random variable.
-%Similarly the columns of the rightmost table may be independently arbitrarily permuted.
+Exchangeability of this database means that the entries of the leftmost table, the rows and columns of the second table and the rows of the third table can be arbitrarily permuted without changing the distribution of the database when viewed as a random variable.
+Similarly the columns of the rightmost table may be independently arbitrarily permuted.
 
-%The functional form resulting from the application of theorem~\ref{thm:simple-database} to this data structure is shown on the right hand side of figure~\ref{fig:multi-rel-seq}.
-%The two objects are represented by \iid random variables, $(U_i)$ for students, $(V_i)$ for courses and the three relations are represented by three random functions $F(\AHvar_i),G(\AHvar_i,\AHvar_j)$ and $H(\AHvar_i,\AHvaralt_j)$ whose inputs are the random variables representing the objects the relations act upon.
+The functional form resulting from the application of theorem~\ref{thm:simple-database} to this data structure is shown on the right hand side of figure~\ref{fig:multi-rel-seq}.
+The two objects are represented by \iid random variables, $(U_i)$ for students, $(V_i)$ for courses and the three relations are represented by three random functions $F(\AHvar_i),G(\AHvar_i,\AHvar_j)$ and $H(\AHvar_i,\AHvaralt_j)$ whose inputs are the random variables representing the objects the relations act upon.
 
-%\begin{figure}[ht]
-%\centering
-%\begin{tabular}{cc}
-%\tiny \input{\arraysfigsdir/multi_rel_seq} & \tiny \input{\arraysfigsdir/multi_rel_seq_U_F}
-%\end{tabular}
-%\caption{Left: A pictorial representation of a relational database. Right: The functional representation of the distribution of data of this form guaranteed to be an arbitrarily good approximation by theorem~\ref{thm:simple-database}}
-%\label{fig:multi-rel-seq}
-%\end{figure}
+\begin{figure}[ht]
+\centering
+\begin{tabular}{cc}
+\tiny \input{\arraysfigsdir/multi_rel_seq} & \tiny \input{\arraysfigsdir/multi_rel_seq_U_F}
+\end{tabular}
+\caption{Left: A pictorial representation of a relational database. Right: The functional representation of the distribution of data of this form guaranteed to be an arbitrarily good approximation by theorem~\ref{thm:simple-database}}
+\label{fig:multi-rel-seq}
+\end{figure}
 
 \section{A representation theorem for exchangeable databases}
 \label{sec:proof_database}
@@ -212,8 +209,6 @@ We say that a random database $(X^{r_j})_{j=1}^R$ is \emph{exchangeable} when it
 \subsection{Background: $\pi$-exchangeability}
 
 This section reviews material from \citet{Kallenberg1999-pj}.
-We have followed Kallenberg's notation except where we think changes may make it easier to understand.
-However, there is only so much we have been able to do to reduce the notational burden so we provide corollaries of the theorem after its statement and proof to demonstrate that behind the notation are some fairly intuitive concepts.
 
 Let $\pi$ be a partition of the set $\{1,\dots,d\}$ and $p = \{p^{\pi_i} : i = 1,\dots,d\}$ be a collection of permutations of $\Nats$ where $\pi_i \defas \{I \in \pi : i \in I\}$.
 We say that an array $X^r$ representing relation $r$ is $\pi$-exchangeable if 
@@ -222,6 +217,47 @@ We say that an array $X^r$ representing relation $r$ is $\pi$-exchangeable if
 \end{equation}
 for all collections $p$ of permutations of $\Nats^d$ of the form given above.
 Note that this is precisely the type of symmetry we defined for exchangeable databases.
+
+We say that a $\pi$-exchangeable array $X$ is simple if it admits a functional representation of the form
+\begin{equation}
+  X_{\bi} = F(U, U^{\pi_1}_{\bi_1}, \dots, U^{\pi_d}_{\bi_d})
+\end{equation}
+where $F$ is a measurable function and $U, U^{\pi_j}_{\bi_j}$ are \iid Uniform$[0,1]$ random variables.
+
+\begin{thm}[$\pi$-exchangeability representation theorem]
+  \label{thm:piex}
+  Let $X$ be a $\pi$-exchangeable array.
+  Then there exist some simple $\pi$-exchangeable arrays $X_1$ , $X_2$ , \dots such that
+  $\Law(\chi_m X_n) \sim \Law(\chi_m X)$ for all $m,n \in \Nats$ and the associated densities tend
+  uniformly to 1 as $n \to \infty$ for fixed $m$.
+\end{thm}
+
+where $\Law$ represents the distribution or law of a random variable, $X \sim Y$ indicates that the distributions $X$ and $Y$ are mutually absolutely continuous and $\chi_m$ is the array subset operation such that $\chi_m X \defas \{X_{\bi} : \bi \in \{1,\dots,m\}^d\}$.
+
+\subsection{Simple exchangeable database representation theorem}
+
+We say that an exchangeable database $(X^{r_j})_{j=1}^R$ is simple if it admits a functional representation of the form
+\begin{equation}
+  X^{r_j}_{\bi} = F^{r_j}(U, U^{s_{j}(1)}_{\bi_1},\dots,U^{s_{j}(d_j)}_{\bi_{d_j}}) \,\, \forall \,\, \bi \in \Nats^{d_j} \,\, \forall \,\, j \in {1,\dots,R}.
+\end{equation}
+
+\begin{thm}[Simple exchangeable database representation theorem]
+  \label{thm:simple-database}
+  Let $(X^{r_j})_{j=1}^R$ be an exchangeable database.
+  Then there exist some simple exchangeable databases $(X^{r_j,1})_{j=1}^R$ , $(X^{r_j,2})_{j=1}^R$ , \dots such that
+  $\Law(\chi_m (X^{r_j,n})_{j=1}^R) \sim \Law(\chi_m (X^{r_j})_{j=1}^R)$ for all $m,n \in \Nats$ and the associated densities tend
+  uniformly to 1 as $n \to \infty$ for fixed $m$.
+\end{thm}
+
+\begin{proof}
+TBD
+\end{proof}
+
+\subsection{Almost sure exchangeable database representation theorem}
+
+To prove an almost sure representation theorem for exchangeable databases we will require some considerably more difficult notation.
+We have followed Kallenberg's notation except where we think changes may make it easier to understand.
+However, there is only so much we have been able to do to reduce the notational burden so we provide corollaries of the theorem after its statement and proof to demonstrate that behind the notation are some fairly intuitive concepts.
 
 We define for each $k \in \Nats^d$ and $I \subset \{1,\ldots,d\}$ a set $k_I \subset \Nats$ by
 \begin{equation}
@@ -249,73 +285,6 @@ We refer to indexed collections of \iid Uniform$[0,1]$ random variables as $U$-a
 \end{prop}
 
 We now extend this proposition to the case of an exchangeable database.
-
-%We say that a $\pi$-exchangeable array $X$ is simple if it admits a functional representation of the form
-%\begin{equation}
-%  X_{\bi} = F(U, U^{\pi_1}_{\bi_1}, \dots, U^{\pi_d}_{\bi_d})
-%\end{equation}
-%where $F$ is a measurable function and $U, U^{\pi_j}_{\bi_j}$ are \iid Uniform$[0,1]$ random variables.
-
-%\begin{prop}[Borel hypercube]
-%  \label{prop:hypercube}
-%  Result about encoding arbitrarily many random variables with functions and a uniform random variable
-%\end{prop}
-
-%\begin{thm}[$\pi$-exchangeability representation theorem]
-%  \label{thm:piex}
-%  Let $X$ be a $\pi$-exchangeable array.
-%  Then there exist some simple $\pi$-exchangeable arrays $X_1$ , $X_2$ , \dots such that
-%  $\Law(\chi_m X_n) \sim \Law(\chi_m X)$ for all $m,n \in \Nats$ and the associated densities tend
-%  uniformly to 1 as $n \to \infty$ for fixed $m$.
-%\end{thm}
-
-%where $\Law$ represents the distribution or law of a random variable, $X \sim Y$ indicates that the distributions $X$ and $Y$ are mutually absolutely continuous and $\chi_m$ is the array subset operation such that $\chi_m X \defas \{X_{\bi} : \bi \in \{1,\dots,m\}^d\}$.
-
-%We say that an exchangeable database $(X^{r_j})_{j=1}^R$ is simple if it admits a functional representation of the form
-%\begin{equation}
-%  X^{r_j}_{\bi} = F^{r_j}(U, U^{s_{j}(1)}_{\bi_1},\dots,U^{s_{j}(d_j)}_{\bi_{d_j}}) \,\, \forall \,\, \bi \in \Nats^{d_j} \,\, \forall \,\, j \in {1,\dots,R}.
-%\end{equation}
-
-%We can now state and prove the simple database representation theorem.
-
-%\begin{thm}[Simple exchangeable database representation theorem]
-%  \label{thm:simple-database}
-%  Let $(X^{r_j})_{j=1}^R$ be an exchangeable database.
-%  Then there exist some simple exchangeable databases $(X^{r_j,1})_{j=1}^R$ , $(X^{r_j,2})_{j=1}^R$ , \dots such that
-%  $\Law(\chi_m (X^{r_j,n})_{j=1}^R) \sim \Law(\chi_m (X^{r_j})_{j=1}^R)$ for all $m,n \in \Nats$ and the associated densities tend
-%  uniformly to 1 as $n \to \infty$ for fixed $m$.
-%\end{thm}
-
-%\begin{proof}
-%  Each array $(X^{r_j})$ is $\pi$-exchangeable where $\pi$ is given by the blocks of $\{1,\dots,n_j\}$ whose signature have the same type.
-%  We can therefore apply theorem~\ref{thm:piex} to each array separately resulting in representations
-%\begin{equation}
-%  G^{r_j,n}(U^j,U^{s_{j}(1),j}_{\bi_1},\dots,U^{s_{j}(d_j),j}_{\bi_{d_j}})
-%\end{equation}
-%We tie these representation together by applying proposition~\ref{prop:hypercube} to the collections of uniforms $(U^{t,j}_{\bi})_{j=1}^R$, encoding them as a single uniform random variable
-%\begin{equation}
-%  U^t_{i} = H^t(U^{t,1}_{i},\dots,U^{t,R}_{i})
-%\end{equation}
-%where $H^t$ is bi-measurable and similarly for $U = H^t(U^{1},\dots,U^{R})$.
-%Notice that $U_{\bi}, U^t_{\bi}$ are independent by construction.
-%We now define functions
-%\begin{equation}
-%F^{r_j,n}(U,U^{s_{j}(1)}_{\bi_1},\dots,U^{s_{j}(d_j)}_{\bi_{d_j}}) = G^{r_j,n}(U^j,U^{s_{j}(1),j}_{\bi_1},\dots,U^{s_{j}(d_j),j}_{\bi_{d_j}})
-%\end{equation}
-%which are measurable by the measurability of $G$ and $H$.
-%We are now essentially done.
-%\end{proof}
-
-%\begin{rem}[simpler proof mechanisms that do not work]
-%\label{rem:randfunc}
-%\NA{
-%The above proof mechanism is somewhat concise and feels a little bit non-constuctive when invoking the Borel hypercube isomorphism theorem.
-%}
-%\end{rem}
-
-\section{An almost sure representation theorem}
-\label{sec:almost_sure}
-
 We will spend some time defining notation specific to a particular exchangeable database; the proof will then follow concisely.
 We start with an exchangeable database $(X^{r_j})_{j=1}^R$.
 Assume w.l.o.g.\ that the types are ordered (\eg type 1, type 2,\dots) and the types in each signature respect this ordering (\eg $s = (1,1,2,3,3,\dots)$).
@@ -337,25 +306,7 @@ Finally, let $\pi_s \defas \{J \cap I_s : J \in \pi\}$
 \end{thm}
 
 \begin{proof}
-\fTBD{Might need to revert to super array proof}
-Collections of arrays with this functional form are trivially exchangeable databases (see the corollaries below if the notation is confusing), so we include only the proof that exchangeable databases have this functional form\fTBD{Explain why it is trivial}.
-Each array $X^{r_j}$ in an exchangeable database is $\pi_{s_j}$-exchangeable by definition.
-Therefore, by proposition~\ref{prop:piexas} we have an almost sure representation for each array of the form
-\begin{equation}
-  X^{r_j}_{k^{s_j}} = g^j(\xi^j_{k_{\pi_{s_j} I}} : I \subset I_{s_j}) \ \as, \quad k \in \Nats^d
-\end{equation}
-Note this is exactly equation~\ref{eq:piexas} but with $\{1,\dots,d\}$ replaced by $I_{s_j}$.
-Trivially\fTBD{Explain why it is trivial}, we can replace the $\pi_{s_j}$ in the previous expression with $\pi$ alone.
-We now invoke the Borel isomorphism theorem - in particular that all uncountable Borel spaces are isomorphic - to transform our $U$-arrays for each array into a common $U$-array 
-\begin{equation}
-  \xi_{\bi} = h((\xi^j_{\bi})_{j=1}^R) \,\, \forall \,\, \bi \in \prod_{J\in\pi} \Nats^{\leq |J|}
-\end{equation} 
-where $h$ is a bimeasurable function\fTBD{Careful: potentially different dependence structures across arrays for uniforms of different indexing structure}.
-We now simply define new measurable functions that select the relevant uniforms
-\begin{equation}
-  f^j(\xi_{k_{\pi_{s_j} I}} : I \subset I_{s_j}) \defas g^j(\xi^j_{k_{\pi_{s_j} I}} : I \subset I_{s_j}) \ \as, \quad k \in \Nats^d
-\end{equation}
-and these $f^j$ are measurable since they are the composition of $g^j$, $h^{-1}$ and a variable selection function which are all measurable.
+TBD
 \end{proof}
 
 \subsection{Examples}
