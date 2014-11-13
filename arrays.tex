@@ -209,7 +209,6 @@ The two objects are represented by \iid random variables, $(U_i)$ for students, 
 \subsection{Background: $\pi$-exchangeability}
 
 This section reviews material from \citet{Kallenberg1999-pj}.
-
 Let $\pi$ be a partition of the set $\{1,\dots,d\}$ and $p = \{p^{\pi_i} : i = 1,\dots,d\}$ be a collection of permutations of $\Nats$ where $\pi_i \defas \{I \in \pi : i \in I\}$.
 We say that an array $X^r$ representing relation $r$ is $\pi$-exchangeable if 
 \begin{equation}
@@ -224,15 +223,13 @@ We say that a $\pi$-exchangeable array $X$ is simple if it admits a functional r
 \end{equation}
 where $F$ is a measurable function and $U, U^{\pi_j}_{\bi_j}$ are \iid Uniform$[0,1]$ random variables.
 
-\begin{thm}[$\pi$-exchangeability representation theorem]
+\begin{prop}[$\pi$-exchangeability representation theorem]
   \label{thm:piex}
   Let $X$ be a $\pi$-exchangeable array.
   Then there exist some simple $\pi$-exchangeable arrays $X_1$ , $X_2$ , \dots such that
-  $\Law(\chi_m X_n) \sim \Law(\chi_m X)$ for all $m,n \in \Nats$ and the associated densities tend
-  uniformly to 1 as $n \to \infty$ for fixed $m$.
-\end{thm}
-
-where $\Law$ represents the distribution or law of a random variable, $X \sim Y$ indicates that the distributions $X$ and $Y$ are mutually absolutely continuous and $\chi_m$ is the array subset operation such that $\chi_m X \defas \{X_{\bi} : \bi \in \{1,\dots,m\}^d\}$.
+  $\chi_m X_n$ and $\chi_m X$ are mutually absolutely continuous for all $m,n \in \Nats$ and the associated Radon--Nikodym derivatives tend
+  uniformly to 1 as $n \to \infty$ for fixed $m$ where $\chi_m$ is the array subset operation such that $\chi_m X \defas \{X_{\bi} : \bi \in \{1,\dots,m\}^d\}$.
+\end{prop}
 
 \subsection{Simple exchangeable database representation theorem}
 
@@ -241,16 +238,40 @@ We say that an exchangeable database $(X^{r_j})_{j=1}^R$ is simple if it admits 
   X^{r_j}_{\bi} = F^{r_j}(U, U^{s_{j}(1)}_{\bi_1},\dots,U^{s_{j}(d_j)}_{\bi_{d_j}}) \,\, \forall \,\, \bi \in \Nats^{d_j} \,\, \forall \,\, j \in {1,\dots,R}.
 \end{equation}
 
+We first state a simple but useful lemma.
+It can be proven by writing down the definitions of Radon--Nikodym derivatives and uniform convergence.
+
+\begin{lem}
+  \label{lem:contractionrnd}
+  Suppose that two sequences of random variables $(X^n)$ and $(Y^n)$ are such that $X^n$ and $Y^n$ are mutually absolutely continous for all $n$, and the associated Radon--Nikodym derivatives converge uniformly to 1.
+  Then for any measurable $f$, $f(X^n)$ and $f(Y^n)$ are mutually absolutely continuous for all $n$ and the associated Radon--Nikodym derivatives converge uniformly to 1.
+\end{lem}
+
+We also build up some notation for a particular exchangeable database $(X^{r_j})_{j=1}^R$.
+Assume w.l.o.g.\ that the types are ordered (\eg type 1, type 2,\dots) and the types in each signature respect this ordering (\eg $s = (1,1,2,3,3,\dots)$).
+Define the multiplicity of a type $t$ in signature $s$ by the number of times the type appears in the signature, and denote this by $m_{t}^s$.
+Define the maximum multiplicity of a type $t$ in a database as $m_t = \max_j m_t^{s_j}$.
+Let $d = \sum_{t\in T} m_t$ be the sum of the maximum multiplicities.
+Let $\pi$ be the partition of $\{1,\ldots,d\}$ consisting of consecutive blocks of integers with sizes equal to $\{m_1,\ldots,m_T\}$.
+Let $d_j = \sum_{t\in T} m_t^{s_j}$ be the sum of the multiplicities for a particular signature.
+Finally, let $\rho_j : \Nats^d \to \Nats^{d_j}$ be the projection that keeps the first $m_{1}^{s_j}$ dimensions, ignores the next $m_1 - m_{1}^{s_j}$, keeps the next $m_{2}^{s_j}$ et cetera.
+We can now state and prove the first main result of this chapter.
+
 \begin{thm}[Simple exchangeable database representation theorem]
   \label{thm:simple-database}
   Let $(X^{r_j})_{j=1}^R$ be an exchangeable database.
   Then there exist some simple exchangeable databases $(X^{r_j,1})_{j=1}^R$ , $(X^{r_j,2})_{j=1}^R$ , \dots such that
-  $\Law(\chi_m (X^{r_j,n})_{j=1}^R) \sim \Law(\chi_m (X^{r_j})_{j=1}^R)$ for all $m,n \in \Nats$ and the associated densities tend
-  uniformly to 1 as $n \to \infty$ for fixed $m$.
+  $\chi_m (X^{r_j,n})_{j=1}^R$ and $\chi_m (X^{r_j})_{j=1}^R)$ are mutually ansolutely continuous for all $m,n \in \Nats$ and the associated Radon--Nikodym denrivatives converge uniformly to 1 as $n \to \infty$ for fixed $m$.
 \end{thm}
 
 \begin{proof}
-TBD
+  We first embed all of the arrays representing the exchangeable database into one larger array:
+  \[
+    R_{\bi} = (X^{r_j}_{\rho(\bi)} : j = 1,\dots,R) \quad \forall \, \bi \in \Nats^d.
+  \]
+  By definition of an exchangeable database, this array is $\pi$ exchangeable with $\pi$ defined in the preceeding text.
+  By proposition~\ref{thm:piex} there existss a sequence of measurable functions $(F^n)$ and collection of independent uniform random variables $U$ and $U^t_i$ such that $\chi_m R_{\bi}$ and $\chi_m F^n(U, U^{\pi_1}_{\bi_1}, \dots, U^{\pi_d}_{\bi_d})$ are mutually absolutely continuous and the associated Radon--Nikodym derivates converge uniformly to 1 as $n \to \infty$ for all $m$.
+  TO BE CONTINUED
 \end{proof}
 
 \subsection{Almost sure exchangeable database representation theorem}
