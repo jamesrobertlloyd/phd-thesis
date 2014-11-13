@@ -228,7 +228,7 @@ where $F$ is a measurable function and $U, U^{\pi_j}_{\bi_j}$ are \iid Uniform$[
   Let $X$ be a $\pi$-exchangeable array.
   Then there exist some simple $\pi$-exchangeable arrays $X_1$ , $X_2$ , \dots such that
   $\chi_m X_n$ and $\chi_m X$ are mutually absolutely continuous for all $m,n \in \Nats$ and the associated Radon--Nikodym derivatives tend
-  uniformly to 1 as $n \to \infty$ for fixed $m$ where $\chi_m$ is the array subset operation such that $\chi_m X \defas \{X_{\bi} : \bi \in \{1,\dots,m\}^d\}$.
+  uniformly to 1 as $n \to \infty$ for fixed $m$ where $\chi_m$ is the array subset operation such that $\chi_m Y \defas \{Y_{\bi} : \bi \in \{1,\dots,m\}^d\}$.
 \end{prop}
 
 \subsection{Simple exchangeable database representation theorem}
@@ -253,15 +253,17 @@ Define the multiplicity of a type $t$ in signature $s$ by the number of times th
 Define the maximum multiplicity of a type $t$ in a database as $m_t = \max_j m_t^{s_j}$.
 Let $d = \sum_{t\in T} m_t$ be the sum of the maximum multiplicities.
 Let $\pi$ be the partition of $\{1,\ldots,d\}$ consisting of consecutive blocks of integers with sizes equal to $\{m_1,\ldots,m_T\}$.
-Let $d_j = \sum_{t\in T} m_t^{s_j}$ be the sum of the multiplicities for a particular signature.
-Finally, let $\rho_j : \Nats^d \to \Nats^{d_j}$ be the projection that keeps the first $m_{1}^{s_j}$ dimensions, ignores the next $m_1 - m_{1}^{s_j}$, keeps the next $m_{2}^{s_j}$ et cetera.
+Let $\rho_j : \Nats^d \to \Nats^{d_j}$ be the projection that keeps the first $m_{1}^{s_j}$ dimensions, ignores the next $m_1 - m_{1}^{s_j}$, keeps the next $m_{2}^{s_j}$ et cetera.
+Similarly, let $\tilde{\rho}_j : \Nats^d \to \Nats^d$ be analogous to $\rho_j$ except that the indices removed by $\rho_j$ are now set to the value 1.
+Again similarly, for a signature $s$ let $I_s$ be the subset of $\{1,\ldots,d\}$ that contains the first $m_1^s$ integers and then not the next $m_1 - m_1^s$ integers, then the next $m_2^s$ integers, and then not the next $m_2 - m_2^s$ integers and so on.
+Let $\mathbb{I}_s$ be the indicator function of the set $I_s$ within $\{1,\ldots,d\}$.
 We can now state and prove the first main result of this chapter.
 
 \begin{thm}[Simple exchangeable database representation theorem]
   \label{thm:simple-database}
   Let $(X^{r_j})_{j=1}^R$ be an exchangeable database.
   Then there exist some simple exchangeable databases $(X^{r_j,1})_{j=1}^R$ , $(X^{r_j,2})_{j=1}^R$ , \dots such that
-  $\chi_m (X^{r_j,n})_{j=1}^R$ and $\chi_m (X^{r_j})_{j=1}^R)$ are mutually ansolutely continuous for all $m,n \in \Nats$ and the associated Radon--Nikodym denrivatives converge uniformly to 1 as $n \to \infty$ for fixed $m$.
+  $\chi_m (X^{r_j,n})_{j=1}^R$ and $\chi_m (X^{r_j})_{j=1}^R$ are mutually ansolutely continuous for all $m,n \in \Nats$ and the associated Radon--Nikodym derivatives converge uniformly to 1 as $n \to \infty$ for fixed $m$.
 \end{thm}
 
 \begin{proof}
@@ -269,15 +271,31 @@ We can now state and prove the first main result of this chapter.
   \[
     R_{\bi} = (X^{r_j}_{\rho(\bi)} : j = 1,\dots,R) \quad \forall \, \bi \in \Nats^d.
   \]
-  By definition of an exchangeable database, this array is $\pi$ exchangeable with $\pi$ defined in the preceeding text.
-  By proposition~\ref{thm:piex} there existss a sequence of measurable functions $(F^n)$ and collection of independent uniform random variables $U$ and $U^t_i$ such that $\chi_m R_{\bi}$ and $\chi_m F^n(U, U^{\pi_1}_{\bi_1}, \dots, U^{\pi_d}_{\bi_d})$ are mutually absolutely continuous and the associated Radon--Nikodym derivates converge uniformly to 1 as $n \to \infty$ for all $m$.
-  TO BE CONTINUED
+  By definition of an exchangeable database, this array is $\pi$ exchangeable where $\pi$ is as defined in the preceeding text.
+  By proposition~\ref{thm:piex} there exists a sequence of measurable functions $(F^n)$ and collection of independent uniform random variables $U$ and $U^t_i$ such that $\chi_m R_{\bi}$ and $\chi_m F^n(U, U^{\pi_1}_{\bi_1}, \dots, U^{\pi_d}_{\bi_d})$ are mutually absolutely continuous and the associated Radon--Nikodym derivates converge uniformly to 1 as $n \to \infty$ for all $m$.
+  By lemma~\ref{lem:contractionrnd} we have the same convergence for the following subarrays
+  \[
+    F^{n,j}(U, U^{\pi_1}_{\tilde{\rho}_j(\bi_1)}, \dots, U^{\pi_d}_{\tilde{\rho}_j(\bi_d)}) \to X^{r_j}_{\rho(\bi)}.
+  \]
+  By the Borel isomorphism theorem there is a bimeasurable function $H$ and a uniformly distributed random variable $V$ such that
+  \[
+    V = h(U, U^1_1, \dots, U^T_1)
+  \]
+  Let
+  \[
+    G^{n,j}(V, U^{\pi_k}_{\bi_k} : k \in I_{s_j}) \defas F^{n,j}(U, U^{\pi_1}_{\tilde{\rho}_j(\bi_1)}, \dots, U^{\pi_d}_{\tilde{\rho}_j(\bi_d)}).
+  \]
+  $G$ is measurable by composition of measurable $F$ and $H$.
+  Finally set
+  \[
+    X^{r_j,n}_{\bi} \defas G^{n,j}(V, U^{\pi_k}_{\bi_k} : k \in I_{s_j})
+  \]
+  and we are done.
 \end{proof}
 
 \subsection{Almost sure exchangeable database representation theorem}
 
-To prove an almost sure representation theorem for exchangeable databases we will require some considerably more difficult notation.
-We have followed Kallenberg's notation except where we think changes may make it easier to understand.
+To prove an almost sure representation theorem for exchangeable databases we will require yet more notation; we follow Kallenberg except where we think changes may make it easier to understand.
 However, there is only so much we have been able to do to reduce the notational burden so we provide corollaries of the theorem after its statement and proof to demonstrate that behind the notation are some fairly intuitive concepts.
 
 We define for each $k \in \Nats^d$ and $I \subset \{1,\ldots,d\}$ a set $k_I \subset \Nats$ by
@@ -306,17 +324,20 @@ We refer to indexed collections of \iid Uniform$[0,1]$ random variables as $U$-a
 \end{prop}
 
 We now extend this proposition to the case of an exchangeable database.
-We will spend some time defining notation specific to a particular exchangeable database; the proof will then follow concisely.
-We start with an exchangeable database $(X^{r_j})_{j=1}^R$.
-Assume w.l.o.g.\ that the types are ordered (\eg type 1, type 2,\dots) and the types in each signature respect this ordering (\eg $s = (1,1,2,3,3,\dots)$).
-Define the multiplicity of a type $t$ in signature $s$ by the number of times the type appears in the signature, and denote this by $m_{t}^s$.
-Define the maximum multiplicity of a type $t$ in a database as $m_t = \max_j m_t^{s_j}$.
-Let $d = \sum_{t\in T} m_t$ be the sum of the maximum multiplicities.
-Let $d_j = \sum_{t\in T} m_t^{s_j}$ be the sum of the multiplicities for a particular signature.
-Let $\pi$ be the partition of $\{1,\ldots,d\}$ consisting of consecutive blocks of integers with sizes equal to $\{m_1,\ldots,m_T\}$.
-For a signature $s$ let $I_s$ be the subset of $\{1,\ldots,d\}$ that contains the first $m_1^s$ integers and then not the next $m_1 - m_1^s$ integers, then the next $m_2^s$ integers, and then not the next $m_2 - m_2^s$ integers and so on.
-Let $\mathbb{I}_s$ be the indicator function of the set $I_s$ within $\{1,\ldots,d\}$ and let $k^s \defas (k_i : i \in I_s)$.
-Finally, let $\pi_s \defas \{J \cap I_s : J \in \pi\}$
+Again we state a useful lemma.
+
+\begin{lemma}
+  \label{lemma:copies-full-simple}
+  Let $X_{ij} = f({U}_i, {V}_{ij}) \ \as \ i,j \in \Nats$ where $f$ is measurable and ${V}_{ij} \independent {V}_{ij'} \, \forall \, j \neq j'$.
+  Suppose further that $X_{ij} = X_i \ \as$ for some collection of random variables $X_{i} \, \forall \, i,j \in \Nats$.
+  Then there exists a measurable function $g$ such that $X_i = g({U}_i) \ \as$
+\end{lemma}
+
+\begin{proof}
+  Conditional strong law of large numbers or a something disintegration something result.
+\end{proof}
+
+Let $k^s \defas (k_i : i \in I_s)$ and let $\pi_s \defas \{J \cap I_s : J \in \pi\}$
 
 \begin{thm}[almost sure functional representation for exchangeable databases]
   \label{thm:as-database}
@@ -327,7 +348,24 @@ Finally, let $\pi_s \defas \{J \cap I_s : J \in \pi\}$
 \end{thm}
 
 \begin{proof}
-TBD
+  We proceed as before by embedding each array into one larger array
+  \[
+    R_{\bi} = (X^{r_j}_{\rho(\bi)} : j = 1,\dots,R) \quad \forall \, \bi \in \Nats^d
+  \]
+  which is $\pi$ exchangeable and thus by proposition~\ref{prop:piexas} there exists a measurable $g$ and $U$-array $\xi$ with index set $\prod_{J\in\pi} \Nats^{\leq |J|}$ such that
+  \[
+    R_{\bi} = g(\xi_{\bi_{\pi I}} : I \subset \{1,\ldots,d\}) \ \as, \quad \bi \in \Nats^d.
+  \]
+  We then repeatedly apply lemma~\ref{lemma:copies-full-simple} to remove the redundancy of this representation.
+  For example, for some $k \notin I_{s_j}$ we have that there exists some measurable $h^j$ such that
+  \[
+    h^j(\xi_{\bi_{\pi I}} : I \subset \{1,\ldots,d\} \backslash k) = X^{r_j}_{\rho(\bi)} \ \as
+  \]
+  After repeated application we will find that there exists measureable $f^j$ such that
+  \[
+    f^j(\xi_{\bi_{\pi I}} : I \subset I_{s_j}) = X^{r_j}_{\rho(\bi)} \ \as
+  \]
+  and we are done.
 \end{proof}
 
 \subsection{Examples}
@@ -368,53 +406,9 @@ almost surely.
 
 This is the Aldous--Hoover representation for a jointly exchangeable array and the Kallenberg representation of a $\pi$-exchangeable array at the same time, but again with shared uniform random variables.
 
-\subsection{Simple databases: a conjecture (for the moment)}
-
-We say that a $\pi$-exchangeable array $X$ is simple if it admits a functional representation of the form
-\begin{equation}
-  X_{\bi} = F(U, U^{\pi_1}_{\bi_1}, \dots, U^{\pi_d}_{\bi_d})
-\end{equation}
-where $F$ is a measurable function and $U, U^{\pi_j}_{\bi_j}$ are \iid Uniform$[0,1]$ random variables.
-
-Kallenberg shows that $\pi$-exchangeable arrays can be arbitrarily well approximated by simple arrays in the following sense.
-
-\begin{thm}[$\pi$-exchangeability representation theorem]
-  \label{thm:piex}
-  Let $X$ be a $\pi$-exchangeable array.
-  Then there exist some simple $\pi$-exchangeable arrays $X_1$ , $X_2$ , \dots such that
-  $\Law(\chi_m X_n) \sim \Law(\chi_m X)$ for all $m,n \in \Nats$ and the associated densities tend
-  uniformly to 1 as $n \to \infty$ for fixed $m$.
-\end{thm}
-
-In the above $\Law$ represents the distribution or law of a random variable, $X \sim Y$ indicates that the distributions $X$ and $Y$ are mutually absolutely continuous and $\chi_m$ is the array subset operation such that $\chi_m X \defas \{X_{\bi} : \bi \in \{1,\dots,m\}^d\}$.
-
-We say that an exchangeable database $(X^{r_j})_{j=1}^R$ is simple if it admits a functional representation of the form
-\begin{equation}
-  X^{r_j}_{\bi} = F^{r_j}(U, U^{s_{j}(1)}_{\bi_1},\dots,U^{s_{j}(d_j)}_{\bi_{d_j}}) \,\, \forall \,\, \bi \in \Nats^{d_j} \,\, \forall \,\, j \in {1,\dots,R}.
-\end{equation}
-
-It seems highly likely that the following representation theorem should hold.
-
-\begin{conj}[Simple exchangeable database representation theorem]
-  \label{thm:simple-database}
-  Let $(X^{r_j})_{j=1}^R$ be an exchangeable database.
-  Then there exist some simple exchangeable databases $(X^{r_j,1})_{j=1}^R$ , $(X^{r_j,2})_{j=1}^R$ , \dots such that
-  $\Law(\chi_m (X^{r_j,n})_{j=1}^R) \sim \Law(\chi_m (X^{r_j})_{j=1}^R)$ for all $m,n \in \Nats$ and the associated densities tend
-  uniformly to 1 as $n \to \infty$ for fixed $m$.
-\end{conj}
-
-Unfortunately, we have not yet proven this result.
-To use the same proof strategy as the almost sure representation result would require an approximate form of Sklar's theorem to couple the various $U$-arrays appropriately.
-We presume that such a result probably exists but are yet to produce a complete proof.
-
-\TBD{
-If a proof fails to appear, we can always prove the result with $m \leq M$ for arbitrary finite $M$.
-A cop out but at least it gives more evidence as to why this conjecture might be true.
-}
-
 \section{A generic statistical model template}
 
-In analogy to the work of \cite{Hoff2007-ja, Roy2009-ge, Lloyd2012-sb} on exchangeable arrays, conjecture\fTBD{I'm holding out for a proof, I will restructure if one is not forthcoming}~\ref{thm:as-database} naturally inspires a generic generative model of exchangeable databases.
+In analogy to the work of \cite{Hoff2007-ja, Roy2009-ge, Lloyd2012-sb} on exchangeable arrays, theorem~\ref{thm:as-database} naturally inspires a generic generative model of exchangeable databases.
 Each object of type $t$ in the database is associated with an \iid sample, $\AHvar_i^t$, from some distribution $\mathcal{U}$ \eg Uniform, Gaussian.
 For each relation $r_1,\dotsc,r_R$ we sample a random function $F^j$ from some distribution $\mathcal{F}^j$, \eg Gaussian process, random (bi/tri/\ldots)linear functions.
 We denote the evaluation of these functions at the corresponding values of $(\AHvar_i^t)$ by $W^j$.
