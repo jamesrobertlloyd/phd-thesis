@@ -1,22 +1,23 @@
 \input{common/header.tex}
 \inbpdocument
 
-\chapter{Discussion}
-\label{ch:discussion}
+\chapter{Conclusion}
+\label{ch:conclusion}
 
-This chapter\dots
+This thesis has made a broad ramge of contributions to the practice of probabilistic modelling.
+In chapter~\ref{ch:networks} we demonstrated how theorems based on symmetry arguments could be used to provide a unifying view of probabilistic models for network data and proposed a new nonparametric model inspired as a literal interpretation of the theorems.
+In chapter~\ref{ch:arrays} we extended these theorems to arbitrary relational data, or any data that can be stored in a database.
+These results bring further unity and clarity to the ever growing literature of different probabilistic models for such data.
+They also highlight the current mismatch between theory and data with regards to sparsity of data.
 
-\section{Summary of contributions}
+In chapter~\ref{ch:construction} we demonstrated how a broad range of probabilistic models of functions could be expressed in a common modelling langauge of Gaussian process kernels.
+We demonstrated that this language could be effectively searched to automatically construct appropriate models for particular data and that these models were often highly interpretable.
+This claim of interpretability was more rigorously justified in chapter~\ref{ch:description} where we demonstrated that the compositonal structure of the language of kernels could be neatly mapped onto compositionally generated natural language descriptions of the models the kernels encode for.
 
-Summary
-
-\section{Something}
-
-else
-
-\section{Conclusion}
-
-Conclusion.
+In chapter~\ref{ch:gefcom} we demonstrated the effectiveness of Gaussian processes with compositionally constructed kernels in a data mining competition.
+We also demonstrated how the model construction procedure introduced in chapter~\ref{ch:construction} could be used to recreate some of the results of the competition whilst also revealing some limitations with the current approxiate inference methods available for Gaussian processes.
+Finally, in chapter~\ref{ch:criticism} we considered the problem of criticising a probabilistic model when we have reason to believe that we were either unable to faithfully express our prior information probabilistically or perform inference to a sufficient level of accuracy.
+In particular we introduced a new method for model criticism that attempts to find the greatest discrepancies between a probabilistic model and data and thereby target future efforts to improve a particular model.
 
 \outbpdocument{
 \bibliographystyle{plainnat}
