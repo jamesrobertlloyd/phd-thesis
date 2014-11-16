@@ -181,11 +181,16 @@ As demonstrated in chapter~\ref{ch:construction} specifying the kernel function 
 Three different kernel functions were used; one for backcasting, one for forecasting and one for backcasting zone 9.
 The forms of the three kernels used were as follows\footnotemark
 \footnotetext{See source code for parameter values}
-\[
-& \kSE_t + \kSE_S + \kSE_t \times \kSE_T \times \kPer_t \label{eqn:kernel1}\\
-& \kSE_t + \kSE_t + \kPer_t \label{eqn:kernel2}\\
-& \kSE_t + \kSE_S + \kSE_T \times \kPer_t \label{eqn:kernel3}
-\]
+%\[
+%& \kSE_t + \kSE_S + \kSE_t \times \kSE_T \times \kPer_t \label{eqn:kernel1}\\
+%& \kSE_t + \kSE_t + \kPer_t \label{eqn:kernel2}\\
+%& \kSE_t + \kSE_S + \kSE_T \times \kPer_t \label{eqn:kernel3}
+%\]
+\begin{eqnarray}
+\kSE_t + \kSE_S + \kSE_t \times \kSE_T \times \kPer_t \label{eqn:kernel1}\\
+\kSE_t + \kSE_t + \kPer_t \label{eqn:kernel2}\\
+\kSE_t + \kSE_S + \kSE_T \times \kPer_t \label{eqn:kernel3}
+\end{eqnarray}
 where the subscripts indicate which dimension the kernel acts upon; (t)ime, (T)emperature or (S)moothed temperature.
 For backcasting, the model was applied to the 1000 surrounding data points; for forecasting the last 500 data points were used.
 Only one temperature station was used in this method; for each back / forecasting region the model evidence of the model was computed for each temperature station.
@@ -378,7 +383,7 @@ It is hoped that this report shows that simple techniques can be very effective 
 With the benefit of hindsight I also demonstrated that some of the models used in this competition could have been automatically constructed using the methods described in chapters~\ref{ch:construction}~and~\ref{ch:description}.
 However, to do so required a careful choice of approximate inference strategy and revealed a potential area for future research in approximate inference methods for Gaussian processes.
 
-\outbpdocument{
-\bibliographystyle{plainnat}
-\bibliography{references.bib}
-}
+% \outbpdocument{
+% \bibliographystyle{plainnat}
+% \bibliography{references.bib}
+% }
