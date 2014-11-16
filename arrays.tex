@@ -9,7 +9,7 @@ The key properties that allowed us to characterise these distributions were symm
 For networks, we assumed that the ordering of the nodes contained no information.
 For user--item data we assumed that the order of both users and items were irrelevant to the meaning of the data.
 
-In this chapter we extend these ideas of exchangeability to any data that can be stored in a relational database.
+In this chapter we extend these ideas of exchangeability to any data that can be stored in a relational database \ie arbitrary relational data.
 We demonstrate that extensions of the Aldous--Hoover theorem to $n$-arrays due to Kallenberg \citep{Kallenberg1999-pj} can be extended to the case of exchangeable databases.
 These new theorems reveal a natural parameter space for data stored in relational databases elucidating how to construct appropriate statistical models for such data.
 
@@ -20,7 +20,7 @@ In particular, the technical results presented in this chapter appeared at the B
 
 Relational databases are an extremely common data structure so it is natural to want to perform statistical tasks with such data \eg predicting unobserved data or identifying latent structure.
 In particular, network data is rarely encountered in isolation \eg in a social network one will often have access to side information about each user.
-To perform a statistical analysis of such data we will typically need to estimate parameters of a probabilistic model, but it is not immediately clear what an appropriate parameter space for such a model is.
+To perform a statistical analysis of such data we will typically need to specify a probabilistic model of the data, but it is not immediately clear what an appropriate parameter space for such a model is.
 The choice of parameter space is important because it indicates the targets of statistical inference and determines where we can share statistical strength between different aspects of the data.
 
 We demonstrate that the weak assumption of an appropriate form of exchangeability can provide a natural parameter space.
@@ -61,12 +61,13 @@ X^r_{\bi} = r(i_1,\dotsc,i_d), \qquad \text{for } \bi = (i_1,\dotsc, i_d) \in \N
 
 \begin{example} 
 Let $\Types = \{\textit{users,movies}\}$.
-A relation $r$ of signature $(\textit{users},\textit{movies})$ taking values in $\{1,2,3,4,5\}$ might store movie ratings with rows corresponding to some enumeration of \textit{users}, and columns corresponding to some enumeration of \textit{movies}. 
+A relation $r$ of signature $(\textit{users},\textit{movies})$ taking values in $\{1,2,3,4,5\}$ might record movie ratings.
+This could be stored in an array, with rows corresponding to some enumeration of \textit{users}, and columns corresponding to some enumeration of \textit{movies}. 
 A relation $r'$ of signature $(\textit{users},\textit{users})$ taking values in $\{0,1\}$ might store the symmetric friendship relations in a social network.
 \end{example}
 
 \begin{definition}[database]
-Define a \defn{database} to be a collection of $R$ relations $r_1,\dotsc,r_R$ of signature $s_1,\dotsc,s_R$, respectively, taking values in $\Space_1,\dotsc,\Space_R$, respectively.
+Define a \defn{database} to be a collection of $R$ relations $r_1,\dotsc,r_R$ of signature $s_1,\dotsc,s_R$, taking values in spaces $\Space_1,\dotsc,\Space_R$, respectively.
 \end{definition}
 
 We may encode a database as a collection of arrays $(X^{r_j})_{j=1}^R$, where $X^{r_j}$ encodes the relation $r_j$.  
@@ -105,7 +106,7 @@ The following result characterises the distribution of any exchangeable database
    Then there exists a sequence of random measurable functions $F^{j,1}, F^{j,2}, \dotsc$ for 
    every $j=1\ldots R$ and collection of \iid Uniform$[0,1]$ random variables $(\AHvar^t_i)_{i\in\Nats,t \in \Types}$ such that 
    the random databases $(X^{r_j,n})_{j=1}^R$
-    converge in distribution to $(X^{r_j})_{j=1\ldots R}$ as $n\to \infty$ for all fixed $m$, where   
+    converge in distribution to $(X^{r_j})_{j=1\ldots R}$ as $n\to \infty$ on all finite subarrays, where   
    the sequence of arrays $X^{j,1},X^{j,2},\dotsc$, for $j \in \{1,\dotsc,R\}$ are given by
    \[
      X^{r_j,n}_{\bi} := F^{j,n}(\AHvar^{s_j(1)}_{i_1},\dotsc,\AHvar^{s_j(d)}_{i_d}), \qquad \text{for } \bi \in \Nats^d.
@@ -125,7 +126,7 @@ To demonstrate this theorem, we present two special cases of this result applica
      X^n_{i,j} &\defas F^n(\AHvar_{i},\AHvar_{j}), \qquad \text{for } i,j,n\in\Nats, \\
      C^n_{i} &\defas G^n(\AHvar_{i}), \qquad \text{for } i,n\in\Nats,
     \]
-   then $(X^n,C^n)$ converges in distribution to $(X,C)$ as $n \to \infty$.
+   then $(X^n,C^n)$ converges in distribution to $(X,C)$ as $n \to \infty$ on all finite subarrays.
 \end{cor}
 
 \begin{cor}
@@ -135,7 +136,7 @@ To demonstrate this theorem, we present two special cases of this result applica
      X^n_{i,j} &\defas F^n(\AHvar_{i},\AHvar_{j}), \qquad \text{for } i,j,n\in\Nats, \\
      Y^n_{i,k} &\defas G^n(\AHvar_{i}, \AHvaralt_{k}), \qquad \text{for } i,k,n\in\Nats,
     \]
-   then $(X^n,Y^n)$ converges in distribution to $(X,Y)$ as $n \to \infty$.
+   then $(X^n,Y^n)$ converges in distribution to $(X,Y)$ as $n \to \infty$ on all finite subarrays.
 \end{cor}
 
 %\begin{rem}[uniform distributions]\label{rem:uniform}
@@ -349,6 +350,7 @@ Let $k^s \defas (k_i : i \in I_s)$ and let $\pi_s \defas \{J \cap I_s : J \in \p
 \end{thm}
 
 \begin{proof}
+  It is simple to verify that this construction produces databases with the required symmetry properties to be exchangeable so we need only show that such a construction is guaranteed to exist by exchangeability.
   We proceed as before by embedding each array into one larger array
   \[
     R_{\bi} = (X^{r_j}_{\rho(\bi)} : j = 1,\dots,R) \quad \forall \, \bi \in \Nats^d
@@ -521,7 +523,7 @@ Examples are again rare but this has been applied in \eg the movie recommendatio
 \subsection{Higher order dependencies}
 
 So far we have only considered probabilistic models inspired by the simple array versions of exchangeability theorems.
-Do the almost sure representation theorems with their more detailed latent variable representations tell us anything?
+Do the almost sure representation theorems, with their more detailed latent variable representations, tell us anything?
 Consider the following dataset: we have a social network $X_{ij}$ and a ternary relation $Y_{ijk}$ that records if both person $i$ and person $j$ have been to location $k$.
 The simple array inspired representation of this data is of the form
 \[
@@ -569,7 +571,7 @@ It may be advantageous however to have fixed latent variables when one is jointl
 
 \subsection{Prior work using models of this form}
 
-Don't forget this early block model variant \cite{Hoffman_undated-ri}.
+\fTBD{Don't forget this early block model variant \cite{Hoffman_undated-ri}}
 
 In section~\ref{sec:networks:related} it was demonstrated that many models of single 2-arrays fit the form of the generic model presented above.
 In particular there are models that assume $F$ is linear \citep[e.g.][]{Hoff2007-ja, Meeds2007-gd, Salakhutdinov2008-zt, Yu2008-tz, Miller2009-wg}, that $F$ is Gaussian process distributed \citep[e.g.][]{Lawrence2009-za, Yan2011-lc, Lloyd2012-sb} and other non-linear forms for $F$ both parametric \citep[e.g.][]{Hoff2002-vy} and nonparametric \citep[e.g.][]{Roy2009-ge}.
