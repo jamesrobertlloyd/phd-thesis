@@ -83,8 +83,8 @@ For the purposes of probabilistic modelling, this implies that our beliefs about
 
 \subsection{de Finetti-type representations for exchangeable arrays}
 
-To specify probabilistic models for graph- or array-valued data, it would be helpful to have a suitable counterpart to de Finetti's theorem applicable when the infinite random sequences in \eqref{eq:exchangeability} are substituted by infinite random arrays $\darray=(\darray_{ij})_{i,j\in\Nats}$.
-For such data, the invariance assumption \eqref{eq:exchangeability} is typically too restrictive: In the graph case $\darray_{ij}\in\lbrace 0,1\rbrace$, for example, the probability of $\darray$ would then depend only on the proportion of present edges in the graph, but not on the graph structure.
+To specify probabilistic models for graph- or array-valued data, it would be helpful to have a suitable counterpart to de Finetti's theorem applicable when the infinite random sequences in \eqref{eq:networks:exch} are substituted by infinite random arrays $\darray=(\darray_{ij})_{i,j\in\Nats}$.
+For such data, the invariance assumption \eqref{eq:networks:exch} is typically too restrictive: In the graph case $\darray_{ij}\in\lbrace 0,1\rbrace$, for example, the probability of $\darray$ would then depend only on the proportion of present edges in the graph, but not on the graph structure.
 Instead, we define exchangeability of random 2-arrays in terms of the \emph{simultaneous} application of a permutation to rows and columns.
 More precisely:
 \begin{definition}
@@ -95,11 +95,11 @@ More precisely:
   \end{equation}
 \end{definition}
 
-The assumption of exchangeability stated in~\eqref{eq:exchangeability} states that the order of the data does not matter.
+The assumption of exchangeability stated in~\eqref{eq:networks:exch} states that the order of the data does not matter.
 In contrast, array exchangeability is a statement of indifference to any ordering of the entities or objects that the data measures relations between.
 In fact, exchangeable sequences can be viewed in this way too, the difference is that data is measured at individual entities or objects rather than at pairs.
 
-Since this form of exchangeability weakens the hypothesis \eqref{eq:exchangeability} by demanding invariance only under a subset of all permutations of $\Nats^2$---those of the form $(i,j)\mapsto(p(i),p(j))$---we can no longer expect de Finetti's theorem to hold.
+Since this form of exchangeability weakens the hypothesis \eqref{eq:networks:exch} by demanding invariance only under a subset of all permutations of $\Nats^2$---those of the form $(i,j)\mapsto(p(i),p(j))$---we can no longer expect de Finetti's theorem to hold.
 The relevant generalisation of the de Finetti theorem to this case is the following:
 \begin{thm}[Aldous, Hoover]
   \label{theorem:ah}
@@ -172,8 +172,7 @@ $\AHvar_{i_1 i_3 i_4}$ for $d\geq 4$ and ${I=\lbrace 1,3,4\rbrace}$. The represe
 \end{equation}
 For $d=1$, we recover de Finetti's theorem. In particular, if $\dataspace=\mathbb{R}$, $F$ is given by the inverse cumulative distribution function
 of the random measure guaranteed by de Finetti's theorem.
-For a discussion of convergence properties of general arrays similar to those sketched above for random graphs, see 
-\citep{Aldous:2009}.
+For a discussion of convergence properties of general arrays similar to those sketched above for random graphs, see  \citep{Aldous2010-iw}.
 
 Since we do not explicitly consider the case $d>2$ in our experiments in this chapter, we restrict 
 our presentation throughout to the matrix-valued case for simplicity.
@@ -209,7 +208,7 @@ We assume the following generative model:
 \begin{equation}
   \label{eq:model}
   \begin{split}
-    \AHfunction\; &\sim\; \GP(0,\kernel) \\
+    \AHfunction\; &\sim\; \gp{}(0,\kernel) \\
     \AHvar_{1},\AHvar_{2},\ldots\; &\simiid\; \Uniform[0,1] \\
     \darray_{ij}\; &\sim\; \likelihood[\,.\,|\AHfunction_{ij}] \;.
   \end{split}
@@ -277,7 +276,7 @@ Available models for graph data include the parametric mixed membership stochast
 Similar models also exist for real valued matrices, including the infinite hidden relational model (IHRM) \citep{Xu2006-uy} which is a counterpart to the IRM and binary matrix factorisation (BMF) \citep{Meeds2007-gd} which is a counterpart to the LFRM.
 %}
 
-Roy and Teh \citep{Roy2009-ge,} present a nonparametric Bayesian model of relational data that approximates $\AHfunction$ by a piece-wise constant function whose hierarchical structure is a Mondrian process. In contrast, we approximate $\AHfunction$ by a smooth function.
+Roy and Teh \citep{Roy2009-ge} present a nonparametric Bayesian model of relational data that approximates $\AHfunction$ by a piece-wise constant function whose hierarchical structure is a Mondrian process. In contrast, we approximate $\AHfunction$ by a smooth function.
 
 A recent development is the Sparse Matrix Variate Gaussian Process Blockmodel (SMGB) of Yan, Xu and Qi \cite{Yan2011-lc}, and the extension to higher order arrays \cite{Xu2012-ub} (InfTucker).
 Although not motivated in terms of exchangeability, these Gaussian process models do not impose independence assumptions on either rows or columns, in contrast to the GPLVM.
@@ -286,16 +285,13 @@ These models can be represented as placing a prior ${\AHfunction \dist \GP\,(0, 
 This prior is equivalent to \eqref{eq:model} for some common choices of kernel $\kernel$ (\eg squared exponential) but excludes others such as those that give rise to symmetric functions or additive kernels.
 Existing efficient algorithms for Gaussian processes of this form \citep[e.g.][]{Saatci2011-yo} perform calculations using a complete grid of data, which results in computational complexities that depend on the size of the array.
 Our work suggests that it may not be necessary to impose Kronecker product structure on the kernel, which allows for inference with improved scaling when data is sparsely observed.
-\fTBD{That said, their most recent work is very scaling.}
+However, their most recent work \citep{Zhe2013-tv} has employed many other approximate inference strategies resulting in an algorithm that can be applied to data much larger than that considered here.
 
 \subsection{A common perspective on the literature}
 
-\fTBD{To be reviewed}
-\NA{
 The representations \eqref{eq:decomposition} and \eqref{eq:decomposition:sampling} allow for a common perspective on a range of models in the literature depending on how they construct $(W_{ij})$ or place a prior over $\AHfunction$.
 The following proposition allows us to specify many models in both forms.
 %In fact, one can show an equivalence between these different ways of specifying a model as described in the following proposition which is a trivial extension of a similar result linking linear regression and Gaussian process regression \cite[Bishop book?].
-}
 
 \begin{prop}
 \label{prop:matrixfactorisation}
@@ -423,7 +419,7 @@ In the simpler case of a real-valued array $\darray$, we construct an MCMC algor
 \qquad\quad \text{and} \qquad\quad
 \AHvar_j \given \AHvar_{-j}, \covhyppar, \sigma_\darray, \darray
 \]
-where \fTBD{added a reminder about $\sigma_\darray$}$\sigma_\darray$ is the noise variance parameter used when modelling real valued data introduced in section \ref{sec:Model}.
+where $\sigma_\darray$ is the noise variance parameter used when modelling real valued data introduced in section \ref{sec:Model}.
 Let $\numnodes = |\AHvar_{\lbrace i\rbrace}|$ denote the number of rows in the observed array,
 let $\inputpoints$ be the set of all pairs $(\AHvar_i,\AHvar_j)$ for all observed relations $\darray_{ij}$, 
 let $\numobs = |\inputpoints|$ denote the number of observed relations,
@@ -452,7 +448,7 @@ The idea of the SoR approximation is to replace $\larray_{ij}$ with the posterio
 where $K_{\inputpoints\pseudopoints}$ is the kernel matrix between the latent embeddings $\inputpoints$ and the pseudoinputs $\pseudopoints$.  By considering random pseudoinputs, we construct an MCMC analogue of the techniques proposed in~\cite{Titsias2008-gp}.
 % in be seen to be doing a Bayesian version of sparse variational techniques proposed by Titsias and Lawrence \cite{Titsias2010}.
 
-Given this approximate model, the conditional distribution $\targets \given \AHvar, \pseudopoints, \covhyppar, (\sigma_\darray), \darray$ is amenable to elliptical slice sampling \citep{Murray2010-zu}, for both real valued and binary $\darray$. All other random parameters, including the $(U_i)$\fTBD{Added $U_i$ reminder}, can again be sampled from their full conditional distributions using slice sampling.  The sampling algorithms require that one computes expressions involving~\eqref{eqn:GPConditional}. As a result they cost at most $\CompOrder(k^3 \numobs)$.
+Given this approximate model, the conditional distribution $\targets \given \AHvar, \pseudopoints, \covhyppar, (\sigma_\darray), \darray$ is amenable to elliptical slice sampling \citep{Murray2010-zu}, for both real valued and binary $\darray$. All other random parameters, including the $(U_i)$, can again be sampled from their full conditional distributions using slice sampling.  The sampling algorithms require that one computes expressions involving~\eqref{eqn:GPConditional}. As a result they cost at most $\CompOrder(k^3 \numobs)$.
 
 %These sampling algorithms now require that one recomputes at most $K_{\pseudopoints\pseudopoints}^{-1}$ (or more precisely the Cholesky decomposition) and $K_{\inputpoints\pseudopoints}^{-1}$.  As a result, they cost at most $\Theta(k^3 \numobs)$ time. 
 
@@ -473,7 +469,7 @@ The third data set, a protein interactome, was previously noted by \citet{Hoff20
 \end{center}
 
 We compare performance of our model on these data sets to three other models, probabilistic matrix factorization (PMF) \citep{Salakhutdinov2008-tp},
-Hoff's eigenmodel \citep{Hoff2007a-ja}, and the GPLVM \citep{Lawrence2005-cn}. The models are chosen for comparability, since they all embed nodes into a Euclidean latent space.
+Hoff's eigenmodel \citep{Hoff2007-ja}, and the GPLVM \citep{Lawrence2005-cn}. The models are chosen for comparability, since they all embed nodes into a Euclidean latent space.
 %All of these models represent nodes as being embedded in a latent space, although the approaches vary considerably.
 Experiments for all three models were performed using reference implementations by the respective 
 authors.\footnotemark
@@ -526,24 +522,6 @@ Where the models did not restrict their outputs to values between 0 and 1, we tr
 The following table reports average AUC (area under receiver operating characteristic) for the various models, with numbers for the top performing model set in bold.
 Significance of results is evaluated by means of a $t$-test with a $p$-value of 0.05; results for models not distinguishable from the top performing model in terms of this $t$-test are also set in bold.
 
-%\fTBD{Should we indicate the new results as something special or just replace? Dan votes special, Zoubin and Peter vote replace.}
-%\begin{center}
-%  \begin{tabular}{r | r r r | r r r | r r r}
-%    \multicolumn{10}{c}{AUC results} \\
-%    \addlinespace[2pt]
-%    Data set & \multicolumn{3}{c|}{High school} & \multicolumn{3}{c|}{NIPS} & \multicolumn{3}{c}{Protein} \\
-%    Latent dimensions & 1 & 2 & 3 & 1 & 2 & 3 & 1 & 2 & 3 \\
-%    \midrule
-%    PMF                   & 0.747 & 0.792 & 0.792 & 0.729 & 0.789 & 0.820 & 0.787 & 0.810 & 0.841 \\
-%    Eigenmodel            & 0.742 & \textbf{0.806} & \textbf{0.806} & 0.789 & 0.818 & 0.845 & 0.805 & 0.866 & 0.882 \\
-%    GPLVM                 & 0.744 & 0.775 & 0.782 & \textbf{0.888} & 0.876 & 0.883 & 0.877 & \textbf{0.883} & 0.873 \\
-%    RFM & \textbf{0.780} & \textbf{0.813} & 0.654 & \textbf{0.902} & \textbf{0.930} & \textbf{0.926} & \textbf{0.898} & \textbf{0.891} & \textbf{0.901} \\
-%    \color{gray}
-%    \textit{RFM} & \color{gray}\textit{0.815} & \color{gray}\textit{0.827} & \color{gray}\textit{0.820} & \color{gray}\textit{0.907} & \color{gray}\textit{0.914} & \color{gray}\textit{0.919} & \color{gray}\textit{0.903} & \color{gray}\textit{0.910} & \color{gray}\textit{0.912}
-%  \end{tabular}
-%\end{center}
-
-\fTBD{Should we indicate the new results as something special or just replace? Dan votes special, Zoubin and Peter vote replace.}
 \begin{center}
   \begin{tabular}{r | r r r | r r r | r r r}
     \multicolumn{10}{c}{AUC results} \\
@@ -573,7 +551,6 @@ We also note that in all experiments, a single latent dimension suffices to achi
 %With this more sensible MCMC schedule the random function model outperforms the other models across the board.
 %}
 
-\fTBD{Needs review}
 In general, a more general model of data will not necessarily improve empirical performance compared to simpler models.
 However, our results provide empirical evidence that the flexibility of a general nonparametric model can make an important difference for the problems considered here.
 
@@ -666,7 +643,7 @@ The adjacency matrix has been sorted by the values of the approximate MAP $(U_i)
 The sorted adjacency matrix and MAP estimate of $\Theta$ reveal many qualitatively different structures present in the network.
 The bottom right of the adjacency matrix reveals a densely connected block of nodes; this is highlighted and visualised in figure~\ref{fig:networks:block}.
 In contrast, figure~\ref{fig:networks:sparse} highlights many nodes which display patterns of transitivity although the overall connectivity is sparse.
-A pair of hub nodes are also revealed as demonstrated in figure~\ref{fig:networks:hub}.
+A pair of hub nodes are also revealed as demonstrated in figure~\ref{fig:networks:hubs}.
 
 \begin{figure}[ht]
   \centering
@@ -683,7 +660,7 @@ A pair of hub nodes are also revealed as demonstrated in figure~\ref{fig:network
     };
   \end{scope}
 \end{tikzpicture}
-  \caption{Caption}
+  \caption{A densely connected group of nodes in the protein interactome.}
   \label{fig:networks:block}
 \end{figure}
 
@@ -702,7 +679,7 @@ A pair of hub nodes are also revealed as demonstrated in figure~\ref{fig:network
     };
   \end{scope}
 \end{tikzpicture}
-  \caption{Caption}
+  \caption{Sparsely connected nodes in the protein interactome with some transitivity (triangles).}
   \label{fig:networks:sparse}
 \end{figure}
 
@@ -722,7 +699,7 @@ A pair of hub nodes are also revealed as demonstrated in figure~\ref{fig:network
     };
   \end{scope}
 \end{tikzpicture}
-  \caption{Caption}
+  \caption{Two hub nodes in the protein interactome.}
   \label{fig:networks:hubs}
 \end{figure}
 
@@ -748,7 +725,7 @@ The degree distribution of the left and right blocks is also of interest; the va
     };
   \end{scope}
 \end{tikzpicture}
-  \caption{Caption}
+  \caption{Three groups of nodes in the protein interactome with an interesting connectivity pattern.}
   \label{fig:networks:butterfly}
 \end{figure}
 
@@ -762,7 +739,10 @@ Similarly, the sorted high school social network adjacency matrix in figure~\ref
   \centering
   \includegraphics[width=0.45\textwidth]{\networksfigsdir/nips_unsorted}
   \includegraphics[width=0.45\textwidth]{\networksfigsdir/nips_sorted}
-  \caption{Caption}
+  \caption{NIPS coauthorship data. 
+    \emph{Left:} Unsored adjacency matrix. 
+    \emph{Middle:} Sorted adjacency matrix.
+  }
   \label{fig:networks:nips}
 \end{figure}
 
@@ -770,7 +750,10 @@ Similarly, the sorted high school social network adjacency matrix in figure~\ref
   \centering
   \includegraphics[width=0.45\textwidth]{\networksfigsdir/highschool_unsorted}
   \includegraphics[width=0.45\textwidth]{\networksfigsdir/highschool_sorted}
-  \caption{Caption}
+  \caption{Highschool social network. 
+    \emph{Left:} Unsored adjacency matrix. 
+    \emph{Middle:} Sorted adjacency matrix.
+  }
   \label{fig:networks:highschool}
 \end{figure}
 
@@ -788,32 +771,11 @@ Similarly, the sorted high school social network adjacency matrix in figure~\ref
 
 \section{Discussion and conclusions}
 
-%% There has been a tremendous amount of research into modelling matrices, arrays, graphs and relational data, but nonparametric
-%% Bayesian modeling of such data is essentially uncharted territory. 
-%% On the conceptual side, progress has been hamstrung by an apparent lack of mathematical structure,
-%% but recent advances in discrete analysis establish an 
-%% analytical structure on spaces of graphs and of related objects \citep[e.g.][]{Lovasz:Szegedy:2006}. In principle, the 
-%% mathematical tools for the derivation of rigorous statistical results are therefore  in place. Recent work of
-%% \citet{Bickel:Chen:Levina:2011} provides an example.
-
-%% In analogy to de Finetti's theorem, the representation results 
-%% \citep{Aldous:1981,Hoover:1979,Kallenberg:1992} 
-%% precisely map out the scope of possible Bayesian models for exchangeable arrays:
-%% Any such model can be interpreted as a prior on random measurable functions on a suitable space.
-%% There is so far no systematic understanding of such priors,
-%% and how properties of a prior emphasize or discourage specific properties of graphs. 
-%% %Considering the popularity of Bayesian methods and 
-%% %the growing importance of graph and relational data, there can be little doubt that this is bound to change.
-%% To speculate, a clear distinction will probably emerge between models which assume the underlying random function to be
-%% discontinuous (such as the Mondrian process \cite{Roy2009})
-%% and continuous models, such as our model and most of the models surveyed in Sec.~\ref{sec:Related}.
-%% The Gaussian process prior proposed here
-
 There has been a tremendous amount of research into modelling matrices, arrays, graphs and relational data, but nonparametric
 Bayesian modeling of such data has only recently been explored.
 In most modelling circumstances, the assumption of exchangeability amongst data objects is natural and fundamental to the model.
 In this case, the representation results 
-\citep{ldous1981-lg,Hoover1979-br,Kallenberg1992-gb} 
+\citep{Aldous1981-lg,Hoover1979-br,Kallenberg1992-gb} 
 precisely map out the scope of possible probabilistic models for exchangeable arrays:
 Any such model can be interpreted as a prior on random measurable functions on a suitable space.
 

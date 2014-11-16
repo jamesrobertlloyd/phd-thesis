@@ -498,7 +498,7 @@ Figure \ref{fig:extrapolation} shows the learning curves of linear regression, a
 \gp{} models with only \kSE{} and \kPer{} kernels did not capture the long-term trends, since the best parameter values in terms of \gp{} marginal likelihood only capture short term correlations. 
 Linear regression approximately captured the long-term trend, but quickly plateaued in predictive performance.
 The more richly structured \gp{} models (${\kSE + \kPer}$ and ${\kSE \times \kPer}$) eventually captured more structure and performed better, but the full structures discovered by our search outperformed the other approaches in terms of predictive performance for all data amounts.
-We perform a more extensive version of this experiment in chapter~\ref{ch:description}
+We perform a more extensive version of this experiment in chapter~\ref{ch:description}.
 
 \footnotetext{
 In one dimension, the predictive means of all baseline methods in table \ref{tbl:Regression Mean Squared Error} are identical to that of a \gp{} with an $\kSE{}$ kernel.}
@@ -579,6 +579,8 @@ Some of those improvements are implemented in the work described in chapter~\ref
 
 \subsection{Estimating marginal likelihoods}
 
+\TBD{This section is work in progress}
+
 In section~\ref{sec:construction:search} it was stated that we used the Bayesian information criterion (BIC) to approximate the model evidence of a kernel family.
 In an exact and fully Bayesian approach we would put priors over the kernel parameters and compute the model evidence of the kernel families with all the parameters integrated out.
 Since the relevant equations of Bayes' rule are analytically intractable in this case we must turn to approximate inference techniques.
@@ -605,6 +607,8 @@ This could be viewed as a simple version of Bayesian quadrature \TBD{cite} with 
 A full analysis of this idea would also likely interact with recent reinterpretations of classic optimisation algorithms as approximate inference in probabilistic models \TBD{cite Hennig}.
 
 \subsection{Model selection rather than model averaging}
+
+\TBD{This section is work in progress}
 
 In this chapter we have demonstrated that selecting the model with the highest model evidence encountered along the search was sufficient to achieve good empirical performance on the moderate dimensional datasets considered.
 However, much like BIC guided linear model selection will fail on high dimensional problems \TBD{cite elements of stat learning?} so will the kernel search as currently described.

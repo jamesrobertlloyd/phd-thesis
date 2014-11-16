@@ -6,7 +6,7 @@
 
 In this chapter I will discuss how I used Gaussian processes with compositionally constructed kernels as part of an ensemble of predictors in a data mining competition.
 In particular, this competition involved forecasting hourly loads of a US energy utility as part of the load forecasting track of the Global Energy Forecasting Competition 2012 hosted on Kaggle.
-The chapter begins with a description of the relatively simple techniques I used to be ranked \nth{2} in the competition; this description is based on~\ref{Lloyd2013-yn}.
+The chapter begins with a description of the relatively simple techniques I used to be ranked \nth{2} in the competition; this description is based on~\ref{Lloyd2013-yn}\fTBD{I do not know why this reference is not working at the moment}.
 This work was completed before the work described in chapter~\ref{ch:construction} and hence the construction of kernels was not automated.
 The chapter therefore concludes with an investigation of whether the kernels I used could have been automatically constructed.
 This investigation identifies some short comings in the literature on approximation inference methods for Gaussian processes and I hypothesise about possible extensions to approximate inference methods that would overcome these difficulties.
@@ -336,12 +336,12 @@ This is representative of a common theme; while there are myriad methods for per
 The above example demonstrates that approximate inference methods may need to deal with these two types of structures simultaneously.
 
 Continuing with the theme of using a subset of data one could construct a subset of data which is a mixture of the two methods already described.
-Using this data subset results in a model composed of\fTBD{Update when experiment complete}
+Using this data subset results in a model composed of
 \begin{itemize}
   \item A very smooth function
   \item A periodic function with a period of 1.0 years
   \item An approximately periodic function with a period of 24.0 hours
-  \item A rapidly varying smooth function with a lengthscale of 21.7 hours
+  \item A rapidly varying smooth function with a lengthscale of 19.5 hours
   \item A rapidly varying smooth function with a lengthscale of 2.0 hours
   \item Uncorrelated noise
 \end{itemize}

@@ -16,7 +16,7 @@ We elaborate on these points in the rest of this chapter.
 \section{Bayesians and frequentists}
 
 All chapters of this thesis apart from chapters~\ref{ch:gefcom}~and~\ref{ch:criticism} take an entirely (or at least approximately) Bayesian (or more generally probabilistic) approach to statistical inference.
-The situations in which it is wise to perform inference in a Bayesian manner as opposed to using a method justified by its frequentist properties is commonly poorly understood.
+The situations in which it is wise to perform inference in a Bayesian manner as opposed to using a method justified by its frequentist properties are commonly poorly understood.
 As a result, many people still talk about a Bayesians versus frequentists debate as if one paradigm could be declared better than the other\footnotemark{}.
 I will therefore devote a small amount of space to the justification of Bayesian inference and also discuss its limitations.
 \footnotetext{See for example a recent blog post on the subject \url{http://lesswrong.com/lw/jne/a_fervent_defense_of_frequentist_statistics/} which caused some ill informed debate around the internet \eg \url{http://www.reddit.com/r/statistics/comments/1ye692/a_fervent_defense_of_frequentist_statistics/} and \url{https://news.ycombinator.com/item?id=7263490}}
@@ -44,7 +44,7 @@ This thesis is concerned with the latter strategy.
 
 \footnotetext{
 Or one could attempt to revise statistical theory in such a way as to take account of computational and epistemic limitations.
-These lines of enquiry is potentially very fruitful but still in its infancy\TBD{ Cite Jordan and Swedes and others?}.
+This lines of enquiry is potentially very fruitful but still in its infancy \citep[e.g.][]{Jordan2013-uv}\TBD{Also cite Swedes on model criticism}.
 }
 
 %Chapters~\ref{ch:networks}~and~\ref{ch:arrays} are concerned with the problem of specifying an appropriate mathematical form of probabilistic model based on symmetry arguments.
@@ -64,20 +64,20 @@ That is, we may often believe that our data is an exchangeable sequence:
 \]
 where $\eqdist$ denotes equality in distribution, and $\SGinf$ is the set of all permutations of $\Nats$ which permute at most a finite number of elements.
 
-de Finetti's theorem \citep[e.g.][]{Kallenberg:2005} characterises all probability distributions of sequences with this property;  $(X_i)_{i\in\Nats}$ is an exchangeable sequence if and only if there exists a random probability measure $\AHfunction$ such that $\darray_1,\darray_2,\ldots\simiid\AHfunction$.
+de Finetti's theorem \citep[e.g.][]{Kallenberg2005-ec} characterises all probability distributions of sequences with this property;  $(X_i)_{i\in\Nats}$ is an exchangeable sequence if and only if there exists a random probability measure $\AHfunction$ such that $\darray_1,\darray_2,\ldots\simiid\AHfunction$.
 In other words, observations are conditionally \iid given some random $\AHfunction$.
 For the purposes of probabilistic modelling, this implies that our beliefs about exchangeable sequences of data can be expressed in the form of a distribution over probability measures.
-A note on terminology: we will refer to de Finetti's theorem and related results as representation theorems. 
+%A note on terminology: we will refer to de Finetti's theorem and related results as representation theorems. 
 
 In chapter~\ref{ch:networks} we demonstrate that a generalisation of de Finetti's theorem due to Aldous and Hoover can be used to construct probability distributions of networks and arrays where weaker symmetry assumptions are appropriate.
-In chapter~\ref{ch:arrays} we use results by Kallenberg to extend the results of Aldous and Hoover to the case of probability dsitributions for general databases.
+In chapter~\ref{ch:arrays} we use results by Kallenberg to extend the results of Aldous and Hoover to the case of probability dsitributions for general databases or arbitrary relational data.
 We also demonstrate how these representation theorems are compatible with other formalisms and assumptions \eg longitudinal / time-varying data or conditional probability distributions.
 
 \section{An introduction to using Gaussian processes to model functions}
 
 There are a great many (and many great) introductions to Gaussian processes in the literature\fTBD{Cite a bunch}.
 Rather than repeat them, I will give an intuitive derivation of Gaussian processes starting from linear regression.
-Those with an understanding of Gaussian processes may safely skip this section and those interested in further details are directed to the following reference books\fTBD{cite Rasmussed and Williams and maybe Kallenberg as a nice (lol) contrast}.
+Those with an understanding of Gaussian processes may safely skip this section.% and those interested in further details are directed to the following reference books\fTBD{cite Rasmussed and Williams and maybe Kallenberg as a nice (lol) contrast}.
 
 Let us consider a simple version of Bayesian linear regression.
 Suppose we have a data set $D$ consisting of real-valued (input, output) pairs denoted by $D = \{(x_i, y_i) \in \Reals^2 : i = 1,\dots,n\}$.
@@ -147,7 +147,7 @@ or alternatively
 \[
   (y_i : i = 1,\dots,n) \sim \Normal\bigg(\big(\mu(x_i) : i = 1,\dots,n\big), K\bigg)
 \]
-where $K_{ij} = k(x_i, x_j)$.
+where $K_{ij} = k(x_i, x_j)$; note that $k$ must be such that $K$ is always positive (semi) definite to define a valid probability distribution.
 Since these equations hold for any value of the inputs $x$ we can see that by writing $y_i = f(x_i)$ we have essentially specified a probability distribution over functions $f$.
 We denote this distribution as
 \[
@@ -197,8 +197,8 @@ where $\ell$ and $p$ are constants.
 Whenever $|x_i - x_j|$ is an integer multiple of $p$ the correlation is equal to 1 resulting in exact periodicity of the random functions.
 
 In chapter~\ref{ch:construction} we demonstrate how to learn an appropriate kernel for a particular dataset by constructing new kernels from old.
-In chapter~\ref{ch:gefcom} we demonstrate how these ideas were applied to a data mining competition and where this reveals scope for future work.
 In chapter~\ref{ch:description} we demonstrate that by carefully choosing which kernels we compose with each other we can always automatically produce natural language descriptions of the probability distributions they encode for.
+In chapter~\ref{ch:gefcom} we demonstrate how these ideas were applied to a data mining competition and where this reveals scope for future work.
 
 \outbpdocument{
 \bibliographystyle{plainnat}

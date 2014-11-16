@@ -1,7 +1,7 @@
 \input{common/header.tex}
 \inbpdocument
 
-\chapter{Representing probability distributions of exchangeable arrays}
+\chapter{Representing probability distributions of exchangeable databases and relational data}
 \label{ch:arrays}
 
 In chapter~\ref{ch:networks} we demonstrated how to characterise probability distributions over objects such as networks or user--item rating matrices.
@@ -40,7 +40,7 @@ If the labeling is unimportant, then any probabilistic model of such data should
 Relational data are typically stored in arrays; the right hand side of figure~\ref{fig:exchangeable} shows the corresponding adjacency matrix representations of the networks on the left.
 We demonstrate that exchangeability of the objects underlying a relational database can be expressed in terms of array exchangeability.
 Prior work on array exchangeability, both theoretical \citep[e.g.][]{Hoover1979-br, Aldous1981-lg, Hoover1982-ty, Kallenberg1999-pj, Diaconis2007-mi, Aldous2010-iw, Austin2012-jq, Choi2013-th, Wolfe2013-vs} and applied \citep[e.g.][]{Hoff2007-ja,Roy2009-ge,Lloyd2012-sb}, has focused on single exchangaeble arrays.
-We show that the representation theorems for single arrays can be used to derive representations for collections of exchangeable arrays \ie exchangeable databases.
+We show that the representation theorems for single arrays can be used to derive representations for collections of exchangeable arrays \ie exchangeable databases or exchangeable relational data.
 
 \section{Exchangeable databases}
 
@@ -112,7 +112,7 @@ The following result characterises the distribution of any exchangeable database
    \]
 \end{cor}
 
-This is a corollary of theorem~\ref{thm:simple-database} proven in section~\ref{sec:proof_database} which states that the law of fixed subarrays are mutually absolutely continuous and the associated Radon-Nikodym derivatives converge uniformly to $1$ as $n \to \infty$.
+This is a corollary of theorem~\ref{thm:simple-database} which states that the law of fixed subarrays are mutually absolutely continuous and the associated Radon-Nikodym derivatives converge uniformly to $1$ as $n \to \infty$.
 We also present an almost-sure representational result which requires some heavy notation which we build up in subsequent sections.
 
 To demonstrate this theorem, we present two special cases of this result applicable to modelling a network with side information for each node and a social network with associated user-item data.
@@ -143,12 +143,13 @@ To demonstrate this theorem, we present two special cases of this result applica
 %\end{rem}
 
 \begin{rem}[random functions]\label{rem:randfunc}
-\TBD{Explain precisely what is meant by a random function}
+  When we refer to a random function we mean a deterministic function which takes an additional source of randomness as input.
+  For example $F(\textrm{arguments}) \defas f(U, \textrm{arguments})$ where $f$ is deterministic and $U$ is uniformly distributed would be an example of a random function.
 \end{rem}
 
 \subsection{Interpretation and examples}
 
-Corollary~\ref{for:simple-database} states that the joint distribution of an exchangeable database can be arbitrarily well approximated by a collection of random measurable functions and uniform random variables.
+Corollary~\ref{cor:simple-database} states that the joint distribution of an exchangeable database can be arbitrarily well approximated by a collection of random measurable functions and uniform random variables.
 This functional form provides a set of parameters to be estimated that are naturally hierarchical.
 The functions $(F^{j,n})$ capture properties of entire relations whilst the $(U^t_i)$ represent randomness associated with particular objects underlying the relational data.
 
@@ -161,7 +162,7 @@ Theorem~\ref{thm:simple-database} states that if the distribution of $X$ is exch
 (F(\AHvar_i, \AHvar_j))
 \end{equation}
 where $F$ is a random measurable function and $(U_i)$ are \iid Uniform$[0,1]$ random variables.
-This special case was used previously by \cite{Hoff2007a,Roy2009,Lloyd2012} and in chapter~\ref{ch:networks} to inspire probabilistic models of networks of the form
+This special case was used previously by \cite{Hoff2007-ja,Roy2009-ge,Lloyd2012-sb} and in chapter~\ref{ch:networks} to inspire probabilistic models of networks of the form
 \begin{eqnarray}
 (\AHvar_i) & \simiid & \textrm{\eg Gaussian} \\
 F & \sim & \textrm{\eg Gaussian process, bilinear function}\ldots \\
@@ -334,7 +335,7 @@ Again we state a useful lemma.
 \end{lemma}
 
 \begin{proof}
-  Conditional strong law of large numbers or a something disintegration something result.
+  Conditional strong law of large numbers essentially \TBD{TBD}.
 \end{proof}
 
 Let $k^s \defas (k_i : i \in I_s)$ and let $\pi_s \defas \{J \cap I_s : J \in \pi\}$
@@ -590,9 +591,9 @@ This concept is well established for exchangeable sequences where de Finetti's t
 For exchangeable arrays, the relevant representation theorems were presented by Aldous and Hoover \cite{Aldous1981-lg, Hoover1979-br} over 30 years ago but it is only recently that these results are being used to inspire probabilistic models \cite{Hoff2007-ja, Roy2009-ge, Lloyd2012-sb} and frequentist estimation procedures \cite{Kallenberg1999-pj, Choi2013-th, Wolfe2013-vs}.
 We hope that this work will continue and be extended to the analysis of exchangeable databases.
 
-\subsection{Mention sparsity again}
+%\subsection{Mention sparsity again}
 
-\TBD{This is really important to talk about at all times! Reference latest literature on this topic.}
+%\TBD{This is really important to talk about at all times! Reference latest literature on this topic.}
 
 \outbpdocument{
 \bibliographystyle{plainnat}
