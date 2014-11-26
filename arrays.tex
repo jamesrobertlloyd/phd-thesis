@@ -309,7 +309,7 @@ We define for each $k \in \Nats^d$ and $I \subset \{1,\ldots,d\}$ a set $k_I \su
 \begin{equation}
 k_I = \{k_i: i \in I\}, \quad k \in \Nats^d
 \end{equation}
-\ie $k_I$ only includes the indices in $I$.
+\ie $k_I$ only includes the indices in $I$ and is a set.
 
 We further define $k_{\pi I}$ by
 \begin{equation}
@@ -317,6 +317,10 @@ We further define $k_{\pi I}$ by
 \end{equation}
 N.B. we have replaced Kallenberg's function notation with a list since this may be more natural to the readers of this work.
 Let $\Nats^{\leq d}$ be the collection of all subsets of the naturals $K \subset \Nats$ with cardinality $|K| \leq d$.
+
+Recall that for a signature $s$ we define $I_s$ to be the subset of $\{1,\ldots,d\}$ that contains the first $m_1^s$ integers and then not the next $m_1 - m_1^s$ integers, then the next $m_2^s$ integers, and then not the next $m_2 - m_2^s$ integers and so on.
+%Let $k^s \defas (k_i : i \in I_s)$ and let $\pi_s \defas \{J \cap I_s : J \in \pi\}$
+Let $\pi_s \defas \{J \cap I_s : J \in \pi\}$
 
 We refer to indexed collections of \iid Uniform$[0,1]$ random variables as $U$-arrays.
 
@@ -344,11 +348,9 @@ Again we state a useful lemma.
   Conditional strong law of large numbers essentially \TBD{TBD}.
 \end{proof}
 
-Let $k^s \defas (k_i : i \in I_s)$ and let $\pi_s \defas \{J \cap I_s : J \in \pi\}$
-
 \begin{thm}[almost sure functional representation for exchangeable databases]
   \label{thm:as-database}
-  A database $(X^{r_j})_{j=1}^R$ is exchangeable iff there exist measurable functions $f^j : [0,1]^{2^{d_j}} \to S_j$ such that
+  A database $(X^{r_j})_{j=1}^R$ is exchangeable iff there exist measurable functions $f^j : [0,1]^{2^{d_j}} \to S_j$ and $U$-array $\xi$ such that
   \begin{equation}
     X_{k^{s_j}}^{r_j} = f^j(\xi_{k_{\pi I}} : I \subset I_{s_j}) \ \as, \quad k \in \Nats^d, \ j \in \{1,\ldots,R\}.
   \end{equation}
@@ -358,20 +360,20 @@ Let $k^s \defas (k_i : i \in I_s)$ and let $\pi_s \defas \{J \cap I_s : J \in \p
   It is simple to verify that this construction produces databases with the required symmetry properties to be exchangeable so we need only show that such a construction is guaranteed to exist by exchangeability.
   We proceed as before by embedding each array into one larger array
   \[
-    R_{\bi} = (X^{r_j}_{\rho(\bi)} : j = 1,\dots,R) \quad \forall \, \bi \in \Nats^d
+    R_{k} = (X^{r_j}_{\rho(k)} : j = 1,\dots,R) \quad \forall \, k \in \Nats^d
   \]
   which is $\pi$ exchangeable and thus by proposition~\ref{prop:piexas} there exists a measurable $g$ and $U$-array $\xi$ with index set $\prod_{J\in\pi} \Nats^{\leq |J|}$ such that
   \[
-    R_{\bi} = g(\xi_{\bi_{\pi I}} : I \subset \{1,\ldots,d\}) \ \as, \quad \bi \in \Nats^d.
+    R_{k} = g(\xi_{k_{\pi I}} : I \subset \{1,\ldots,d\}) \ \as, \quad k \in \Nats^d.
   \]
   We then repeatedly apply lemma~\ref{lemma:copies-full-simple} to remove the redundancy of this representation.
-  For example, for some $k \notin I_{s_j}$ we have that there exists some measurable $h^j$ such that
+  For example, for some $i \notin I_{s_j}$ we have that there exists some measurable $h^j$ such that
   \[
-    h^j(\xi_{\bi_{\pi I}} : I \subset \{1,\ldots,d\} \backslash k) = X^{r_j}_{\rho(\bi)} \ \as
+    h^j(\xi_{k_{\pi I}} : I \subset \{1,\ldots,d\} \backslash i) = X^{r_j}_{\rho(k)} \ \as
   \]
   After repeated application we will find that there exists measureable $f^j$ such that
   \[
-    f^j(\xi_{\bi_{\pi I}} : I \subset I_{s_j}) = X^{r_j}_{\rho(\bi)} \ \as
+    f^j(\xi_{k_{\pi I}} : I \subset I_{s_j}) = X^{r_j}_{\rho(k)} \ \as
   \]
   and we are done.
 \end{proof}
@@ -379,11 +381,11 @@ Let $k^s \defas (k_i : i \in I_s)$ and let $\pi_s \defas \{J \cap I_s : J \in \p
 \subsection{Examples}
 
 \begin{cor}
-  Consider an exchangeable database with one object type, one unary relationship, and one binary relationship; denote the binary relationship by the array $X=(X_{i,j})_{i,j\in\Nats}$ and the unary relationship with the sequence $C=(C_i)_{i\in\Nats}$.
-   Then there exist measurable functions $(F, G)$ and a collection of \iid Uniform$[0,1]$ random variables $U, (\AHvar_{i})_{i\in\Nats}, (\AHvar_{\{i,j\}})_{i,j\in\Nats}$ such that
+  Consider an exchangeable database with one object type, one unary relationship, and one binary relationship; denote the binary relationship by the array $X=(X_{ij})_{i,j\in\Nats}$ and the unary relationship with the sequence $C=(C_i)_{i\in\Nats}$.
+   Then there exist measurable functions $(f, g)$ and a collection of \iid Uniform$[0,1]$ random variables $U, (\AHvar_{i})_{i\in\Nats}, (\AHvar_{\{i,j\}})_{i,j\in\Nats}$ such that
    \[ 
-     X_{ij} & = F(U, \AHvar_{i},\AHvar_{j}, \AHvar_{\{i,j\}}), \qquad \text{for } i,j,n\in\Nats, \\
-     C_i & = G(U, \AHvar_{i}), \qquad \text{for } i,n\in\Nats,
+     X_{ij} & = f(U, \AHvar_{i},\AHvar_{j}, \AHvar_{\{i,j\}}), \qquad \text{for } i,j,n\in\Nats, \\
+     C_i & = g(U, \AHvar_{i}), \qquad \text{for } i,n\in\Nats,
     \]
 almost surely.
 \end{cor}
@@ -391,11 +393,11 @@ almost surely.
 This is the Aldous--Hoover representation for a jointly exchangeable array and the de Finetti representation of an exchangeable sequence at the same time, with coupled uniform random variables.
 
 \begin{cor}
-  Consider an exchangeable database with two object types, one binary relation between two objects of the first type and a binary relation between objects of different types;  denote the first relation by the array $X=(X_{i,j})_{i,j\in\Nats}$ and the second by $Y=(Y_{i,k})_{i,k\in\Nats}$.
-   Then there exists a pair of measurable functions $(F, G)$ and a collection of \iid Uniform$[0,1]$ random variables $U, (\AHvar_{i})_{i\in\Nats}, (\AHvaralt_{i})_{i\in\Nats}, (\AHvar_{\{i,j\}})_{i,j\in\Nats}, (W_{i,j})_{i,j\in\Nats}$ such that
+  Consider an exchangeable database with two object types, one binary relation between two objects of the first type and a binary relation between objects of different types;  denote the first relation by the array $X=(X_{ij})_{i,j\in\Nats}$ and the second by $Y=(Y_{ik})_{i,k\in\Nats}$.
+   Then there exists a pair of measurable functions $(f, g)$ and a collection of \iid Uniform$[0,1]$ random variables $U, (\AHvar_{i})_{i\in\Nats}, (\AHvaralt_{i})_{i\in\Nats}, (\AHvar_{\{i,j\}})_{i,j\in\Nats}, (W_{ij})_{i,j\in\Nats}$ such that
    \[ 
-     X_{ij} & = F(U,\AHvar_{i},\AHvar_{j},  \AHvar_{\{i,j\}}),  \qquad &\text{for } i,j\in\Nats, \\
-     Y_{ik} & = G(U, \AHvar_{i}, \AHvaralt_{k}, W_{ik}), \qquad &\text{for } i,k\in\Nats,
+     X_{ij} & = f(U,\AHvar_{i},\AHvar_{j},  \AHvar_{\{i,j\}}),  \qquad &\text{for } i,j\in\Nats, \\
+     Y_{ik} & = g(U, \AHvar_{i}, \AHvaralt_{k}, W_{ik}), \qquad &\text{for } i,k\in\Nats,
     \]
 almost surely.
 \end{cor}
@@ -403,11 +405,11 @@ almost surely.
 This is the Aldous--Hoover representation for a jointly exchangeable array and the Aldous--Hoover representation of a separately exchangeable array at the same time, but with coupled uniform random variables due to the shared objects underlying the data.
 
 \begin{cor}
-  Consider an exchangeable database with two object types, one binary relation between two objects of the first type and a ternary relation between two objects of the first type and one of the second type;  denote the first relation by the array $X=(X_{i,j})_{i,j\in\Nats}$ and the second by $Y=(Y_{i,j,k})_{i,j,k\in\Nats}$.
+  Consider an exchangeable database with two object types, one binary relation between two objects of the first type and a ternary relation between two objects of the first type and one of the second type;  denote the first relation by the array $X=(X_{ij})_{i,j\in\Nats}$ and the second by $Y=(Y_{ijk})_{i,j,k\in\Nats}$.
    Then there exists a pair of measurable functions $(F, G)$ and a collection of \iid Uniform$[0,1]$ random variables $U, (\AHvar_{i})_{i\in\Nats}, (\AHvaralt_{i})_{i\in\Nats}, (\AHvar_{\{i,j\}})_{i,j\in\Nats}, (W_{i,j})_{i,j\in\Nats} (Z_{\{i,j\}k})_{i,j,k\in\Nats}$ such that
    \[ 
      X_{ij} & = F(U,\AHvar_{i},\AHvar_{j},  \AHvar_{\{i,j\}}),  \qquad &\text{for } i,j\in\Nats, \\
-     Y_{ijk} & = G(U, \AHvar_{i}, U_j \AHvaralt_{k}, \AHvar_{\{i,j\}}, W_{ik}, W_{jk}, Z_{\{i,j\},k}), \qquad &\text{for } i,j,k\in\Nats,
+     Y_{ijk} & = G(U, \AHvar_{i}, U_j \AHvaralt_{k}, \AHvar_{\{i,j\}}, W_{ik}, W_{jk}, Z_{\{i,j\}k}), \qquad &\text{for } i,j,k\in\Nats,
     \]
 almost surely.
 \end{cor}
@@ -416,7 +418,7 @@ This is the Aldous--Hoover representation for a jointly exchangeable array and t
 
 \section{A generic statistical model template}
 
-In analogy to the work of \cite{Hoff2007-ja, Roy2009-ge, Lloyd2012-sb} on exchangeable arrays, theorem~\ref{thm:as-database} naturally inspires a generic generative model of exchangeable databases.
+In analogy to the work of \cite{Hoff2007-ja, Roy2009-ge, Lloyd2012-sb} on exchangeable arrays, theorem~\ref{thm:simple-database} naturally inspires a generic generative model of exchangeable databases.
 Each object of type $t$ in the database is associated with an \iid sample, $\AHvar_i^t$, from some distribution $\mathcal{U}$ \eg Uniform, Gaussian.
 For each relation $r_1,\dotsc,r_R$ we sample a random function $F^j$ from some distribution $\mathcal{F}^j$, \eg Gaussian process, random (bi/tri/\ldots)linear functions.
 We denote the evaluation of these functions at the corresponding values of $(\AHvar_i^t)$ by $W^j$.
@@ -425,7 +427,7 @@ $W^j$ can then be passed through a link function and distribution $L^j(\cdot)$ t
 (\AHvar_i^t) & \simiid  \mathcal{U} \\
 F^j & \sim  \mathcal{F}^j \\
 W^j_{\bi} & \defas F^j(\AHvar^{s_j(1)}_{i_1},\cdots,\AHvar^{s_j(n)}_{i_n}) \\
-X^{r_j}_{\bi} \given W & \sim  L^j(W^j_{\bi}) \qquad \text{independently across $j$ and $\bi$.}
+X^{r_j}_{\bi} & \sim  L^j(W^j_{\bi}) \qquad \text{independently across $j$ and $\bi$.}
 \]
 
 \begin{rem}[dependence between functions]
@@ -477,13 +479,13 @@ which is a standard regression model, or
   Y_i & \sim L^Y(G(U_i, X_i))
 \]
 which combines latent variable modelling and regression.
-An example of this hybrid model structure can be found in \cite{Wang2012-rc} but is otherwise surprisingly uncommon.
+An example of this hybrid model structure can be found in \cite{Wang2012-rc} but is surprisingly uncommon.
 
 Now suppose we perfectly observe a binary relation; what can this tell us about modelling a related unary relation?
 We now demonstrate how we could reconstruct an example model presented in \cite{Friedman1999-mo}.
-They present a simple genetic model where one's maternal chromosome depends on your mother's maternal and paternal chromosomes and similarly for one's paternal chromosome.
+They present a simple genetic model where one's maternal chromosome depends on one's mother's maternal and paternal chromosomes and similarly for one's paternal chromosome.
 In this example we have two binary relations, mother-of and father-of and two unary relations, maternal and paternal chromosomes.
-We write this as $X_{ij} = 1 \iff$ person $i$ is the mother of person $j$ and $Y_{ij} = 1 \iff$ person $i$ is the father of person $j$ and the arrays elements take the value 0 otherwise.
+We write this as $X_{ij} = 1 \iff$ person $i$ is the mother of person $j$ and $Y_{ij} = 1 \iff$ person $i$ is the father of person $j$ and the array elements take the value 0 otherwise.
 Further let $M_i$ and $P_i$ be the maternal and paternal chromosomes of person $i$ respectively.
 A potential form of a model for this data is
 \[

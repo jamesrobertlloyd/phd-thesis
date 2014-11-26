@@ -5,7 +5,7 @@
 \label{ch:notation}
 \addcontentsline{toc}{chapter}{Notation}
 
-Unless explicitly specified otherwise, I will write probability distributions as imperative program \ie each line indicates how a random variable is to be generated and following each line in order specifies a single sample from the joint distribution.
+Unless explicitly specified otherwise, I will write probability distributions as imperative programs \ie each line indicates how a random variable is to be generated and following each line in order specifies a single sample from the joint distribution.
 For example,
 \[
   X & \dist \Normal(0,1) \nonumber \\
@@ -17,6 +17,7 @@ would imply that $X$ and $Y$ are normally distributed but also independent and
   Y & \dist \Normal(X,1) \nonumber
 \]
 would imply that $X$ and $Y$ have a covariance of 1.
+This means that each statement is a conditional distribution, conditioned on all previously defined random variables.
 
 I will use curly braces $\{\}$ to indicate sets and parentheses $()$ to indicate lists.
 The index set of lists or sets will occasionally be omitted when clear from context \eg $(U_i)$ might be short hand for $(U_i)_{i\in\Nats}$.
