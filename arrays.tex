@@ -10,7 +10,7 @@ For networks, we assumed that the ordering of the nodes contained no information
 For user--item data we assumed that the order of both users and items were irrelevant to the meaning of the data.
 
 In this chapter we extend these ideas of exchangeability to any data that can be stored in a relational database \ie arbitrary relational data.
-We demonstrate that extensions of the Aldous--Hoover theorem to $n$-arrays due to Kallenberg \citep{Kallenberg1999-pj} can be extended to the case of exchangeable databases.
+We demonstrate that extensions of the Aldous--Hoover theorem to $n$-arrays due to \citet{Kallenberg1999-pj} can be extended to the case of exchangeable databases.
 These new theorems reveal a natural parameter space for data stored in relational databases elucidating how to construct appropriate statistical models for such data.
 
 This chapter is largely based on collaborations with Zoubin Ghahramani, Peter Orbanz and Daniel Roy.
@@ -19,7 +19,7 @@ In particular, the technical results presented in this chapter appeared at the B
 \section{Introduction}
 
 Relational databases are an extremely common data structure so it is natural to want to perform statistical tasks with such data \eg predicting unobserved data or identifying latent structure.
-In particular, network data is rarely encountered in isolation \eg in a social network one will often have access to side information about each user.
+In particular, network data is rarely encountered in isolation \eg in a social network one will often have access to information about each user.
 To perform a statistical analysis of such data we will typically need to specify a probabilistic model of the data, but it is not immediately clear what an appropriate parameter space for such a model is.
 The choice of parameter space is important because it indicates the targets of statistical inference and determines where we can share statistical strength between different aspects of the data.
 
@@ -28,7 +28,7 @@ This form of exchangeability is appropriate when the order of the objects underl
 For example, the left hand side of figure~\ref{fig:exchangeable} shows the same network but with differently labeled nodes.
 If the labeling is unimportant, then any probabilistic model of such data should assign them the same probability.
 
-\begin{figure}[t]
+\begin{figure}[ht]
 \centering
 \begin{tabular}{c}
 \tiny \input{\arraysfigsdir/exchangeable}
@@ -67,18 +67,18 @@ A relation $r'$ of signature $(\textit{users},\textit{users})$ taking values in 
 \end{example}
 
 \begin{definition}[database]
-Define a \defn{database} to be a collection of $R$ relations $r_1,\dotsc,r_R$ of signature $s_1,\dotsc,s_R$, taking values in spaces $\Space_1,\dotsc,\Space_R$, respectively.
+Define a \defn{database} to be a collection of $R$ relations $r_1,\dotsc,r_R$ of signature $s_1,\dotsc,s_R \in T^{d_1},\dotsc,T^{d_R}$, taking values in spaces $\Space_1,\dotsc,\Space_R$, respectively.
 \end{definition}
 
 We may encode a database as a collection of arrays $(X^{r_j})_{j=1}^R$, where $X^{r_j}$ encodes the relation $r_j$.  
 For notational simplicity, we will often refer to the collection of arrays $(X^{r_j})_{j=1}^R$ as if it were the database itself.
 
-Permuting the ordering of objects within a database results in a permutation of the indices of several of the arrays encoding its relations.
+Permuting the ordering of objects within a database can result in a permutation of the indices of several of the arrays encoding its relations.
 For each type $t \in \Types$, let $p_t \in \SGinf$ be a permutation of $\Nats$. 
-Write $p = (p_t ; t \in \Types) \in \SGinf^T$ for the collection of such permutations.
-Given a signature $s \in \Types^d$, define $p^s$ to be the map from $\Nats^d$ to $\Nats^d$ such that
+Write $p = (p_t ; t \in \Types) \in \SGinf^T$ for a collection of such permutations.
+Given a signature $s \in \Types^{d}$, define $p^s$ to be the map from $\Nats^{d}$ to $\Nats^{d}$ such that
 \[
-p^s(\bi) \defas (p_{s_1}(i_1), \dotsc,p_{s_d}(i_d)), \qquad \text{for } \bi \in \Nats^d.
+p^s(\bi) \defas (p_{s_1}(i_1), \dotsc,p_{s_{d}}(i_{d})), \qquad \text{for } \bi \in \Nats^{d}.
 \]
 In other words, $p^s$ maps a sequence $i_1,\dotsc,i_d$ of indices (indexing objects of type $s_1,\dotsc,s_d$, respectively) to the sequence where each index is permuted by the permutation corresponding to its type.
 
@@ -100,27 +100,27 @@ We say that a random database $(X^{r_j})_{j=1}^R$ is \emph{exchangeable} when it
 %Let $\Law(Y)$ be the law (distribution) of a random variable $Y$ and define $\chi_m X \defas (X_{i_1\ldots i_d}; \ i_j \le m )$.
 The following result characterises the distribution of any exchangeable database to arbitrary accuracy.
 
-\begin{cor}[functional representation for exchangeable databases]
+\begin{cor}[simple functional representation for exchangeable databases]
   \label{cor:simple-database}
    Let $(X^{r_j})_{j=1}^R$ be an exchangeable random database.
    Then there exists a sequence of random measurable functions $F^{j,1}, F^{j,2}, \dotsc$ for 
-   every $j=1\ldots R$ and collection of \iid Uniform$[0,1]$ random variables $(\AHvar^t_i)_{i\in\Nats,t \in \Types}$ such that 
+   every $j=1,\ldots, R$ and collection of \iid Uniform$[0,1]$ random variables $(\AHvar^t_i)_{i\in\Nats,t \in \Types}$ such that 
    the random databases $(X^{r_j,n})_{j=1}^R$
-    converge in distribution to $(X^{r_j})_{j=1\ldots R}$ as $n\to \infty$ on all finite subarrays, where   
-   the sequence of arrays $X^{j,1},X^{j,2},\dotsc$, for $j \in \{1,\dotsc,R\}$ are given by
+    converge in distribution to $(X^{r_j})_{j=1\ldots R}$ on all finite subarrays as $n\to \infty$, where   
+   the sequence of arrays $X^{j,1},X^{j,2},\dotsc$ for $j = 1,\dotsc,R$ are given by
    \[
-     X^{r_j,n}_{\bi} := F^{j,n}(\AHvar^{s_j(1)}_{i_1},\dotsc,\AHvar^{s_j(d)}_{i_d}), \qquad \text{for } \bi \in \Nats^d.
+     X^{r_j,n}_{\bi} := F^{j,n}(\AHvar^{s_j(1)}_{i_1},\dotsc,\AHvar^{s_j(d_j)}_{i_{d_j}}), \qquad \text{for } \bi \in \Nats^{d_j}.
    \]
 \end{cor}
 
-This is a corollary of theorem~\ref{thm:simple-database} which states that the law of fixed subarrays are mutually absolutely continuous and the associated Radon-Nikodym derivatives converge uniformly to $1$ as $n \to \infty$.
+This is a corollary of theorem~\ref{thm:simple-database} which states that the distributions of finite subarrays are mutually absolutely continuous and the associated Radon--Nikodym derivatives converge uniformly to $1$ as $n \to \infty$.
 We also present an almost-sure representational result which requires some heavy notation which we build up in subsequent sections.
 
-To demonstrate this theorem, we present two special cases of this result applicable to modelling a network with side information for each node and a social network with associated user-item data.
+To demonstrate this result, we present two special cases applicable to modelling a network with side information for each node and a social network with associated user-item data.
 
 \begin{cor}
   \label{cor:network-side-simple}
-  Consider an exchangeable database with one object type, one unary relationship, and one binary relationship; denote the binary relationship by the array $X=(X_{i,j})_{i,j\in\Nats}$ and the unary relationship with the sequence $C=(C_i)_{i\in\Nats}$.
+  Consider an exchangeable database with one object type, one unary relationship, and one binary relationship; denote the binary relationship by the array $X=(X_{ij})_{i,j\in\Nats}$ and the unary relationship with the sequence $C=(C_i)_{i\in\Nats}$.
    Then there exists a sequence of pairs of random measurable functions $(F^n, G^n)_{n\in\Nats}$ and a collection of \iid Uniform$[0,1]$ random variables $(\AHvar_{i})_{i\in\Nats}$ such that if we define the arrays $X^1,X^2,\dotsc$ and sequences $C^1,C^2,\dotsc$ by
    \[ 
      X^n_{i,j} &\defas F^n(\AHvar_{i},\AHvar_{j}), \qquad \text{for } i,j,n\in\Nats, \\
@@ -130,11 +130,11 @@ To demonstrate this theorem, we present two special cases of this result applica
 \end{cor}
 
 \begin{cor}
-  Consider an exchangeable database with two object types, one binary relation between two objects of the first type and a binary relation between objects of different types;  denote the first relation by the array $X=(X_{i,j})_{i,j\in\Nats}$ and the second by $Y=(Y_{i,k})_{i,k\in\Nats}$.
+  Consider an exchangeable database with two object types, one binary relation between two objects of the first type and a binary relation between objects of different types;  denote the first relation by the array $X=(X_{ij})_{i,j\in\Nats}$ and the second by $Y=(Y_{ik})_{i,k\in\Nats}$.
    Then there exists a sequence of pairs of random measurable functions $(F^n, G^n)_{n\in\Nats}$ and a collection of \iid Uniform$[0,1]$ random variables $(\AHvar_{i})_{i\in\Nats}, (\AHvaralt_{i})_{i\in\Nats}$ such that if we define the arrays $X^1,X^2,\dotsc$ and  $Y^1,Y^2,\dotsc$ by
    \[ 
-     X^n_{i,j} &\defas F^n(\AHvar_{i},\AHvar_{j}), \qquad \text{for } i,j,n\in\Nats, \\
-     Y^n_{i,k} &\defas G^n(\AHvar_{i}, \AHvaralt_{k}), \qquad \text{for } i,k,n\in\Nats,
+     X^n_{ij} &\defas F^n(\AHvar_{i},\AHvar_{j}), \qquad \text{for } i,j,n\in\Nats, \\
+     Y^n_{ik} &\defas G^n(\AHvar_{i}, \AHvaralt_{k}), \qquad \text{for } i,k,n\in\Nats,
     \]
    then $(X^n,Y^n)$ converges in distribution to $(X,Y)$ as $n \to \infty$ on all finite subarrays.
 \end{cor}
@@ -146,6 +146,7 @@ To demonstrate this theorem, we present two special cases of this result applica
 \begin{rem}[random functions]\label{rem:randfunc}
   When we refer to a random function we mean a deterministic function which takes an additional source of randomness as input.
   For example $F(\textrm{arguments}) \defas f(U, \textrm{arguments})$ where $f$ is deterministic and $U$ is uniformly distributed would be an example of a random function.
+  This is made precise in the statements of the main results.
 \end{rem}
 
 \subsection{Interpretation and examples}
@@ -162,22 +163,24 @@ Theorem~\ref{thm:simple-database} states that if the distribution of $X$ is exch
 \begin{equation}
 (F(\AHvar_i, \AHvar_j))
 \end{equation}
-where $F$ is a random measurable function and $(U_i)$ are \iid Uniform$[0,1]$ random variables.
+where $F$ is a random measurable function and $(U_i)$ are \iid Uniform$[0,1]$ random variables\footnotemark{}.
 This special case was used previously by \cite{Hoff2007-ja,Roy2009-ge,Lloyd2012-sb} and in chapter~\ref{ch:networks} to inspire probabilistic models of networks of the form
 \begin{eqnarray}
 (\AHvar_i) & \simiid & \textrm{\eg Gaussian} \\
 F & \sim & \textrm{\eg Gaussian process, bilinear function}\ldots \\
 W_{ij} & := & F(\AHvar_i, \AHvar_j) \\
-X_{ij} | W_{ij} & \sim & \textrm{Bernoulli}(\sigma(W_{ij}))\label{eq:graphon}.
+X_{ij} & \sim & \textrm{Bernoulli}(\sigma(W_{ij}))\label{eq:graphon}.
 \end{eqnarray}
 This is demonstrated pictorially in figure~\ref{fig:graphon}; in this case $F$ can be interpreted as a blurred adjacency matrix.
+
+\footnotetext{Note that we occassionally omit the index sets of collections of random variables for reduce notational clutter. For example $(U_i)$ is short hand for $(U_i)_{i\in\Nats}$.}
 
 \begin{figure}[ht]
 \centering
 \begin{tabular}{c}
 \input{\arraysfigsdir/fig_graphon_wide}
 \end{tabular}
-\caption{
+\caption[Pictorial representation of the Aldous--Hoover theorem]{
 A pictorial representation of a model for network data inspired by the Aldous--Hover representation theorem.
 The left shows a random sample of a binary network (represented by an adjacency matrix) generated by a model of the form given by equation~\eqref{eq:graphon}.
 }
@@ -186,31 +189,33 @@ The left shows a random sample of a binary network (represented by an adjacency 
 
 \subsubsection{Example : A simple database}
 
-Consider the simple database shown on the left hand side of figure~\ref{fig:multi-rel-seq}.
+Consider the database shown on the left hand side of figure~\ref{fig:multi-rel-seq}.
 There are two objects, students and courses, and three relations, the unary relation `age' acting on students, the binary relation `friends' acting on pairs of students and the binary relation `grade' that acts on students and courses.
 Sample data encoded in arrays is shown at the bottom of this figure.
 
 Exchangeability of this database means that the entries of the leftmost table, the rows and columns of the second table and the rows of the third table can be arbitrarily permuted without changing the distribution of the database when viewed as a random variable.
 Similarly the columns of the rightmost table may be independently arbitrarily permuted.
 
-The functional form resulting from the application of theorem~\ref{thm:simple-database} to this data structure is shown on the right hand side of figure~\ref{fig:multi-rel-seq}.
-The two objects are represented by \iid random variables, $(U_i)$ for students, $(V_i)$ for courses and the three relations are represented by three random functions $F(\AHvar_i),G(\AHvar_i,\AHvar_j)$ and $H(\AHvar_i,\AHvaralt_j)$ whose inputs are the random variables representing the objects the relations act upon.
+The functional form resulting from the application of theorem~\ref{thm:simple-database} or corollary~\ref{cor:simple-database} to this data structure is shown on the right hand side of figure~\ref{fig:multi-rel-seq}.
+The two objects are represented by \iid random variables, $(U_i)$ for students, $(V_i)$ for courses and the three relations are represented by three random functions $F,G$ and $H$ whose inputs are the random variables representing the objects the relations act upon.
 
 \begin{figure}[ht]
 \centering
 \begin{tabular}{cc}
 \tiny \input{\arraysfigsdir/multi_rel_seq} & \tiny \input{\arraysfigsdir/multi_rel_seq_U_F}
 \end{tabular}
-\caption{Left: A pictorial representation of a relational database. Right: The functional representation of the distribution of data of this form guaranteed to be an arbitrarily good approximation by theorem~\ref{thm:simple-database}}
+\caption[Pictorial representation of an exchangeable database]{Left: A pictorial representation of a relational database. Right: The functional representation of the distribution of data of this form guaranteed to be an arbitrarily good approximation by theorem~\ref{thm:simple-database}}
 \label{fig:multi-rel-seq}
 \end{figure}
 
-\section{A representation theorem for exchangeable databases}
+\section{Representation theorems for exchangeable databases}
 \label{sec:proof_database}
+
+We now state and prove the main technical results of this chapter.
 
 \subsection{Background: $\pi$-exchangeability}
 
-This section reviews material from \citet{Kallenberg1999-pj}.
+We first summarise material from \citet{Kallenberg1999-pj}.
 Let $\pi$ be a partition of the set $\{1,\dots,d\}$ and $p = \{p^{\pi_i} : i = 1,\dots,d\}$ be a collection of permutations of $\Nats$ where $\pi_i \defas \{I \in \pi : i \in I\}$.
 We say that an array $X^r$ representing relation $r$ is $\pi$-exchangeable if 
 \begin{equation}
@@ -221,16 +226,16 @@ Note that this is precisely the type of symmetry we defined for exchangeable dat
 
 We say that a $\pi$-exchangeable array $X$ is simple if it admits a functional representation of the form
 \begin{equation}
-  X_{\bi} = F(U, U^{\pi_1}_{\bi_1}, \dots, U^{\pi_d}_{\bi_d})
+  X_{\bi} = f(U, U^{\pi_1}_{\bi_1}, \dots, U^{\pi_d}_{\bi_d})
 \end{equation}
-where $F$ is a measurable function and $U, U^{\pi_j}_{\bi_j}$ are \iid Uniform$[0,1]$ random variables.
+where $f$ is a measurable function and $U, (U^{\pi_j}_{\bi_j})$ are \iid Uniform$[0,1]$ random variables.
 
 \begin{prop}[$\pi$-exchangeability representation theorem]
   \label{thm:piex}
   Let $X$ be a $\pi$-exchangeable array.
   Then there exist some simple $\pi$-exchangeable arrays $X_1$ , $X_2$ , \dots such that
   $\chi_m X_n$ and $\chi_m X$ are mutually absolutely continuous for all $m,n \in \Nats$ and the associated Radon--Nikodym derivatives tend
-  uniformly to 1 as $n \to \infty$ for fixed $m$ where $\chi_m$ is the array subset operation such that $\chi_m Y \defas \{Y_{\bi} : \bi \in \{1,\dots,m\}^d\}$.
+  uniformly to 1 as $n \to \infty$ for fixed $m$ where $\chi_m$ is the array subset operation such that $\chi_m Y \defas (Y_{\bi} : \bi \in \{1,\dots,m\}^d)$.
 \end{prop}
 
 \subsection{Simple exchangeable database representation theorem}
@@ -265,19 +270,19 @@ We can now state and prove the first main result of this chapter.
   \label{thm:simple-database}
   Let $(X^{r_j})_{j=1}^R$ be an exchangeable database.
   Then there exist some simple exchangeable databases $(X^{r_j,1})_{j=1}^R$ , $(X^{r_j,2})_{j=1}^R$ , \dots such that
-  $\chi_m (X^{r_j,n})_{j=1}^R$ and $\chi_m (X^{r_j})_{j=1}^R$ are mutually ansolutely continuous for all $m,n \in \Nats$ and the associated Radon--Nikodym derivatives converge uniformly to 1 as $n \to \infty$ for fixed $m$.
+  $(\chi_m X^{r_j,n})_{j=1}^R$ and $(\chi_m X^{r_j})_{j=1}^R$ are mutually ansolutely continuous for all $m,n \in \Nats$ and the associated Radon--Nikodym derivatives converge uniformly to 1 as $n \to \infty$ for fixed $m$.
 \end{thm}
 
 \begin{proof}
   We first embed all of the arrays representing the exchangeable database into one larger array:
   \[
-    R_{\bi} = (X^{r_j}_{\rho(\bi)} : j = 1,\dots,R) \quad \forall \, \bi \in \Nats^d.
+    R_{\bi} = (X^{r_j}_{\rho_j(\bi)} : j = 1,\dots,R) \quad \forall \, \bi \in \Nats^d.
   \]
-  By definition of an exchangeable database, this array is $\pi$ exchangeable where $\pi$ is as defined in the preceeding text.
-  By proposition~\ref{thm:piex} there exists a sequence of measurable functions $(F^n)$ and collection of independent uniform random variables $U$ and $U^t_i$ such that $\chi_m R_{\bi}$ and $\chi_m F^n(U, U^{\pi_1}_{\bi_1}, \dots, U^{\pi_d}_{\bi_d})$ are mutually absolutely continuous and the associated Radon--Nikodym derivates converge uniformly to 1 as $n \to \infty$ for all $m$.
+  By the definition of an exchangeable database, this array is $\pi$ exchangeable where $\pi$ is as defined in the preceeding text.
+  By proposition~\ref{thm:piex} there exists a sequence of measurable functions $(F^n)$ and collection of independent uniform random variables $U$ and $(U^t_i)$ such that $(\chi_m R_{\bi})$ and $(\chi_m F^n(U, U^{\pi_1}_{\bi_1}, \dots, U^{\pi_d}_{\bi_d}))$ are mutually absolutely continuous and the associated Radon--Nikodym derivates converge uniformly to 1 as $n \to \infty$ for all $m$.
   By lemma~\ref{lem:contractionrnd} we have the same convergence for the following subarrays
   \[
-    F^{n,j}(U, U^{\pi_1}_{\tilde{\rho}_j(\bi_1)}, \dots, U^{\pi_d}_{\tilde{\rho}_j(\bi_d)}) \to X^{r_j}_{\rho(\bi)}.
+    F^{n,j}(U, U^{\pi_1}_{\tilde{\rho}_j(\bi_1)}, \dots, U^{\pi_d}_{\tilde{\rho}_j(\bi_d)}) \to X^{r_j}_{\rho_j(\bi)}.
   \]
   By the Borel isomorphism theorem there is a bimeasurable function $H$ and a uniformly distributed random variable $V$ such that
   \[

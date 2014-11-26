@@ -11,11 +11,11 @@
       minimum height=1em]
   \begin{scope}[yshift=0cm]
     % Place nodes
-    \node [block] (student) at (-2.5,0) {$(\AHvar_i)$};
+    \node [block] (student) at (-2.5,1) {$(\AHvar_i)$};
     %\node [block, right of=student] (course) {Course};
-    \node [block] (course) at (+2.5,0) {$(\AHvaralt_i)$};
-    \node [decision, below of=student] (observed) {Observed};
-    \node [decision, below of=course] (takes) {Takes};
+    \node [block] (course) at (+2.5,1) {$(\AHvaralt_i)$};
+    %\node [decision, below of=student] (observed) {Observed};
+    \node [decision] at(+2.5, -1.5) (takes) {Takes};
     \node [cloud] (friends) at (-2.5, -4.0) {Friends};
     \node [cloud] (grade) at (+2.5, -4.0) {Grade};
     \node [cloud] (age) at (-5.5, -4.0) {Age};
@@ -24,9 +24,9 @@
     \path [line] (course) -- (takes);
     \path [line] (takes) -- (grade);
     %\path [line] (student) -- (observed);
-    \path [line] (observed) -- (friends);
-    \draw[->] (student.south) .. controls (-2.0,-0.8) and (-2.0,-1.0) .. (observed.north east);
-    \draw[->] (student.south) .. controls (-3.0,-0.8) and (-3.0,-1.0) .. (observed.north west);
+    %\path [line] (observed) -- (friends);
+    \draw[->] (student.south) .. controls (-1.0,-1) and (-1.0,-2) .. (friends.north east);
+    \draw[->] (student.south) .. controls (-4.0,-1) and (-4.0,-2) .. (friends.north west);
     \path [line] (student.south west) -- (age.north east);
   \end{scope}
   \begin{scope}[yshift=-5cm]
