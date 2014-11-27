@@ -14,7 +14,7 @@ We demonstrate that extensions of the Aldous--Hoover theorem to $n$-arrays due t
 These new theorems reveal a natural parameter space for data stored in relational databases elucidating how to construct appropriate statistical models for such data.
 
 This chapter is largely based on collaborations with Zoubin Ghahramani, Peter Orbanz and Daniel Roy.
-In particular, the technical results presented in this chapter appeared at the Bayesian Nonparametrics Workshop 2012 and a NIPS workshop \citep{Lloyd_undated-iu} but without proof.
+In particular, preliminary versions of the technical results presented in this chapter appeared at the Bayesian Nonparametrics Workshop 2012 and a NIPS workshop \citep{Lloyd_undated-iu} but without proof.
 
 \section{Introduction}
 
@@ -358,15 +358,15 @@ Again we state a useful lemma.
 
 \begin{thm}[almost sure functional representation for exchangeable databases]
   \label{thm:as-database}
-  A database $(X^{r_j})_{j=1}^R$ is exchangeable iff there exist measurable functions $f^j : [0,1]^{2^{d_j}} \to S_j$ and $U$-array $\xi$ such that
+  A database $(X^{r_j})_{j=1}^R$ is exchangeable iff there exist measurable functions $f^j : [0,1]^{2^{d_j}} \to S_j$ and a $U$-array $\xi$ such that
   \begin{equation}
     X_{k^{s_j}}^{r_j} = f^j(\xi_{k_{\pi I}} : I \subset I_{s_j}) \ \as, \quad k \in \Nats^d, \ j \in \{1,\ldots,R\}.
   \end{equation}
 \end{thm}
 
 \begin{proof}
-  It is simple to verify that this construction produces databases with the required symmetry properties to be exchangeable so we need only show that such a construction is guaranteed to exist by exchangeability.
-  We proceed as before by embedding each array into one larger array
+  It is simple to verify that this construction produces databases with the required symmetry properties so we need only show that such a construction is guaranteed to exist by exchangeability.
+  We proceed as before by embedding all of the arrays into one larger array
   \[
     R_{k} = (X^{r_j}_{\rho(k)} : j = 1,\dots,R) \quad \forall \, k \in \Nats^d
   \]
@@ -577,25 +577,21 @@ or more conventionally
   X_{ij}^t = F(U_i, U_j, t)
 \]
 meaning that we can represent the distribution of the time evolving social network with fixed latent variables for each node but a time varying representing function.
-The form of the time varying function is completely general, but it could be constrained further by assumptions of continuity, Markov assumptions or Markov exchangeability for example.
+The form of the time varying function is completely general, but it could be constrained further by assumptions of continuity or Markov exchangeability for example.
 It is more typical however to assume that the latent variables also evolve through time (this still produces an exchangeable distribution) with the representing function potentially static.
-\TBD{
-Reference Ryan Adams basketball work and Dunson's work on this.
-}
+Examples of models of this form include \citep[e.g.][]{Adams2010-ln, durante2014bayesian}.
 It may be advantageous however to have fixed latent variables when one is jointly modelling both time evolving and static data.
 
 \subsection{Prior work using models of this form}
 
-\fTBD{Don't forget this early block model variant \cite{Hoffman_undated-ri}}
-
 In section~\ref{sec:networks:related} it was demonstrated that many models of single 2-arrays fit the form of the generic model presented above.
 In particular there are models that assume $F$ is linear \citep[e.g.][]{Hoff2007-ja, Meeds2007-gd, Salakhutdinov2008-zt, Yu2008-tz, Miller2009-wg}, that $F$ is Gaussian process distributed \citep[e.g.][]{Lawrence2009-za, Yan2011-lc, Lloyd2012-sb} and other non-linear forms for $F$ both parametric \citep[e.g.][]{Hoff2002-vy} and nonparametric \citep[e.g.][]{Roy2009-ge}.
-In addition to this there has been a line of work that uses increasingly more expressive forms of the distribution $\mathcal{U}$ \citep[e.g.][]{Wang1987-jd, Nowicki2001-xm, Kemp2006-jt, Xu2006-uy, Meeds2007-gd, Miller2009-wg, Palla2012-ch}.
+In addition to this there has been a line of work that uses increasingly more expressive forms of the distribution $\mathcal{U}$ \citep[e.g.][]{Wang1987-jd, Hoffman_undated-ri, Nowicki2001-xm, Kemp2006-jt, Xu2006-uy, Meeds2007-gd, Miller2009-wg, Palla2012-ch}.
 
 Many, but not all, of these models have been extended to model $d$-arrays.
 A summary of models using linear forms of $F$ is given in \cite{Kolda2009-ba}; non-linear models include \cite{Xu2012-ub} \TBD{cite the latest inftucker stuff}.
 
-For full databases, the literature is limited to clustering / block / latent class models \cite{Kemp2006-jt} \TBD{don't forget IHRM} and models using linear forms for the $F^r$ \citep[e.g.][]{Lippert2008-gg, Singh2008-cb, Singh2008-qw, Jimeng2009-rw, Acar2011-vg, Gallinari2011-ac, Nickel2011-pi, Acar2012-no, Ermis2012-gk, Shangguan2012-ga, Singh2012-jj, Acar2013-na, Andersen2013-rg, Yin2013-we}.
+For full databases, the literature is limited to clustering / block / latent class models \cite{Kemp2006-jt, Xu2006-uy} and models using linear forms for the $F^r$ \citep[e.g.][]{Lippert2008-gg, Singh2008-cb, Singh2008-qw, Jimeng2009-rw, Acar2011-vg, Gallinari2011-ac, Nickel2011-pi, Acar2012-no, Ermis2012-gk, Shangguan2012-ga, Singh2012-jj, Acar2013-na, Andersen2013-rg, Yin2013-we}.
 
 We should certainly expect to see new research using some of the more advanced forms proposed for networks being applied to higher order arrays or full databases.
 However, rather than proposing yet more specific models it would be very interesting to see automated model building techniques applied to these domains, potentially combined with model forms inspired by probabilistic relational models.
