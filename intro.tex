@@ -25,11 +25,11 @@ How should we perform rational inferences with uncertain information?
 A solution to this question is provided by Cox's theorem \citep{Cox1946-qc} which derives a calculus of reasoning about the plausability of statements from three simple axioms of rational behaviour.
 A version of these axioms are colloquially stated by \citet{Jaynes2003-jh} as
 \begin{enumerate}
-  \item Degrees of plausibility are represented by real numbers
+  \item Representation of degrees of plausability by real numbers
   \item Qualitative correspondence with common sense
-  \item Consistency of reasoning
+  \item Consistency [of reasoning]
 \end{enumerate}
-The calculus that one can logically derive from these axioms is isomorphic to probability theory; plausabilities satisfy the sum and product rules that are typically stated as the axioms of probability theory \citep[e.g.][]{Kallenberg2002-il}\fTBD{Check this is a correct reference}.
+The calculus that one can logically derive from these axioms is isomorphic to probability theory; plausabilities satisfy the sum and product rules that are typically stated as axioms of probability theory.
 
 This result tells us that if we can accurately specify our beliefs as probability distributions then there is only one way to rationally (in the sense of Cox's axioms) update those beliefs in the light of new data \ie by using probability theory (which includes Bayes' rule).
 Thus, we are compelled to perform inference using the rules of probability theory when the following three conditions hold
@@ -38,13 +38,13 @@ Thus, we are compelled to perform inference using the rules of probability theor
   \item We can faithfully express our prior beliefs about a problem using probability distributions
   \item Exact probabilistic inference or a sufficiently close approximation is computationally tractable
 \end{enumerate}
-There are some who have argued against Cox's axioms\fTBD{Cite from Jaynes} but no widely accepted alternatives currently exist.
+There are some who have argued against Cox's axioms (see comments in \citet{Jaynes2003-jh}) but no widely accepted alternatives currently exist.
 Conditions 2 and 3 however are often false; in response one may wish to develop or use a method with frequentist guarantees or one could attempt research which makes them true in a larger number of situations\footnotemark{}.
 This thesis is concerned with the latter strategy.
 
 \footnotetext{
 Or one could attempt to revise statistical theory in such a way as to take account of computational and epistemic limitations.
-This lines of enquiry is potentially very fruitful but still in its infancy \citep[e.g.][]{Jordan2013-uv}\TBD{Also cite Swedes on model criticism}.
+These lines of enquiry are potentially very fruitful but still in their infancy \citep[e.g.][]{Jordan2013-uv, Vehtari2012-oh}.
 }
 
 %Chapters~\ref{ch:networks}~and~\ref{ch:arrays} are concerned with the problem of specifying an appropriate mathematical form of probabilistic model based on symmetry arguments.
@@ -75,7 +75,7 @@ We also demonstrate how these representation theorems are compatible with other 
 
 \section{An introduction to using Gaussian processes to model functions}
 
-There are a great many (and many great) introductions to Gaussian processes in the literature\fTBD{Cite a bunch}.
+There are a great many (and many great) introductions to Gaussian processes; the most comprehensive at the moment is \citet{Rasmussen2006-ml}.
 Rather than repeat them, I will give an intuitive derivation of Gaussian processes starting from linear regression.
 Those with an understanding of Gaussian processes may safely skip this section.% and those interested in further details are directed to the following reference books\fTBD{cite Rasmussed and Williams and maybe Kallenberg as a nice (lol) contrast}.
 
