@@ -345,7 +345,15 @@ Again we state a useful lemma.
 \end{lemma}
 
 \begin{proof}
-  Conditional strong law of large numbers essentially \TBD{TBD}.
+  For each $i$ and conditioned on $U_i$, ${X}_{ij} \independent {X}_{ij'} \, \forall \, j \neq j'$.
+  Then by the conditional strong law of large numbers
+  \[
+    \frac{1}{n}\sum_{j \leq n} f(U_i, V_{ij}) \to \mathbb{E}(f(U_i, V_{ij})\given U_i) \,\, \as
+  \]
+  whence
+  \[
+    \frac{1}{n}\sum_{j \leq n} f(U_i, V_{ij}) = X_i = \mathbb{E}(f(U_i, V_{ij})\given U_i) =: g(U_i) \,\, \as
+  \]
 \end{proof}
 
 \begin{thm}[almost sure functional representation for exchangeable databases]
