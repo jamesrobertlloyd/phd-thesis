@@ -38,7 +38,7 @@ While we focus on Gaussian process regression, we believe our kernel search meth
 We hope that the algorithm developed in this chapter and the refinements made in chapter~\ref{ch:description} will help replace the current and often opaque art of kernel engineering with a more transparent science of automated kernel construction.
 
 \section{Expressing high level patterns with kernels} 
-\label{sec:Structure}
+\label{sec:construction:structure}
 
 Gaussian process regression models use a kernel to define the covariance between any two function values: ${\textrm{Cov}(\outputVar, \outputVar') = \kernel(\inputVar,\inputVar')}$.
 The kernel specifies which structures are likely under the \gp{} prior, which in turn determines the generalisation properties of the model.
@@ -287,7 +287,7 @@ Our work is tackling a similar problem, but in a supervised setting.
 \label{sec:time_series}
 
 To investigate our method's ability to discover patterns, we ran the kernel search on several time-series to a depth of 10.
-As discussed in section \TBD{a appropriate reference}, a \gp{} whose kernel is a sum of kernels can be viewed as a sum of functions drawn from independent component \gp{}s.
+As discussed in section \ref{sec:construction:structure}, a \gp{} whose kernel is a sum of kernels can be viewed as a sum of functions drawn from independent component \gp{}s.
 In particular, all kernels in our search space can be equivalently written as sums of products of base kernels by applying distributivity of multiplication over addition.
 For example,
 \[
@@ -356,7 +356,7 @@ We observe similar components to the previous dataset: a long term trend, annual
 In addition, the composite kernel captures the near-linearity of the long-term trend, and the linearly growing amplitude of the annual oscillations.
 
 \paragraph{Solar irradiance Data} 
-Finally, we analysed annual solar irradiation data from 1610 to 2011 \citep{lean1995reconstruction}.
+Finally, we analysed annual solar irradiation data from 1610 to 2011 \citep{Lean1995-vp}.
 %
 \begin{figure}[ht]
 \begin{centering}
