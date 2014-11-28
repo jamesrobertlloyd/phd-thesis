@@ -180,6 +180,7 @@ We note, however, that the model and inference algorithms described in the follo
 In chapter \ref{ch:arrays} we extend these representation results to arbitrary collections of arrays of arbitrary size.
 
 \section{A nonparametric model of exchangeable arrays}
+\label{sec:networks:model}
 
 To define a probabilistic model for array- or graph-valued data, we start with Theorem \ref{theorem:ah}: A distribution on exchangeable matrices
 can be specified by specifying a distribution on measurable functions $[0,1]^3\rightarrow\dataspace$. 
@@ -327,7 +328,7 @@ This correspondence between matrix factorisation and priors on functions can be 
 Thus, we see that a Gaussian process model using a tensor product of general kernels is equivalent to kernelized matrix factorisation.
 
 This correspondence allows us to succinctly summarize many of the models in the literature review in table \ref{table:ModelComparison} below (the model introduced here is referred to as the random function model).
-\fTBD{Reintroduce references as a footnote}
+
 \begin{table}[h]
   \centering
   \begin{tabular}{l|ccc}%c} 
@@ -419,12 +420,12 @@ In the simpler case of a real-valued array $\darray$, we construct an MCMC algor
 \qquad\quad \text{and} \qquad\quad
 \AHvar_j \given \AHvar_{-j}, \covhyppar, \sigma_\darray, \darray
 \]
-where $\sigma_\darray$ is the noise variance parameter used when modelling real valued data introduced in section \ref{sec:Model}.
+where $\sigma_\darray$ is the noise variance parameter used when modelling real valued data introduced in section \ref{sec:networks:model}.
 Let $\numnodes = |\AHvar_{\lbrace i\rbrace}|$ denote the number of rows in the observed array,
 let $\inputpoints$ be the set of all pairs $(\AHvar_i,\AHvar_j)$ for all observed relations $\darray_{ij}$, 
 let $\numobs = |\inputpoints|$ denote the number of observed relations,
 and 
-let $K$ represent the $\numobs \times \numobs$ kernel matrix between all points in $\inputpoints$. Changes to $\covhyppar$ affect every entry in the kernel matrix $K$ and so, naively, the computation of the Gaussian likelihood of $\darray$ takes $\CompOrder(\numobs^3)$ time.  Likewise, changes to $\AHvar$ also affect entries in $K$. Naively re-evaluating the Gaussian likelihood term again takes $\CompOrder(\numobs^3)$ time, and so, across all $\numnodes$ rows, we expend $\CompOrder(\numobs^3 \numnodes)$ time. Whether or not this can be improved by exploiting structure in the modifications, the cubic dependence on $\numobs$ seems unavoidable, and thus this naive algorithm is unusable for all but small data sets. 
+let $K$ represent the $\numobs \times \numobs$ kernel matrix between all points in $\inputpoints$. Changes to $\covhyppar$ affect every entry in the kernel matrix $K$ and so, naively, the computation of the Gaussian likelihood of $\darray$ takes $\CompOrder(\numobs^3)$ time.  Likewise, changes to $\AHvar$ also affect entries in $K$. Naively re-evaluating the Gaussian likelihood term again takes $\CompOrder(\numobs^3)$ time, and so, across all $\numnodes$ rows, we expend $\CompOrder(\numobs^3 \numnodes)$ time. Whether or not this can be improved by exploiting structure in the modifications, the cubic dependence on $\numobs$ seems unavoidable, and thus this naive algorithm is unusable for all but very small data sets. 
 
 
 \subsection{A random subset-of-regressor approximation}
