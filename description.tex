@@ -126,13 +126,17 @@ Right: Posterior of two components found by \procedurename{} - the different sca
 \label{fig:rq}
 \end{figure}
 
-An even more extreme pathological behaviour can be seen in figure~\ref{fig:description:rq_per}\fTBD{Find / make me} where a kernel of the form $\kRQ \kerntimes \kPer$ has explained a data set which \procedurename{} has more naturally described as a sum of a periodic component and uncorrelated noise.
+An even more extreme pathological behaviour can be seen in figure~\ref{fig:description:rq_per} where a kernel of the form $\kRQ \kerntimes \kPer$ has explained a data set which \procedurename{} would more naturally described as a sum of a periodic component and uncorrelated noise.
+The rational quadratic has introduced multiple lengthscales into the function allowing it to make a reasonable extrapolation of the periodicity in the data but also fit every data point perfectly.
 For these reasons we exclude the rational quadratic kernel from our language.
 
 \begin{figure}[ht]
-\centering
-\caption{
-A picture of those mink fur sales and the weird rational quadratic.
+  \centering
+  \includegraphics[trim=0cm 0cm 0cm 0cm, clip, width=0.8\columnwidth]{\descriptionfigsdir/old-gpss/mink_fur.pdf}
+\caption[The pathological properties of the rational quadratic kernel when applied to mink fur sales]{
+Fit of a kernel of the form $\kRQ \kerntimes \kPer$ to mink fur sales data.
+While this kernel produces good extrapolations of the average periodicity, it simulataneously `joins the dots', fitting all data points almost exactly.
+It would be difficult to parsimoniously describe the properties of this function in words.
 }
 \label{fig:description:rq_per}
 \end{figure}
