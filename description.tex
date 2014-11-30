@@ -627,13 +627,20 @@ However, the annual cycle is heavily approximated by a sinusoid and the model do
 \section{Related work}
 \label{sec:related-work}
 
-See section~\ref{sec:construction:related_work} for work relating to the construction of statistical models.
+Section~\ref{sec:construction:related_work} describes work most closely related to the construction of Gaussian process models with complex kernels.
+In this section we review work relating to systems producing natural language output and the automation of data analysis.
 
 \paragraph{Natural-language output}
 To the best of our knowledge, our procedure is the first example of automatic description of nonparametric statistical models.
-However, systems with natural language output have been built in the areas of video interpretation \citep{Barbu2012-wv} and automated theorem proving \citep{Ganesalingam_undated-us}.
+However, systems with natural language output have been built in the areas of scene interpretation \citep{Karpathy_undated-ww}, video interpretation \citep{Barbu2012-wv} and automated theorem proving \citep{Ganesalingam_undated-us}.
 
-\TBD{Update me. Frequentist auto-stat work. Look for other people citing our work.}
+\paragraph{Automatic machine learning}
+
+Our work joins a growing literature attempting to automate various aspects of machine learning.
+\citet{Thornton2013-zg} present AutoWEKA, a system which automates model selection in the data analysis software WEKA.
+Similarly the Google prediction API \citep{green2011prediction} provides an API which hides the model selection and optimisation aspects of making predictions given training data.
+In a more restricted but no less important context, \citet{Snoek2012-ri} demonstrated how Bayesian optimisation techniques could be used to tune the parameters of machine learning methods automatically, improving upon state of the art performance in a number of domains merely by improved parameter tuning.
+Our work moves this line of research forward by attempting to automatically explain a data set as well as building a model with good predictive performance.
 
 \section{Predictive Accuracy}
 \label{sec:numerical}
