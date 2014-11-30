@@ -2141,3 +2141,198 @@
   year      =  2001,
   issn_alt  = "1573-0565"
 }
+@INPROCEEDINGS{Murray2010-hv,
+  title     = "Slice sampling covariance hyperparameters of latent Gaussian
+               models",
+  booktitle = "Advances in Neural Information Processing Systems ({NIPS})",
+  author    = "Murray, Iain and Adams, Ryan Prescott",
+  year      =  2010
+}
+@ARTICLE{Skilling2006-ez,
+  title     = "Nested sampling for general Bayesian computation",
+  author    = "Skilling, John",
+  abstract  = "Project Euclid - mathematics and statistics online",
+  journal   = "Bayesian Anal.",
+  publisher = "International Society for Bayesian Analysis",
+  volume    =  1,
+  number    =  4,
+  pages     = "833--859",
+  month     =  dec,
+  year      =  2006,
+  keywords  = "Bayesian computation; evidence; marginal likelihood; algorithm;
+               nest; annealing; phase change; model selection",
+  issn_alt  = "1931-6690"
+}
+@UNPUBLISHED{Feroz2013-wk,
+  title         = "Exploring {Multi-Modal} Distributions with Nested Sampling",
+  author        = "Feroz, F and Skilling, J",
+  abstract      = "In performing a Bayesian analysis, two difficult problems
+                   often emerge. First, in estimating the parameters of some
+                   model for the data, the resulting posterior distribution may
+                   be multi-modal or exhibit pronounced (curving) degeneracies.
+                   Secondly, in selecting between a set of competing models,
+                   calculation of the Bayesian evidence for each model is
+                   computationally expensive using existing methods such as
+                   thermodynamic integration. Nested Sampling is a Monte Carlo
+                   method targeted at the efficient calculation of the
+                   evidence, but also produces posterior inferences as a
+                   by-product and therefore provides means to carry out
+                   parameter estimation as well as model selection. The main
+                   challenge in implementing Nested Sampling is to sample from
+                   a constrained probability distribution. One possible
+                   solution to this problem is provided by the Galilean Monte
+                   Carlo (GMC) algorithm. We show results of applying Nested
+                   Sampling with GMC to some problems which have proven very
+                   difficult for standard Markov Chain Monte Carlo (MCMC) and
+                   down-hill methods, due to the presence of large number of
+                   local minima and/or pronounced (curving) degeneracies
+                   between the parameters. We also discuss the use of Nested
+                   Sampling with GMC in Bayesian object detection problems,
+                   which are inherently multi-modal and require the evaluation
+                   of Bayesian evidence for distinguishing between true and
+                   spurious detections.",
+  month         =  "19~" # dec,
+  year          =  2013,
+  archivePrefix = "arXiv",
+  primaryClass  = "astro-ph.IM",
+  eprint        = "1312.5638"
+}
+@UNPUBLISHED{Feroz2013-dj,
+  title         = "Importance Nested Sampling and the {MultiNest} Algorithm",
+  author        = "Feroz, F and Hobson, M P and Cameron, E and Pettitt, A N",
+  abstract      = "Bayesian inference involves two main computational
+                   challenges. First, in estimating the parameters of some
+                   model for the data, the posterior distribution may well be
+                   highly multi-modal: a regime in which the convergence to
+                   stationarity of traditional Markov Chain Monte Carlo (MCMC)
+                   techniques becomes incredibly slow. Second, in selecting
+                   between a set of competing models the necessary estimation
+                   of the Bayesian evidence for each is, by definition, a
+                   (possibly high-dimensional) integration over the entire
+                   parameter space; again this can be a daunting computational
+                   task, although new Monte Carlo (MC) integration algorithms
+                   offer solutions of ever increasing efficiency. Nested
+                   sampling (NS) is one such contemporary MC strategy targeted
+                   at calculation of the Bayesian evidence, but which also
+                   enables posterior inference as a by-product, thereby
+                   allowing simultaneous parameter estimation and model
+                   selection. The widely-used MultiNest algorithm presents a
+                   particularly efficient implementation of the NS technique
+                   for multi-modal posteriors. In this paper we discuss
+                   importance nested sampling (INS), an alternative summation
+                   of the MultiNest draws, which can calculate the Bayesian
+                   evidence at up to an order of magnitude higher accuracy than
+                   `vanilla' NS with no change in the way MultiNest explores
+                   the parameter space. This is accomplished by treating as a
+                   (pseudo-)importance sample the totality of points collected
+                   by MultiNest, including those previously discarded under the
+                   constrained likelihood sampling of the NS algorithm. We
+                   apply this technique to several challenging test problems
+                   and compare the accuracy of Bayesian evidences obtained with
+                   INS against those from vanilla NS.",
+  month         =  "10~" # jun,
+  year          =  2013,
+  archivePrefix = "arXiv",
+  primaryClass  = "astro-ph.IM",
+  eprint        = "1306.2144"
+}
+@ARTICLE{Gerrish_undated-zh,
+  title  = "Black Box Variational Inference",
+  author = "Gerrish, Sean and Blei, David M"
+}
+@UNPUBLISHED{Hensman2013-ox,
+  title         = "Gaussian Processes for Big Data",
+  author        = "Hensman, James and Fusi, Nicolo and Lawrence, Neil D",
+  abstract      = "We introduce stochastic variational inference for Gaussian
+                   process models. This enables the application of Gaussian
+                   process (GP) models to data sets containing millions of data
+                   points. We show how GPs can be vari- ationally decomposed to
+                   depend on a set of globally relevant inducing variables
+                   which factorize the model in the necessary manner to perform
+                   variational inference. Our ap- proach is readily extended to
+                   models with non-Gaussian likelihoods and latent variable
+                   models based around Gaussian processes. We demonstrate the
+                   approach on a simple toy problem and two real world data
+                   sets.",
+  month         =  "26~" # sep,
+  year          =  2013,
+  archivePrefix = "arXiv",
+  primaryClass  = "cs.LG",
+  eprint        = "1309.6835"
+}
+@ARTICLE{Bishop2006-yy,
+  title     = "Pattern recognition and machine learning",
+  author    = "Bishop, C M",
+  abstract  = "Machine learning is a key technology in bioinformatics,
+               especially in the analysis of`` big data'' in bioinformatics.
+               This course gives an overview of basic concepts, algorithms, and
+               applications in machine learning , including topics such as
+               classification, linear regression, ...",
+  publisher = "soic.iupui.edu",
+  year      =  2006
+}
+@UNPUBLISHED{Swersky2014-aw,
+  title         = "{Freeze-Thaw} Bayesian Optimization",
+  author        = "Swersky, Kevin and Snoek, Jasper and Adams, Ryan Prescott",
+  abstract      = "In this paper we develop a dynamic form of Bayesian
+                   optimization for machine learning models with the goal of
+                   rapidly finding good hyperparameter settings. Our method
+                   uses the partial information gained during the training of a
+                   machine learning model in order to decide whether to pause
+                   training and start a new model, or resume the training of a
+                   previously-considered model. We specifically tailor our
+                   method to machine learning problems by developing a novel
+                   positive-definite covariance kernel to capture a variety of
+                   training curves. Furthermore, we develop a Gaussian process
+                   prior that scales gracefully with additional temporal
+                   observations. Finally, we provide an information-theoretic
+                   framework to automate the decision process. Experiments on
+                   several common machine learning models show that our
+                   approach is extremely effective in practice.",
+  month         =  "16~" # jun,
+  year          =  2014,
+  archivePrefix = "arXiv",
+  primaryClass  = "stat.ML",
+  eprint        = "1406.3896"
+}
+@ARTICLE{Ghahramani2002-by,
+  title     = "Bayesian monte carlo",
+  author    = "Ghahramani, Z and Rasmussen, C E",
+  abstract  = "Abstract We investigate Bayesian alternatives to classical Monte
+               Carlo methods for evaluating integrals. Bayesian Monte Carlo
+               (BMC) allows the incorporation of prior knowledge, such as
+               smoothness of the integrand, into the estimation. In a simple
+               problem ...",
+  journal   = "Adv. Neural Inf. Process. Syst.",
+  publisher = "machinelearning.wustl.edu",
+  year      =  2002
+}
+@ARTICLE{OHagan1991-wg,
+  title   = "{Bayes-Hermite} quadrature",
+  author  = "O'Hagan, A",
+  journal = "J. Stat. Plan. Inference",
+  volume  =  29,
+  pages   = "245--260",
+  year    =  1991
+}
+@UNPUBLISHED{Hennig2012-wv,
+  title         = "{Quasi-Newton} Methods: A New Direction",
+  author        = "Hennig, Philipp and Kiefel, Martin",
+  abstract      = "Four decades after their invention, quasi-Newton methods are
+                   still state of the art in unconstrained numerical
+                   optimization. Although not usually interpreted thus, these
+                   are learning algorithms that fit a local quadratic
+                   approximation to the objective function. We show that many,
+                   including the most popular, quasi-Newton methods can be
+                   interpreted as approximations of Bayesian linear regression
+                   under varying prior assumptions. This new notion elucidates
+                   some shortcomings of classical algorithms, and lights the
+                   way to a novel nonparametric quasi-Newton method, which is
+                   able to make more efficient use of available information at
+                   computational cost similar to its predecessors.",
+  month         =  "18~" # jun,
+  year          =  2012,
+  archivePrefix = "arXiv",
+  primaryClass  = "cs.NA",
+  eprint        = "1206.4602"
+}
