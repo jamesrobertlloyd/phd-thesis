@@ -339,13 +339,13 @@ Again we state a useful lemma.
 
 \begin{lemma}
   \label{lemma:copies-full-simple}
-  Let $X_{ij} = f({U}_i, {V}_{ij}) \ \as \ i,j \in \Nats$ where $f$ is measurable and ${V}_{ij} \independent {V}_{ij'} \, \forall \, j \neq j'$.
+  Let $X_{ij} = f({U}_i, {V}_{ij}) \ \as \ i,j \in \Nats$ where $f$ is measurable and ${V}_{ij}$ are $\iid$
   Suppose further that $X_{ij} = X_i \ \as$ for some collection of random variables $X_{i} \, \forall \, i,j \in \Nats$.
   Then there exists a measurable function $g$ such that $X_i = g({U}_i) \ \as$
 \end{lemma}
 
 \begin{proof}
-  For each $i$ and conditioned on $U_i$, ${X}_{ij} \independent {X}_{ij'} \, \forall \, j \neq j'$.
+  For each $i$ and conditioned on $U_i$, ${X}_{ij}$ are \iid
   Then by the conditional strong law of large numbers
   \[
     \frac{1}{n}\sum_{j \leq n} f(U_i, V_{ij}) \to \mathbb{E}(f(U_i, V_{ij})\given U_i) \,\, \as
