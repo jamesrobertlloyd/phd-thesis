@@ -148,33 +148,28 @@
 
 % Proof stuff
 \theoremstyle{plain}
-\newtheorem{theorem}{Theorem}[section]
-\newtheorem{lemma}{Lemma}
-\newtheorem{prop}[theorem]{Proposition}
-\newtheorem{proposition}{Proposition}
-
-\newtheorem{thm}{Theorem}%[section]
+\newtheorem{thm}{Theorem}[section]
 \newtheorem{lem}[thm]{Lemma}
-\newtheorem{cor}{Corollary}
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
 
 \theoremstyle{definition}
-\newtheorem{definition}[thm]{Definition}%[section]
+% \newtheorem{defn}{Definition}[section]
+\newtheorem{definition}{Definition}[section]
 \newtheorem{conj}{Conjecture}[section]
 \newtheorem{exmp}{Example}[section]
 \newtheorem{example}{Example}[section]
 \newtheorem{rem}[thm]{Remark}
 
 \theoremstyle{remark}
-%\newtheorem{rem}{Remark}
-\newtheorem{note}{Note}
-\newtheorem{case}{Case}
-
+\newtheorem*{note}{Note}
 
 \numberwithin{equation}{section}
 \numberwithin{thm}{section}
-\numberwithin{cor}{section}
-\numberwithin{lemma}{section}
-\numberwithin{proposition}{section}
+% \numberwithin{cor}{section}
+% \numberwithin{lemma}{section}
+% \numberwithin{proposition}{section}
 
 % Distributions
 
