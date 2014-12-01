@@ -26,7 +26,7 @@ The choice of parameter space is important because it indicates the targets of s
 We demonstrate that the weak assumption of an appropriate form of exchangeability can provide a natural parameter space.
 This form of exchangeability is appropriate when the order of the objects underlying a relational database (\eg users and movies in a database of ratings data) is arbitrary or unimportant.
 For example, the left hand side of figure~\ref{fig:exchangeable} shows the same network but with differently labeled nodes.
-If the labeling is unimportant, then any probabilistic model of such data should assign them the same probability.
+If the labelling is unimportant, then any probabilistic model of such data should assign them the same probability.
 
 \begin{figure}[ht]
 \centering
@@ -157,7 +157,7 @@ The functions $(F^{j,n})$ capture properties of entire relations whilst the $(U^
 
 \subsubsection{Example : Exchangeable networks}
 
-Consider modeling a single binary relation which indicates whether or not two nodes in a network are connected or not.
+Consider modelling a single binary relation which indicates whether or not two nodes in a network are connected or not.
 This data is typically represented in the form of an adjacency matrix $(X_{ij})$ where $X_{ij} = 1$ if and only if node $i$ is connected to node $j$.
 Theorem~\ref{thm:simple-database} states that if the distribution of $X$ is exchangeable then it can be arbitrarily well approximated by
 \begin{equation}
@@ -173,7 +173,7 @@ X_{ij} & \sim & \textrm{Bernoulli}(\sigma(W_{ij}))\label{eq:graphon}.
 \end{eqnarray}
 This is illustrated in figure~\ref{fig:graphon}; in this case $F$ can be interpreted as a blurred adjacency matrix.
 
-\footnotetext{Note that we occassionally omit the index sets of collections of random variables for reduce notational clutter. For example $(U_i)$ is short hand for $(U_i)_{i\in\Nats}$.}
+\footnotetext{Note that we occasionally omit the index sets of collections of random variables for reduce notational clutter. For example $(U_i)$ is short hand for $(U_i)_{i\in\Nats}$.}
 
 \begin{figure}[ht]
 \centering
@@ -250,7 +250,7 @@ It can be proven by writing down the definitions of Radon--Nikodym derivatives a
 
 \begin{lem}
   \label{lem:contractionrnd}
-  Suppose that two sequences of random variables $(X^n)$ and $(Y^n)$ are such that $X^n$ and $Y^n$ are mutually absolutely continous for all $n$, and the associated Radon--Nikodym derivatives converge uniformly to 1.
+  Suppose that two sequences of random variables $(X^n)$ and $(Y^n)$ are such that $X^n$ and $Y^n$ are mutually absolutely continuous for all $n$, and the associated Radon--Nikodym derivatives converge uniformly to 1.
   Then for any measurable $f$, $f(X^n)$ and $f(Y^n)$ are mutually absolutely continuous for all $n$ and the associated Radon--Nikodym derivatives converge uniformly to 1.
 \end{lem}
 
@@ -270,7 +270,7 @@ We can now state and prove the first main result of this chapter.
   \label{thm:simple-database}
   Let $(X^{r_j})_{j=1}^R$ be an exchangeable database.
   Then there exist some simple exchangeable databases $(X^{r_j,1})_{j=1}^R$ , $(X^{r_j,2})_{j=1}^R$ , \dots such that
-  $(\chi_m X^{r_j,n})_{j=1}^R$ and $(\chi_m X^{r_j})_{j=1}^R$ are mutually ansolutely continuous for all $m,n \in \Nats$ and the associated Radon--Nikodym derivatives converge uniformly to 1 as $n \to \infty$ for fixed $m$.
+  $(\chi_m X^{r_j,n})_{j=1}^R$ and $(\chi_m X^{r_j})_{j=1}^R$ are mutually absolutely continuous for all $m,n \in \Nats$ and the associated Radon--Nikodym derivatives converge uniformly to 1 as $n \to \infty$ for fixed $m$.
 \end{thm}
 
 \begin{proof}
@@ -278,7 +278,7 @@ We can now state and prove the first main result of this chapter.
   \[
     R_{\bi} = (X^{r_j}_{\rho_j(\bi)} : j = 1,\dots,R) \quad \forall \, \bi \in \Nats^d.
   \]
-  By the definition of an exchangeable database, this array is $\pi$ exchangeable where $\pi$ is as defined in the preceeding text.
+  By the definition of an exchangeable database, this array is $\pi$ exchangeable where $\pi$ is as defined in the preceding text.
   By proposition~\ref{thm:piex} there exists a sequence of measurable functions $(F^n)$ and collection of independent uniform random variables $U$ and $(U^t_i)$ such that $(\chi_m R_{\bi})$ and $(\chi_m F^n(U, U^{\pi_1}_{\bi_1}, \dots, U^{\pi_d}_{\bi_d}))$ are mutually absolutely continuous and the associated Radon--Nikodym derivates converge uniformly to 1 as $n \to \infty$ for all $m$.
   By lemma~\ref{lem:contractionrnd} we have the same convergence for the following subarrays
   \[

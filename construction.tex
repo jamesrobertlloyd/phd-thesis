@@ -209,7 +209,7 @@ We choose model evidence as our criterion, since it balances the fit and complex
 Conditioned on kernel parameters, the model evidence of a \gp{} can be computed analytically \citep[e.g.][]{Rasmussen2006-ml}.
 However, to evaluate the model evidence of an entire kernel family we must integrate over kernel parameters (after having also defined a prior distribution over them). 
 We approximate this intractable integral with the Bayesian information criterion \citep{Schwarz1978-wp} after first optimising to find the maximum-marginal-likelihood kernel parameters by conjugate gradient descent.
-For each optimized model, $M$, the Bayesian Information Criterion (BIC) is calculated as follows:
+For each optimised model, $M$, the Bayesian Information Criterion (BIC) is calculated as follows:
 \begin{equation}
 \textrm{BIC}(M) = -2 \log p(D\given M) + |M| \log n
 \end{equation}
@@ -231,8 +231,8 @@ Unfortunately, they suffer from the curse of dimensionality: it is very difficul
 Applying nonparametric methods in high-dimensional spaces can require imposing additional structure on the model.
 
 One such structure is additivity.
-Generalized additive models (GAM) assume the regression function is a transformed sum of functions defined on the individual dimensions: $\expect[f(\vx)] = g\inv(\sum_{d=1}^D f_d(x_d))$.
-These models have a limited compositional form, but one which is interpretable and often generalizes better than an analogous but unconstrained model.
+Generalised additive models (GAM) assume the regression function is a transformed sum of functions defined on the individual dimensions: $\expect[f(\vx)] = g\inv(\sum_{d=1}^D f_d(x_d))$.
+These models have a limited compositional form, but one which is interpretable and often generalises better than an analogous but unconstrained model.
 In our grammar, we can capture analogous structure through sums of base kernels along different dimensions.
 
 It is possible to add more flexibility to additive models by considering higher-order interactions between different dimensions. 
@@ -262,7 +262,7 @@ Similarly, \citet{Wilson2013-eq} introduce spectral mixture kernels which approx
 Both demonstrate, using Bochner's theorem \citep{Bochner1959-yk}, that these kernels can approximate any stationary covariance function.
 In chapter~\ref{ch:description} we introduce a new version of the periodic kernel for which $\cos(x-x')$ is a limiting form and hence we also attain this completeness property.
 
-\cite{Rasmussen2006-ml} devote 4 pages to manually constructing a composite kernel to model a time series of carbon dioxode concentrations.
+\cite{Rasmussen2006-ml} devote 4 pages to manually constructing a composite kernel to model a time series of carbon dioxide concentrations.
 When applied to this dataset our procedure chose a model similar to the one they constructed by hand.
 Other examples of papers whose main contribution is to manually construct and fit a composite \gp{} kernel are \cite{Klenske_undated-ys} and \cite{Lloyd2013-yn}.
 
@@ -393,7 +393,7 @@ The posterior and residuals of the learned kernel are shown in figure \ref{fig:s
  + \\
 \mb \includegraphics[width=\wagd,height=\hagd]{\ard/01-airline-months_resid}
 \end{tabular}
-\caption[Decomposition of the airline data.]{First row:  The airline dataset and posterior after a search of depth 10.  Subsequent rows: Additive decomposition of posterior into long-term smooth trend, yearly variation, and short-term deviations.  Due to the linear kernel, the marginal variance grows over time, making this a heteroskedastic model. 
+\caption[Decomposition of the airline data.]{First row:  The airline dataset and posterior after a search of depth 10.  Subsequent rows: Additive decomposition of posterior into long-term smooth trend, yearly variation, and short-term deviations.  Due to the linear kernel, the marginal variance grows over time, making this a heteroscedastic model.
 }
 \label{fig:airline_decomp}
 \end{centering}
@@ -408,7 +408,7 @@ In chapter~\ref{ch:description} we demonstrate that an expanded space of kernel 
 
 \begin{table}[ht!]
 \caption[Synthetic validation of kernel search.]{{\small
-Kernels chosen by our method on synthetic data generated using known kernel structures. $D$ denotes the dimension of the functions being modeled.  SNR indicates the signal-to-noise ratio. Dashes - indicate no structure.
+Kernels chosen by our method on synthetic data generated using known kernel structures. $D$ denotes the dimension of the functions being modelled.  SNR indicates the signal-to-noise ratio. Dashes - indicate no structure.
 }}
 \label{tbl:synthetic}
 \begin{center}
@@ -587,7 +587,7 @@ We now discuss more principled alternatives and the difficulties that remain bef
 In an exact and fully Bayesian approach we would put priors over the kernel parameters and compute the model evidence of the kernel families with all the parameters integrated out.
 Since the relevant equations of Bayes' rule are analytically intractable in this case we turn to approximate inference techniques.
 The majority of approximate inference methods taking a fully Bayesian approach to Gaussian process regression have focused on producing approximate samples from the posterior distribution \citep[e.g.][]{Murray2010-hv, Lloyd2012-sb, Snoek2012-ri} but have ignored the estimation of the model evidence.
-Variational Bayes and expectation propogation methods naturally produce an estimate or lower bound of model evidence and have been applied to Gaussian processes \citep[e.g.][]{Rasmussen2006-ml, Hensman2013-ox}.
+Variational Bayes and expectation propagation methods naturally produce an estimate or lower bound of model evidence and have been applied to Gaussian processes \citep[e.g.][]{Rasmussen2006-ml, Hensman2013-ox}.
 However, to the best of my knowledge, all existing techniques condition on kernel parameters which are then optimised which means we are still faced with the problem of appropriately penalising our optimisation of a growing number of kernel parameters.
 While there is a growing literature on generic and automatic methods for approximating model evidences \citep[e.g.][]{Skilling2006-ez, Gerrish_undated-zh, Feroz2013-dj} I am unaware of successful applications of these techniques to Gaussian processes with unknown kernel parameters.
 
@@ -600,7 +600,7 @@ We found that the conjugate gradients solver used within the kernel search algor
 Also, as data sets become increasingly large and computation and time constraints of algorithms become increasingly important it will often be irrational to run optimisers to completion since it may be more beneficial to spend computation on investigating other models \citep[e.g.][]{Swersky2014-aw}.
 
 A potential way forward is to imagine a more general version of the Laplace approximation.
-The Laplace approximation attempts to approximate the log-likehood with a quadratic; this can be achieved without exactly having found the mode simply by performing regression using a quadratic regression function.
+The Laplace approximation attempts to approximate the log-likelihood with a quadratic; this can be achieved without exactly having found the mode simply by performing regression using a quadratic regression function.
 This could be viewed as a simple version of Bayesian quadrature \citep[e.g.][]{Ghahramani2002-by, OHagan1991-wg} with potentially attractive computation time.
 A full analysis of this idea would also likely interact with recent reinterpretations of classic optimisation algorithms as approximate inference in probabilistic models \citep[e.g.][]{Hennig2012-wv}.
 

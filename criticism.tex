@@ -29,7 +29,7 @@ The advantage of this approach is that the discrepancy measure attaining the sup
 
 We demonstrate this approach to model criticism on toy data sets, restricted Boltzmann machines and deep belief networks trained on MNIST digits and Gaussian process \citep[e.g.][]{Rasmussen2006-ml} regression models trained on several time series.
 Our proposed method identifies discrepancies between the data and fitted models that would not be apparent from the predictive performance focused metrics one typically finds in a machine learning paper.
-It is our belief that more effort shoud be expended on attempting to falsify models fitted to data, using model criticism techniques or otherwise.
+It is our belief that more effort should be expended on attempting to falsify models fitted to data, using model criticism techniques or otherwise.
 Not only will this aid research in targeting areas for improvement but it should give greater confidence in any conclusions drawn from a model.
 
 \section{Model criticism}
@@ -64,7 +64,7 @@ A frequentist model is a class of probability distributions over data indexed by
 
 \subsection{Criticising estimated models or posterior distributions}
 
-A constrasting method of Bayesian model criticism is the calculation of posterior predictive $p$-values \citep[e.g.][]{Guttman1967-my, Rubin1984-tw} $p_\textrm{post}$ where the prior predictive distribution is replaced with the posterior predictive distribution ${Y \sim \int p(Y \given \theta, M)p(\theta \given Y^\textrm{obs}, M) \mathrm{d}\theta}$.
+A contrasting method of Bayesian model criticism is the calculation of posterior predictive $p$-values \citep[e.g.][]{Guttman1967-my, Rubin1984-tw} $p_\textrm{post}$ where the prior predictive distribution is replaced with the posterior predictive distribution ${Y \sim \int p(Y \given \theta, M)p(\theta \given Y^\textrm{obs}, M) \mathrm{d}\theta}$.
 The corresponding test for an analysis resulting in a point estimate of the parameters $\hat\theta$ would use the plug-in predictive distribution ${Y \sim p(Y \given \hat\theta, M)}$ to form the plug-in $p$-value $p_\textrm{plug}$.
 
 These $p$-values quantify how surprised one should be if, after performing inference having observed data $Y^\textrm{obs}$, one were to observe new data whose value of the statistic $T$ was equal to that of the original data.
@@ -78,7 +78,7 @@ Different forms of model criticism are appropriate in different contexts, but we
 For example, suppose one is fitting a nonparametric or otherwise very flexible model to data \eg a deep belief network.
 Classical $p$-values would assume a null hypothesis that the data could have been generated from some deep belief network.
 Since the space of all possible deep belief networks is very large it will be difficult to ever falsify this hypothesis.
-A more interesting null hypothesis to test in this example is whether or not our particular deep belief network can faithfully mimick the distribution it was trained on.
+A more interesting null hypothesis to test in this example is whether or not our particular deep belief network can faithfully mimic the distribution it was trained on.
 This is the null hypothesis of posterior or plug-in $p$-values.
 
 \section{Model criticism for \iid data using two sample tests}
@@ -246,7 +246,7 @@ We now use the kernel MMD two-sample test to investigate how faithfully RBMs and
 
 We trained an RBM with architecture $(784)\leftrightarrow(500)\leftrightarrow(10)$\footnotemark~using 15 epochs of persistent contrastive divergence PCD-15, a batch size of 20 and a learning rate of 0.1 (\ie we used the same settings as the code available at the deep learning tutorial \citep{deep-learning-tutorial}).
 \footnotetext{That is, 784 input pixels and 10 indicators of the class label are connected to 500 hidden neurons.}
-We generated 3000 independent samples from the learned generative model by initialising the network with a random training image and performing 1000 gibbs updates with the digit labels clamped\footnotemark~to generate each image (as in \eg \cite{Hinton2007-eo}).
+We generated 3000 independent samples from the learned generative model by initialising the network with a random training image and performing 1000 Gibbs updates with the digit labels clamped\footnotemark~to generate each image (as in \eg \cite{Hinton2007-eo}).
 \footnotetext{Without clamping the label neurons, the generative distribution is heavily biased towards certain digits.}
 
 The top left of figure~\ref{fig:digits} shows twenty random samples\footnotemark~from this model.
@@ -464,7 +464,7 @@ The discrepancy measures of \cite{Gelman1996-ez} compute statistics of data and 
 \citet{OHagan2003-bc} also proposes a method and selectively reviews techniques for model criticism that also take model parameters into account.
 
 In the spirit of scientific falsification \citep[e.g.][]{Popper2005-qq}, ideally all methods of assessing a model should be performed to gain confidence in any conclusions made.
-Of course, when performing multiple hypothesis tests care must be taken in the intrepretation of individual $p$-values.
+Of course, when performing multiple hypothesis tests care must be taken in the interpretation of individual $p$-values.
 
 \section{Conclusions}
 
@@ -473,9 +473,9 @@ In contrast to other methods for model criticism, the test analytically maximise
 We demonstrated how this method of model criticism can be applied to neural networks and Gaussian process regression and demonstrated the ways in which these models were misrepresenting the data they were trained on.
 
 We have demonstrated how kernel MMD two sample tests can be applied to model criticism, but they can be applied to any aspect of statistical modelling where two sample tests are appropriate.
-This includes for example, Geweke's tests of markov chain posterior sampler validity \citep{Geweke2004-yx} and tests of markov chain convergence \citep[e.g.][]{Cowles1996-qy}.
+This includes for example, Geweke's tests of Markov chain posterior sampler validity \citep{Geweke2004-yx} and tests of Markov chain convergence \citep[e.g.][]{Cowles1996-qy}.
 
-The two sample tests proposed in this paper naturally apply to \iid data and models, but model criticism techniques should of course apply to models with other symmetries (\eg exchangeable data, logitudinal data / time series, graphs, functions any many others).
+The two sample tests proposed in this paper naturally apply to \iid data and models, but model criticism techniques should of course apply to models with other symmetries (\eg exchangeable data, longitudinal data / time series, graphs, functions any many others).
 We have demonstrated an adaptation of the kernel MMD test to regression models
 However, it is unclear whether maximum mean discrepancy measures can be naturally extended to all of these classes; investigating such extensions would be a profitable area for future study.
 
