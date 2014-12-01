@@ -164,7 +164,7 @@ We consider fitting a normal distribution to this data by maximum likelihood.
 \includegraphics[width=0.29\columnwidth]{\criticismfigsdir/newcomb_hist}
 \includegraphics[width=0.32\columnwidth]{\criticismfigsdir/newcomb_witness_1}
 \includegraphics[width=0.32\columnwidth]{\criticismfigsdir/newcomb_witness_2}
-\caption{
+\caption[Speed of light data and witness functions.]{
 Left: Histogram of Simon Newcomb's speed of light measurements.
 Middle: Histogram together with density estimate (red solid line) and MMD witness function (green dashed line).
 Right: Histogram together with improved density estimate and witness function.
@@ -211,7 +211,7 @@ While we can see that one cluster is different from the rest, it is difficult to
 \includegraphics[width=0.3\columnwidth]{\criticismfigsdir/high_mog_pca}
 \hspace{0.1\columnwidth}
 \includegraphics[width=0.31\columnwidth]{\criticismfigsdir/high_mog_witness}
-\caption{
+\caption[PCA projection of cluster data and witness function.]{
 Left: PCA projection of synthetic high dimensional cluster data (green circles) and projection of samples from fitted model (red circles).
 Right: Witness function of MMD two sample test. The erroneously fit cluster is clearly identified.
 }
@@ -267,7 +267,7 @@ A priori the answer to this question is almost certainly no, but it is not immed
 \\
 \includegraphics[width=0.48\columnwidth]{\criticismfigsdir/many_rbm_cond_witness_peaks}
 \includegraphics[width=0.48\columnwidth]{\criticismfigsdir/dbn_ft_cond_witness_peaks}
-\caption{
+\caption[A variety of digit samples from RBMs and DBNs and troughs and peaks of witness functions.]{
 Top left: Random samples from an RBM.
 Top right: Troughs of the witness function for the RBM (digits that are over-represented by the model).
 Middle left: Troughs of the witness function for samples from 1500 RBMs.
@@ -297,7 +297,7 @@ The usefulness of the test comes into play for more borderline situations demons
     \includegraphics[width=0.4\columnwidth]{\criticismfigsdir/rbm_0_witness}
   \end{tabular}
   \end{center}
-  \caption{Top: PCA projection of MNIST digits (green circles) and sample from a trained RBM (red crosses). These are certainly not from the same distribution. Left: Same as top plot but applied to the zero digit class conditional distribution. Right: Estimated witness function for left plot.}
+  \caption[PCA projections of MNIST digits and RBM samples and corresponding witness function.]{Top: PCA projection of MNIST digits (green circles) and sample from a trained RBM (red crosses). These are certainly not from the same distribution. Left: Same as top plot but applied to the zero digit class conditional distribution. Right: Estimated witness function for left plot.}
   \label{fig:criticism:rbm_pca}
 \end{figure}
 
@@ -383,7 +383,7 @@ Births         & \bf{0.00} & \bf{0.02} & \bf{0.00} & 0.12 \\
 Wages          & \bf{0.00} & \bf{0.01} & \bf{0.01} & \bf{0.00} \\
 \hline
 \end{tabular}
-\caption{Two sample test $p$-values applied to 13 time series and 4 regression algorithms.
+\caption[Two sample test $p$-values applied to 13 time series and 4 regression algorithms.]{Two sample test $p$-values applied to 13 time series and 4 regression algorithms.
 Bold values indicate a positive discovery using a Benjamini--Hochberg procedure with a false discovery rate of 0.05 for each model construction method.}
 \label{table:ABCD-p-values}
 \end{table}
@@ -400,7 +400,7 @@ Similar conclusions can be drawn about the gas production data and witness funct
 \includegraphics[width=0.22\columnwidth]{\criticismfigsdir/solar-witness}
 \includegraphics[width=0.22\columnwidth]{\criticismfigsdir/gas-data}
 \includegraphics[width=0.22\columnwidth]{\criticismfigsdir/gas-witness}
-\caption{
+\caption[Fits and witness functions of Gaussian processes with SE kernels.]{
 From left to right. Solar data with SE posterior. Witness function of SE fit to solar. Gas production data with SE posterior. Witness function of SE fit to gas production.
 }
 \label{fig:SE-witness}
@@ -423,7 +423,7 @@ Indeed, the data appears to have a strict lower bound which is inconsistent with
 \includegraphics[width=0.22\columnwidth]{\criticismfigsdir/unemployment-witness}
 \includegraphics[width=0.22\columnwidth]{\criticismfigsdir/internet-data}
 \includegraphics[width=0.22\columnwidth]{\criticismfigsdir/internet-witness}
-\caption{
+\caption[Fits and witness functions of Gaussian processes with kernels built by ABCD.]{
 From left to right. Unemployment data with ABCD posterior. Witness function of ABCD fit to unemployment. Internet data with ABCD posterior. Witness function of ABCD fit to Internet.
 }
 \label{fig:ABCD-witness}

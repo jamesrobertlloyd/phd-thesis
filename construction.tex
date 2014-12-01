@@ -80,7 +80,7 @@ I prefer the term exponentiated quadratic and recommend others to use it in futu
   {\small Linear (\kLin)} & {\small linear \newline functions} 
 & {\small Rational- \newline quadratic(\kRQ)} & {\small multi-scale \newline smoothness}
 \end{tabularx}
-\caption{
+\caption[Samples of Gaussian processes with differnet kernels.]{
 Left and third columns: base kernels $k(\cdot,0)$.  Second and fourth columns: samples from a GP from each kernel.
 The x-axis has the same range on all plots.}
 \label{fig:basic_kernels}
@@ -122,7 +122,7 @@ We therefore define our base kernel families to be one dimensional where we indi
   {\small $\kSE_1 + \kSE_2$} & {\small $f_1(x_1)$ $+$ $f_2(x_2)$}
 & {\small $\kSE_1 \times \kSE_2$} & {\small $f(x_1, x_2)$}
 \end{tabularx}
-\caption{ Examples of structures expressible by
+\caption[Samples of Gaussian processes with compositionally constructed kernels.]{Examples of structures expressible by
   composite kernels.  
   Left column and third columns: composite kernels $k(\cdot,0)$.
   Plots have the same meaning as in figure \ref{fig:basic_kernels}.}
@@ -317,7 +317,7 @@ Since this dataset was analysed in detail by \citet{Rasmussen2006-ml}, we can co
 \includegraphics[width=\wmg]{\constructionfigsdir/decomposition/11-Feb-v4-03-mauna2003-s_max_level_1/03-mauna2003-s_all_small}
 \includegraphics[width=\wmg]{\constructionfigsdir/decomposition/11-Feb-v4-03-mauna2003-s_max_level_2/03-mauna2003-s_all_small}
 \end{tabular}
-\caption{Posterior mean and variance for different depths of kernel search.  The dashed line marks the extent of the dataset.  In the first column, the function is only modelled as a locally smooth function, and the extrapolation is poor.  Next, a periodic component is added, and the extrapolation improves.  At depth 3, the kernel can capture most of the relevant structure, and is able to extrapolate reasonably.
+\caption[Improving model fit and extrapolations of the kernel search algorithm.]{Posterior mean and variance for different depths of kernel search.  The dashed line marks the extent of the dataset.  In the first column, the function is only modelled as a locally smooth function, and the extrapolation is poor.  Next, a periodic component is added, and the extrapolation improves.  At depth 3, the kernel can capture most of the relevant structure, and is able to extrapolate reasonably.
 }
 \label{fig:mauna_grow}
 \end{figure}
@@ -335,7 +335,7 @@ Since this dataset was analysed in detail by \citet{Rasmussen2006-ml}, we can co
 \mbm \includegraphics[width=\wmgd,height=\hmgd]{\mdrd/03-mauna2003-s_3} \\ + \\
 \mbm \includegraphics[width=\wmgd,height=\hmgd]{\mdrd/03-mauna2003-s_resid}
 \end{tabular}
-\caption{First row: The posterior on the Mauna Loa dataset, after a search of depth 10.  Subsequent rows show the automatic decomposition of the time series.  The decompositions shows long-term, yearly periodic, medium-term anomaly components, and residuals, respectively.  In the third row, the scale has been changed in order to clearly show the yearly periodic structure.}
+\caption[Decomposition of the Mauna Loa dataset.]{First row: The posterior on the Mauna Loa dataset, after a search of depth 10.  Subsequent rows show the automatic decomposition of the time series.  The decompositions shows long-term, yearly periodic, medium-term anomaly components, and residuals, respectively.  In the third row, the scale has been changed in order to clearly show the yearly periodic structure.}
 \label{fig:mauna_decomp}
 \end{centering}
 \end{figure}
@@ -368,7 +368,7 @@ Finally, we analysed annual solar irradiation data from 1610 to 2011 \citep{Lean
 \mbs \includegraphics[width=\wsd,height=\hsd]{\srd/02-solar-s_all} \\
 \mbs \includegraphics[width=\wsd,height=\hsd]{\srd/02-solar-s_resid}
 \end{tabular}
-\caption{Full posterior and residuals on the solar irradiance dataset.}
+\caption[Posterior and residuals on the solar irradiance data.]{Full posterior and residuals on the solar irradiance dataset.}
 \label{fig:solar_decomp}
 \end{centering}
 \end{figure}
@@ -393,7 +393,7 @@ The posterior and residuals of the learned kernel are shown in figure \ref{fig:s
  + \\
 \mb \includegraphics[width=\wagd,height=\hagd]{\ard/01-airline-months_resid}
 \end{tabular}
-\caption{First row:  The airline dataset and posterior after a search of depth 10.  Subsequent rows: Additive decomposition of posterior into long-term smooth trend, yearly variation, and short-term deviations.  Due to the linear kernel, the marginal variance grows over time, making this a heteroskedastic model. 
+\caption[Decomposition of the airline dataset.]{First row:  The airline dataset and posterior after a search of depth 10.  Subsequent rows: Additive decomposition of posterior into long-term smooth trend, yearly variation, and short-term deviations.  Due to the linear kernel, the marginal variance grows over time, making this a heteroskedastic model. 
 }
 \label{fig:airline_decomp}
 \end{centering}
@@ -407,7 +407,7 @@ In chapter~\ref{ch:description} we demonstrate that an expanded space of kernel 
 \label{sec:synthetic}
 
 \begin{table}[ht!]
-\caption{{\small
+\caption[Synthetic validation of kernel search.]{{\small
 Kernels chosen by our method on synthetic data generated using known kernel structures. $D$ denotes the dimension of the functions being modeled.  SNR indicates the signal-to-noise ratio. Dashes - indicate no structure.
 }}
 \label{tbl:synthetic}
@@ -485,7 +485,7 @@ In addition to the qualitative evaluation above, we investigated quantitatively 
 \begin{tabular}{c}
 \hspace{-0.0cm} \includegraphics[width=0.8\columnwidth]{\constructionfigsdir/extrapolation_curves/01-airline-s-ex-curve_hint.pdf}
 \end{tabular}
-\caption{Extrapolation performance on the airline dataset.  We plot test-set MSE as a function of the fraction of the dataset used for training. 
+\caption[Extrapolation performance on the airline dataset.]{Extrapolation performance on the airline dataset.  We plot test-set MSE as a function of the fraction of the dataset used for training. 
 }
 \label{fig:extrapolation}
 \end{figure}
@@ -519,7 +519,7 @@ Results are presented in tables \ref{tbl:Regression Mean Squared Error} and \ref
 Our method outperformed the next-best method in each test, although not substantially.
 
 \begin{table}[ht]
-\caption{{\small
+\caption[MSE comparison of kernel search and related algorithms.]{{\small
 Comparison of multidimensional regression performance in terms of cross validated mean squared error. Bold results are not significantly different from the best-performing method in each experiment, in a paired t-test with a $p$-value of 5\%.
 }}
 \label{tbl:Regression Mean Squared Error}
@@ -538,7 +538,7 @@ Kernel search & $\mathbf{0.044}$ & $\mathbf{0.087}$ & $\mathbf{0.315}$ & $\mathb
 \end{table}
 
 \begin{table}[ht]
-\caption{{\small
+\caption[Likelihood comparison of kernel search and related algorithms.]{{\small
 Comparison of multidimensional regression performance in terms of cross validated negative log likelihood. Bold results are not significantly different from the best-performing method in each experiment, in a paired t-test with a $p$-value of 5\%.
 }}
 \label{tbl:Regression Negative Log Likelihood}

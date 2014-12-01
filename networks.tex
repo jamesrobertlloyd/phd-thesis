@@ -52,7 +52,7 @@ In this chapter, we model this function explicitly using a nonparametric distrib
  \begin{center}
     \input{\networksfigsdir/fig_graphon.tex}
   \end{center}
- \caption{\emph{Left:} Any exchangeable random graph with vertex set $\Nats$ and edges ${E=(\darray_{ij})_{i,j\in\Nats}}$ can be represented
+ \caption[Illustration of Aldous--Hoover representation of a network.]{\emph{Left:} Any exchangeable random graph with vertex set $\Nats$ and edges ${E=(\darray_{ij})_{i,j\in\Nats}}$ can be represented
    by a random function ${\Theta:[0,1]^2\rightarrow[0,1]}$. Given $\AHfunction$, a graph can be sampled by generating a uniform random 
    variable $\AHvar_i$ for each vertex $i$, and sampling edges as ${\darray_{ij}\sim\Bernoulli(\AHfunction(\AHvar_i,\AHvar_j))}$.
    \emph{Middle:} A heat map of an example function $\AHfunction$.
@@ -361,7 +361,7 @@ This correspondence allows us to succinctly summarize many of the models in the 
     %\textcolor{red}{Random function model} 
 %\bottomrule
 \end{tabular}
-\caption{
+\caption[Summary of models of arrays cast into Aldous--Hoover form.]{
 Summary of models classified by equation for $W_{ij}$, equivalent kernel $\kernel$ in GP representation and domain of latent variables $(U_i), (V_j)$.
 $\Lambda$ is a matrix $\phi$ is some mapping into a feature space and $\mathbb{I}_A$ is the indicator function of the event $A>0$.
 $\kernel$ represents any kernel function, $\delta$ the identity kernel function, $L$ the simple dot product kernel function and $L^k$ is the dot product kernel applied only to the $k$th components of its arguments.
@@ -632,7 +632,7 @@ The adjacency matrix has been sorted by the values of the approximate MAP $(U_i)
   \centering
   \input{\networksfigsdir/fig_interactome.tex}
   \vspace{-0.5cm}
-  \caption{Protein interactome data. 
+  \caption[Unsorted and sorted protein interactome and visualisation of model fit.]{Protein interactome data. 
     \emph{Left:} Interactome network. 
     \emph{Middle:} Sorted adjacency matrix. The network exhibits stochastic equivalence 
     (visible as block structure in the matrix) and homophily (concentration of points around the diagonal). 
@@ -680,7 +680,7 @@ A pair of hub nodes are also revealed as demonstrated in figure~\ref{fig:network
     };
   \end{scope}
 \end{tikzpicture}
-  \caption{Sparsely connected nodes in the protein interactome with some transitivity (triangles).}
+  \caption[Sparsely connected nodes in the protein interactome.]{Sparsely connected nodes in the protein interactome with some transitivity (triangles).}
   \label{fig:networks:sparse}
 \end{figure}
 
@@ -741,7 +741,7 @@ Similarly, the sorted high school social network adjacency matrix in figure~\ref
   \centering
   \includegraphics[width=0.45\textwidth]{\networksfigsdir/nips_unsorted}
   \includegraphics[width=0.45\textwidth]{\networksfigsdir/nips_sorted}
-  \caption{NIPS coauthorship data. 
+  \caption[Unsorted and sorted NIPS coauthorship adjacency matrices.]{NIPS coauthorship data. 
     \emph{Left:} Unsored adjacency matrix. 
     \emph{Middle:} Sorted adjacency matrix.
   }
@@ -752,7 +752,7 @@ Similarly, the sorted high school social network adjacency matrix in figure~\ref
   \centering
   \includegraphics[width=0.45\textwidth]{\networksfigsdir/highschool_unsorted}
   \includegraphics[width=0.45\textwidth]{\networksfigsdir/highschool_sorted}
-  \caption{Highschool social network. 
+  \caption[Unsorted and sorted highschool social network adjacency matrices.]{Highschool social network. 
     \emph{Left:} Unsored adjacency matrix. 
     \emph{Middle:} Sorted adjacency matrix.
   }

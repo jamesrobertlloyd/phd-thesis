@@ -53,7 +53,7 @@ This was performed for both temperature and load data using the spreadsheets \te
   \begin{center}
     \input{figures/gefcom/load.tex}
   \end{center}
-  \caption{Left: Raw data at zone 10, showing a large discontinuity. Right: Raw data at zone 9, showing atypical load dynamics.}
+  \caption[Examples of unusual load dynamics,]{Left: Raw data at zone 10, showing a large discontinuity. Right: Raw data at zone 9, showing atypical load dynamics.}
   \label{fig:load}
 \end{figure}
 
@@ -80,7 +80,7 @@ Depending on how the test data was split (into the 25\% test and 75\% validation
   \begin{center}
     \input{figures/gefcom/temp_pred.tex}
   \end{center}
-  \caption{Raw data at temperature station 1 (after removing mean and scaling to have unit standard deviation) (black solid). Historic average of smoothed temperatures (blue dashed thick). Current and predicted smoothed temperatures (green dotted thick) and final temperature predictions (red dashed).}
+  \caption[Modelling of temperature data.]{Raw data at temperature station 1 (after removing mean and scaling to have unit standard deviation) (black solid). Historic average of smoothed temperatures (blue dashed thick). Current and predicted smoothed temperatures (green dotted thick) and final temperature predictions (red dashed).}
   \label{fig:temp_pred}
 \end{figure}
 
@@ -129,7 +129,7 @@ Given the time constraints of this competition I did not investigate the tempera
   \begin{center}
     \input{figures/gefcom/load_temp.tex}
   \end{center}
-  \caption{Raw data at load zone 1 (after removing mean and scaling to have unit standard deviation) (blue solid) and raw data at temperature station 9 (after removing mean and scaling to have unit standard deviation) (green dashed).}
+  \caption[Load data and corresponding temperature data.]{Raw data at load zone 1 (after removing mean and scaling to have unit standard deviation) (blue solid) and raw data at temperature station 9 (after removing mean and scaling to have unit standard deviation) (green dashed).}
   \label{fig:load_temp}
 \end{figure}
 
@@ -210,7 +210,7 @@ Comparing the two plots we can see that the deviations of the prediction from th
   \begin{center}
     \input{figures/gefcom/load_pred.tex}
   \end{center}
-  \caption{Left: Raw data (after scaling and translation) (black solid) and Gaussian process predictions (red dashed) for zone 1. Right: Corresponding temperature time series used for prediction. Notice that the peak in temperature corresponds to a trough in the load predictions \ie the model has predicted a negative correlation between temperatures and loads.}
+  \caption[Load interpolation using Gaussian processes and corresponding temperature data.]{Left: Raw data (after scaling and translation) (black solid) and Gaussian process predictions (red dashed) for zone 1. Right: Corresponding temperature time series used for prediction. Notice that the peak in temperature corresponds to a trough in the load predictions \ie the model has predicted a negative correlation between temperatures and loads.}
   \label{fig:load_pred}
 \end{figure}
 
@@ -328,7 +328,7 @@ Not including the annual periodicity may result in poor extrapolations when look
 \includegraphics[width=0.23\columnwidth]{\gefcomfigsdir/station1contigsubset_2}
 \includegraphics[width=0.23\columnwidth]{\gefcomfigsdir/station1contigsubset_3}
 \includegraphics[width=0.23\columnwidth]{\gefcomfigsdir/station1contigsubset_4}
-\caption[Model constructed for contiguous subset of temperature data]{
+\caption[Model constructed for contiguous subset of temperature data.]{
 Model constructed for contiguous subset of temperature data. From left to right: Constant offset, daily periodicity and smooth functions.
 }
 \label{fig:gefcom:contig}
