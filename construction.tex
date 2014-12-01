@@ -80,7 +80,7 @@ I prefer the term exponentiated quadratic and recommend others to use it in futu
   {\small Linear (\kLin)} & {\small linear \newline functions} 
 & {\small Rational- \newline quadratic(\kRQ)} & {\small multi-scale \newline smoothness}
 \end{tabularx}
-\caption[Samples of Gaussian processes with differnet kernels.]{
+\caption[Samples from Gaussian processes with differnet kernels.]{
 Left and third columns: base kernels $k(\cdot,0)$.  Second and fourth columns: samples from a GP from each kernel.
 The x-axis has the same range on all plots.}
 \label{fig:basic_kernels}
@@ -122,7 +122,7 @@ We therefore define our base kernel families to be one dimensional where we indi
   {\small $\kSE_1 + \kSE_2$} & {\small $f_1(x_1)$ $+$ $f_2(x_2)$}
 & {\small $\kSE_1 \times \kSE_2$} & {\small $f(x_1, x_2)$}
 \end{tabularx}
-\caption[Samples of Gaussian processes with compositionally constructed kernels.]{Examples of structures expressible by
+\caption[Samples from Gaussian processes with compositionally constructed kernels.]{Examples of structures expressible by
   composite kernels.  
   Left column and third columns: composite kernels $k(\cdot,0)$.
   Plots have the same meaning as in figure \ref{fig:basic_kernels}.}
@@ -335,7 +335,7 @@ Since this dataset was analysed in detail by \citet{Rasmussen2006-ml}, we can co
 \mbm \includegraphics[width=\wmgd,height=\hmgd]{\mdrd/03-mauna2003-s_3} \\ + \\
 \mbm \includegraphics[width=\wmgd,height=\hmgd]{\mdrd/03-mauna2003-s_resid}
 \end{tabular}
-\caption[Decomposition of the Mauna Loa dataset.]{First row: The posterior on the Mauna Loa dataset, after a search of depth 10.  Subsequent rows show the automatic decomposition of the time series.  The decompositions shows long-term, yearly periodic, medium-term anomaly components, and residuals, respectively.  In the third row, the scale has been changed in order to clearly show the yearly periodic structure.}
+\caption[Decomposition of the Mauna Loa data.]{First row: The posterior on the Mauna Loa dataset, after a search of depth 10.  Subsequent rows show the automatic decomposition of the time series.  The decompositions shows long-term, yearly periodic, medium-term anomaly components, and residuals, respectively.  In the third row, the scale has been changed in order to clearly show the yearly periodic structure.}
 \label{fig:mauna_decomp}
 \end{centering}
 \end{figure}
@@ -393,7 +393,7 @@ The posterior and residuals of the learned kernel are shown in figure \ref{fig:s
  + \\
 \mb \includegraphics[width=\wagd,height=\hagd]{\ard/01-airline-months_resid}
 \end{tabular}
-\caption[Decomposition of the airline dataset.]{First row:  The airline dataset and posterior after a search of depth 10.  Subsequent rows: Additive decomposition of posterior into long-term smooth trend, yearly variation, and short-term deviations.  Due to the linear kernel, the marginal variance grows over time, making this a heteroskedastic model. 
+\caption[Decomposition of the airline data.]{First row:  The airline dataset and posterior after a search of depth 10.  Subsequent rows: Additive decomposition of posterior into long-term smooth trend, yearly variation, and short-term deviations.  Due to the linear kernel, the marginal variance grows over time, making this a heteroskedastic model. 
 }
 \label{fig:airline_decomp}
 \end{centering}
