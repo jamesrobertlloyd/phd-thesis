@@ -1,4 +1,5 @@
 % Paths to figure and table directories.
+
 \newcommand{\introfigsdir}{figures/intro}
 \newcommand{\constructionfigsdir}{figures/construction}
 \newcommand{\descriptionfigsdir}{figures/description}
@@ -11,9 +12,9 @@
 
 \usepackage{booktabs}
 \usepackage{tabularx}
+\renewcommand{\tabularxcolumn}[1]{>{\arraybackslash}m{#1}}
 \usepackage{multirow}
 \usepackage{datetime}
-\renewcommand{\tabularxcolumn}[1]{>{\arraybackslash}m{#1}}
 \usepackage{relsize}
 \usepackage{graphicx}
 \usepackage{amsmath,amssymb,textcomp}
@@ -145,11 +146,74 @@
 
 % Math
 
-\def\graphspace{\mathbf{G}}
+% Proof stuff
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}
+\newtheorem{prop}[theorem]{Proposition}
+\newtheorem{proposition}{Proposition}
+
+\newtheorem{thm}{Theorem}%[section]
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[thm]{Definition}%[section]
+\newtheorem{conj}{Conjecture}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{example}{Example}[section]
+\newtheorem{rem}[thm]{Remark}
+
+\theoremstyle{remark}
+%\newtheorem{rem}{Remark}
+\newtheorem{note}{Note}
+\newtheorem{case}{Case}
+
+
+\numberwithin{equation}{section}
+\numberwithin{thm}{section}
+\numberwithin{cor}{section}
+\numberwithin{lemma}{section}
+\numberwithin{proposition}{section}
+
+% Distributions
+
 \def\Uniform{\mbox{\rm Uniform}}
 \def\Bernoulli{\mbox{\rm Bernoulli}}
+\newcommand{\Normal}{\mathcal{N}}
+
+% Standard probability functions
+
+\newcommand{\Law}{\mathcal{L}}
+\newcommand{\cov}{\operatorname{cov}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\expect}{\mathbb{E}}
+\newcommand{\expectargs}[2]{\mathbb{E}_{#1} \left[ {#2} \right]}
+\newcommand{\var}{\mathbb{V}}
+\newcommand{\varianceargs}[2]{\mathbb{V}_{#1} \left[ {#2} \right]}
+\newcommand{\covargs}[2]{\Cov \left[ {#1}, {#2} \right]}
+\newcommand{\variance}{\mathbb{V}}
+
+% Manners in which things are related
+
 \def\simiid{\sim_{\mbox{\tiny iid}}}
 \def\eqdist{\stackrel{\mbox{\tiny d}}{=}}
+\newcommand{\eqd}{\overset{\,_{\!d}}{=}}
+\newcommand{\as}{\textrm{a.s.}}
+\newcommand{\defn}[1]{\emph{#1}}
+\def\[#1\]{\begin{align}#1\end{align}}
+\newcommand{\defas}{:=}
+
+% Standard spaces
+
+\newcommand{\NonNegInts}{\mathbb{Z}_+}
+\newcommand{\Nats}{\mathbb{N}}
+\newcommand{\Rationals}{\mathbb{Q}}
+\newcommand{\Reals}{\mathbb{R}}
+
+% Aldous Hoover specific
+
+\def\graphspace{\mathbf{G}}
 \def\ahfunction{\theta}       
 \def\AHfunction{\Theta}           % A-H random function
 \def\AHvar{U}                     % A-H uniform variables
@@ -168,21 +232,6 @@
 \def\rgraph{G}
 \def\SGinf{\mathbb{S}_{\infty}}
 
-\newcommand{\eqd}{\overset{\,_{\!d}}{=}}
-\newcommand{\defn}[1]{\emph{#1}}
-
-\newcommand{\Law}{\mathcal{L}}
-
-\newcommand{\NonNegInts}{\mathbb{Z}_+}
-\newcommand{\Nats}{\mathbb{N}}
-\newcommand{\Rationals}{\mathbb{Q}}
-\newcommand{\Reals}{\mathbb{R}}
-
-\newcommand{\as}{\textrm{a.s.}}
-
-\def\[#1\]{\begin{align}#1\end{align}}
-\newcommand{\defas}{:=}
-
 \newcommand{\kernel}{\kappa}
 \newcommand{\scalefactor}{s}
 \newcommand{\lengthscale}{\ell}
@@ -195,6 +244,8 @@
 
 \newcommand{\CompOrder}{\mathcal{O}}
 
+% Kernel search specific
+
 %\newcommand{\gp}{{\acro{gp}}}
 \let\oldemptyset\emptyset
 \newcommand{\kSig}{\boldsymbol\sigma}
@@ -203,7 +254,6 @@
 \def\baseker{{\cal B}}
 \def\numWinners{k}
 
-\newcommand{\Normal}{\mathcal{N}}
 \newcommand{\N}[3]{\mathcal{N}\!\left(#1|#2,#3\right)}
 \newcommand{\Nt}[2]{\mathcal{N}\!\left(#1,#2\right)}
 \newcommand{\bN}[3]{\mathcal{N}\big(#1|#2,#3\big)}
@@ -224,14 +274,6 @@
 \newcommand{\asdf}{$^{\textnormal{th}}$}
 
 \newcommand{\binarysum}{\sum_{\bf{x} \in \{0,1\}^D}}
-\newcommand{\expect}{\mathbb{E}}
-\newcommand{\expectargs}[2]{\mathbb{E}_{#1} \left[ {#2} \right]}
-\newcommand{\var}{\mathbb{V}}
-\newcommand{\varianceargs}[2]{\mathbb{V}_{#1} \left[ {#2} \right]}
-\newcommand{\cov}{\operatorname{cov}}
-\newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\covargs}[2]{\Cov \left[ {#1}, {#2} \right]}
-\newcommand{\variance}{\mathbb{V}}
 \newcommand{\vecop}[1]{\operatorname{vec} \left( {#1} \right)}
 
 \newcommand{\covarianceargs}[2]{\Cov_{#1} \left[ {#2} \right]}
@@ -347,34 +389,6 @@
 
 \newcommand{\kerntimes}{ \! \times \!}
 \newcommand{\kernplus}{ \, + \,}
-
-% Proof stuff
-\theoremstyle{plain}
-\newtheorem{theorem}{Theorem}[section]
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{prop}[theorem]{Proposition}
-\newtheorem{proposition}{Proposition}
-
-\newtheorem{thm}{Theorem}%[section]
-\newtheorem{lem}[thm]{Lemma}
-\newtheorem{cor}{Corollary}
-
-\theoremstyle{definition}
-\newtheorem{definition}[thm]{Definition}%[section]
-\newtheorem{conj}{Conjecture}[section]
-\newtheorem{exmp}{Example}[section]
-\newtheorem{example}{Example}[section]
-\newtheorem{rem}[thm]{Remark}
-
-\theoremstyle{remark}
-%\newtheorem{rem}{Remark}
-\newtheorem{note}{Note}
-\newtheorem{case}{Case}
-
-
-\numberwithin{equation}{section}
-\numberwithin{thm}{section}
-\numberwithin{cor}{section}
 
 \def\SE{\acro{SE}}
 \def\Per{\acro{Per}}
