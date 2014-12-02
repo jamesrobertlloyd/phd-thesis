@@ -54,7 +54,7 @@ In this chapter, we model this function explicitly using a nonparametric distrib
   \end{center}
  \caption[Illustration of Aldous--Hoover representation of a network.]{\emph{Left:} Any exchangeable random graph with vertex set $\Nats$ and edges ${E=(\darray_{ij})_{i,j\in\Nats}}$ can be represented
    by a random function ${\Theta:[0,1]^2\rightarrow[0,1]}$. Given $\AHfunction$, a graph can be sampled by generating a uniform random 
-   variable $\AHvar_i$ for each vertex $i$, and sampling edges as ${\darray_{ij}\sim\Bernoulli(\AHfunction(\AHvar_i,\AHvar_j))}$.
+   variable $\AHvar_i$ for each vertex $i$, and sampling edges as ${\darray_{ij}\probgets\Bernoulli(\AHfunction(\AHvar_i,\AHvar_j))}$.
    \emph{Middle:} A heat map of an example function $\AHfunction$.
    \emph{Right:} A ${100\times 100}$ symmetric adjacency matrix sampled from $\AHfunction$.
    Only unordered index pairs $\darray_{ij}$ are sampled in the symmetric case. Rows and columns are ordered
@@ -143,7 +143,7 @@ Each variable $\AHvar_i$ is associated with a vertex, each variable $\AHvar_{ij}
 The representation \eqref{eq:ah:graphon:case} is equivalent to the sampling scheme
 \begin{equation}
   \label{eq:W:graph}
-  \AHvar_1,\AHvar_2,\dots\simiid\Uniform[0,1]\qquad\text{and}\qquad X_{i,j}\sim\Bernoulli(\AHfunction(\AHvar_i,\AHvar_j))\;,
+  \AHvar_1,\AHvar_2,\dots\probgetsiid\Uniform[0,1]\qquad\text{and}\qquad X_{i,j}\probgets\Bernoulli(\AHfunction(\AHvar_i,\AHvar_j))\;,
 \end{equation}
 which is illustrated in Fig.~\ref{fig:W:graph}. If the graph is undirected, edges are sampled only for unordered index pairs as $\AHvar_{\lbrace ij\rbrace}$,
 and it is sufficient to consider symmetric functions $\AHfunction$.
@@ -209,9 +209,9 @@ We assume the following generative model:
 \begin{equation}
   \label{eq:model}
   \begin{split}
-    \AHfunction\; &\sim\; \gp{}(0,\kernel) \\
-    \AHvar_{1},\AHvar_{2},\ldots\; &\simiid\; \Uniform[0,1] \\
-    \darray_{ij}\; &\sim\; \likelihood[\,.\,|\AHfunction_{ij}] \;.
+    \AHfunction\; &\probgets\; \gp{}(0,\kernel) \\
+    \AHvar_{1},\AHvar_{2},\ldots\; &\probgetsiid\; \Uniform[0,1] \\
+    \darray_{ij}\; &\probgets\; \likelihood[\,.\,|\AHfunction_{ij}] \;.
   \end{split}
 \end{equation}
 Additionally, the kernel may depend on parameters, which we denote by $\covhyppar$.

@@ -198,6 +198,22 @@
 \newcommand{\defn}[1]{\emph{#1}}
 \def\[#1\]{\begin{align}#1\end{align}}
 \newcommand{\defas}{:=}
+% \usepackage{mdsymbol}
+% \newcommand{\probget}{\leftwavearrow}
+\makeatletter
+\providecommand{\leftsquigarrow}{%
+  \mathrel{\mathpalette\reflect@squig\relax}%
+}
+\newcommand{\reflect@squig}[2]{%
+  \reflectbox{$\m@th#1\rightsquigarrow$}%
+}
+\makeatother
+\newcommand{\probgets}{\ \leftsquigarrow\ }
+\newcommand{\deterministicgets}{\ \gets\ }
+\def\probgetsiid{\overset{\mbox{\tiny iid}}{\probgets}}
+% \usepackage{unicode-math}
+% \newcommand{\probget}{\leadsto}
+% \newcommand{\probget}{\ \mathrel{<\!\!\!\sim}\ }
 
 % Standard spaces
 

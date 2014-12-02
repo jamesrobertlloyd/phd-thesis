@@ -166,10 +166,10 @@ Theorem~\ref{thm:simple-database} states that if the distribution of $X$ is exch
 where $F$ is a random measurable function and $(U_i)$ are \iid Uniform$[0,1]$ random variables\footnotemark{}.
 This special case was used previously by \cite{Hoff2007-ja,Roy2009-ge,Lloyd2012-sb} and in chapter~\ref{ch:networks} to inspire probabilistic models of networks of the form
 \begin{eqnarray}
-(\AHvar_i) & \simiid & \textrm{\eg Gaussian} \\
-F & \sim & \textrm{\eg Gaussian process, bilinear function}\ldots \\
-W_{ij} & := & F(\AHvar_i, \AHvar_j) \\
-X_{ij} & \sim & \textrm{Bernoulli}(\sigma(W_{ij}))\label{eq:graphon}.
+(\AHvar_i) & \probgetsiid & \textrm{\eg Gaussian} \\
+F & \probgets & \textrm{\eg Gaussian process, bilinear function}\ldots \\
+W_{ij} & \deterministicgets & F(\AHvar_i, \AHvar_j) \\
+X_{ij} & \probgets & \textrm{Bernoulli}(\sigma(W_{ij}))\label{eq:graphon}.
 \end{eqnarray}
 This is illustrated in figure~\ref{fig:graphon}; in this case $F$ can be interpreted as a blurred adjacency matrix.
 
@@ -432,10 +432,10 @@ For each relation $r_1,\dotsc,r_R$ we sample a random function $F^j$ from some d
 We denote the evaluation of these functions at the corresponding values of $(\AHvar_i^t)$ by $W^j$.
 $W^j$ can then be passed through a link function and distribution $L^j(\cdot)$ to model the observed value of the relation $r_j$.
 \[
-(\AHvar_i^t) & \simiid  \mathcal{U} \\
-F^j & \sim  \mathcal{F}^j \\
-W^j_{\bi} & \defas F^j(\AHvar^{s_j(1)}_{i_1},\cdots,\AHvar^{s_j(n)}_{i_n}) \\
-X^{r_j}_{\bi} & \sim  L^j(W^j_{\bi}) \qquad \text{independently across $j$ and $\bi$.}
+(\AHvar_i^t) & \probgetsiid  \mathcal{U} \\
+F^j & \probgets  \mathcal{F}^j \\
+W^j_{\bi} & \deterministicgets F^j(\AHvar^{s_j(1)}_{i_1},\cdots,\AHvar^{s_j(n)}_{i_n}) \\
+X^{r_j}_{\bi} & \probgets  L^j(W^j_{\bi}) \qquad \text{independently across $j$ and $\bi$.}
 \]
 
 \begin{rem}[dependence between functions]
@@ -449,22 +449,22 @@ In practice one may model the functions to be independent a priori at the risk o
 Consider a social network with side information on each user.
 The natural generative model for such data inspired by the simple database representation result is
 \[
-  U_i & \simiid \mathcal{U} \\
-  F & \sim \mathcal{F} \\
-  G & \sim \mathcal{G} \\
-  X_{ij} & \sim L^X(F(U_i, U_j)) \\
-  C_{i} & \sim L^C(G(U_i))
+  U_i & \probgetsiid \mathcal{U} \\
+  F & \probgets \mathcal{F} \\
+  G & \probgets \mathcal{G} \\
+  X_{ij} & \probgets L^X(F(U_i, U_j)) \\
+  C_{i} & \probgets L^C(G(U_i))
 \]
 but in the situation where $C$ is fully observed and the task is to predict missing entries of $X$ it may be unnecessary to learn a model of $C$.
 Indeed, if $C$ is assumed to be noiselessly observed, then we have $C_i = L^C(G(U_i))$ where $L^C(G(.))$ is a deterministic function.
 We can then choose to model $X$ as follows
 \[
   F'(U_i, U_j, C_i, C_j) & = F'(U_i, U_j, L^C(G(U_i)), L^C(G(U_j))) = F(U_i, U_j) \\
-  X_{ij} & \sim L^X(F'(U_i, U_j, C_i, C_j)).
+  X_{ij} & \probgets L^X(F'(U_i, U_j, C_i, C_j)).
 \]
 Furthermore we could choose $F'$ to not depend on $U_i, U_j$ resulting in the model
 \[
-  X_{ij} & \sim L^X(F''(C_i, C_j))
+  X_{ij} & \probgets L^X(F''(C_i, C_j))
 \]
 which is simply a regression model.
 
@@ -472,19 +472,19 @@ Indeed, the same logic can be applied to exchangeable sequences to derive more s
 Suppose that $(X_i, Y_i)$ is an exchangeable sequence.
 By de Finetti's theorem we can model this as
 \[
-  U_i & \sim \mathcal{U} \\
-  F & \sim \mathcal{F} \\
-  G & \sim \mathcal{G} \\
-  X_i & \sim L^X(F(U_i)) \\
-  Y_i & \sim L^Y(G(U_i))
+  U_i & \probgets \mathcal{U} \\
+  F & \probgets \mathcal{F} \\
+  G & \probgets \mathcal{G} \\
+  X_i & \probgets L^X(F(U_i)) \\
+  Y_i & \probgets L^Y(G(U_i))
 \]
 and by similar arguments to those above, if we were to assume that $X$ was noiselessly observed we could model $Y$ as
 \[
-  Y_i & \sim L^Y(G(X_i))
+  Y_i & \probgets L^Y(G(X_i))
 \]
 which is a standard regression model, or
 \[
-  Y_i & \sim L^Y(G(U_i, X_i))
+  Y_i & \probgets L^Y(G(U_i, X_i))
 \]
 which combines latent variable modelling and regression.
 An example of this hybrid model structure can be found in \cite{Wang2012-rc} but is surprisingly uncommon.
@@ -497,15 +497,15 @@ We write this as $X_{ij} = 1 \iff$ person $i$ is the mother of person $j$ and $Y
 Further let $M_i$ and $P_i$ be the maternal and paternal chromosomes of person $i$ respectively.
 A potential form of a model for this data is
 \[
-  U_i & \sim \mathcal{U} \\
-  F & \sim \mathcal{F} \\
-  G & \sim \mathcal{G} \\
-  H & \sim \mathcal{H} \\
-  J & \sim \mathcal{J} \\
-  X_{ij} & \sim L^X(F(U_i, U_j)) \\
-  Y_{ij} & \sim L^Y(G(U_i, U_j)) \\
-  M_i & \sim L^M(H(U_i)) \\
-  P_i & \sim L^P(J(U_i))
+  U_i & \probgets \mathcal{U} \\
+  F & \probgets \mathcal{F} \\
+  G & \probgets \mathcal{G} \\
+  H & \probgets \mathcal{H} \\
+  J & \probgets \mathcal{J} \\
+  X_{ij} & \probgets L^X(F(U_i, U_j)) \\
+  Y_{ij} & \probgets L^Y(G(U_i, U_j)) \\
+  M_i & \probgets L^M(H(U_i)) \\
+  P_i & \probgets L^P(J(U_i))
 \]
 Applying similar arguments to before we can replace $U_i$ by $U_i'  \defas (U_i, V_i, M_i, P_i)$ where we have split the latent variable $U_i$ into $U_i$ and $V_i$ for convenience.
 We could then define
@@ -542,13 +542,13 @@ Do the almost sure representation theorems, with their more detailed latent vari
 Consider the following dataset: we have a social network $X_{ij}$ and a ternary relation $Y_{ijk}$ that records if both person $i$ and person $j$ have been to location $k$.
 The simple array inspired representation of this data is of the form
 \[
-  X_{ij} & \sim L^X(F(U_i, U_j)) \\
-  Y_{ijk} & \sim L^Y(G(U_i, U_j, V_k))
+  X_{ij} & \probgets L^X(F(U_i, U_j)) \\
+  Y_{ijk} & \probgets L^Y(G(U_i, U_j, V_k))
 \]
 and in contrast the almost sure result would suggest a more elaborate model of the form
 \[
-  X_{ij} & \sim L^X(F(U_i, U_j, U_{\{ij\}})) \\
-  Y_{ijk} & \sim L^Y(G(U_i, U_j, U_{\{ij\}}, V_k, W_{ik}, W_{jk}, Z_{\{ij\}k})).
+  X_{ij} & \probgets L^X(F(U_i, U_j, U_{\{ij\}})) \\
+  Y_{ijk} & \probgets L^Y(G(U_i, U_j, U_{\{ij\}}, V_k, W_{ik}, W_{jk}, Z_{\{ij\}k})).
 \]
 Now suppose that $X$ included information on the type of relations in the social network, and that people $i$ and $j$ were in a romantic relationship.
 This knowledge would make it more likely for this couple to visit \eg restaurants typically frequented by couples.
