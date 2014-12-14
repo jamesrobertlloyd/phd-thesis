@@ -44,7 +44,7 @@ This thesis is concerned with the latter strategy.
 
 \footnotetext{
 Or one could attempt to revise statistical theory in such a way as to take account of computational and epistemic limitations.
-These lines of enquiry are potentially very fruitful but still in their infancy \citep[e.g.][]{Jordan2013-uv, Vehtari2012-oh}.
+These lines of enquiry are potentially very fruitful but still in their infancy \citep[e.g.][]{Jordan2013-uv}.
 }
 
 %Chapters~\ref{ch:networks}~and~\ref{ch:arrays} are concerned with the problem of specifying an appropriate mathematical form of probabilistic model based on symmetry arguments.
@@ -83,9 +83,9 @@ Let us consider a simple version of Bayesian linear regression.
 Suppose we have a data set $D$ consisting of real-valued (input, output) pairs denoted by $D = \{(x_i, y_i) \in \Reals^2 : i = 1,\dots,n\}$.
 A simple probabilistic linear regression model of this data could be of the form.
 \[
-  m &\sim \Normal(0,1) \label{eq:intro:prior_m} \\
-  \varepsilon_i &\simiid \Normal(0,\sigma_\varepsilon^2) \\
-  y_i &= m x_i + \varepsilon_i
+  m &\probgets \Normal(0,1) \label{eq:intro:prior_m} \\
+  \varepsilon_i &\probgetsiid \Normal(0,\sigma_\varepsilon^2) \\
+  y_i & \ \gets \  m x_i + \varepsilon_i
 \]
 \ie we believe our data will be linearly related by a line passing through the origin.
 
