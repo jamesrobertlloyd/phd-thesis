@@ -4,11 +4,11 @@
 \chapter{Statistical models for networks}
 \label{ch:networks}
 
-In much of the machine learning literature, data can naturally be viewed as a sequence or a list.
+In much of the machine learning literature to date, data can naturally be viewed as a sequence or a list.
 Of course, there are many other types and structures of data, such as those which are most naturally represented as a network.
 In this chapter we make the distinction between these types of data precise by symmetry arguments and invoke a theorem due to Aldous and Hoover to demonstrate appropriate forms of statistical model for these data types.
 In particular, we propose a nonparametric model of networks as a literal interpretation of this theorem.
-In chapter~\ref{ch:arrays} we extend these results to yet more data structures.
+In chapter~\ref{ch:arrays} we extend these results to more complex data structures.
 
 This chapter is based on joint work with Peter Orbanz, Zoubin Ghahramani and Daniel Roy \citep{Lloyd2012-sb}.
 
@@ -36,11 +36,7 @@ and the Gaussian process latent variable model (GPLVM) \citep[e.g.][]{Lawrence20
 
 \citet{Hoff2007-ja} first noted that latent variable models of relational data can be justified by an exchangeability or symmetry argument.
 Building on this connection, we consider nonparametric models for graphs and arrays.
-Results of
-Aldous \cite{Aldous1981-lg}, Hoover \cite{Hoover1979-br} and Kallenberg \cite{Kallenberg1992-gb} show
-that random arrays which satisfy an exchangeability property can be represented in terms of a random
-function. These representations have been further developed in discrete analysis for the
-special case of graphs \citep{Lovasz2006-hc}; this case is illustrated in Fig.~\ref{fig:W:graph}.
+Results of \citet{Aldous1981-lg}, \citet{Hoover1979-br} and \citet{Kallenberg1992-gb} show that random arrays which satisfy an exchangeability property can be represented in terms of a random function.
 The results can be regarded as a generalisation of de Finetti's theorem to array-valued data.
 Their implication for probabilistic modelling is that
 \emph{we can specify a probability distribution for an exchangeable random array by specifying a probability distribution on (measurable) functions}.
@@ -48,20 +44,21 @@ Their implication for probabilistic modelling is that
 % A prior must hence be nonparametric to have reasonably large support; a parametric prior concentrates on a finite-dimensional subset.
 In this chapter, we model this function explicitly using a nonparametric distribution over functions.
 
-\begin{figure}
- \begin{center}
-    \input{\networksfigsdir/fig_graphon.tex}
-  \end{center}
- \caption[Illustration of Aldous--Hoover representation of a network.]{\emph{Left:} Any exchangeable random graph with vertex set $\Nats$ and edges ${E=(\darray_{ij})_{i,j\in\Nats}}$ can be represented
-   by a random function ${\Theta:[0,1]^2\rightarrow[0,1]}$. Given $\AHfunction$, a graph can be sampled by generating a uniform random 
-   variable $\AHvar_i$ for each vertex $i$, and sampling edges as ${\darray_{ij}\probgets\Bernoulli(\AHfunction(\AHvar_i,\AHvar_j))}$.
-   \emph{Middle:} A heat map of an example function $\AHfunction$.
-   \emph{Right:} A ${100\times 100}$ symmetric adjacency matrix sampled from $\AHfunction$.
-   Only unordered index pairs $\darray_{ij}$ are sampled in the symmetric case. Rows and columns are ordered
-   by increasing value of $\AHvar_i$, rather than $i$.}
- \label{fig:W:graph}
-\end{figure}
+%\fTBD{Work out the appropriate time to reference this figure}
 
+%\begin{figure}
+% \begin{center}
+%    \input{\networksfigsdir/fig_graphon.tex}
+%  \end{center}
+% \caption[Illustration of Aldous--Hoover representation of a network.]{\emph{Left:} Any exchangeable random graph with vertex set $\Nats$ and edges ${E=(\darray_{ij})_{i,j\in\Nats}}$ can be represented
+%   by a random function ${\Theta:[0,1]^2\rightarrow[0,1]}$. Given $\AHfunction$, a graph can be sampled by generating a uniform random 
+%   variable $\AHvar_i$ for each vertex $i$, and sampling edges as ${\darray_{ij}\probgets\Bernoulli(\AHfunction(\AHvar_i,\AHvar_j))}$.
+%   \emph{Middle:} A heat map of an example function $\AHfunction$.
+%   \emph{Right:} A ${100\times 100}$ symmetric adjacency matrix sampled from $\AHfunction$.
+%   Only unordered index pairs $\darray_{ij}$ are sampled in the symmetric case. Rows and columns are ordered
+%   by increasing value of $\AHvar_i$, rather than $i$.}
+% \label{fig:W:graph}
+%\end{figure}
 
 \section{Background: Exchangeable sequences and arrays}
 \label{sec:background}
@@ -83,7 +80,7 @@ For the purposes of probabilistic modelling, this implies that our beliefs about
 
 \subsection{de Finetti-type representations for exchangeable arrays}
 
-To specify probabilistic models for graph- or array-valued data, it would be helpful to have a suitable counterpart to de Finetti's theorem applicable when the infinite random sequences in \eqref{eq:networks:exch} are substituted by infinite random arrays $\darray=(\darray_{ij})_{i,j\in\Nats}$.
+To specify probabilistic models for graph or array valued data, it would be helpful to have a suitable counterpart to de Finetti's theorem applicable when the infinite random sequences in \eqref{eq:networks:exch} are substituted by infinite random arrays $\darray=(\darray_{ij})_{i,j\in\Nats}$.
 For such data, the invariance assumption \eqref{eq:networks:exch} is typically too restrictive: In the graph case $\darray_{ij}\in\lbrace 0,1\rbrace$, for example, the probability of $\darray$ would then depend only on the proportion of present edges in the graph, but not on the graph structure.
 Instead, we define exchangeability of random 2-arrays in terms of the \emph{simultaneous} application of a permutation to rows and columns.
 More precisely:
@@ -91,7 +88,7 @@ More precisely:
   An array $\darray=(\darray_{ij})_{i,j\in\Nats}$ is called a \emph{jointly exchangeable array} if 
   \begin{equation}
     \label{eq:jointly:ex}
-    (\darray_{ij})\eqdist(\darray_{p(i)p(j)}) \qquad\text{ for every }pi\in\SGinf\;.
+    (\darray_{ij})\eqdist(\darray_{p(i)p(j)}) \quad \forall \, p\in\SGinf\;.
   \end{equation}
 \end{definition}
 
@@ -99,7 +96,21 @@ The assumption of exchangeability stated in~\eqref{eq:networks:exch} states that
 In contrast, array exchangeability is a statement of indifference to any ordering of the entities or objects that the data measures relations between.
 In fact, exchangeable sequences can be viewed in this way too, the difference is that data is measured at individual entities or objects rather than at pairs.
 
-Since this form of exchangeability weakens the hypothesis \eqref{eq:networks:exch} by demanding invariance only under a subset of all permutations of $\Nats^2$---those of the form $(i,j)\mapsto(p(i),p(j))$---we can no longer expect de Finetti's theorem to hold.
+This symmetry is illustrated in figure~\ref{fig:networks:exchangeable}.
+The two networks on the left hand side are equivalent except for the labelling of their nodes.
+This relabelling results in the different adjacency matrix representations of the same network shown on the right hand side of the figure.
+Array exchangeability states that any probabilistic model of these arrays should assign them the same probability.
+
+\begin{figure}[ht]
+\centering
+\begin{tabular}{c}
+\tiny \input{\arraysfigsdir/exchangeable}
+\end{tabular}
+\caption[Illustration of array exchangeability for network adjacency matrices.]{Left: Networks with equivalent structure but different node labels. Right: Corresponding adjacency matrix representations of these networks}
+\label{fig:networks:exchangeable}
+\end{figure}
+
+This symmetry weakens the hypothesis \eqref{eq:networks:exch} by demanding invariance only under a subset of all permutations of $\Nats^2$---those of the form $(i,j)\mapsto(p(i),p(j))$---we can no longer expect de Finetti's theorem to hold.
 The relevant generalisation of the de Finetti theorem to this case is the following:
 \begin{thm}[Aldous, Hoover]
   \label{theorem:ah}
@@ -110,11 +121,11 @@ The relevant generalisation of the de Finetti theorem to this case is the follow
   \end{equation}
 \end{thm}
 
-\begin{rem}%\fTBD{To be reviewed. I have made reference to simplicity}
-\label{rem:U_ij}
-Note that the symmetry of $(U_{\{ij\}})$ is not restrictive, in the sense that a representation where \eg $U_{ij}$ and $U_{ji}$ are \iid is trivially jointly exchangeable and thus can be given a representation of the above form.
+%\begin{rem}%\fTBD{To be reviewed. I have made reference to simplicity}
+%\label{rem:U_ij}
+%Note that the symmetry, $(U_{\{ij\}}) = (U_{\{ji\}})$ is not restrictive, in the sense that a representation where instead we had \eg $U_{ij}$ and $U_{ji}$ \iid is trivially jointly exchangeable and thus can be given a representation of the above form.
 %\NA{In section \ref{sec:simple} we describe a representation result which does not involve $(U_{ij})$ and thus the symmetry does not place a restriction on potential models of $\darray$.}\fTBD{DR: Need to think about this.}
-\end{rem}
+%\end{rem}
 %\begin{rem}[symmetric arrays]\label{remsym}
 %When modeling a symmetric array $X$, one can reduce the index set from ordered pairs $(i,j)$ to unordered pairs $\{i,j\}$.  
 %In this case, $(X_{\{i,j\}}) \eqdist (F(U_i,U_j,U_{\{i,j\}}))$ where $F(\cdot,\cdot,d)$ is symmetric for every fixed value $d$.
@@ -125,77 +136,79 @@ Such symmetry would be appropriate when modelling, e.g., a collaborative filteri
 A separately exchangeable array can be seen to correspond with an off-diagonal subarray of a jointly exchangeable array, and thus can be shown to have the representation $(X_{ij}) \eqdist (F(U_i,V_j,W_{ij}))$, where $(U_i)$, $(V_j)$ and $(W_{ij})_{i,j\in\Nats}$ are \iid $\Uniform[0,1]$ random variables.
 \end{rem}
 
-\subsection{Random graphs}
+%\subsection{Random graphs}
 
-The graph-valued data case $\dataspace=\lbrace{0,1}\rbrace$ is of particular interest. Here, the array $\darray$, interpreted as 
-an adjacency matrix, specifies a random simple graph with vertex set $\Nats$. If $\darray$ is symmetric, the graph is undirected. We call a 
-random graph exchangeable if $\darray$ satisfies \eqref{eq:jointly:ex}, \ie if its distribution is invariant under permutation of vertices.
+%The graph-valued data case $\dataspace=\lbrace{0,1}\rbrace$ is of particular interest. Here, the array $\darray$, interpreted as 
+%an adjacency matrix, specifies a random simple graph with vertex set $\Nats$. If $\darray$ is symmetric, the graph is undirected. We call a 
+%random graph exchangeable if $\darray$ satisfies \eqref{eq:jointly:ex}, \ie if its distribution is invariant under permutation of vertices.
 
-For graphs, the representation \eqref{eq:ah} simplifies further:
-For any exchangeable random graph, there is a random
-function ${\AHfunction:[0,1]^2\rightarrow[0,1]}$ such that
-\begin{equation}
-  \label{eq:ah:graphon:case}
+%For undirected graphs, the representation \eqref{eq:ah} simplifies further:
+%For any exchangeable undirected random graph, there is a random
+%function ${\AHfunction:[0,1]^2\rightarrow[0,1]}$, symmetric in its arguments, such that
+%\begin{equation}
+%  \label{eq:ah:graphon:case}
   %(\darray_{ij})\eqdist 
-  F(\AHvar_i,\AHvar_j,\AHvar_{ij}):=\mathbb{I}\lbrace \AHvar_{ij} < \AHfunction(\AHvar_i,\AHvar_j)\rbrace\;.
-\end{equation}
-Each variable $\AHvar_i$ is associated with a vertex, each variable $\AHvar_{ij}$ with an edge. 
-The representation \eqref{eq:ah:graphon:case} is equivalent to the sampling scheme
-\begin{equation}
-  \label{eq:W:graph}
-  \AHvar_1,\AHvar_2,\dots\probgetsiid\Uniform[0,1]\qquad\text{and}\qquad X_{i,j}\probgets\Bernoulli(\AHfunction(\AHvar_i,\AHvar_j))\;,
-\end{equation}
-which is illustrated in Fig.~\ref{fig:W:graph}. If the graph is undirected, edges are sampled only for unordered index pairs as $\AHvar_{\lbrace ij\rbrace}$,
-and it is sufficient to consider symmetric functions $\AHfunction$.
+%  F(\AHvar_i,\AHvar_j,\AHvar_{\{ij\}}):=\mathbb{I}\lbrace \AHvar_{\{ij\}} < \AHfunction(\AHvar_i,\AHvar_j)\rbrace\;.
+%\end{equation}
+%Each variable $\AHvar_i$ is associated with a vertex, each variable $\AHvar_{\{ij\}}$ with an edge. 
+%The representation \eqref{eq:ah:graphon:case} is equivalent to the sampling scheme
+%\begin{equation}
+%  \label{eq:W:graph}
+%  \AHvar_1,\AHvar_2,\dots\probgetsiid\Uniform[0,1]\qquad\text{and}\qquad X_{i,j}\probgets\Bernoulli(\AHfunction(\AHvar_i,\AHvar_j))\;,
+%\end{equation}
+%which is illustrated in figure~\ref{fig:W:graph}.
+%If the graph is undirected, edges are sampled only for unordered index pairs as $\AHvar_{\lbrace ij\rbrace}$,
+%and it is sufficient to consider symmetric functions $\AHfunction$.
 
-Recent work in discrete analysis shows that any measurable function $[0,1]^2\rightarrow[0,1]$ can be regarded as a (suitably defined) limit of adjacency matrices of graphs of increasing size \citep{Lovasz2006-hc}---intuitively speaking, 
-as the number of rows and columns increases, the
-matrix in Fig.~\ref{fig:W:graph} (right) converges to the heat map in Fig.~\ref{fig:W:graph} (middle).
-The figure also illustrates that convergence, and hence the parametrisation of the random graph distribution
-by $\AHfunction$, are only unique up to a reordering of rows and columns.
+%Recent work in discrete analysis shows that any measurable function $[0,1]^2\rightarrow[0,1]$ can be regarded as a (suitably defined) limit of adjacency matrices of graphs of increasing size \citep{Lovasz2006-hc}---intuitively speaking, 
+%as the number of rows and columns increases, the
+%matrix in figure~\ref{fig:W:graph} (right) converges to the heat map in figure~\ref{fig:W:graph} (middle).
+%The figure also illustrates that convergence, and hence the parametrisation of the random graph distribution
+%by $\AHfunction$, are only unique up to a reordering of rows and columns.
 
-In particular, if we fix an instance ${\AHfunction=\theta_0}$ and generate a random graph according to \eqref{eq:W:graph},
-we asymptotically recover the function $\theta_0$. This can be regarded as analogous to the law of large
-numbers, guaranteeing that a distribution can asymptotically be recovered from a sample.
+%In particular, if we fix an instance ${\AHfunction=\theta_0}$ and generate a random graph according to \eqref{eq:W:graph},
+%we asymptotically recover the function $\theta_0$. This can be regarded as analogous to the law of large
+%numbers, guaranteeing that a distribution can asymptotically be recovered from a sample.
 
 \subsection{The general case: $d$-arrays}
 
 Theorem \ref{theorem:ah} can in fact be stated in a more general setting than matrices, namely for random $d$-arrays, which are collections
-of random variables of the form ${\{\darray_{i_1\dots i_d} i_1,\dots,i_d\in\Nats\}}$. Thus, a sequence is a $1$-array, a matrix a $2$-array. A $d$-array 
+of random variables of the form $(\{\darray_{i_1\dots i_d} : i_1,\dots,i_d\in\Nats\})$.
+In particular, a sequence is a $1$-array, a matrix a $2$-array. A $d$-array 
 can be interpreted as an encoding of a relation between $d$-tuples.
-In this general case, Theorem \ref{theorem:ah} still holds, but the random function $F$ in \eqref{eq:ah} is in general more complex:
-In addition to the collections $\AHvar_{\lbrace i\rbrace}$ and $\AHvar_{\lbrace ij\rbrace}$ of uniform variables, the representation requires an additional
-collection $\AHvar_{\lbrace i_j\rbrace_{j\in I}}$ for any non-empty subset $I$ of the set $\lbrace 1,\ldots,d\rbrace$; \eg
-$\AHvar_{i_1 i_3 i_4}$ for $d\geq 4$ and ${I=\lbrace 1,3,4\rbrace}$. The representation \eqref{eq:ah} is then substituted by
+In this general case, theorem \ref{theorem:ah} still holds, but the random function $F$ in \eqref{eq:ah} is in general more complex:
+In addition to the collections $(\AHvar_{i})$ and $(\AHvar_{\lbrace ij\rbrace})$ of uniform variables, the representation requires all
+collections $(\AHvar_{\lbrace i_j\rbrace_{j\in I}})$ for any non-empty subset $I$ of the set $\lbrace 1,\ldots,d\rbrace$; \eg
+$\AHvar_{\{i_1 i_3 i_4\}}$ for $d\geq 4$ and ${I=\lbrace 1,3,4\rbrace}$. The representation \eqref{eq:ah} is then substituted by
 \begin{equation}
-  F:[0,1]^{2^d-1}\longrightarrow\dataspace\qquad\text{and}\qquad \darray_{i_1,\dots,i_d}=F(\AHvar_{I_1},\dots,\AHvar_{I_{(2^d-1)}})\;.
+  F:[0,1]^{2^d-1}\to\dataspace\qquad\text{and}\qquad \darray_{i_1,\dots,i_d}=F(\AHvar_{I_1},\dots,\AHvar_{I_{(2^d-1)}})\;.
 \end{equation}
 For $d=1$, we recover de Finetti's theorem. In particular, if $\dataspace=\mathbb{R}$, $F$ is given by the inverse cumulative distribution function
 of the random measure guaranteed by de Finetti's theorem.
-For a discussion of convergence properties of general arrays similar to those sketched above for random graphs, see  \citep{Aldous2010-iw}.
+%For a discussion of convergence properties of general arrays similar to those sketched above for random graphs, see \citep{Aldous2010-iw}.
 
 Since we do not explicitly consider the case $d>2$ in our experiments in this chapter, we restrict 
 our presentation throughout to the matrix-valued case for simplicity.
 We note, however, that the model and inference algorithms described in the following are applicable to general array-valued data.
-In chapter \ref{ch:arrays} we extend these representation results to arbitrary collections of arrays of arbitrary size.
+In chapter \ref{ch:arrays} we extend these representation results to arbitrary collections of arrays of arbitrary shape.
 
 \section{A nonparametric model of exchangeable arrays}
 \label{sec:networks:model}
 
-To define a probabilistic model for array- or graph-valued data, we start with Theorem \ref{theorem:ah}: A distribution on exchangeable matrices
+To define a probabilistic model for array or graph valued data, we start with theorem \ref{theorem:ah}: A distribution on exchangeable matrices
 can be specified by specifying a distribution on measurable functions $[0,1]^3\rightarrow\dataspace$. 
 We decompose the function $F$ into two functions 
 ${\AHfunction:[0,1]^2\rightarrow\latentspace}$ 
 and ${H:[0,1]\times\latentspace\rightarrow\dataspace}$ for a suitable space $\latentspace$ , such that
 \begin{equation}
   \label{eq:decomposition}
-  F(\AHvar_i,\AHvar_j,\AHvar_{ij})=H(\AHvar_{ij},\AHfunction(\AHvar_i,\AHvar_j))\;.
+  F(\AHvar_i,\AHvar_j,\AHvar_{\{ij\}})=H(\AHvar_{\{ij\}},\AHfunction(\AHvar_i,\AHvar_j))\;.
 \end{equation}
 Such a decomposition always exists---trivially, choose $\latentspace=[0,1]^2$.
 Equivalently, there is a conditional probability $P[\,.\,|\AHfunction]$ on $\dataspace$ such that
 \begin{equation}
   \label{eq:decomposition:sampling}
-  F(\AHvar_i,\AHvar_j,\AHvar_{ij})\sim P[\,.\,|\AHfunction(\AHvar_i,\AHvar_j)]\;.
+  F(\AHvar_i,\AHvar_j,\AHvar_{\{ij\}})\sim P[\,.\,|\AHfunction(\AHvar_i,\AHvar_j)]\;.
 \end{equation}
 Thus, \eqref{eq:decomposition} can be interpreted as a decomposition into a variable $\AHfunction$---the model parameter---which captures the structure of the underlying graph or array,
 and random noise represented by $H$ or $P$, respectively.
@@ -237,8 +250,7 @@ where $\logistic$ is the logistic function, and $\sigma_\dataspace^2$ is a noise
 
 The modelling assumptions we impose in addition to exchangeability are thus (i) that the function $\AHfunction$ is continuous---which implies measurability but is a stronger requirement---and (ii) that it is distributed according to a Gaussian process measure on $\cfspace_{\latentspace}$.
 Additionally, (iii) the specific choice of $P$ may or may not introduce an additional assumption.
-In the case of graphs, the only assumptions are (i) and (ii), 
-as any exchangeable graph can be represented by \eqref{eq:ah:graphon:case} or by the equivalent sampling scheme \eqref{eq:W:graph}.
+In the case of graphs, the only assumptions are (i) and (ii) \citep[e.g.][]{Diaconis2007-mi}.
 In the case of real-valued matrices, however, the model additionally assumes that the function 
 $H$ in \eqref{eq:decomposition} is of the form
 \begin{equation}
@@ -248,13 +260,28 @@ $H$ in \eqref{eq:decomposition} is of the form
 The Gaussian process prior favours smooth functions, which may result in interpretable latent space embeddings.
 Inference in Gaussian processes is a well-understood problem, and the choice of a Gaussian prior allows us to leverage the full range of inference methods available for these models.
 
+The model described in equation~\ref{eq:model} is illustrated for the case of graph data in figure~\ref{fig:networks:graphon}.
+This demonstrates that $\Theta$ can be interpreted as a blurred adjacency matrix.
+
+\begin{figure}[ht]
+\centering
+\begin{tabular}{c}
+\input{\arraysfigsdir/fig_graphon_wide}
+\end{tabular}
+\caption[Illustration of the Aldous--Hoover representation of a network.]{
+Illustration of a model for network data inspired by the Aldous--Hover representation theorem.
+The left shows a random sample of a binary network (represented by an adjacency matrix) generated by a model of the form given by equation~\eqref{eq:model}.
+}
+\label{fig:networks:graphon}
+\end{figure}
+
 \begin{rem}[Dense vs. sparse data]
   The methods described here address random matrices that are \emph{dense}, \ie as the size of a finite, observed $n\times n$ matrix increases,
   the number of non-zero entries (or the number of edges in a graph) grows as $O(n^2)$. Although the Aldous-Hoover theorem is sometimes invoked
   for data such as social networks, it should be kept in mind that network data is typically \emph{sparse}, with $O(n)$ non-vanishing entries.
-  Density is an immediate consequence of Theorem \ref{theorem:ah}: For graph data, for example, the asymptotic proportion of present edges is
+  Density is an immediate consequence of theorem \ref{theorem:ah}: For graph data, for example, the asymptotic proportion of present edges is
   ${p:=\int\AHfunction(x,y)dxdy}$, and the graph is hence either empty (for $p=0$) or dense (since
-  $O(pn^2)=O(n^2)$). Analogous representation theorems for sparse random graphs are to date an open problem in probability.
+  $O(pn^2)=O(n^2)$). Analogous representation theorems for sparse random graphs are to date an open problem in probability\fTBD{Cite the latest efforts here}.
 \end{rem}
 
 \section{Related work}
@@ -367,18 +394,18 @@ $\kernel$ represents any kernel function, $\delta$ the identity kernel function,
 \label{table:ModelComparison}
 \end{table}
 
-The above necessarily glosses over many details (\eg choice of priors, inference methods), but it is hoped that it reveals the structural similarities between many models in the literature.
-Also, we have included principal component analysis (PCA) as a linear counterpart to the non-linear GPLVM.
+Table~\ref{table:ModelComparison} necessarily glosses over many details (\eg choice of priors, inference methods), but it is hoped that it reveals the structural similarities between many models in the literature.
+Despite not often being viewed as a network model we have included principal component analysis (PCA) as a linear counterpart to the non-linear GPLVM.
 
 This table reveals that the majority of models included here model $\AHfunction$ as linear or bilinear (potentially kernelized).
-The Mondrian process \cite{Roy2009} is a notable exception since it models $\AHfunction$ as a piecewise constant random function which is fundamentally different from our approach of modelling $\AHfunction$ to be continuous.
+The Mondrian process \cite{Roy2009-ge} is a notable exception since it models $\AHfunction$ as a piecewise constant random function which is fundamentally different from our approach of modelling $\AHfunction$ to be continuous.
 For simplicity we have refrained from writing down the kernel corresponding to the Mondrian process based model; it could be described as an indicator function of the equivalence class induced by the Mondrian process.
 We also see that the ILA model is significantly more flexible in its specification of $\AHfunction$ than other models using discrete latent variables.
 Again, we refrain from writing down what would be a fairly complicated kernel function corresponding to this model.
 
-This table could be interpreted as revealing that our model is a small modification of other models that use latent variables in $\Reals^d$.
-However, we would argue that our work is a joint generalisation rather than a modification.
-Despite being more general, our model is arguably simpler and firmly rooted in the relevant theory (and achieves superior empirical performance as shown in section \ref{sec:experiments}).
+%This table could be interpreted as revealing that our model is a small modification of other models that use latent variables in $\Reals^d$.
+%However, we would argue that our work is a joint generalisation rather than a modification.
+%Despite being more general, our model is arguably simpler and firmly rooted in the relevant theory (and achieves good empirical performance as shown in section \ref{sec:experiments}).
 
 We note that the nonparametric Gaussian process prior on $\AHfunction$ in the random function models means that, if supported by the data, the posterior distribution of $\AHfunction$ could approximate any of the functions specified by other models.
 This is of course true of the other nonparametric models; particular priors will influence the rate at which different forms of $\AHfunction$ can be inferred.
@@ -390,7 +417,7 @@ In this section we describe Markov Chain Monte Carlo (MCMC) algorithms for gener
 
 \subsection{Latent space and kernel}
 \label{sec:Kernel}
-The random function representation in theorem \ref{theorem:ah} is not restricted to the use of uniform distributions for the variables $\AHvar_i$ and $\AHvar_{ij}$.
+The random function representation in theorem \ref{theorem:ah} is not restricted to the use of uniform distributions for the variables $(\AHvar_i)$.
 The uniform distributions arise in the proof of the theorem as generic distributions with which one can encode the information of other random variables via a measurable function.
 Therefore, the proof remains unchanged if one replaces the uniform distributions with any isomorphic probability distribution \ie any non-atomic
 probability measure on a Borel space.
@@ -403,32 +430,32 @@ Since we focus on undirected graphical data, we require the symmetry condition $
 \kernel(\inputpoints_1, \inputpoints_2) & = & \frac{1}{2}\big(\bar\kernel(\inputpoints_1, \inputpoints_2) + \bar\kernel(\inputpoints_1, \bar\inputpoints_2)\big) + \sigma^2I \quad \quad \textrm{(Symmetry + noise)} \\
 \bar\kernel(\inputpoints_1, \inputpoints_2) & = & \scalefactor^2\exp(-|\inputpoints_1 - \inputpoints_2|^2/(2\lengthscale^2)) \quad \quad \quad \quad \quad \textrm{(RBF kernel)}
 \end{eqnarray}
-where $\inputpoints_k = (\AHvar_{i_k}, \AHvar_{j_k})$, $\bar\inputpoints_k= (\AHvar_{j_k}, \AHvar_{i_k})$ and $\scalefactor, \lengthscale, \sigma$ represent a scale factor, length scale and noise respectively (see \citep[e.g.][]{Rasmussen2006-ml} for a discussion of kernel functions). We collectively denote the kernel parameters by $\covhyppar$.
+where $\inputpoints_k = (\AHvar_{i_k}, \AHvar_{j_k})$, $\bar\inputpoints_k= (\AHvar_{j_k}, \AHvar_{i_k})$ and $\scalefactor, \lengthscale, \sigma$ represent a scale factor, length scale and noise respectively (see \eg chapter~\ref{ch:construction}). We collectively denote the kernel parameters by $\covhyppar$.
 For undirected data one can model only the upper triangular part of the adjacency matrix.
 
 \subsection{Sampling without approximating the model}
 
 \newcommand{\numobs}{\mathrm O}
 \newcommand{\numnodes}{\mathrm N}
-In the simpler case of a real-valued array $\darray$, we construct an MCMC algorithm over the variables $(\AHvar,\covhyppar, \sigma_\darray)$ by repeatedly slice sampling \citep{Neal2003-zv} from the conditional distributions
+In the simpler case of a real-valued array $\darray$, we construct an MCMC algorithm over the variables $((\AHvar_i),\covhyppar, \sigma_\darray)$ by repeatedly slice sampling \citep{Neal2003-zv} from the conditional distributions
 \[
-\covhyppar_i \given \covhyppar_{-i}, \sigma_\darray, \AHvar, \darray
+\covhyppar_i \given \covhyppar_{-i}, \sigma_\darray, (\AHvar_i), \darray
 \qquad\quad
-\sigma_\darray \given \covhyppar, \AHvar, \darray
+\sigma_\darray \given \covhyppar, (\AHvar_i), \darray
 \qquad\quad \text{and} \qquad\quad
 \AHvar_j \given \AHvar_{-j}, \covhyppar, \sigma_\darray, \darray
 \]
 where $\sigma_\darray$ is the noise variance parameter used when modelling real valued data introduced in section \ref{sec:networks:model}.
-Let $\numnodes = |\AHvar_{\lbrace i\rbrace}|$ denote the number of rows in the observed array,
+Let $\numnodes = |(\AHvar_{i})|$ denote the number of rows in the observed array,
 let $\inputpoints$ be the set of all pairs $(\AHvar_i,\AHvar_j)$ for all observed relations $\darray_{ij}$, 
 let $\numobs = |\inputpoints|$ denote the number of observed relations,
 and 
-let $K$ represent the $\numobs \times \numobs$ kernel matrix between all points in $\inputpoints$. Changes to $\covhyppar$ affect every entry in the kernel matrix $K$ and so, naively, the computation of the Gaussian likelihood of $\darray$ takes $\CompOrder(\numobs^3)$ time.  Likewise, changes to $\AHvar$ also affect entries in $K$. Naively re-evaluating the Gaussian likelihood term again takes $\CompOrder(\numobs^3)$ time, and so, across all $\numnodes$ rows, we expend $\CompOrder(\numobs^3 \numnodes)$ time. Whether or not this can be improved by exploiting structure in the modifications, the cubic dependence on $\numobs$ seems unavoidable, and thus this naive algorithm is unusable for all but very small data sets. 
+let $K$ represent the $\numobs \times \numobs$ kernel matrix between all points in $\inputpoints$. Changes to $\covhyppar$ affect every entry in the kernel matrix $K$ and so, naively, the computation of the Gaussian likelihood of $\darray$ takes $\CompOrder(\numobs^3)$ time.  Likewise, changes to $(\AHvar_i)$ also affect entries in $K$. Naively re-evaluating the Gaussian likelihood term again takes $\CompOrder(\numobs^3)$ time, and so, across all $\numnodes$ rows, we expend $\CompOrder(\numobs^3 \numnodes)$ time. Whether or not this can be improved by exploiting structure in the modifications, the cubic dependence on $\numobs$ seems unavoidable, and thus this naive algorithm is unusable for all but very small data sets. 
 
 
 \subsection{A random subset-of-regressor approximation}
 
-In order to scale the method to much larger graphs, we applied a variation of a sparse approximation method known as Subsets-of-Regressors, or simply SoR \citep{Alex_J_Smola2001-ev,Wahba1999-bl,Silverman1985-ys} (See \citep{Quinonero-Candela2005-er} for an excellent survey of this and other sparse approximations).
+In order to scale the method to much larger graphs, we applied a variation of a sparse approximation method known as Subsets-of-Regressors, or simply SoR \citep{Alex_J_Smola2001-ev,Wahba1999-bl,Silverman1985-ys} (See \citet{Quinonero-Candela2005-er} for an excellent survey of this and other sparse approximations).
 The SoR approximation replaces the infinite dimensional GP with a finite dimensional approximation.
 Our approach is to treat both the inputs and outputs of the GP as latent variables.
 %, a random version of the SoR approximation appears to work very well, even with few pseudoinputs (see below).
@@ -447,7 +474,7 @@ The idea of the SoR approximation is to replace $\larray_{ij}$ with the posterio
 where $K_{\inputpoints\pseudopoints}$ is the kernel matrix between the latent embeddings $\inputpoints$ and the pseudoinputs $\pseudopoints$.  By considering random pseudoinputs, we construct an MCMC analogue of the techniques proposed in~\cite{Titsias2008-gp}.
 % in be seen to be doing a Bayesian version of sparse variational techniques proposed by Titsias and Lawrence \cite{Titsias2010}.
 
-Given this approximate model, the conditional distribution $\targets \given \AHvar, \pseudopoints, \covhyppar, (\sigma_\darray), \darray$ is amenable to elliptical slice sampling \citep{Murray2010-zu}, for both real valued and binary $\darray$. All other random parameters, including the $(U_i)$, can again be sampled from their full conditional distributions using slice sampling.  The sampling algorithms require that one computes expressions involving~\eqref{eqn:GPConditional}. As a result they cost at most $\CompOrder(k^3 \numobs)$.
+Given this approximate model, the conditional distribution $\targets \given (\AHvar_i), \pseudopoints, \covhyppar, (\sigma_\darray), \darray$ is amenable to elliptical slice sampling \citep{Murray2010-zu}, for both real valued and binary $\darray$. All other random parameters, including the $(U_i)$, can again be sampled from their full conditional distributions using slice sampling.  The sampling algorithms require that one computes expressions involving~\eqref{eqn:GPConditional}. As a result they cost at most $\CompOrder(k^3 \numobs)$.
 
 %These sampling algorithms now require that one recomputes at most $K_{\pseudopoints\pseudopoints}^{-1}$ (or more precisely the Cholesky decomposition) and $K_{\inputpoints\pseudopoints}^{-1}$.  As a result, they cost at most $\Theta(k^3 \numobs)$ time. 
 
@@ -634,7 +661,7 @@ The adjacency matrix has been sorted by the values of the approximate MAP $(U_i)
     \emph{Left:} Interactome network. 
     \emph{Middle:} Sorted adjacency matrix. The network exhibits stochastic equivalence 
     (visible as block structure in the matrix) and homophily (concentration of points around the diagonal). 
-    \emph{Right:} Maximum a posteriori estimate of the function $\AHfunction$, corresponding to the function in Fig.~\ref{fig:W:graph} (middle).
+    \emph{Right:} Maximum a posteriori estimate of the function $\AHfunction$, corresponding to the function in figure~\ref{fig:W:graph} (middle).
   }
   \label{fig:(R)GPLVM_Comparison}
 \end{figure}
