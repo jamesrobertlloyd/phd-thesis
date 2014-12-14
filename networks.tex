@@ -196,10 +196,11 @@ In chapter \ref{ch:arrays} we extend these representation results to arbitrary c
 \label{sec:networks:model}
 
 To define a probabilistic model for array or graph valued data, we start with theorem \ref{theorem:ah}: A distribution on exchangeable matrices
-can be specified by specifying a distribution on measurable functions $[0,1]^3\rightarrow\dataspace$. 
+can be specified by specifying a distribution on measurable functions $F : [0,1]^3\to\dataspace$.
+For simplicity we restrict attention to symmetric matrices $X_{ij} = X_{ji}$; in chapter~\ref{ch:arrays} we present different arguments for which asymmetry is more elegantly handled but arrive at the same form of model.
 We decompose the function $F$ into two functions 
 ${\AHfunction:[0,1]^2\rightarrow\latentspace}$ 
-and ${H:[0,1]\times\latentspace\rightarrow\dataspace}$ for a suitable space $\latentspace$ , such that
+and ${H:[0,1]\times\latentspace\rightarrow\dataspace}$ for a suitable space $\latentspace$, such that
 \begin{equation}
   \label{eq:decomposition}
   F(\AHvar_i,\AHvar_j,\AHvar_{\{ij\}})=H(\AHvar_{\{ij\}},\AHfunction(\AHvar_i,\AHvar_j))\;.
@@ -218,7 +219,7 @@ we set ${\latentspace = \Reals}$ and consider a zero-mean Gaussian process on
 $\cfspace_{\latentspace}:=\cfspace([0,1]^2,\latentspace)$, the space of continuous functions $[0,1]^2\rightarrow\latentspace$,
 with kernel function 
 ${\kernel:[0,1]^2\times[0,1]^2\rightarrow\latentspace}$.
-We assume the following generative model:
+We assume the following generative model\footnotemark:
 \begin{equation}
   \label{eq:model}
   \begin{split}
@@ -228,15 +229,16 @@ We assume the following generative model:
   \end{split}
 \end{equation}
 Additionally, the kernel may depend on parameters, which we denote by $\covhyppar$.
+Since we have assumed $X$ to be symmetric we can ignore the potentially unusual depedencies introduced by $U_{\{ij\}}$ \eg we can restrict the model to the upper triangle of $X$.
 
 The decomposition of $F$ introduces a natural set of latent variables $W_{ij}:=\AHfunction(\AHvar_i,\AHvar_j)$, conditioned on which the data is explained as $\darray_{ij}\sim\likelihood[\,.\,|\larray_{ij}]$. 
 The parameter space of the model is the infinite-dimensional space $\cfspace_{\latentspace}$.
 %Hence, the model is nonparametric.
 
-The choice of $P$ depends on the type of data considered, and we are here interested in two cases, graphs and 
+The choice of $P$ depends on the type of data considered, two common cases are graphs and 
 real-valued matrices.
 In either case, the model first generates a latent matrix $W=(W_{ij})$. 
-Depending on the type of data, observations are then generated as follows:
+Depending on the type of data, observations could then be generated as follows:
 \begin{center}
   \begin{tabular}{llll} 
     Observed data & Sample space & $P[\darray_{ij}\in\,.\,|\larray_{ij}]$  \\
@@ -250,11 +252,11 @@ where $\logistic$ is the logistic function, and $\sigma_\dataspace^2$ is a noise
 
 The modelling assumptions we impose in addition to exchangeability are thus (i) that the function $\AHfunction$ is continuous---which implies measurability but is a stronger requirement---and (ii) that it is distributed according to a Gaussian process measure on $\cfspace_{\latentspace}$.
 Additionally, (iii) the specific choice of $P$ may or may not introduce an additional assumption.
-In the case of graphs, the only assumptions are (i) and (ii) \citep[e.g.][]{Diaconis2007-mi}.
+In the case of graphs, the only assumptions are (i) and (ii), the Bernoulli likelihood can be shown to be general \citep[e.g.][]{Aldous2010-iw}.
 In the case of real-valued matrices, however, the model additionally assumes that the function 
 $H$ in \eqref{eq:decomposition} is of the form
 \begin{equation}
-  H(\AHvar_{ij},\AHfunction(\AHvar_i,\AHvar_j))\eqdist \AHfunction(\AHvar_i,\AHvar_j)+\varepsilon_{ij} \qquad\text{ where }\qquad \varepsilon_{ij}\sim\mbox{Normal}(0,\sigma)\;.
+  H(\AHvar_{\{ij\}},\AHfunction(\AHvar_i,\AHvar_j))\eqdist \AHfunction(\AHvar_i,\AHvar_j)+\varepsilon_{\{ij\}} \qquad\text{ where }\qquad \varepsilon_{\{ij\}}\sim\mbox{Normal}(0,\sigma)\;.
 \end{equation}
 
 The Gaussian process prior favours smooth functions, which may result in interpretable latent space embeddings.
@@ -661,7 +663,7 @@ The adjacency matrix has been sorted by the values of the approximate MAP $(U_i)
     \emph{Left:} Interactome network. 
     \emph{Middle:} Sorted adjacency matrix. The network exhibits stochastic equivalence 
     (visible as block structure in the matrix) and homophily (concentration of points around the diagonal). 
-    \emph{Right:} Maximum a posteriori estimate of the function $\AHfunction$, corresponding to the function in figure~\ref{fig:W:graph} (middle).
+    \emph{Right:} Maximum a posteriori estimate of the function $\AHfunction$, corresponding to the function in figure~\ref{fig:networks:graphon} (middle).
   }
   \label{fig:(R)GPLVM_Comparison}
 \end{figure}
@@ -734,7 +736,7 @@ The sorted adjacency matrix has revealed three blocks of nodes which we will ref
 Ignoring the top block, the left and right blocks are nearly bipartite.
 The top block is almost a clique and is much more strongly connected to the right block than the left.
 The degree distribution of the left and right blocks is also of interest; the variation is larger than expected by a block model (assuming that the probability of a link between different blocks is constant).
-A more detailed analysis is currently ongoing, but the structure found by this analysis can be shown to correspond with reality; for example, the proteins on the left are almost all ribosomal subunits.
+A more detailed analysis is currently ongoing, but the structure found by this analysis can be shown to correspond with reality; for example, the proteins on the left are almost all ribosomal subunits.\fTBD{Make sure you do this - leave many samplers going for a day each or something like that}
 
 \begin{figure}[ht]
   \centering
