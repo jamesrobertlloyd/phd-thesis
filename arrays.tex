@@ -4,7 +4,7 @@
 \chapter{Representing probability distributions of exchangeable databases and relational data}
 \label{ch:arrays}
 
-In chapter~\ref{ch:networks} we demonstrated how to characterise probability distributions over objects such as networks or user--item rating matrices.
+In chapter~\ref{ch:networks} we demonstrated how to characterise probability distributions over objects such as networks or user--item rating matrices (see remark~\ref{remsep}).
 The key properties that allowed us to characterise these distributions were symmetries in the data, or invariances to the way they are stored.
 For networks, we assumed that the ordering of the nodes contained no information.
 For user--item data we assumed that the order of both users and items were irrelevant to the meaning of the data.
@@ -163,7 +163,7 @@ Theorem~\ref{thm:simple-database} states that if the distribution of $X$ is exch
 \begin{equation}
 (F(\AHvar_i, \AHvar_j))
 \end{equation}
-where $F$ is a random measurable function and $(U_i)$ are \iid Uniform$[0,1]$ random variables\footnotemark{}.
+where $F$ is a random measurable function and $(U_i)$ are \iid Uniform$[0,1]$ random variables.%\footnotemark{}.
 This special case was used previously by \cite{Hoff2007-ja,Roy2009-ge,Lloyd2012-sb} and in chapter~\ref{ch:networks} to inspire probabilistic models of networks of the form
 \begin{eqnarray}
 (\AHvar_i) & \probgetsiid & \textrm{\eg Gaussian} \\
@@ -173,7 +173,7 @@ X_{ij} & \probgets & \textrm{Bernoulli}(\sigma(W_{ij}))\label{eq:graphon}.
 \end{eqnarray}
 This is illustrated in figure~\ref{fig:graphon}; in this case $F$ can be interpreted as a blurred adjacency matrix.
 
-\footnotetext{Note that we occasionally omit the index sets of collections of random variables for reduce notational clutter. For example $(U_i)$ is short hand for $(U_i)_{i\in\Nats}$.}
+%\footnotetext{Note that we occasionally omit the index sets of collections of random variables for reduce notational clutter. For example $(U_i)$ is short hand for $(U_i)_{i\in\Nats}$.}
 
 \begin{figure}[ht]
 \centering
@@ -255,7 +255,7 @@ It can be proven by writing down the definitions of Radon--Nikodym derivatives a
 \end{lem}
 
 We also build up some notation for a particular exchangeable database $(X^{r_j})_{j=1}^R$.
-Assume w.l.o.g.\ that the types are ordered (\eg type 1, type 2,\dots) and the types in each signature respect this ordering (\eg $s = (1,1,2,3,3,\dots)$).
+Assume w.l.o.g.\ that the types are ordered (\eg type 1, type 2,\dots) and the types in each signature are sorted accoridng to this ordering (\eg $s = (1,1,2,3,3,\dots)$).
 Define the multiplicity of a type $t$ in signature $s$ by the number of times the type appears in the signature, and denote this by $m_{t}^s$.
 Define the maximum multiplicity of a type $t$ in a database as $m_t = \max_j m_t^{s_j}$.
 Let $d = \sum_{t\in T} m_t$ be the sum of the maximum multiplicities.
@@ -272,6 +272,8 @@ We can now state and prove the first main result of this chapter.
   Then there exist some simple exchangeable databases $(X^{r_j,1})_{j=1}^R$ , $(X^{r_j,2})_{j=1}^R$ , \dots such that
   $(\chi_m X^{r_j,n})_{j=1}^R$ and $(\chi_m X^{r_j})_{j=1}^R$ are mutually absolutely continuous for all $m,n \in \Nats$ and the associated Radon--Nikodym derivatives converge uniformly to 1 as $n \to \infty$ for fixed $m$.
 \end{thm}
+
+\fTBD{Sort out the usage of $k$ and $i$}
 
 \begin{proof}
   We first embed all of the arrays representing the exchangeable database into one larger array:
@@ -303,7 +305,7 @@ We can now state and prove the first main result of this chapter.
 \subsection{Almost sure exchangeable database representation theorem}
 
 To prove an almost sure representation theorem for exchangeable databases we will require yet more notation; we follow Kallenberg except where we think changes may make it easier to understand.
-However, there is only so much we have been able to do to reduce the notational burden so we provide corollaries of the theorem after its statement and proof to demonstrate that behind the notation are some fairly intuitive concepts.
+There is only so much we have been able to do to reduce the notational burden so we provide corollaries of the theorem after its statement and proof to demonstrate that behind the notation are some fairly intuitive concepts.
 
 We define for each $k \in \Nats^d$ and $I \subset \{1,\ldots,d\}$ a set $k_I \subset \Nats$ by
 \begin{equation}
@@ -358,9 +360,9 @@ Again we state a useful lemma.
 
 \begin{thm}[almost sure functional representation for exchangeable databases]
   \label{thm:as-database}
-  A database $(X^{r_j})_{j=1}^R$ is exchangeable iff there exist measurable functions $f^j : [0,1]^{2^{d_j}} \to S_j$ and a $U$-array $\xi$ such that
+  A database $(X^{r_j})_{j=1}^R$ is exchangeable iff there exist measurable functions $f^j : [0,1]^{2^{d_j}} \to S_j$ and a $U$-array $\xi$ with index set $\prod_{J\in\pi} \Nats^{\leq |J|}$ such that
   \begin{equation}
-    X_{k^{s_j}}^{r_j} = f^j(\xi_{k_{\pi I}} : I \subset I_{s_j}) \ \as, \quad k \in \Nats^d, \ j \in \{1,\ldots,R\}.
+    X_{\rho_j(k)}^{r_j} = f^j(\xi_{k_{\pi I}} : I \subset I_{s_j}) \ \as, \quad k \in \Nats^d, \ j \in \{1,\ldots,R\}.
   \end{equation}
 \end{thm}
 
@@ -368,7 +370,7 @@ Again we state a useful lemma.
   It is simple to verify that this construction produces databases with the required symmetry properties so we need only show that such a construction is guaranteed to exist by exchangeability.
   We proceed as before by embedding all of the arrays into one larger array
   \[
-    R_{k} = (X^{r_j}_{\rho(k)} : j = 1,\dots,R) \quad \forall \, k \in \Nats^d
+    R_{k} = (X^{r_j}_{\rho_j(k)} : j = 1,\dots,R) \quad \forall \, k \in \Nats^d
   \]
   which is $\pi$ exchangeable and thus by proposition~\ref{prop:piexas} there exists a measurable $g$ and $U$-array $\xi$ with index set $\prod_{J\in\pi} \Nats^{\leq |J|}$ such that
   \[
@@ -377,11 +379,11 @@ Again we state a useful lemma.
   We then repeatedly apply lemma~\ref{lemma:copies-full-simple} to remove the redundancy of this representation.
   For example, for some $i \notin I_{s_j}$ we have that there exists some measurable $h^j$ such that
   \[
-    h^j(\xi_{k_{\pi I}} : I \subset \{1,\ldots,d\} \backslash i) = X^{r_j}_{\rho(k)} \ \as
+    h^j(\xi_{k_{\pi I}} : I \subset \{1,\ldots,d\} \backslash i) = X^{r_j}_{\rho_j(k)} \ \as
   \]
   After repeated application we will find that there exists measureable $f^j$ such that
   \[
-    f^j(\xi_{k_{\pi I}} : I \subset I_{s_j}) = X^{r_j}_{\rho(k)} \ \as
+    f^j(\xi_{k_{\pi I}} : I \subset I_{s_j}) = X^{r_j}_{\rho_j(k)} \ \as
   \]
   and we are done.
 \end{proof}
@@ -390,9 +392,9 @@ Again we state a useful lemma.
 
 \begin{cor}
   Consider an exchangeable database with one object type, one unary relationship, and one binary relationship; denote the binary relationship by the array $X=(X_{ij})_{i,j\in\Nats}$ and the unary relationship with the sequence $C=(C_i)_{i\in\Nats}$.
-   Then there exist measurable functions $(f, g)$ and a collection of \iid Uniform$[0,1]$ random variables $U, (\AHvar_{i})_{i\in\Nats}, (\AHvar_{\{i,j\}})_{i,j\in\Nats}$ such that
+   Then there exist measurable functions $(f, g)$ and a collection of \iid Uniform$[0,1]$ random variables $U, (\AHvar_{i})_{i\in\Nats}, (\AHvar_{\{ij\}})_{i,j\in\Nats}$ such that
    \[ 
-     X_{ij} & = f(U, \AHvar_{i},\AHvar_{j}, \AHvar_{\{i,j\}}), \qquad \text{for } i,j,n\in\Nats, \\
+     X_{ij} & = f(U, \AHvar_{i},\AHvar_{j}, \AHvar_{\{ij\}}), \qquad \text{for } i,j,n\in\Nats, \\
      C_i & = g(U, \AHvar_{i}), \qquad \text{for } i,n\in\Nats,
     \]
 almost surely.
@@ -402,9 +404,9 @@ This is the Aldous--Hoover representation for a jointly exchangeable array and t
 
 \begin{cor}
   Consider an exchangeable database with two object types, one binary relation between two objects of the first type and a binary relation between objects of different types;  denote the first relation by the array $X=(X_{ij})_{i,j\in\Nats}$ and the second by $Y=(Y_{ik})_{i,k\in\Nats}$.
-   Then there exists a pair of measurable functions $(f, g)$ and a collection of \iid Uniform$[0,1]$ random variables $U, (\AHvar_{i})_{i\in\Nats}, (\AHvaralt_{i})_{i\in\Nats}, (\AHvar_{\{i,j\}})_{i,j\in\Nats}, (W_{ij})_{i,j\in\Nats}$ such that
+   Then there exists a pair of measurable functions $(f, g)$ and a collection of \iid Uniform$[0,1]$ random variables $U, (\AHvar_{i})_{i\in\Nats}, (\AHvaralt_{i})_{i\in\Nats}, (\AHvar_{\{ij\}})_{i,j\in\Nats}, (W_{ij})_{i,j\in\Nats}$ such that
    \[ 
-     X_{ij} & = f(U,\AHvar_{i},\AHvar_{j},  \AHvar_{\{i,j\}}),  \qquad &\text{for } i,j\in\Nats, \\
+     X_{ij} & = f(U,\AHvar_{i},\AHvar_{j},  \AHvar_{\{ij\}}),  \qquad &\text{for } i,j\in\Nats, \\
      Y_{ik} & = g(U, \AHvar_{i}, \AHvaralt_{k}, W_{ik}), \qquad &\text{for } i,k\in\Nats,
     \]
 almost surely.
@@ -414,15 +416,15 @@ This is the Aldous--Hoover representation for a jointly exchangeable array and t
 
 \begin{cor}
   Consider an exchangeable database with two object types, one binary relation between two objects of the first type and a ternary relation between two objects of the first type and one of the second type;  denote the first relation by the array $X=(X_{ij})_{i,j\in\Nats}$ and the second by $Y=(Y_{ijk})_{i,j,k\in\Nats}$.
-   Then there exists a pair of measurable functions $(F, G)$ and a collection of \iid Uniform$[0,1]$ random variables $U, (\AHvar_{i})_{i\in\Nats}, (\AHvaralt_{i})_{i\in\Nats}, (\AHvar_{\{i,j\}})_{i,j\in\Nats}, (W_{i,j})_{i,j\in\Nats} (Z_{\{i,j\}k})_{i,j,k\in\Nats}$ such that
+   Then there exists a pair of measurable functions $(F, G)$ and a collection of \iid Uniform$[0,1]$ random variables $U, (\AHvar_{i})_{i\in\Nats}, (\AHvaralt_{i})_{i\in\Nats}, (\AHvar_{\{ij\}})_{i,j\in\Nats}, (W_{i,j})_{i,j\in\Nats} (Z_{\{ij\}k})_{i,j,k\in\Nats}$ such that
    \[ 
-     X_{ij} & = F(U,\AHvar_{i},\AHvar_{j},  \AHvar_{\{i,j\}}),  \qquad &\text{for } i,j\in\Nats, \\
-     Y_{ijk} & = G(U, \AHvar_{i}, U_j \AHvaralt_{k}, \AHvar_{\{i,j\}}, W_{ik}, W_{jk}, Z_{\{i,j\}k}), \qquad &\text{for } i,j,k\in\Nats,
+     X_{ij} & = F(U,\AHvar_{i},\AHvar_{j},  \AHvar_{\{ij\}}),  \qquad &\text{for } i,j\in\Nats, \\
+     Y_{ijk} & = G(U, \AHvar_{i}, U_j, \AHvaralt_{k}, \AHvar_{\{ij\}}, W_{ik}, W_{jk}, Z_{\{ij\}k}), \qquad &\text{for } i,j,k\in\Nats,
     \]
 almost surely.
 \end{cor}
 
-This is the Aldous--Hoover representation for a jointly exchangeable array and the Kallenberg representation of a $\pi$-exchangeable array at the same time, but again with shared uniform random variables.
+This is the Aldous--Hoover representation for a jointly exchangeable array and the Kallenberg representation of a $\pi$-exchangeable array, where $\pi = \{\{1,2\},3\}$, at the same time, but again with shared uniform random variables.
 
 \section{A generic statistical model template}
 
@@ -490,7 +492,7 @@ which combines latent variable modelling and regression.
 An example of this hybrid model structure can be found in \cite{Wang2012-rc} but is surprisingly uncommon.
 
 Now suppose we perfectly observe a binary relation; what can this tell us about modelling a related unary relation?
-We now demonstrate how we could reconstruct an example model presented in \cite{Friedman1999-mo}.
+We now demonstrate how we could (almost) reconstruct an example model presented in \cite{Friedman1999-mo}.
 They present a simple genetic model where one's maternal chromosome depends on one's mother's maternal and paternal chromosomes and similarly for one's paternal chromosome.
 In this example we have two binary relations, mother-of and father-of and two unary relations, maternal and paternal chromosomes.
 We write this as $X_{ij} = 1 \iff$ person $i$ is the mother of person $j$ and $Y_{ij} = 1 \iff$ person $i$ is the father of person $j$ and the array elements take the value 0 otherwise.
@@ -521,16 +523,16 @@ L^Y(G(U_i',U_j')) &=
     0 & \textrm{otherwise}  
   \end{cases}
 \end{align}
-Performing inference in this model we would then find that in the posterior $U_i = (M_j, P_j)$ where person $j$ is the mother of person $i$ and similarly for $V_i$.
-This would then allow the functions $H$ and $J$ to specify that the maternal chromosome of person $i$ depend probabilistically on the chromosomes of their mother and similarly for their paternal chromosome.
-We have therefore shown how this particular probabilistic relational model can be cast in the form guaranteed to exist by the theorems presented in this chapter.
-In principle, suitable prior distributions on the latent variables and functions could learn such a representation purely from data, although in this situation it is sensible to use prior knowledge.
+Loosely speaking, if we performed inference in this model we would then find that in the posterior $U_i = (M_j, P_j)$ where person $j$ is the mother of person $i$ and similarly for $V_i$\footnotemark{}.
+This would then allow the functions $H$ and $J$ to specify that the maternal chromosome of person $i$ depends probabilistically on the chromosomes of their mother and similarly for their paternal chromosome, recovering the structure of the probabilistic relational model.
 
 However, the alert reader will have noticed that the functions $L^X(F(.,.))$ and $L^Y(G(.,.))$ defined above are almost everywhere zero.
-This is exactly because the relations mother-of and father-of define sparse graphs with in-degrees of at most one.
+Indeed the event $U_i = (M_j, P_j)$ has measure zero and therefore cannot be said to be inferred without properly defining a suitable limiting process of valid inferences (see \eg \citet{Jaynes2003-jh} for many good examples where casual handling of measure zero events can lead to `paradoxes').
+The functions $L^X(F(.,.))$ and $L^Y(G(.,.))$ are almost everywhere zero exactly because the relations mother-of and father-of define sparse graphs with in-degrees of at most one.
 As remarked in chapter~\ref{ch:networks}, any not almost everywhere zero representing function will imply density when modelling a graph.
-The above exercise is certainly quite a contortion that is only clear when one knows the model one is aiming at.
-We repeat that general representation results for sparse graphs that can usefully imply model structures are still unknown.
+%The above exercise is certainly quite a contortion that is only clear when one knows the model one is aiming at.
+We repeat that general representation results for sparse graphs that can usefully imply model structures are still unknown.\fTBD{Cite the very latest stuff}
+% This example should reinforce the importance of finding good representation results for sparse 
 
 As before with the regression example, it may be wise to use models which use both observed and hidden variables within the representing functions.
 Examples are again rare but this has been applied in \eg the movie recommendation context \citep[e.g.][]{Menon2011-ku}.\fTBD{To be expanded upon}
@@ -538,7 +540,7 @@ Examples are again rare but this has been applied in \eg the movie recommendatio
 \subsection{Higher order dependencies}
 
 So far we have only considered probabilistic models inspired by the simple array versions of exchangeability theorems.
-Do the almost sure representation theorems, with their more detailed latent variable representations, tell us anything?
+Do the almost sure representation theorems, with their more detailed latent variable representations, tell us anything useful?
 Consider the following dataset: we have a social network $X_{ij}$ and a ternary relation $Y_{ijk}$ that records if both person $i$ and person $j$ have been to location $k$.
 The simple array inspired representation of this data is of the form
 \[
@@ -557,7 +559,7 @@ In the simple array representation this knowledge would somehow have to be encod
 
 We are however unaware of any standard probabilistic models making use of this type of dependence.
 This is most probably due to the potentially large computational barrier to storing and inferring the values of latent variables for each pair of objects.
-There may however be use in this type of relationship on small datasets where one can afford relatively high computational costs to perform a more detailed analysis.
+There may however be use in this type of model on small datasets where one can afford relatively high computational costs to perform a more detailed analysis.
 
 \subsection{A brief word about longitudinal data}
 
