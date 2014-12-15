@@ -506,11 +506,9 @@ In one dimension, the predictive means of all baseline methods in table \ref{tbl
 \subsection{High-dimensional prediction}
 
 To evaluate the predictive accuracy of our method in a high-dimensional setting, we extended the comparison of \cite{Duvenaud2011-wb} to include our method.
-We performed 10 fold cross validation on 5 datasets\footnotemark{} comparing 5 methods in terms of mean squared error and predictive likelihood.
+We performed 10 fold cross validation on 5 datasets\footnote{The data sets had dimensionalities ranging from 4 to 13, and the number of data points ranged from 150 to 450.} comparing 5 methods in terms of mean squared error and predictive likelihood.
 Our kernel search procedure was run up to depth 10, using the \SE{} and \RQ{} base kernel families\footnotemark{}.
-\footnotetext{We did not believe a priori to find any periodicity or perfect linearity in these data sets}
-
-\footnotetext{The data sets had dimensionalities ranging from 4 to 13, and the number of data points ranged from 150 to 450.} 
+\footnotetext{We did not believe a priori to find any periodicity or perfect linearity in these data sets.} 
 
 The comparison included three methods with fixed kernel families: Additive \gp{}s, Generalized Additive Models (GAM), and a \gp{} with a standard \kSE{} kernel using Automatic Relevance Determination (\gp{} \kSE{}-ARD). 
 Also included was the related kernel-search method of Hierarchical Kernel Learning (HKL).
@@ -602,7 +600,9 @@ Also, as data sets become increasingly large and computation and time constraint
 A potential way forward is to imagine a more general version of the Laplace approximation.
 The Laplace approximation attempts to approximate the log-likelihood with a quadratic; this can be achieved without exactly having found the mode simply by performing regression using a quadratic regression function.
 This could be viewed as a simple version of Bayesian quadrature \citep[e.g.][]{Ghahramani2002-by, OHagan1991-wg} with potentially attractive computation time.
-A full analysis of this idea would also likely interact with recent reinterpretations of classic optimisation algorithms as approximate inference in probabilistic models \citep[e.g.][]{Hennig2012-wv}.
+In fact, it has recently been shown by \citet{Hennig2012-wv} that aspects of certain quasi-Newton optimisation methods can be interpreted as approximate inference within a probabilistic model.
+In particular, the running estimate of curvature produced by the BFGS algorithm could be used to produce a quadratic approximation to the optimisation surface.
+It would be profitable to study the effectiveness of this curvature estimate as a tool for model evidence approximation in comparison to the revised methods proposed by \citet{Hennig2012-wv}.
 
 \subsection{Model selection rather than model averaging}
 
