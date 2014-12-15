@@ -57,7 +57,7 @@ This was performed for both temperature and load data using the spreadsheets \te
   \label{fig:load}
 \end{figure}
 
-This visual analysis revealed a large discontinuity in load series 10 and atypical dynamics in series 9 (see figure~\ref{fig:load} and others for comparison).
+This visual analysis revealed a large discontinuity in load series 10 and atypical dynamics in series 9 (see figure~\ref{fig:load} and others in this chapter for comparison).
 No other large anomalies were detected during the first inspection of the data and smaller irregularities were not revisited since the algorithms detailed below performed acceptably well without further data cleansing.
 
 No adjustments were made for holidays or other irregular events such as electricity black-outs.
@@ -292,7 +292,7 @@ which could alternatively be described as
   + & \textrm{ A smooth function with a lengthscale of a few days } \\
   + & \textrm{ A daily periodic function}
 \]
-which could be modelled by a Gaussian process with kernel $\kPer + \kSE + \kPer$ with appropriate parameters.
+which could be modelled by a Gaussian process with kernel $\kZMPer + \kSE + \kZMPer$ with appropriate parameters.
 
 Exact inference for Gaussian processes has $\mathcal{O}(N^3)$  computational complexity where $N$ is the number of data points.
 This makes it (currently) prohibitive to perform exact inference for $N$ much larger than 1000.
