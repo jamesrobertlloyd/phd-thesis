@@ -27,7 +27,7 @@ However, to apply existing kernel learning algorithms, the user must typically s
 To make kernel learning more generally applicable we propose an automatic procedure to select an appropriate parametric form of a kernel.
 In particular, we formulate a space of kernel structures defined compositionally in terms of sums and products of a small number of base kernels.
 This produces an expressive modelling language which concisely captures many widely used techniques for constructing kernels.
-We focus on Gaussian process regression, where the kernel specifies a covariance function, because the Bayesian framework provides natural methods by which to select between models.
+We focus on Gaussian process regression, where the kernel specifies a covariance function, since the Bayesian framework provides natural methods by which to select between models.
 Borrowing discrete search techniques which have proved successful in equation discovery \citep{Todorovski1997-st} and unsupervised learning \citep{Grosse2012-zi}, we automatically search over this space of kernel structures using model evidence as the search criterion.
 
 We found that our kernel search algorithm is able to automatically recover known structures from synthetic data as well as plausible structures for a variety of real-world datasets. 
@@ -172,7 +172,7 @@ We use the term `generalised Fourier decomposition' to express that the periodic
 \label{sec:construction:search}
 
 We have demonstrated that we can construct a wide variety of kernel structures compositionally by adding and multiplying a small number of base kernels.
-In particular, we consider the four base kernel families discussed in Section \ref{sec:Structure}: \kSE, \kPer, \kLin, and \kRQ.
+In particular, we consider four base kernel families: \kSE, \kPer, \kLin, and \kRQ.
 Any algebraic expression combining these kernels using the operations $+$ and $\times$ defines a kernel family.
 
 Our search procedure begins by proposing all base kernel families applied to all input dimensions. 
@@ -214,7 +214,7 @@ For each optimised model, $M$, the Bayesian Information Criterion (BIC) is calcu
 \textrm{BIC}(M) = -2 \log p(D\given M) + |M| \log n
 \end{equation}
 where $|M|$ is the number of kernel parameters, $p(D|M)$ is the marginal likelihood of the data, $D$, and $n$ is the number of data points.
-We note however that using the Bayesian information criterion in this context is not theoretically justified; but attempts to use a theoretically justified approximation to the marginal likelihood uncover interesting fundamental problems which we discuss in section~\ref{sec:construction:discussion}.
+We note however that using the Bayesian information criterion is not theoretically justified in this context; but attempts to use a theoretically justified approximation to the marginal likelihood uncover interesting fundamental problems which we discuss in section~\ref{sec:construction:discussion}.
 
 Unfortunately, optimising over parameters is not a convex optimisation problem, and the space can have many local optima.
 For example, in data with periodic structure, integer multiples of the true period (\ie harmonics) are often local optima. 
