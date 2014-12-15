@@ -8,14 +8,14 @@ The automatic statistical reports that were the output of the work of chapter~\r
 In this section, the statistical model constructed by the kernel search algorithm is presented to the user as a hypothesis and as such it subjected to criticism and attempts to falsify its claims.
 On entering the literature of statistical model criticism I quickly found myself in the cross fire of a version of the frequentists versus Bayesians argument which appears to have been left unresolved.
 Moreover, I have found there to be little actionable advice on which methods of model criticism to use when, which presented a challenge when trying to select appropriate model criticism methods to be used by a system capable of constructing infinitely many different statistical models.
-
+%
 This chapter is my initial response to these gaps in the literature.
-My own opinion on good philosophy for model criticism is still in flux so I will discuss emerging ideas at the end of this chapter.
+%My own opinion on good philosophy for model criticism is still in flux so I will discuss emerging ideas at the end of this chapter.
 
 \section{Introduction}
 
 Statistical model checking or criticism\footnotemark{} is an important part of a complete statistical analysis.
-\footnotetext{We follow Box \citep{Box1980-ud} using the term `model criticism' for similar reasons to O'Hagan \citep{OHagan2003-bc}, namely ``model checking \ldots conveys to me a sense of a rather passive activity that does not expect to uncover any problems, while model criticism conveys a more vigorous and open-minded process''.}
+\footnotetext{We follow \citet{Box1980-ud} using the term `model criticism' for similar reasons to \citet{OHagan2003-bc}, namely ``model checking \ldots conveys to me a sense of a rather passive activity that does not expect to uncover any problems, while model criticism conveys a more vigorous and open-minded process''.}
 When one fits a linear model to a data set via least squares a complete analysis includes computing \eg Cook's distances \citep{Cook1982-ia} to identify influential points or plotting residuals against fitted values to identify non-linearity or heteroscedasticity.
 Similarly, modern approaches to Bayesian statistics view model criticism as in important component of an iterative cycle of model construction, inference and criticism \citep[e.g.][]{Gelman2013-st, Blei2014-uz}.
 
@@ -111,7 +111,7 @@ An answer to this problem is to consider maximum mean discrepancy (MMD) \citep{G
 \label{eq:MMD}
 \end{equation}
 where $\mathcal{F}$ is a set of functions.
-When $\mathcal{F}$ is a reproducing kernel Hilbert space (RKHS) the function attaining the supremum can be derived analytically and is called the witness function
+When $\mathcal{F}$ is a unit ball in a reproducing kernel Hilbert space (RKHS) the function attaining the supremum can be derived analytically and is called the witness function
 \begin{equation}
 f(x) = \mathbb{E}_{x'\sim p}[k(x,x')] - \mathbb{E}_{x'\sim q}[k(x,x')]
 \label{eq:witness}
@@ -477,11 +477,11 @@ This includes for example, Geweke's tests of Markov chain posterior sampler vali
 
 The two sample tests proposed in this paper naturally apply to \iid data and models, but model criticism techniques should of course apply to models with other symmetries (\eg exchangeable data, longitudinal data / time series, graphs, functions any many others).
 We have demonstrated an adaptation of the kernel MMD test to regression models
-However, it is unclear whether maximum mean discrepancy measures can be naturally extended to all of these classes; investigating such extensions would be a profitable area for future study.
+However, it is unclear whether maximum mean discrepancy measures can be naturally extended to all of these classes; investigating such extensions would be a profitable area for future study (for very recent work in this direction see \cite{Chwialkowski2014-pe}).
 
 In proposing a new method of model criticism we hope we have also exposed the machine learning community to a useful set of tools for diagnosing potential inadequacies of models.
-On this note, we conclude with a question.
-Do you know how the model you are currently working with most misrepresents the data it is attempting to model?
+%On this note, we conclude with a question.
+%Do you know how the model you are currently working with most misrepresents the data it is attempting to model?
 
 \section{Discussion and future work}
 
