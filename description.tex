@@ -192,7 +192,7 @@ Second, the constant functions can result in anti-correlation between components
   \end{scope}
 \end{tikzpicture}
 \caption[Demonstration of inflated credible intervals when constants not removed from some kernels.]{
-Left: Posterior of first two components for the airline passenger data from \citet{DuvLloGroetal13}.
+Left: Posterior of first two components for the airline passenger data from \citet{Duvenaud2013-dn} and chapter~\ref{ch:construction}.
 Right: Posterior of first two components found by \procedurename{} - removing the constants from $\kLin$ and $\kPer$ has removed the inflated credible intervals due to anti-correlation in the posterior.
 }
 \label{fig:constant}
@@ -217,7 +217,7 @@ by appealing to Bochner's theorem \citep{Bochner1959-yk}.
 By using this new periodic kernel our language of kernels also attains this completeness property.
 Note that the infinite lengthscale ($\ell$) limit of the more common definition of the periodic kernel is a constant.
 
-This version of the periodic kernel is now implemented in the GPML toolbox \NA{cite} and is available at \url{gaussianprocess.org/gpml/code/matlab/cov/covPeriodicNoDC.m}
+This version of the periodic kernel is now implemented in the GPML toolbox \fTBD{cite} and is available at \url{gaussianprocess.org/gpml/code/matlab/cov/covPeriodicNoDC.m}
 
 \subsection{Addition of the changepoint and changewindow operators}
 
@@ -257,7 +257,7 @@ Gaussian noise is also a Gaussian process so we can introduce the noise model in
 \kWN(\inputVar, \inputVar') =& \sigma^2\delta_{\inputVar, \inputVar'}
 \]
 where $\delta_{\inputVar, \inputVar'}$ is the Kronecker delta function.
-We use this as a base kernel and replace the model likelihood with a delta function.
+We use this as a base kernel and replace the model likelihood with a Dirac delta function.
 
 Introducing the white noise kernel as a base kernel allows for the modelling language to express some forms of heteroscedasticity.
 In particular, a $\kWN \kerntimes \kLin$ kernel encodes for uncorrelated Gaussian noise with linearly varying standard deviation.
@@ -285,7 +285,7 @@ Since we have an updated set of base kernels and operators we review them.
 \subsection{Base kernels}
 \label{sec:description:base}
 
-For scalar-valued inputs, the white noise ($\kWN$), constant ($\kC$), linear ($\kLin$), squared exponential ($\kSE$), and periodic kernels ($\kPer$) are defined as follows:
+For scalar-valued inputs, the white noise ($\kWN$), constant ($\kC$), linear ($\kLin$), squared exponential ($\kSE$), and zero mean periodic kernels ($\kZMPer$) are defined as follows:
 \begin{eqnarray}
 \kWN(\inputVar, \inputVar') =& \sigma^2\delta_{\inputVar, \inputVar'} \\
 \kC(\inputVar, \inputVar') =& \sigma^2 \\
@@ -377,14 +377,14 @@ Therefore, we can choose one kernel to be described as a noun, with all others d
 We convert each kernel expression into a standard, simplified form.
 We do this by first distributing all products of sums into a sum of products.
 Next, we apply several simplifications to the kernel expression:
-The product of two $\kSE$ kernels is another $\kSE$ with different parameters. Multiplying $\kWN$ by any stationary kernel ($\kC$, $\kWN$, $\kSE$, or $\kPer$) gives another $\kWN$ kernel. Multiplying any kernel by $\kC$ only changes the parameters of the original kernel.
+The product of two $\kSE$ kernels is another $\kSE$ with different parameters. Multiplying $\kWN$ by any stationary kernel ($\kC$, $\kWN$, $\kSE$, or $\kZMPer$) gives another $\kWN$ kernel. Multiplying any kernel by $\kC$ only changes the parameters of the original kernel.
 
 After applying these rules, the kernel can as be written as a sum of terms of the form:
 \begin{align*}
 K \prod_m \kLin^{(m)} \prod_n \boldsymbol\sigma^{(n)},
 \label{eq:sop}
 \end{align*}
-where $K$, if present, is one of \kWN, \kC, \kSE, $\prod_k \kPer^{(k)}$ or $\kSE \prod_k \kPer^{(k)}$
+where $K$, if present, is one of \kWN, \kC, \kSE, $\prod_k \kZMPer^{(k)}$ or $\kSE \prod_k \kZMPer^{(k)}$
 and $\prod_i\kernel^{(i)}$ denotes a product of kernels, each with different parameters.
 
 
@@ -403,7 +403,7 @@ This will convert any global correlation structure into local correlation only.
 If $f(x) \dist \gp{}(0, \kernel)$, then $xf(x) \dist \gp{}\left(0, k \times \kLin \right)$.
 This causes the standard deviation of the model to vary linearly without affecting the correlation.
 \item {\bf Multiplication by $\boldsymbol\sigma$} is equivalent to multiplying the function being modelled by a sigmoid which means that the function goes to zero before or after some point.
-\item {\bf Multiplication by $\kPer$}
+\item {\bf Multiplication by $\kZMPer$}
 modifies the correlation structure in the same way as multiplying the function by an independent periodic function.
 Formally, if ${f_1(x) \dist \gp{}(0, \kernel_1)}$ and ${f_2(x) \dist \gp{}(0, \kernel_2)}$ then
 \begin{align}
@@ -418,7 +418,7 @@ We note however that since this multiplication affects only the correlation stru
 Kernel & Postmodifier phrase \\
 \midrule
 $\kSE$  & whose shape changes smoothly \\
-$\kPer$ & modulated by a periodic function \\
+$\kZMPer$ & modulated by a periodic function \\
 $\kLin$ & with linearly varying amplitude \\
 $\prod_k \kLin^{(k)}$ & with polynomially varying amplitude \\
 $\prod_k \boldsymbol{\sigma}^{(k)}$ & which applies until / from [changepoint] \\
@@ -436,13 +436,13 @@ Modifiers corresponding to the other kernels in the product are then appended to
 \textnormal{Determiner}	+	\textnormal{Premodifiers} +	\textnormal{Noun}	+	\textnormal{Postmodifiers}
 \end{align*}
 
-As an example, a kernel of the form $\kPer \times  \kLin \times \boldsymbol{\sigma}$ could be described as a
+As an example, a kernel of the form $\kZMPer \times  \kLin \times \boldsymbol{\sigma}$ could be described as a
 \begin{align*}
-\underbrace{\kPer}_{\textnormal{\scriptsize periodic function}} \times 
+\underbrace{\kZMPer}_{\textnormal{\scriptsize periodic function}} \times 
 \underbrace{\kLin}_{\textnormal{\scriptsize with linearly varying amplitude}} \times 
 \underbrace{\boldsymbol{\sigma}}_{\textnormal{\scriptsize which applies until 1700.}}
 \end{align*}
-where $\kPer$ has been selected as the head noun.
+where $\kZMPer$ has been selected as the head noun.
 
 \begin{table}[ht]
 \centering
@@ -452,7 +452,7 @@ Kernel & Noun phrase \\
 $\kWN$  & uncorrelated noise \\
 $\kC$   & constant \\
 $\kSE$  & smooth function \\
-$\kPer$ & periodic function \\
+$\kZMPer$ & periodic function \\
 $\kLin$ & linear function \\
 $\prod_k \kLin^{(k)}$ & polynomial \\
 \end{tabular}
@@ -476,9 +476,9 @@ There are a number of ways in which the descriptions of the kernels can be made 
 The reports in the supplementary material and in section~\ref{sec:examples} include some of these refinements.
 For example, the head noun is chosen according to the following ordering:
 \begin{align*}
-\kPer > \kWN, \kSE, \kC > \prod_m \kLin^{(m)} > \prod_n \boldsymbol\sigma^{(n)}
+\kZMPer > \kWN, \kSE, \kC > \prod_m \kLin^{(m)} > \prod_n \boldsymbol\sigma^{(n)}
 \end{align*}
-\ie $\kPer$ is always chosen as the head noun when present.
+\ie $\kZMPer$ is always chosen as the head noun when present.
 The parameters and design choices of these refinements have been chosen by our best judgement, but learning these parameters objectively from expert statisticians would be an interesting area for future study.
 
 \paragraph{Ordering additive components}
@@ -490,15 +490,15 @@ As a heuristic, we order components by always adding next the component which mo
 
 Suppose we start with a kernel of the form
 \begin{align*}
-\kSE \times (\kWN \times \kLin + \kCP(\kC, \kPer)).
+\kSE \times (\kWN \times \kLin + \kCP(\kC, \kZMPer)).
 \end{align*}
 This is converted to a sum of products:
 \begin{align*}
-\kSE \times \kWN \times \kLin + \kSE \times \kC \times \boldsymbol{\sigma} + \kSE \times \kPer \times \boldsymbol{\bar\sigma}.
+\kSE \times \kWN \times \kLin + \kSE \times \kC \times \boldsymbol{\sigma} + \kSE \times \kZMPer \times \boldsymbol{\bar\sigma}.
 \end{align*}
 which is simplified to
 \begin{align*}
-\kWN \times \kLin + \kSE \times \boldsymbol{\sigma} + \kSE \times \kPer \times \boldsymbol{\bar\sigma}.
+\kWN \times \kLin + \kSE \times \boldsymbol{\sigma} + \kSE \times \kZMPer \times \boldsymbol{\bar\sigma}.
 \end{align*}
 
 To describe the first component, the head noun description for $\kWN$, `uncorrelated noise', is concatenated with a modifier for $\kLin$, `with linearly increasing amplitude'.
@@ -509,7 +509,7 @@ Finally, the third component is described as `An approximately periodic function
 \section{Example descriptions of time series}
 \label{sec:examples}
 We demonstrate the ability of our procedure to discover and describe a variety of patterns on two time series.
-An example of a full automatically-generated report is provided in the appendix..
+An example of a full automatically-generated report is provided in appendix~\ref{ch:example-solar}.
 
 \subsection{Summarizing 400 Years of Solar Activity}
 \label{sec:solar}
@@ -576,7 +576,7 @@ International airline passenger monthly volume \citep[e.g.][]{Box1976-qk}.}
 \end{figure}
 
 Next, we present the analysis generated by our procedure on international airline passenger data (figure~\ref{fig:airline}).
-The model constructed by \procedurename{} has four components: $\kLin + \kSE \times \kPer \times \kLin + \kSE + \kWN \times \kLin$, with descriptions given in figure~\ref{fig:exec-airline}.
+The model constructed by \procedurename{} has four components: $\kLin + \kSE \times \kZMPer \times \kLin + \kSE + \kWN \times \kLin$, with descriptions given in figure~\ref{fig:exec-airline}.
 
 \begin{figure}[h]
 \centering
@@ -586,7 +586,7 @@ Short descriptions and summary statistics for the four components of the airline
 \label{fig:exec-airline}
 \end{figure}
 
-The second component (figure~\ref{fig:lin_periodic}) is accurately described as approximately ($\kSE$) periodic ($\kPer$) with linearly increasing amplitude ($\kLin$).
+The second component (figure~\ref{fig:lin_periodic}) is accurately described as approximately ($\kSE$) periodic ($\kZMPer$) with linearly increasing amplitude ($\kLin$).
 %
 \begin{figure}[h]
 \centering
@@ -608,7 +608,7 @@ By multiplying a white noise kernel by a linear kernel, the model is able to exp
 \label{sec:eqn-learning-comp}
 
 We now compare the descriptions generated by \procedurename{} to parametric functions produced by an equation learning system.
-We show equations produced by Eureqa \citep{Eureqa} for the data sets shown above, using the default mean absolute error performance metric.
+We show equations produced by Eureqa \citep{Nutonian2011-el} for the data sets shown above, using the default mean absolute error performance metric.
 
 The learned function for the solar irradiance data is
 \begin{align*}
@@ -661,7 +661,7 @@ In addition to our demonstration of the interpretability of \procedurename{}, we
 
 \paragraph{Data sets}
 
-We evaluate the performance of the algorithms listed below on 13 real time-series from various domains from the time series data library \citep{Hyndman_undated-zj}; plots of the data can be found at the beginning of the reports in the supplementary material.
+We evaluate the performance of the algorithms listed below on 13 real time-series from various domains from the time series data library \citep{Hyndman_undated-zj}; plots of the data can be found in appendix~\ref{ch:datasets}
 
 \paragraph{Algorithms}
 
@@ -700,7 +700,7 @@ Overall, the model construction methods with greater capacity perform better: \p
 Despite searching over a rich model class, Eureqa performs relatively poorly, since very few datasets are parsimoniously explained by a parametric equation.
 
 Not shown on the plot are large outliers for spectral kernels, Eureqa, squared exponential and linear regression with values of 11, 493, 22 and 29 respectively.
-All of these outliers occurred on a data set with a large discontinuity (see the call centre data in the supplementary material).
+All of these outliers occurred on a data set with a large discontinuity (see the call centre data in appendix~\ref{ch:datasets}).
 
 \paragraph{Interpolation}
 
@@ -732,7 +732,7 @@ The models learned by Eureqa tend to capture only broad trends of the data since
 \subsection{Tables of standardised RMSEs}
 
 See table~\ref{table:interp} for raw interpolation results and table~\ref{table:extrap} for raw extrapolation results. 
-The rows follow the order of the datasets in the rest of the supplementary material.
+The rows follow the order of the datasets in appendix~\ref{ch:datasets}.
 The following abbreviations are used: \procedurename{}-accuracy (\procedurename{}-acc), \procedurename{}-interpretability ((\procedurename{}-int), Spectral kernels (SP), Trend-cyclical-irregular (TCI), Bayesian MKL (MKL), Eureqa (EL), Changepoints (CP), Squared exponential (SE) and Linear regression (Lin).
 
 \begin{table*}[ht]
@@ -799,6 +799,7 @@ With only the squared exponential kernel representing smoothness in the language
 This is a cute mathematical property, but a different kernel encoding for smoothness could have been chosen and the langauge of kernels restricted to only having one of these kernels in each product.
 In this sense the $\kSE$ kernel has been used purely for convenience, rather than truly reflecting our beliefs about functions.
 \citet{Stein1999-ps} recommends instead the Mat\'ern class of kernels, which possibly have more realistic smoothness assumptions than the squared exponential kernel in many situations.
+\citet{Van_der_Vaart2011-wo} also demonstrate that the Mat\'ern class of kernels produce regression algorithms with improved convergence rates compared to the square exponential for all but very smooth functions.
 
 %\subsection{Linguistic and subjective biases}
 
