@@ -56,7 +56,7 @@ These lines of enquiry are potentially very fruitful but still in their infancy 
 \section{An introduction to exchangeability and representation theorems}
 
 Suppose one receives a sequence of data $(X_1, X_2, \dots)$ and we wish to specify our beliefs about this data with a probability distribution.
-An often reasonable prior assumption is that we do not believe the order of the data contains any information, or rather that any probability distribution encoding our beliefs about this data should be invariant to reorderings of the data.
+A commonly appropriate prior assumption is that we do not believe the order of the data contains any information, or rather that any probability distribution encoding our beliefs about this data should be invariant to reorderings of the data.
 That is, we may often believe that our data is an exchangeable sequence:
 \[
   \label{eq:intro:exch}
@@ -75,13 +75,13 @@ We also demonstrate how these representation theorems are compatible with other 
 
 \section{An introduction to using Gaussian processes to model functions}
 
-There are a great many (and many great) introductions to Gaussian processes; the most comprehensive at the moment is \citet{Rasmussen2006-ml}.
+There are a great many (and many great) introductions to Gaussian processes; the most comprehensive and relevant to this thesis at the moment is \citet{Rasmussen2006-ml}.
 Rather than repeat them, I will give an intuitive derivation of Gaussian processes starting from linear regression.
 Those with an understanding of Gaussian processes may safely skip this section.% and those interested in further details are directed to the following reference books\fTBD{cite Rasmussed and Williams and maybe Kallenberg as a nice (lol) contrast}.
 
 Let us consider a simple version of Bayesian linear regression.
-Suppose we have a data set $D$ consisting of real-valued (input, output) pairs denoted by $D = \{(x_i, y_i) \in \Reals^2 : i = 1,\dots,n\}$.
-A simple probabilistic linear regression model of this data could be of the form.
+Suppose we have a data set $D$ consisting of real-valued (input, output) pairs denoted by $D = ((x_i, y_i) \in \Reals^2 : i = 1,\dots,n)$.
+A simple probabilistic linear regression model of this data could be of the form
 \[
   m &\probgets \Normal(0,1) \label{eq:intro:prior_m} \\
   \varepsilon_i &\probgetsiid \Normal(0,\sigma_\varepsilon^2) \\
@@ -89,7 +89,7 @@ A simple probabilistic linear regression model of this data could be of the form
 \]
 \ie we believe our data will be linearly related by a line passing through the origin.
 
-For this prior belief it is trivial to update our beliefs in the light of data according to the calculus of probability theory upon which we find
+For this simple model it is trivial to update our beliefs in the light of data according to the calculus of probability theory upon which we find
 \[
   m \given D &\sim \Normal\bigg(\frac{\sum_i x_i y_i}{\sum_i x_i^2 + \sigma_\varepsilon^2}, \frac{\sigma_\varepsilon^2}{\sum_i x_i^2 + \sigma_\varepsilon^2}\bigg) \label{eq:intro:posterior_m} \\
   y_j \given D &\sim \Normal\bigg(\frac{x_j \sum_i x_i y_i}{\sum_i x_i^2 + \sigma_\varepsilon^2}, \frac{x_j^2 \sigma_\varepsilon^2}{\sum_i x_i^2 + \sigma_\varepsilon^2} + \sigma_\varepsilon^2\bigg) \quad \textrm{where } j \notin \{1,\dots,n\}.
@@ -127,7 +127,7 @@ K_{ij} = k(x_i, x_j) = x_i x_j + \delta_{x_ix_j} \sigma_\varepsilon^2 \label{eq:
 \]
 and this relationship holds for datasets of arbitrary finite size\footnotemark{}.
 We now may reasonably ask whether or not we could define a probability distribution over $y$ when $x$ is infinite \eg when $x = \Reals$.
-The answer to this question is yes.
+The answer to this question is yes\fTBD{I should find a reference - PO website?}.
 
 \footnotetext{
 We are implicitly assuming that the $x_i$ are disjoint.
