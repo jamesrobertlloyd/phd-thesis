@@ -267,7 +267,7 @@ When applied to this dataset our procedure chose a model similar to the one they
 Other examples of papers whose main contribution is to manually construct and fit a composite \gp{} kernel are \cite{Klenske_undated-ys} and \cite{Lloyd2013-yn}.
 
 \citet{Diosan2007-un, Bing2010-of} and \citet{Kronberger_undated-vf} learn composite kernels for support vector machines, relevance vector machines and Gaussian processes, using genetic search algorithms.
-We go beyond these works by demonstrating the interpretability of the structure implied by composite kernels, and how such structure allows for extrapolation (these claims are more thoroughly justified in chapter~\ref{ch:description}.
+We go beyond these works by demonstrating the interpretability of the structure implied by composite kernels, and how such structure allows for extrapolation (these claims are more thoroughly justified in chapter~\ref{ch:description}).
 
 \subsection{Structure discovery}
 
@@ -407,10 +407,6 @@ In chapter~\ref{ch:description} we demonstrate that an expanded space of kernel 
 \label{sec:synthetic}
 
 \begin{table}[ht!]
-\caption[Synthetic validation of kernel search.]{{\small
-Kernels chosen by our method on synthetic data generated using known kernel structures. $D$ denotes the dimension of the functions being modelled.  SNR indicates the signal-to-noise ratio. Dashes - indicate no structure.
-}}
-\label{tbl:synthetic}
 \begin{center}
 {\small
 \begin{tabular}{c c | c c c}
@@ -457,6 +453,10 @@ $\SE_1 \kerntimes \SE_2 + \SE_2 \kerntimes \SE_3$ & 4
 \end{tabular}
 }
 \end{center}
+\caption[Synthetic validation of kernel search.]{{\small
+Kernels chosen by our method on synthetic data generated using known kernel structures. $D$ denotes the dimension of the functions being modelled.  SNR indicates the signal-to-noise ratio. Dashes - indicate no structure.
+}}
+\label{tbl:synthetic}
 \end{table}
 
 We validated our method's ability to recover known structure on a set of synthetic datasets.
@@ -517,10 +517,6 @@ Results are presented in tables \ref{tbl:Regression Mean Squared Error} and \ref
 Our method outperformed the next-best method in each test, although not substantially.
 
 \begin{table}[ht]
-\caption[MSE comparison of kernel search and related algorithms.]{{\small
-Comparison of multidimensional regression performance in terms of cross validated mean squared error. Bold results are not significantly different from the best-performing method in each experiment, in a paired t-test with a $p$-value of 5\%.
-}}
-\label{tbl:Regression Mean Squared Error}
 \begin{center}
 \begin{tabular}{l | r r r r r}
 Method & \rotatebox{0}{ bach  }  & \rotatebox{0}{ concrete  }  & \rotatebox{0}{ puma }  & \rotatebox{0}{ servo }  & \rotatebox{0}{ housing }  \\ \hline
@@ -533,13 +529,13 @@ GP Additive & $\mathbf{0.045}$ & $\mathbf{0.089}$ & $\mathbf{0.316}$ & $\mathbf{
 Kernel search & $\mathbf{0.044}$ & $\mathbf{0.087}$ & $\mathbf{0.315}$ & $\mathbf{0.102}$ & $\mathbf{0.082}$ \\
 \end{tabular}
 \end{center}
+\caption[MSE comparison of kernel search and related algorithms.]{{\small
+Comparison of multidimensional regression performance in terms of cross validated mean squared error. Bold results are not significantly different from the best-performing method in each experiment, in a paired t-test with a $p$-value of 5\%.
+}}
+\label{tbl:Regression Mean Squared Error}
 \end{table}
 
 \begin{table}[ht]
-\caption[Likelihood comparison of kernel search and related algorithms.]{{\small
-Comparison of multidimensional regression performance in terms of cross validated negative log likelihood. Bold results are not significantly different from the best-performing method in each experiment, in a paired t-test with a $p$-value of 5\%.
-}}
-\label{tbl:Regression Negative Log Likelihood}
 \begin{center}
 \begin{tabular}{l | r r r r r}
 Method & \rotatebox{0}{ bach  }  & \rotatebox{0}{ concrete  }  & \rotatebox{0}{ puma }  & \rotatebox{0}{ servo }  & \rotatebox{0}{ housing }  \\ \hline
@@ -551,6 +547,10 @@ GP Additive & $\mathbf{-0.131}$ & $\mathbf{0.114}$ & $\mathbf{0.841}$ & $\mathbf
 Kernel search & $\mathbf{-0.141}$ & $\mathbf{0.065}$ & $\mathbf{0.840}$ & $\mathbf{0.265}$ & $\mathbf{0.059}$ \\
 \end{tabular}
 \end{center}
+\caption[Likelihood comparison of kernel search and related algorithms.]{{\small
+Comparison of multidimensional regression performance in terms of cross validated negative log likelihood. Bold results are not significantly different from the best-performing method in each experiment, in a paired t-test with a $p$-value of 5\%.
+}}
+\label{tbl:Regression Negative Log Likelihood}
 \end{table}
 
 All \gp{} kernel parameter estimation was performed by automated calls to the GPML toolbox\footnote{Available at 
@@ -609,7 +609,7 @@ It would be profitable to study the effectiveness of this curvature estimate as 
 In this chapter we have demonstrated that selecting the model with the highest model evidence encountered along the search was sufficient to achieve good empirical performance on the moderate dimensional datasets considered.
 However, much like BIC guided linear model selection will fail on high dimensional problems \citep[e.g.][]{Hastie2009-hj}, so will the kernel search as currently described.
 Staying within the Bayesian paradigm it is conceptually simple to alleviate this problem by instead computing a Bayes model average \citep[e.g.][]{Hoeting1999-tn} over kernel families.
-The natural search objective would then change from optimising the model evidence of a single kernel family to that of the sum of model evidences of all kernel families visited by the search, appropriately weighted by a prior over kernel families.
+The natural search objective would then change from optimising the model evidence of a single kernel family to that of the sum of model evidences of all kernel families visited by the search, appropriately weighted by a prior over kernel families\fTBD{Zoubin says - more conclusion and more elaboration on model averaging}.
 
 \outbpdocument{
 \bibliographystyle{plainnat}
