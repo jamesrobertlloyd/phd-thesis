@@ -257,7 +257,7 @@ Gaussian noise is also a Gaussian process so we can introduce the noise model in
 \kWN(\inputVar, \inputVar') =& \sigma^2\delta_{\inputVar, \inputVar'}
 \]
 where $\delta_{\inputVar, \inputVar'}$ is the Kronecker delta function.
-We use this as a base kernel and replace the model likelihood with a Dirac delta function.
+We use this as a base kernel and replace the model likelihood with a delta function.
 
 Introducing the white noise kernel as a base kernel allows for the modelling language to express some forms of heteroscedasticity.
 In particular, a $\kWN \kerntimes \kLin$ kernel encodes for uncorrelated Gaussian noise with linearly varying standard deviation.
