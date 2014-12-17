@@ -22,7 +22,7 @@ We consider probabilistic models of infinite 2-arrays $\{\darray_{ij} : i,j\in\N
 Each entry $\darray_{ij}$ describes the relation between objects $i$ and $j$. Finite
 samples---relational measurements for $n$ objects---are $n\times n$-arrays. As the sample size increases, the data aggregates into
 a larger and larger array. 
-Graph-valued data, for example, corresponds to the case $\dataspace=\lbrace{0,1}\rbrace$.
+Graph-valued data, for example, corresponds to the case $\dataspace=\lbrace{0,1}\rbrace$ where the values indicate whether or not two objects are connected by an edge.
 In collaborative filtering problems, the set of objects is subdivided into two disjoint sets, \eg users and items.
 This corresponds to a bipartite graph if the relations are additionally binary.
 
@@ -225,7 +225,7 @@ We assume the following generative model\footnotemark:
   \begin{split}
     \AHfunction\; &\probgets\; \gp{}(0,\kernel) \\
     \AHvar_{1},\AHvar_{2},\ldots\; &\probgetsiid\; \Uniform[0,1] \\
-    \darray_{ij}\; &\probgets\; \likelihood[\,.\,|\AHfunction_{ij}] \;.
+    \darray_{ij}\; &\probgets\; \likelihood[\,.\,|\AHfunction(U_i,U_j)] \;.
   \end{split}
 \end{equation}
 Additionally, the kernel may depend on parameters, which we denote by $\covhyppar$.
@@ -256,7 +256,7 @@ In the case of graphs, the only assumptions are (i) and (ii), the Bernoulli like
 In the case of real-valued matrices, however, the model additionally assumes that the function 
 $H$ in \eqref{eq:decomposition} is of the form
 \begin{equation}
-  H(\AHvar_{\{ij\}},\AHfunction(\AHvar_i,\AHvar_j))\eqdist \AHfunction(\AHvar_i,\AHvar_j)+\varepsilon_{\{ij\}} \qquad\text{ where }\qquad \varepsilon_{\{ij\}}\sim\mbox{Normal}(0,\sigma)\;.
+  H(\AHvar_{\{ij\}},\AHfunction(\AHvar_i,\AHvar_j))\eqdist \AHfunction(\AHvar_i,\AHvar_j)+\varepsilon_{\{ij\}} \qquad\text{ where }\qquad \varepsilon_{\{ij\}}\sim\mbox{Normal}(0,\sigma^2)\;.
 \end{equation}
 
 The Gaussian process prior favours smooth functions, which may result in interpretable latent space embeddings.
@@ -283,7 +283,8 @@ The left shows a random sample of a binary network (represented by an adjacency 
   for data such as social networks, it should be kept in mind that network data is typically \emph{sparse}, with $O(n)$ non-vanishing entries.
   Density is an immediate consequence of theorem \ref{theorem:ah}: For graph data, for example, the asymptotic proportion of present edges is
   ${p:=\int\AHfunction(x,y)dxdy}$, and the graph is hence either empty (for $p=0$) or dense (since
-  $O(pn^2)=O(n^2)$). Analogous representation theorems for sparse random graphs are to date an open problem in probability\fTBD{Cite the latest efforts here}.
+  $O(pn^2)=O(n^2)$). Analogous representation theorems for sparse random graphs are to date an open problem in probability.
+  There is however an emerging literature on representation theorems for sparse graphs including graphings \citep[e.g.][]{Lovasz2012-df}, thinning of graphon representations \citep{Wolfe2013-vs} and constructing graphs from exchangeable measures on $\mathbb{R}_+^2$ \citep{Caron2014-on}.
 \end{rem}
 
 \section{Related work}
@@ -299,14 +300,14 @@ This model, also justified by exchangeability arguments, approximates a matrix w
 We show in proposition \ref{prop:matrixfactorisation} that this can be represented in the form of our model by using a kernel function of the form $L_\AHvar \otimes L_\AHvaralt$ where $L$ represents the dot product kernel (\ie the kernel that gives rise to linear functions).
 
 %\fTBD{To be reviewed - also mentions nonparametric matrix factorisation}
-Available models for graph data include the parametric mixed membership stochastic blockmodel (MMSB) \citep{Airoldi2008-fr} and nonparametric infinite relational model (IRM) \cite{Kemp2006-jt}, latent feature relational model (LFRM) \cite{Miller2009-wg}, infinite latent attribute model \cite{Palla2012-ch} and many others.
+Available models for graph data include the parametric mixed membership stochastic blockmodel (MMSB; \cite{Airoldi2008-fr}) and nonparametric infinite relational model (IRM; \cite{Kemp2006-jt}), latent feature relational model (LFRM; \cite{Miller2009-wg}), infinite latent attribute model (ILA; \cite{Palla2012-ch}) and many others.
 %\NA{
-Similar models also exist for real valued matrices, including the infinite hidden relational model (IHRM) \citep{Xu2006-uy} which is a counterpart to the IRM and binary matrix factorisation (BMF) \citep{Meeds2007-gd} which is a counterpart to the LFRM.
+Similar models also exist for real valued matrices, including the infinite hidden relational model (IHRM; \cite{Xu2006-uy}) which is a counterpart to the IRM and binary matrix factorisation (BMF; \cite{Meeds2007-gd}) which is a counterpart to the LFRM.
 %}
 
-Roy and Teh \citep{Roy2009-ge} present a nonparametric Bayesian model of relational data that approximates $\AHfunction$ by a piece-wise constant function whose hierarchical structure is a Mondrian process. In contrast, we approximate $\AHfunction$ by a smooth function.
+\citet{Roy2009-ge} present a nonparametric Bayesian model of relational data that approximates $\AHfunction$ by a piece-wise constant function whose hierarchical structure is a Mondrian process. In contrast, we approximate $\AHfunction$ by a smooth function.
 
-A recent development is the Sparse Matrix Variate Gaussian Process Blockmodel (SMGB) of Yan, Xu and Qi \cite{Yan2011-lc}, and the extension to higher order arrays \cite{Xu2012-ub} (InfTucker).
+A recent development is the Sparse Matrix Variate Gaussian Process Blockmodel (SMGB; \cite{Yan2011-lc}), and the extension to higher order arrays (InfTucker; \cite{Xu2012-ub}).
 Although not motivated in terms of exchangeability, these Gaussian process models do not impose independence assumptions on either rows or columns, in contrast to the GPLVM.
 These models can be represented as placing a prior ${\AHfunction \dist \GP\,(0, \kernel_1 \otimes \kernel_2)}$ on the function $\AHfunction$ in \eqref{eq:decomposition}.
 %\fTBD{Needs review}
@@ -331,7 +332,7 @@ is equivalent to
 \begin{equation}
 W_{ij} = \AHfunction\,(\AHvar_i, \AHvaralt_j) \quad \quad \AHfunction \sim \GP\,(0, L_\AHvar \otimes L_\AHvaralt)
 \end{equation}
-where $L_U(\AHvar_i, \AHvar_j) = \AHvar_{i_1}\AHvar_{i_2}'$ and similarly for $L_V$.
+where $L_U(\AHvar_{i_1}, \AHvar_{i_2}) = \AHvar_{i_1}\AHvar_{i_2}'$ and similarly for $L_V$.
 \end{prop}
 
 \begin{proof}
@@ -343,7 +344,7 @@ where $K$ is the kernel matrix corresponding to the kernel function $L$ and $\ot
 In the matrix factorisation, $W_{ij}$ is a linear combination of Gaussian distributed random variables and hence is Gaussian distributed itself. Thus, we need only show that it has zero mean and the required covariance structure. This is trivial,
 \begin{eqnarray}
 \mathbb{E} (W_{ij} \given \AHvar_i, \AHvaralt_j) = \AHvar_i\mathbb{E}(\Lambda)\AHvaralt_j' & = & 0 \\
-\textrm{Cov} (W_{i_1j_1}, W_{i_2j_2} \given \AHvar_i, \AHvaralt_j) & = & \mathbb{E} (W_{i_1j_1} W_{i_2j_2} \given \AHvar_i, \AHvaralt_j ) \nonumber \\
+\textrm{Cov} (W_{i_1j_1}, W_{i_2j_2} \given \AHvar_{i_1}, \AHvar_{i_2}, \AHvaralt_{j_1}, \AHvaralt_{j_2}) & = & \mathbb{E} (W_{i_1j_1} W_{i_2j_2} \given \AHvar_{i_1}, \AHvar_{i_2}, \AHvaralt_{j_1}, \AHvaralt_{j_2} ) \nonumber \\
 %& = & \mathbb{E}\bigg(\Big(\sum_{k_1,l_1} u_{i_1k_1}v_{j_1l_1}\lambda_{k_1,l_1}\Big)\Big(\sum_{k_2,l_2} u_{i_2k_2}v_{j_2l_2}\lambda_{k_2l_2}\Big)\bigg) \nonumber \\
 & = & \sum_{k_1,l_1,k_2,l_2} u_{i_1k_1}v_{j_1l_1}u_{i_2k_2}v_{j_2l_2}\mathbb{E}(\lambda_{k_1,l_1}\lambda_{k_2l_2}) \nonumber \\
 & = & \Big(\sum_k u_{i_1k}u_{i_2k}\Big)\Big(\sum_l v_{j_1l}v_{j_2l}\Big) \nonumber \\
@@ -400,7 +401,7 @@ Table~\ref{table:ModelComparison} necessarily glosses over many details (\eg cho
 Despite not often being viewed as a network model we have included principal component analysis (PCA) as a linear counterpart to the non-linear GPLVM.
 
 This table reveals that the majority of models included here model $\AHfunction$ as linear or bilinear (potentially kernelized).
-The Mondrian process \cite{Roy2009-ge} is a notable exception since it models $\AHfunction$ as a piecewise constant random function which is fundamentally different from our approach of modelling $\AHfunction$ to be continuous.
+The Mondrian process based model \citep{Roy2009-ge} is a notable exception since it models $\AHfunction$ as a piecewise constant random function which is fundamentally different from our approach of modelling $\AHfunction$ to be continuous.
 For simplicity we have refrained from writing down the kernel corresponding to the Mondrian process based model; it could be described as an indicator function of the equivalence class induced by the Mondrian process.
 We also see that the ILA model is significantly more flexible in its specification of $\AHfunction$ than other models using discrete latent variables.
 Again, we refrain from writing down what would be a fairly complicated kernel function corresponding to this model.
@@ -476,39 +477,44 @@ The idea of the SoR approximation is to replace $\larray_{ij}$ with the posterio
 where $K_{\inputpoints\pseudopoints}$ is the kernel matrix between the latent embeddings $\inputpoints$ and the pseudoinputs $\pseudopoints$.  By considering random pseudoinputs, we construct an MCMC analogue of the techniques proposed in~\cite{Titsias2008-gp}.
 % in be seen to be doing a Bayesian version of sparse variational techniques proposed by Titsias and Lawrence \cite{Titsias2010}.
 
-Given this approximate model, the conditional distribution $\targets \given (\AHvar_i), \pseudopoints, \covhyppar, (\sigma_\darray), \darray$ is amenable to elliptical slice sampling \citep{Murray2010-zu}, for both real valued and binary $\darray$. All other random parameters, including the $(U_i)$, can again be sampled from their full conditional distributions using slice sampling.  The sampling algorithms require that one computes expressions involving~\eqref{eqn:GPConditional}. As a result they cost at most $\CompOrder(k^3 \numobs)$.
+Given this approximate model, the conditional distribution $\targets \given (\AHvar_i), \pseudopoints, \covhyppar, (\sigma_\darray), \darray$ is amenable to elliptical slice sampling \citep{Murray2010-zu}, for both real valued and binary $\darray$. All other random parameters, including the $(U_i)$ and $(\eta_i)$, can again be sampled from their full conditional distributions using slice sampling.  The sampling algorithms require that one computes expressions involving~\eqref{eqn:GPConditional}. As a result they cost at most $\CompOrder(k^3 \numobs)$.
 
 %These sampling algorithms now require that one recomputes at most $K_{\pseudopoints\pseudopoints}^{-1}$ (or more precisely the Cholesky decomposition) and $K_{\inputpoints\pseudopoints}^{-1}$.  As a result, they cost at most $\Theta(k^3 \numobs)$ time. 
 
 \section{Experiments}
 \label{sec:experiments}
-We evaluate the model on three different network data sets. Two of these data sets---the high school and NIPS co-authorship data---have been extensively
+We evaluate the model on three different network data sets (see table~\ref{table:networks:datasets}). Two of these data sets---the high school and NIPS co-authorship data---have been extensively
 analysed in the literature.
 The third data set, a protein interactome, was previously noted by \citet{Hoff2007-ja} to be of interest since it exhibits both block structure and transitivity.
 
+\begin{table}
 \begin{center}
   \begin{tabular}{l  l  c  l}
     Data set & Recorded data & Vertices & Reference\\
     \midrule
     High school & high school social network & 90 & e.g.\ \cite{Hoff2007-ja} \\
     NIPS & subset of coauthorship network & 234 & e.g.\ \cite{Miller2009-wg} \\
-    Protein & protein interactome & 230 & e.g.\ \cite{Hoff2007-ja}\\
+    Protein & protein interactome & 230 & e.g.\ \cite{Hoff2007-ja}
   \end{tabular}
 \end{center}
+  \caption[Summary of data sets in link prediction experiment.]{Summary of data sets in link prediction experiment.}
+  \label{table:networks:datasets}
+\end{table}
 
-We compare performance of our model on these data sets to three other models, probabilistic matrix factorization (PMF) \citep{Salakhutdinov2008-tp},
+We compare performance of our model on these data sets to three other models (see table~\ref{table:networks:datasets}), probabilistic matrix factorization (PMF) \citep{Salakhutdinov2008-tp},
 Hoff's eigenmodel \citep{Hoff2007-ja}, and the GPLVM \citep{Lawrence2005-cn}. The models are chosen for comparability, since they all embed nodes into a Euclidean latent space.
 %All of these models represent nodes as being embedded in a latent space, although the approaches vary considerably.
 Experiments for all three models were performed using reference implementations by the respective 
-authors.\footnotemark
+authors (see table~\ref{table:networks:algorithms} for additional algorithm details).\footnotemark
 
 \footnotetext{Implementations are available for PMF at
-http://www.mit.edu/\texttildelow rsalakhu/software.html;
+\url{http://www.mit.edu/~rsalakhu/software.html};
 for the eigenmodel at
 http://cran.r-project.org/src/contrib/Descriptions/eigenmodel.html;
 and for the GPLVM at
-http://www.cs.man.ac.uk/\texttildelow neill/collab/ .}
+\url{http://www.cs.man.ac.uk/~neill/collab/}.}
 
+\begin{table}
 \begin{center}
   \begin{tabular}{l  l  c  l }
     Model & Method & Iterations [burn-in] & Parameters\\
@@ -524,11 +530,15 @@ http://www.cs.man.ac.uk/\texttildelow neill/collab/ .}
   %\label{table:DataSets}
   %\end{table}
 \end{center}
+  \caption[Summary of algorithms and settings in link prediction experiment.]{Summary of algorithms and settings in link prediction experiment.}
+  \label{table:networks:algorithms}
+\end{table}
 
 We use standard normal priors on the latent variables $\AHvar$ and pseudo points $\pseudopoints$, and log normal priors for kernel parameters.
 \vspace{-0.18cm}
 \parpic(7cm,3.9cm)[r]{
 \begin{minipage}[h]{8cm}
+%\begin{table}
 \begin{center}
   \begin{tabular}{c | c c c}
     {} & exp mean & std & width \\
@@ -540,6 +550,9 @@ We use standard normal priors on the latent variables $\AHvar$ and pseudo points
     $\pseudopoints$ & - & - & 2
   \end{tabular}
 \end{center}
+%  \caption[Parameter settings for the RFM.]{Parameter settings for the RFM.}
+%  \label{table:networks:params}
+%\end{table}
 \end{minipage}}
 Slice sampling parameters are chosen to favour slice sampling acceptance after a reasonable number of iterations, as evaluated over a range of data sets.
 Specific values of prior and sampling parameters are summarised in the table on the right.
@@ -547,15 +560,16 @@ To balance the computational demands of the different sampling steps, we sampled
 
 In all experiments, we partitioned the edge data into 5 equally sized partitions and performed 5-fold cross validation, predicting the links in one held out partition given the other 4. 
 Where the models did not restrict their outputs to values between 0 and 1, we truncated any predictions lying outside this range.
-The following table reports average AUC (area under receiver operating characteristic) for the various models, with numbers for the top performing model set in bold.
+Tbale~\ref{table:networks:AUCs} reports average AUC (area under receiver operating characteristic) for the various models, with numbers for the top performing model set in bold.
 Significance of results is evaluated by means of a $t$-test with a $p$-value of 0.05; results for models not distinguishable from the top performing model in terms of this $t$-test are also set in bold.
 
+\begin{table}
 \begin{center}
   \begin{tabular}{r | r r r | r r r | r r r}
     \multicolumn{10}{c}{AUC results} \\
     \addlinespace[2pt]
     Data set & \multicolumn{3}{c|}{High school} & \multicolumn{3}{c|}{NIPS} & \multicolumn{3}{c}{Protein} \\
-    $d$\footnotemark & 1 & 2 & 3 & 1 & 2 & 3 & 1 & 2 & 3 \\
+    $d$ & 1 & 2 & 3 & 1 & 2 & 3 & 1 & 2 & 3 \\
     \midrule
     PMF                   & 0.747 & 0.792 & 0.792 & 0.729 & 0.789 & 0.820 & 0.787 & 0.810 & 0.841 \\
     Eigenmodel            & 0.742 & 0.806 & 0.806 & 0.789 & 0.818 & 0.845 & 0.805 & 0.866 & 0.882 \\
@@ -563,8 +577,9 @@ Significance of results is evaluated by means of a $t$-test with a $p$-value of 
     RFM & \textbf{0.815} & \textbf{0.827} & \textbf{0.820} & \textbf{0.907} & \textbf{0.914} & \textbf{0.919} & \textbf{0.903} & \textbf{0.910} & \textbf{0.912}
   \end{tabular}
 \end{center}
-
-\footnotetext{$d$ is the dimensionality of the latent variables}
+  \caption[AUCs in link prediction experiment.]{Average AUC for each method and dataset. $d$ is the dimensionality of the latent variables used in each method. Results that are not distinguishable from the best performing method by a $t$-test at 5\% significance are set in bold.}
+  \label{table:networks:AUCs}
+\end{table}
 
 %The random function model outperforms the other models in almost all tests.
 The random function model outperforms the other models in \emph{all} tests.
@@ -585,7 +600,7 @@ However, our results provide empirical evidence that the flexibility of a genera
 The posterior distribution of $\AHfunction$ favours functions defining random array distributions that explain the data well.
 In this sense, our model fits a probability distribution.
 The standard inference methods for GPLVM and PMF applied to relational data, in contrast, are designed to fit mean squared error, and should therefore be expected to show stronger performance under a mean squared error metric.
-As the following table shows, this is indeed the case.
+As table~\ref{table:networks:RMSEs} shows, this is indeed the case.
 The reported values are RMSE results, with significance evaluated as above.
 
 %\begin{center}
@@ -604,6 +619,7 @@ The reported values are RMSE results, with significance evaluated as above.
 %  \end{tabular}
 %\end{center}
 
+\begin{table}
 \begin{center}
   \begin{tabular}{r | r r r | r r r | r r r}
     \multicolumn{10}{c}{RMSE results} \\
@@ -617,9 +633,12 @@ The reported values are RMSE results, with significance evaluated as above.
     RFM & \textbf{0.239} & \textbf{0.234} & \textbf{0.235} & \textbf{0.114} & \textbf{0.111} & \textbf{0.110} & \textbf{0.138} & \textbf{0.136} & \textbf{0.136}
   \end{tabular}
 \end{center}
+  \caption[RMSEs in link prediction experiment.]{Average RMSE for each method and dataset. $d$ is the dimensionality of the latent variables used in each method. Results that are not distinguishable from the best performing method by a $t$-test at 5\% significance are set in bold.}
+  \label{table:networks:RMSEs}
+\end{table}
 
 An arguably more suitable metric is comparison in terms of conditional edge probability \ie ${\likelihood(\darray_{\lbrace ij \rbrace} \given \larray_{\lbrace ij \rbrace})}$ for all $i,j$ in the held out data. These cannot, however, be computed in a meaningful manner for
-standard versions of models such as PMF and GPLVM, which assign a Gaussian likelihood to data. The next table hence reports only comparisons to the eigenmodel.
+standard versions of models such as PMF and GPLVM, which assign a Gaussian likelihood to data. Table~\ref{table:networks:probs} hence reports only comparisons to the eigenmodel.
 %This table is negative conditional log likelihood * 1000 / (number of predicted links).
 %\begin{center}
 %  \begin{tabular}{r | r r r | r r r | r r r}
@@ -635,9 +654,10 @@ standard versions of models such as PMF and GPLVM, which assign a Gaussian likel
 %  \end{tabular}
 %\end{center}
 
+\begin{table}
 \begin{center}
   \begin{tabular}{r | r r r | r r r | r r r}
-     \multicolumn{10}{c}{Negative log conditional edge probability\footnotemark} \\
+     \multicolumn{10}{c}{Negative log conditional edge probability} \\
      \addlinespace[2pt]
      Data set & \multicolumn{3}{c|}{High school} & \multicolumn{3}{c|}{NIPS} & \multicolumn{3}{c}{Protein} \\
     $d$ & 1 & 2 & 3 & 1 & 2 & 3 & 1 & 2 & 3 \\
@@ -646,8 +666,11 @@ standard versions of models such as PMF and GPLVM, which assign a Gaussian likel
     RFM & \textbf{205} & \textbf{199} & \textbf{201} & \textbf{65} & \textbf{57} & \textbf{56} & \textbf{78} & \textbf{75} & \textbf{75}
   \end{tabular}
 \end{center}
-
-\footnotetext{The precise calculation implemented is $-\log(\likelihood(\darray_{\lbrace ij \rbrace} \given \larray_{\lbrace ij \rbrace})) \times 1000 \, / \,(\textrm{Number of held out edges})$. }
+  \caption[Negative log conditional edge probabilities in link prediction experiment.]{Average negative log conditional edge probability for the Eigenmodel and RFM and each dataset.
+  The precise calculation implemented is $-\log(\likelihood(\darray_{\lbrace ij \rbrace} \given \larray_{\lbrace ij \rbrace})) \times 1000 \, / \,(\textrm{Number of held out edges})$.
+  $d$ is the dimensionality of the latent variables used in each method. Results that are not distinguishable from the best performing method by a $t$-test at 5\% significance are set in bold.}
+  \label{table:networks:probs}
+\end{table}
 
 \subsection{Inferred representing functions}
 
@@ -762,7 +785,7 @@ Similar but less complicated structures are observed in the NIPS and Highschool 
 Figure~\ref{fig:networks:nips} shows unsorted (left) and sorted (right) adjacency matrices for the NIPS coauthorship network.
 The map embedding of the $U_i$ has identified clear block structures of densely connected groups of authors.
 However, there are many authors (in the middle of the adjacency matrix) for which there is no block structure, only transitivity (coauthors of coauthors are likely to be coauthors).
-Similarly, the sorted high school social network adjacency matrix in figure~\ref{fig:networks:highschool} mostly shows patterns of transitivity with most links along the diagonal.
+Similarly, the sorted high school social network adjacency matrix in figure~\ref{fig:networks:highschool} mostly shows patterns of transitivity with most links near the diagonal.
 
 \begin{figure}[ht]
   \centering

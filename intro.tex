@@ -4,10 +4,12 @@
 \chapter{Introduction}
 \label{ch:intro}
 
+\fTBD{Make outline and intro material separate - overall could be longer}
+
 This thesis concerns the challenge of drawing inferences from uncertain data.
 We take a probabilistic and Bayesian approach throughout  which is a natural extension of drawing logical inferences from certain information~\citep[e.g.][]{Jaynes2003-jh}.
 To perform probabilistic inference faithfully one must be able to express all of one's prior information about some situation in the form of a probability distribution.
-In chapters~\ref{ch:networks}~and~\ref{ch:arrays} we demonstrate how to construct probability distribution that respect symmetry conditions appropriate for data in the form of networks or databases.
+In chapters~\ref{ch:networks}~and~\ref{ch:arrays} we demonstrate how to construct probability distributions that respect symmetry conditions appropriate for data in the form of networks or databases.
 In chapters~\ref{ch:construction}~and~\ref{ch:description} we develop expressive probability distributions over functions and demonstrate that they express patterns that can be easily understood by humans.
 In chapter~\ref{ch:gefcom} we demonstrate the application of these distributions over functions to a data mining competition.
 Finally, chapter~\ref{ch:criticism} considers the problem of criticising a probabilistic model when we have reason to believe that we were either unable to faithfully express our prior information probabilistically or perform inference to a sufficient level of accuracy.
@@ -55,14 +57,14 @@ These lines of enquiry are potentially very fruitful but still in their infancy 
 
 \section{An introduction to exchangeability and representation theorems}
 
-Suppose one receives a sequence of data $(X_1, X_2, \dots)$ and we wish to specify our beliefs about this data with a probability distribution.
+Suppose we receive a sequence of data $(X_1, X_2, \dots)$ and we wish to specify our beliefs about this data with a probability distribution.
 A commonly appropriate prior assumption is that we do not believe the order of the data contains any information, or rather that any probability distribution encoding our beliefs about this data should be invariant to reorderings of the data.
 That is, we may often believe that our data is an exchangeable sequence:
 \[
   \label{eq:intro:exch}
   (X_1, X_2, \dots) \eqdist (X_{p(1)}, X_{p(2)}, \dots) \qquad \forall\, p\in\SGinf
 \]
-where $\eqdist$ denotes equality in distribution, and $\SGinf$ is the set of all permutations of $\Nats$ which permute at most a finite number of elements.
+where $\eqdist$ denotes equality in distribution, and $\SGinf$ is the set of all permutations of the natural numbers, $\Nats$, which permute at most a finite number of elements.
 
 de Finetti's theorem \citep[e.g.][]{Kallenberg2005-ec} characterises all probability distributions of sequences with this property;  $(X_i)_{i\in\Nats}$ is an exchangeable sequence if and only if there exists a random probability measure $\AHfunction$ such that $\darray_1,\darray_2,\ldots\simiid\AHfunction$.
 In other words, observations are conditionally \iid given some random $\AHfunction$.
@@ -111,7 +113,7 @@ Lines are random samples from the prior probability distribution, the red shadin
 \label{fig:intro:lin_reg}
 \end{figure}
 
-We now rewrite the equations for the noisy linear relationship between $y$ and $x$ in an equivalent form
+By integrating out $m$, we can rewrite the equations for the noisy linear relationship between $y = (y_i)$ and $x = (x_i)$ in the following equivalent form
 \[
   y_i &\sim \mathcal{N}(0, x_i^2 + \sigma_\varepsilon^2) \\
   \Cov(y_i, y_j) &= x_i x_j \quad \forall\,i\neq j
@@ -147,7 +149,7 @@ or alternatively
 \[
   (y_i : i = 1,\dots,n) \sim \Normal\bigg(\big(\mu(x_i) : i = 1,\dots,n\big), K\bigg)
 \]
-where $K_{ij} = k(x_i, x_j)$; note that $k$ must be such that $K$ is always positive (semi) definite to define a valid probability distribution.
+where $K_{ij} = k(x_i, x_j)$; note that the kernel, $k$, must be such that the matrix $K$ is always positive (semi) definite to define a valid probability distribution.
 Since these equations hold for any value of the inputs $x$ we can see that by writing $y_i = f(x_i)$ we have essentially specified a probability distribution over functions $f$.
 We denote this distribution as
 \[
