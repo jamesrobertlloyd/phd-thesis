@@ -49,7 +49,7 @@ There has been significant work on constructing kernels for use with Gaussian pr
 Commonly used kernel families include the squared exponential (\kSE)\footnotemark, periodic (\kPer), linear (\kLin), and rational quadratic (\kRQ) which are defined as follows:
 \[
 \kSE(\inputVar, \inputVar') =& \sigma^2\exp\left(-\frac{(\inputVar - \inputVar')^2}{2\ell^2}\right) \\
-\kPer(\inputVar, \inputVar') =& \sigma^2\exp\left(-\frac{2\sin^2 (\pi(\inputVar - \inputVar')/p)}{\ell^2}\right) \\
+\kPer(\inputVar, \inputVar') =& \sigma^2\exp\left(-\frac{2\sin^2 (\pi(\inputVar - \inputVar')/p)}{\ell^2}\right) \label{eq:kPer}\\
 \kLin(\inputVar, \inputVar') =& \sigma_b^2 + \sigma_v^2(\inputVar - \ell)(\inputVar' - \ell) \\
 \kRQ(\inputVar, \inputVar') =& \sigma^2\left( 1 + \frac{(\inputVar - \inputVar')^2}{2 \alpha \ell^2} \right)^{-\alpha}
 \]

@@ -204,6 +204,8 @@ The newly defined zero-mean periodic kernel is given by
 \[
   \kZMPer(\inputVar, \inputVar') =&  \sigma^2\frac{\exp\left(\frac{\cos\frac{2 \pi (\inputVar - \inputVar')}{p}}{\ell^2}\right) - I_0\left(\frac{1}{\ell^2}\right)}{\exp\left(\frac{1}{\ell^2}\right) - I_0\left(\frac{1}{\ell^2}\right)}
 \]
+where $I_0$ is the modified Bessel function of the first kind of order zero.
+It is simply a carefully chosen linear transformation of the more common periodic kernel defined in equation~\ref{eq:kPer}.
 A simple application of l'H\^opital's rule shows that
 \begin{equation}
 \kZMPer(x, x') \to \sigma^2\cos\left(\frac{2 \pi (x - x')}{p}\right) \quad \textrm{as} \quad\ell \to \infty.
@@ -236,6 +238,8 @@ We therefore define the changepoint operator as
 \label{eq:cp}
 \end{align}
 where $\boldsymbol\sigma = \sigma(x)\sigma(x')$ and $\boldsymbol{\bar\sigma} = (1-\sigma(x))(1-\sigma(x'))$.
+Not written are parameters of the sigmoid $\sigma$ that control its location and steepness.
+
 We define changewindows $\kCW(\cdot,\cdot)$ similarly by replacing $\sigma(x)$ with a product of two sigmoids to create a `hat' function.
 Examples of draws from Gaussian processes with kernels constructed using the changepoint operator are shown in figure~\ref{fig:description:cp}.
 
@@ -615,7 +619,7 @@ The learned function for the solar irradiance data is
 \textrm{Irradiance($t$)} = 1361 + \alpha\sin(\beta + \gamma t)\sin(\delta + \epsilon t^2 - \zeta t)
 \end{align*}
 where $t$ is time and constants are replaced with symbols for brevity.
-This equation captures the constant offset of the data, and models the long-term trend with a product of sinusoids, but fails to capture the solar cycle or the Maunder minimum.
+This equation captures the constant offset of the data, and models the long-term trend with a product of sinusoids, but fails to capture the solar cycle or the Maunder minimum\fTBD{Plot if you can find the data}.
 
 The learned function for the airline passenger data is
 \begin{align*}
@@ -799,7 +803,7 @@ With only the squared exponential kernel representing smoothness in the language
 This is a cute mathematical property, but a different kernel encoding for smoothness could have been chosen and the langauge of kernels restricted to only having one of these kernels in each product.
 In this sense the $\kSE$ kernel has been used purely for convenience, rather than truly reflecting our beliefs about functions.
 \citet{Stein1999-ps} recommends instead the Mat\'ern class of kernels, which possibly have more realistic smoothness assumptions than the squared exponential kernel in many situations.
-\citet{Van_der_Vaart2011-wo} also demonstrate that the Mat\'ern class of kernels produce regression algorithms with improved convergence rates compared to the square exponential for all but very smooth functions.
+\citet{Van_der_Vaart2011-wo} also demonstrate that the Mat\'ern class of kernels produce regression algorithms with improved convergence rates compared to the square exponential for all but very smooth functions\fTBD{Zoubin - Brief conclusion}.
 
 %\subsection{Linguistic and subjective biases}
 
