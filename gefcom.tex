@@ -4,6 +4,8 @@
 \chapter{Application of compositional kernels to a data mining competition}
 \label{ch:gefcom}
 
+\fTBD{Zoubin - more plots of data in intro and quote performance figures}
+
 In this chapter I will discuss how I used Gaussian processes with compositionally constructed kernels as part of an ensemble of predictors in a data mining competition.
 In particular, this competition involved forecasting hourly loads of a US energy utility as part of the load forecasting track of the Global Energy Forecasting Competition 2012 hosted on Kaggle.
 The chapter begins with a description of the relatively simple techniques I used to be ranked \nth{2} in the competition; this description is based on~\ref{Lloyd2013-yn}\fTBD{I do not know why this reference is not working at the moment}.
@@ -19,7 +21,7 @@ The data for this competition consisted of an hourly time series of energy utili
 The data stretched over a period of 4.5 years and 8 non-consecutive weeks of load data were missing.
 The task of the competition was to fill in the missing 8 weeks (backcasting) and to predict loads for the week following the extent of the data where temperature data was not available (forecasting); use of additional sources of temperature data was expressly prohibited by the competition organisers.
 
-The evaluation metric of the competition (weighted root mean squared error) was heavily biased towards good performance on the forecasting task.
+The evaluation metric of the competition (weighted root mean squared error) was heavily biased towards good performance on the forecasting task (much higher weightings were placed on forecast errors).
 Whilst the competition was running, contestants could submit predictions to the website Kaggle and obtain the value of the evaluation metric evaluated on 25\% of the held out data.
 This value was known as the public score since it was published during the competition.
 Perhaps not too surprisingly this resulted in many participants overfitting heavily to this particular split of the data; the leaderboard changed substantially when final scores were evaluated on the remaining 75\% of the data (yielding the private scores).
@@ -144,9 +146,10 @@ All zones were modelled independently for simplicity.
 \subsection{Methodology}
 
 A standard `black-box' technique for learning an unknown regression function is that of using gradient boosting machines (GBM) \citep[e.g. chapter 10 of][]{Hastie2009-hj}.
+Gradient boosting machines here refer to a method for learning a sum of decision trees using boosting also using bootstrap samples of the data when learning each decision tree.
 For each zone I used all of the data to train a GBM and then used that to predict all outputs \ie I learnt a global function for each zone.
 
-I used a standard R implementation of GBM using most of the default settings\footnotemark.
+I used a standard R implementation of GBM using most of the default settings\footnotemark{}.
 After some brief experimentation with parameter values I used a shrinkage factor of 0.01, 10000 trees and an interaction depth of 3.
 I experimented with other parameter values, using the public test score as a guide, but nothing I tried improved upon my initial guess and therefore I did not expend much effort trying to optimise parameter values.
 
@@ -164,8 +167,8 @@ The R script \texttt{basic\_gbm.R} then performs the method described above to p
 The time series for zone 10 had a very large discontinuity (see left of figure~\ref{fig:load}).
 GBM was used as a global prediction method which means it will have produced very bad predictions for zone 10.
 I later fixed this by modelling the loads either side of the discontinuity separately.
-Perversely, this resulted in a worse public test score.
-However, this change resulted in a much improved private test score; in hindsight I should have opted for the more reasonable model!
+Perversely, this resulted in a worse public test score, despite being a much more sensible model.
+However, this change resulted in a much improved private test score; it is all too easy to overfit without rigid discipline!
 
 \section{Gaussian processes}
 
@@ -191,11 +194,12 @@ The forms of the three kernels used were as follows\footnotemark
 \kSE_t + \kSE_t + \kPer_t \label{eqn:kernel2}\\
 \kSE_t + \kSE_S + \kSE_T \times \kPer_t \label{eqn:kernel3}
 \end{eqnarray}
-where the subscripts indicate which dimension the kernel acts upon; (t)ime, (T)emperature or (S)moothed temperature.
+where the subscripts indicate which dimension the kernel acts upon; (t)ime, (T)emperature or (S)moothed temperature\footnotemark{}.
 For backcasting, the model was applied to the 1000 surrounding data points; for forecasting the last 500 data points were used.
 Only one temperature station was used in this method; for each back / forecasting region the model evidence of the model was computed for each temperature station.
 Bayesian model averaging \citep[e.g.][]{Hoeting1999-tn} was then used to combine the predictions.
 In practice this was usually numerically equivalent to selecting the model / temperature station with the highest model evidence.
+\footnotetext{A local linear regression of temperature with a bandwidth of one day.}
 
 Kernel~\eqref{eqn:kernel1} encodes the assumptions that loads can be explained as a smoothly varying trend and an approximately periodic component.
 The smooth trend is the sum of a smooth function of smoothed temperature and a smooth function of time (to explain any deviations from the trend implied by temperature).
