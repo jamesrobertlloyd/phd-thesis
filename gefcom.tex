@@ -4,8 +4,6 @@
 \chapter{Application of compositional kernels to a data mining competition}
 \label{ch:gefcom}
 
-\fTBD{Zoubin - more plots of data in intro and quote performance figures}
-
 In this chapter I will discuss how I used Gaussian processes with compositionally constructed kernels as part of an ensemble of predictors in a data mining competition.
 In particular, this competition involved forecasting hourly loads of a US energy utility as part of the load forecasting track of the Global Energy Forecasting Competition 2012 hosted on Kaggle.
 The chapter begins with a description of the relatively simple techniques I used to be ranked \nth{2} in the competition; this description is based on~\ref{Lloyd2013-yn}\fTBD{I do not know why this reference is not working at the moment}.
@@ -21,10 +19,60 @@ The data for this competition consisted of an hourly time series of energy utili
 The data stretched over a period of 4.5 years and 8 non-consecutive weeks of load data were missing.
 The task of the competition was to fill in the missing 8 weeks (backcasting) and to predict loads for the week following the extent of the data where temperature data was not available (forecasting); use of additional sources of temperature data was expressly prohibited by the competition organisers.
 
+\begin{table}[ht]
+  \begin{center}
+    \begin{tabular}{l|r|r}
+      Team name & Public score & Private score \\
+      \hline
+      CountingLab & 70700 & 67215 \\
+      James Lloyd & 71164 & 71416 \\
+      Tololo & 52669 & 71780 \\
+      TinTin & 64352 & 73307 \\
+      Quadrivio & 72825 & 78196
+    \end{tabular}
+  \end{center}
+  \caption[Scores of top 5 entries to GEFCom]{
+    Scores of top 5 entries to GEFCom.
+    The public score was evaluated on 25\% of the test data and was known to all participants during the challenge.
+    The private score was evaluated on the other 75\% of the data at the end of the competition.}
+  \label{table:gefcom:scores}
+\end{table}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.475\columnwidth]{\gefcomfigsdir/load_1}
+\includegraphics[width=0.475\columnwidth]{\gefcomfigsdir/load_4} \\
+\includegraphics[width=0.475\columnwidth]{\gefcomfigsdir/load_9}
+\includegraphics[width=0.475\columnwidth]{\gefcomfigsdir/load_10}
+\caption[Example load data from GEFCom.]{
+Load data at zones 1 (top left), 4 (top right), 9 (bottom left) and 10 (bottom right).
+All other zones look very similar to zones 1 and 4.
+The vertical lines indicate the start and end of the regions where loads were to be predicted.
+}
+\label{fig:gefcom:exampleload}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.95\columnwidth]{\gefcomfigsdir/temp_6}
+\caption[Example temperature data from GEFCom.]{
+Temperature data at station 6.
+All other stations look very similar.
+The vertical lines indicate the start and end of the regions where loads were to be predicted.
+}
+\label{fig:gefcom:exampletemp}
+\end{figure}
+
+The full data at four of the load zones is shown in figure~\ref{fig:gefcom:exampleload}.
+The other load zones are very similar to the top two plots showing clear seasonality; the bottom two plots are the only atypical zones.
+The vertical lines indicate the starts and ends of the backcasting and forecasting regions.
+Full temperature data at station 6 is shown in figure~\ref{fig:gefcom:exampletemp}; all temperature stations look similar.
+
 The evaluation metric of the competition (weighted root mean squared error) was heavily biased towards good performance on the forecasting task (much higher weightings were placed on forecast errors).
 Whilst the competition was running, contestants could submit predictions to the website Kaggle and obtain the value of the evaluation metric evaluated on 25\% of the held out data.
 This value was known as the public score since it was published during the competition.
 Perhaps not too surprisingly this resulted in many participants overfitting heavily to this particular split of the data; the leaderboard changed substantially when final scores were evaluated on the remaining 75\% of the data (yielding the private scores).
+The final public and private scores for the top 5 teams are shown in table~\ref{table:gefcom:scores}.
 Further details can be found in the competition summary paper \citep{Hong2014-yf}.
 
 \subsection{Structure of chapter}
