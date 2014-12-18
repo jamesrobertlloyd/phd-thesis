@@ -561,7 +561,7 @@ All \gp{} kernel parameter estimation was performed by automated calls to the GP
 {\texttt{github.com/jamesrobertlloyd/gp-structure-search}}
 }.
 
-\section{Discussion}
+\section{Conclusion and discussion}
 \label{sec:construction:discussion}
 
 Towards the goal of automating the choice of kernel family, we introduced a space of composite kernels defined compositionally as sums and products of a small number of base kernels.  
@@ -593,9 +593,9 @@ A simple method that we attempted to utilise was the Laplace approximation to th
 This method approximates the log-likelihood function as a quadratic with centre at a mode of the likelihood and curvature at the mode matched to that of the true log-likelihood.
 To be able to calculate this approximation one must be sufficiently close to a mode of the likelihood in order to be able to produce a numerical estimate of the curvature that is strictly negative definite (\ie defining an appropriate turning point of the likelihood).
 
+We found that the conjugate gradients solver used within the kernel search algorithm could become confused by numerical noise and would terminate before it reached a mode making the Laplace approximation impossible.
 The situation of not quite being at the mode however is not just a numerical annoyance, it is becoming increasingly common.
-We found that the conjugate gradients solver used within the kernel search algorithm could become confused by numerical noise and would terminate before it reached a mode.
-Also, as data sets become increasingly large and computation and time constraints of algorithms become increasingly important it will often be irrational to run optimisers to completion since it may be more beneficial to spend computation on investigating other models \citep[e.g.][]{Swersky2014-aw}.
+As data sets become increasingly large and computation and time constraints of algorithms become increasingly important it will often be irrational to run optimisers to completion since it may be more beneficial to spend computation on investigating other models \citep[e.g.][]{Swersky2014-aw}.
 
 A potential way forward is to imagine a more general version of the Laplace approximation.
 The Laplace approximation attempts to approximate the log-likelihood with a quadratic; this can be achieved without exactly having found the mode simply by performing regression using a quadratic regression function.
@@ -609,7 +609,9 @@ It would be profitable to study the effectiveness of this curvature estimate as 
 In this chapter we have demonstrated that selecting the model with the highest model evidence encountered along the search was sufficient to achieve good empirical performance on the moderate dimensional datasets considered.
 However, much like BIC guided linear model selection will fail on high dimensional problems \citep[e.g.][]{Hastie2009-hj}, so will the kernel search as currently described.
 Staying within the Bayesian paradigm it is conceptually simple to alleviate this problem by instead computing a Bayes model average \citep[e.g.][]{Hoeting1999-tn} over kernel families.
-The natural search objective would then change from optimising the model evidence of a single kernel family to that of the sum of model evidences of all kernel families visited by the search, appropriately weighted by a prior over kernel families\fTBD{Zoubin says - more conclusion and more elaboration on model averaging}.
+The natural optimisation objective would then change from optimising the model evidence of a single kernel family to that of the sum of model evidences of all kernel families visited by the search, appropriately weighted by a prior over kernel families.
+Setting the prior over kernel families could be a very interesting exercise if attempting to adapt the prior to match the patterns found in `typical' data sets.
+Optimising the weighted sum of model evidences would also require a new search algorithm to be effective; we are currently investigating if the freeze-thaw algorithm of \citet{Swersky2014-aw} can be effectively applied to this domain.
 
 \outbpdocument{
 \bibliographystyle{plainnat}
