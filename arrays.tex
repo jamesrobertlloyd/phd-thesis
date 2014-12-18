@@ -54,9 +54,9 @@ Fix a finite set $\Types$ of \defn{types}.  Define a \defn{signature} to be a fi
 Define a \defn{relation $r$ of signature $s \in \Types^d$ with values in a space $\Space$} to be a function from $\Nats^d$ to $\Space$.
 \end{definition}
 
-We may encode a relation $r$ with signature $s \in \Types^d$ as an array $X^r \defas (X^r_{\bi})_{\bi \in \Nats^d}$ given by
+We may encode a relation $r$ with signature $s \in \Types^d$ as an array $X^r \defas (X^r_{k})_{k \in \Nats^d}$ given by
 \[
-X^r_{\bi} = r(i_1,\dotsc,i_d), \qquad \text{for } \bi = (i_1,\dotsc, i_d) \in \Nats^d.
+X^r_{k} = r(k_1,\dotsc,k_d), \qquad \text{for } k = (k_1,\dotsc, k_d) \in \Nats^d.
 \]
 
 \begin{example} 
@@ -78,13 +78,13 @@ For each type $t \in \Types$, let $p_t \in \SGinf$ be a permutation of $\Nats$.
 Write $p = (p_t ; t \in \Types) \in \SGinf^T$ for a collection of such permutations.
 Given a signature $s \in \Types^{d}$, define $p^s$ to be the map from $\Nats^{d}$ to $\Nats^{d}$ such that
 \[
-p^s(\bi) \defas (p_{s_1}(i_1), \dotsc,p_{s_{d}}(i_{d})), \qquad \text{for } \bi \in \Nats^{d}.
+p^s(k) \defas (p_{s_1}(k_1), \dotsc,p_{s_{d}}(k_{d})), \qquad \text{for } k \in \Nats^{d}.
 \]
-In other words, $p^s$ maps a sequence $i_1,\dotsc,i_d$ of indices (indexing objects of type $s_1,\dotsc,s_d$, respectively) to the sequence where each index is permuted by the permutation corresponding to its type.
+In other words, $p^s$ maps a sequence $k_1,\dotsc,k_d$ of indices (indexing objects of type $s_1,\dotsc,s_d$, respectively) to the sequence where each index is permuted by the permutation corresponding to its type.
 
 If $X^r$ is the encoding of a relation $r$ with signature $s \in \Types^d$, then the permuted relation $r \circ p$ is represented by the array $X^{r\circ p}$ given by
 \[
-X^{r \circ p}_{\bi} = X^r_{p^s(\bi)}, \qquad \text{for } \bi \in \Nats^d.
+X^{r \circ p}_{k} = X^r_{p^s(k)}, \qquad \text{for } k \in \Nats^d.
 \]
 
 \begin{definition}[exchangeable database]
@@ -109,7 +109,7 @@ The following result characterises the distribution of any exchangeable database
     converge in distribution to $(X^{r_j})_{j=1\ldots R}$ on all finite subarrays as $n\to \infty$, where   
    the sequence of arrays $X^{j,1},X^{j,2},\dotsc$ for $j = 1,\dotsc,R$ are given by
    \[
-     X^{r_j,n}_{\bi} := F^{j,n}(\AHvar^{s_j(1)}_{i_1},\dotsc,\AHvar^{s_j(d_j)}_{i_{d_j}}), \qquad \text{for } \bi \in \Nats^{d_j}.
+     X^{r_j,n}_{k} := F^{j,n}(\AHvar^{s_j(1)}_{k_1},\dotsc,\AHvar^{s_j(d_j)}_{k_{d_j}}), \qquad \text{for } k \in \Nats^{d_j}.
    \]
 \end{cor}
 
@@ -227,23 +227,23 @@ Note that this is precisely the type of symmetry we defined for exchangeable dat
 
 We say that a $\pi$-exchangeable array $X$ is \emph{simple} if it admits a functional representation of the form
 \begin{equation}
-  X_{\bi} = f(U, U^{\pi_1}_{\bi_1}, \dots, U^{\pi_d}_{\bi_d})
+  X_{k} = f(U, U^{\pi_1}_{k_1}, \dots, U^{\pi_d}_{k_d})
 \end{equation}
-where $f$ is a measurable function and $U, (U^{\pi_j}_{\bi_j})$ are \iid Uniform$[0,1]$ random variables.
+where $f$ is a measurable function and $U, (U^{\pi_j}_{k_j})$ are \iid Uniform$[0,1]$ random variables.
 
 \begin{prop}[$\pi$-exchangeability representation theorem]
   \label{thm:piex}
   Let $X$ be a $\pi$-exchangeable array.
   Then there exist some simple $\pi$-exchangeable arrays $X_1$ , $X_2$ , \dots such that
   $\chi_m X_n$ and $\chi_m X$ are mutually absolutely continuous for all $m,n \in \Nats$ and the associated Radon--Nikodym derivatives tend
-  uniformly to 1 as $n \to \infty$ for fixed $m$ where $\chi_m$ is the array subset operation such that $\chi_m Y \defas (Y_{\bi} : \bi \in \{1,\dots,m\}^d)$.
+  uniformly to 1 as $n \to \infty$ for fixed $m$ where $\chi_m$ is the array subset operation such that $\chi_m Y \defas (Y_{k} : k \in \{1,\dots,m\}^d)$.
 \end{prop}
 
 \subsection{Simple exchangeable database representation theorem}
 
 We generalise the concept of a simple $\pi$-exchangeable array by saying that an exchangeable database $(X^{r_j})_{j=1}^R$ is simple if it admits a functional representation of the form
 \begin{equation}
-  X^{r_j}_{\bi} = f^{r_j}(U, U^{s_{j}(1)}_{\bi_1},\dots,U^{s_{j}(d_j)}_{\bi_{d_j}}) \,\, \forall \,\, \bi \in \Nats^{d_j} \,\, \forall \,\, j \in {1,\dots,R}.
+  X^{r_j}_{k} = f^{r_j}(U, U^{s_{j}(1)}_{k_1},\dots,U^{s_{j}(d_j)}_{k_{d_j}}) \,\, \forall \,\, k \in \Nats^{d_j} \,\, \forall \,\, j \in {1,\dots,R}.
 \end{equation}
 
 We first state a simple but useful lemma.
@@ -274,18 +274,16 @@ We can now state and prove the first main result of this chapter.
   $(\chi_m X^{r_j,n})_{j=1}^R$ and $(\chi_m X^{r_j})_{j=1}^R$ are mutually absolutely continuous for all $m,n \in \Nats$ and the associated Radon--Nikodym derivatives converge uniformly to 1 as $n \to \infty$ for fixed $m$.
 \end{thm}
 
-\fTBD{Sort out the usage of $k$ and $i$ and upper lower case}
-
 \begin{proof}
   We first embed all of the arrays representing the exchangeable database into one larger array:
   \[
-    R_{\bi} = (X^{r_j}_{\rho_j(\bi)} : j = 1,\dots,R) \quad \forall \, \bi \in \Nats^d.
+    R_{k} = (X^{r_j}_{\rho_j(k)} : j = 1,\dots,R) \quad \forall \, k \in \Nats^d.
   \]
   By the definition of an exchangeable database, this array is $\pi$ exchangeable where $\pi$ is as defined in the preceding text.
-  By proposition~\ref{thm:piex} there exists a sequence of measurable functions $(f^n)$ and collection of independent uniform random variables $U$ and $(U^t_i)$ such that $(\chi_m R_{\bi})$ and $(\chi_m f^n(U, U^{\pi_1}_{\bi_1}, \dots, U^{\pi_d}_{\bi_d}))$ are mutually absolutely continuous and the associated Radon--Nikodym derivates converge uniformly to 1 as $n \to \infty$ for all $m$.
+  By proposition~\ref{thm:piex} there exists a sequence of measurable functions $(f^n)$ and collection of independent uniform random variables $U$ and $(U^t_i)$ such that $(\chi_m R_{k})$ and $(\chi_m f^n(U, U^{\pi_1}_{k_1}, \dots, U^{\pi_d}_{k_d}))$ are mutually absolutely continuous and the associated Radon--Nikodym derivates converge uniformly to 1 as $n \to \infty$ for all $m$.
   By lemma~\ref{lem:contractionrnd} we have the same convergence for the following subarrays
   \[
-    f^{n,j}(U, U^{\pi_1}_{\tilde{\rho}_j(\bi_1)}, \dots, U^{\pi_d}_{\tilde{\rho}_j(\bi_d)}) \to X^{r_j}_{\rho_j(\bi)}.
+    f^{n,j}(U, U^{\pi_1}_{\tilde{\rho}_j(k_1)}, \dots, U^{\pi_d}_{\tilde{\rho}_j(k_d)}) \to X^{r_j}_{\rho_j(k)}.
   \]
   By the Borel isomorphism theorem there is a bimeasurable function $h$ and a uniformly distributed random variable $V$ such that
   \[
@@ -293,12 +291,12 @@ We can now state and prove the first main result of this chapter.
   \]
   Let
   \[
-    g^{n,j}(V, U^{\pi_k}_{\bi_k} : k \in I_{s_j}) \defas f^{n,j}(U, U^{\pi_1}_{\tilde{\rho}_j(\bi_1)}, \dots, U^{\pi_d}_{\tilde{\rho}_j(\bi_d)}).
+    g^{n,j}(V, U^{\pi_i}_{k_i} : i \in I_{s_j}) \defas f^{n,j}(U, U^{\pi_1}_{\tilde{\rho}_j(k_1)}, \dots, U^{\pi_d}_{\tilde{\rho}_j(k_d)}).
   \]
   $g$ is measurable by composition of measurable $f$ and $h$.
   Finally set
   \[
-    X^{r_j,n}_{\bi} \defas g^{n,j}(V, U^{\pi_k}_{\bi_k} : k \in I_{s_j})
+    X^{r_j,n}_{k} \defas g^{n,j}(V, U^{\pi_i}_{k_i} : i \in I_{s_j})
   \]
   and we are done.
 \end{proof}
