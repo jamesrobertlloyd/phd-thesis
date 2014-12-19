@@ -85,7 +85,7 @@ The squared exponential ($\kSE$)  kernel encodes for probability distributions o
 Kernels such as $\kSE \kerntimes \kRQ$ and $\kRQ \kerntimes \kRQ$ also encode for yet more variations on smooth functions.
 It seems unlikely that there can be simple descriptions of all of these different types of smoothness (there are only so many synonyms) without resorting to equations or graphs of the kernels; neither of these are easy to interpret, even by experts.
 
-For this reason we remove the rational quadratic kernel from our set of base kernels with which we form the language of kernel families.
+This is one of the reasons why we remove the rational quadratic kernel from our set of base kernels with which we form the language of kernel families.
 As we will see in section~\ref{sec:description:description} this will allow us to only have to describe one type of smoothness making the task of automatic description into natural language much simpler.
 In addition to this, we avoid the occasionally pathological behaviour of the rational quadratic to capture multiple scales of variation in a single function.
 The left of figure~\ref{fig:rq} shows the posterior of a component involving a rational quadratic kernel produced by the procedure of chapter~\ref{ch:construction} on the Mauna Loa data set.
@@ -478,7 +478,7 @@ There are a number of ways in which the descriptions of the kernels can be made 
   \item Some kernels can be described as premodifiers \eg `an approximately periodic function'.
 \end{itemize}
 
-The reports in the supplementary material and in section~\ref{sec:examples} include some of these refinements.
+The reports in appendix~\ref{ch:example-solar} and section~\ref{sec:examples} include some of these refinements.
 For example, the head noun is chosen according to the following ordering:
 \begin{align*}
 \kZMPer > \kWN, \kSE, \kC > \prod_m \kLin^{(m)} > \prod_n \boldsymbol\sigma^{(n)}
@@ -672,7 +672,7 @@ We evaluate the performance of the algorithms listed below on 13 real time-serie
 
 We compare \procedurename{} to equation learning using Eureqa \citep{Nutonian2011-el} and six other regression algorithms: linear regression, \gp{} regression with a single $\kSE$ kernel (squared exponential), a Bayesian variant of multiple kernel learning (MKL) \citep[e.g.][]{Bach2004-lb}, change point modeling \citep[e.g.][]{Garnett2010-rd, Saatci2010-el, Fox2012-fm}, spectral mixture kernels \citep{Wilson2013-eq} (spectral kernels) and trend-cyclical-irregular models \citep[e.g.][]{Lind2006-th}.
 
-The spans of the languages of kernels of the language used by \procedurename{} and the kernel search introduced in chapter~\ref{ch:description} are very similar; the changes are close to being only a change of basis.
+The spans of the languages of kernels of the language used by \procedurename{} and the kernel search introduced in chapter~\ref{ch:construction} are very similar; the changes are close to being only a change of basis.
 Consequently their predictive accuracy is nearly identical so we only include \procedurename{} in the results for brevity.
 
 We use the default mean absolute error criterion when using Eureqa.
@@ -738,7 +738,7 @@ The models learned by Eureqa tend to capture only broad trends of the data since
 
 See table~\ref{table:interp} for raw interpolation results and table~\ref{table:extrap} for raw extrapolation results. 
 The rows follow the order of the datasets in appendix~\ref{ch:datasets}.
-The following abbreviations are used: \procedurename{}-accuracy (\procedurename{}-acc), \procedurename{}-interpretability ((\procedurename{}-int), Spectral kernels (SP), Trend-cyclical-irregular (TCI), Bayesian MKL (MKL), Eureqa (EL), Changepoints (CP), Squared exponential (SE) and Linear regression (Lin).
+The following abbreviations are used: \procedurename{}-accuracy (\procedurename{}-acc), \procedurename{}-interpretability (\procedurename{}-int), Spectral kernels (SP), Trend-cyclical-irregular (TCI), Bayesian MKL (MKL), Eureqa (EL), Changepoints (CP), Squared exponential (SE) and Linear regression (Lin).
 
 \begin{table}[ht]
 \center
@@ -761,7 +761,7 @@ The following abbreviations are used: \procedurename{}-accuracy (\procedurename{
 1.00 & 1.10 & 1.03 & 1.03 & 1.03 & 2.24 & 1.02 & 1.77 & 9.97\\
 \hline
 \end{tabular}
-\caption{Interpolation standardised RMSEs.}
+\caption[Interpolation standardised RMSEs.]{Interpolation standardised RMSEs. The rows follow the order of the datasets in appendix~\ref{ch:datasets}.}
 \label{table:interp}
 \end{table}
 
@@ -786,7 +786,7 @@ The following abbreviations are used: \procedurename{}-accuracy (\procedurename{
 3.03 & 4.00 & 3.63 & 3.12 & 3.16 & 1.00 & 5.83 & 5.35 & 4.25\\
 \hline
 \end{tabular}
-\caption{Extrapolation standardised RMSEs.}
+\caption[Extrapolation standardised RMSEs]{Extrapolation standardised RMSEs. The rows follow the order of the datasets in appendix~\ref{ch:datasets}.}
 \label{table:extrap}
 \end{table}
 
@@ -795,7 +795,7 @@ The following abbreviations are used: \procedurename{}-accuracy (\procedurename{
 
 Towards the goal of automating exploratory statistical analyses we have presented a system which constructs an appropriate model from an open-ended language and automatically generates detailed reports that describe patterns in the data captured by the model.
 We have demonstrated that our procedure can discover and describe a variety of patterns on several time series.
-Our procedure's extrapolation and interpolation performance on time-series are state-of-the-art compared to existing model construction techniques.
+Our procedure's extrapolation and interpolation performance on time-series are highly competitive with existing model construction techniques.
 We believe that this line of research has the potential to make powerful statistical model-building techniques accessible to non-experts.
 
 \subsection{We should probably stop using the squared exponential kernel}
