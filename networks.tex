@@ -110,7 +110,7 @@ Array exchangeability states that any probabilistic model of these arrays should
 \label{fig:networks:exchangeable}
 \end{figure}
 
-This symmetry weakens the hypothesis \eqref{eq:networks:exch} by demanding invariance only under a subset of all permutations of $\Nats^2$---those of the form $(i,j)\mapsto(p(i),p(j))$---we can no longer expect de Finetti's theorem to hold.
+This symmetry weakens the hypothesis \eqref{eq:networks:exch} by demanding invariance only under a subset of all permutations of $\Nats^2$---those of the form $(i,j)\mapsto(p(i),p(j))$---so we can no longer expect de Finetti's theorem to hold.
 The relevant generalisation of the de Finetti theorem to this case is the following:
 \begin{thm}[Aldous, Hoover]
   \label{theorem:ah}
@@ -173,7 +173,7 @@ A separately exchangeable array can be seen to correspond with an off-diagonal s
 \subsection{The general case: $d$-arrays}
 
 Theorem \ref{theorem:ah} can in fact be stated in a more general setting than matrices, namely for random $d$-arrays, which are collections
-of random variables of the form $(\{\darray_{i_1\dots i_d} : i_1,\dots,i_d\in\Nats\})$.
+of random variables of the form $(\darray_{i_1\dots i_d} : i_1,\dots,i_d\in\Nats)$.
 In particular, a sequence is a $1$-array, a matrix a $2$-array. A $d$-array 
 can be interpreted as an encoding of a relation between $d$-tuples.
 In this general case, theorem \ref{theorem:ah} still holds, but the random function $F$ in \eqref{eq:ah} is in general more complex:
@@ -181,7 +181,7 @@ In addition to the collections $(\AHvar_{i})$ and $(\AHvar_{\lbrace ij\rbrace})$
 collections $(\AHvar_{\lbrace i_j\rbrace_{j\in I}})$ for any non-empty subset $I$ of the set $\lbrace 1,\ldots,d\rbrace$; \eg
 $\AHvar_{\{i_1 i_3 i_4\}}$ for $d\geq 4$ and ${I=\lbrace 1,3,4\rbrace}$. The representation \eqref{eq:ah} is then substituted by
 \begin{equation}
-  F:[0,1]^{2^d-1}\to\dataspace\qquad\text{and}\qquad \darray_{i_1,\dots,i_d}=F(\AHvar_{I_1},\dots,\AHvar_{I_{(2^d-1)}})\;.
+  F:[0,1]^{2^d-1}\to\dataspace\qquad\text{and}\qquad (\darray_{i_1,\dots,i_d}) \eqd (F(\AHvar_{I_1},\dots,\AHvar_{I_{(2^d-1)}}))\;.
 \end{equation}
 For $d=1$, we recover de Finetti's theorem. In particular, if $\dataspace=\mathbb{R}$, $F$ is given by the inverse cumulative distribution function
 of the random measure guaranteed by de Finetti's theorem.
@@ -219,7 +219,7 @@ we set ${\latentspace = \Reals}$ and consider a zero-mean Gaussian process on
 $\cfspace_{\latentspace}:=\cfspace([0,1]^2,\latentspace)$, the space of continuous functions $[0,1]^2\rightarrow\latentspace$,
 with kernel function 
 ${\kernel:[0,1]^2\times[0,1]^2\rightarrow\latentspace}$.
-We assume the following generative model\footnotemark:
+We assume the following generative model:
 \begin{equation}
   \label{eq:model}
   \begin{split}
@@ -229,7 +229,8 @@ We assume the following generative model\footnotemark:
   \end{split}
 \end{equation}
 Additionally, the kernel may depend on parameters, which we denote by $\covhyppar$.
-Since we have assumed $X$ to be symmetric we can ignore the potentially unusual depedencies introduced by $U_{\{ij\}}$ \eg we can restrict the model to the upper triangle of $X$.
+Since we have assumed $X$ to be symmetric we can ignore the potentially unusual depedencies introduced by $U_{\{ij\}}$ \eg we can restrict the model to the upper triangle of $X$\footnotemark{}.
+\footnotetext{The results of chapter~\ref{ch:arrays} inspire the same form of model but also naturally avoid these dependencies.}
 
 The decomposition of $F$ introduces a natural set of latent variables $W_{ij}:=\AHfunction(\AHvar_i,\AHvar_j)$, conditioned on which the data is explained as $\darray_{ij}\sim\likelihood[\,.\,|\larray_{ij}]$. 
 The parameter space of the model is the infinite-dimensional space $\cfspace_{\latentspace}$.
@@ -262,13 +263,13 @@ $H$ in \eqref{eq:decomposition} is of the form
 The Gaussian process prior favours smooth functions, which may result in interpretable latent space embeddings.
 Inference in Gaussian processes is a well-understood problem, and the choice of a Gaussian prior allows us to leverage the full range of inference methods available for these models.
 
-The model described in equation~\ref{eq:model} is illustrated for the case of graph data in figure~\ref{fig:networks:graphon}.
+The model described in equation~\eqref{eq:model} is illustrated for the case of graph data in figure~\ref{fig:networks:graphon}.
 This demonstrates that $\Theta$ can be interpreted as a blurred adjacency matrix.
 
 \begin{figure}[ht]
 \centering
 \begin{tabular}{c}
-\input{\arraysfigsdir/fig_graphon_wide}
+\input{\networksfigsdir/fig_graphon_wide}
 \end{tabular}
 \caption[Illustration of the Aldous--Hoover representation of a network.]{
 Illustration of a model for network data inspired by the Aldous--Hover representation theorem.
@@ -305,11 +306,11 @@ Available models for graph data include the parametric mixed membership stochast
 Similar models also exist for real valued matrices, including the infinite hidden relational model (IHRM; \cite{Xu2006-uy}) which is a counterpart to the IRM and binary matrix factorisation (BMF; \cite{Meeds2007-gd}) which is a counterpart to the LFRM.
 %}
 
-\citet{Roy2009-ge} present a nonparametric Bayesian model of relational data that approximates $\AHfunction$ by a piece-wise constant function whose hierarchical structure is a Mondrian process. In contrast, we approximate $\AHfunction$ by a smooth function.
+\citet{Roy2009-ge} present a nonparametric Bayesian model of relational data that approximates $\AHfunction$ by a piecewise constant function whose hierarchical structure is a Mondrian process. In contrast, we approximate $\AHfunction$ by a smooth function.
 
 A recent development is the Sparse Matrix Variate Gaussian Process Blockmodel (SMGB; \cite{Yan2011-lc}), and the extension to higher order arrays (InfTucker; \cite{Xu2012-ub}).
 Although not motivated in terms of exchangeability, these Gaussian process models do not impose independence assumptions on either rows or columns, in contrast to the GPLVM.
-These models can be represented as placing a prior ${\AHfunction \dist \GP\,(0, \kernel_1 \otimes \kernel_2)}$ on the function $\AHfunction$ in \eqref{eq:decomposition}.
+These models can be represented as placing a prior ${\AHfunction \dist \gp{}\,(0, \kernel_1 \otimes \kernel_2)}$ on the function $\AHfunction$ in \eqref{eq:decomposition}.
 %\fTBD{Needs review}
 This prior is equivalent to \eqref{eq:model} for some common choices of kernel $\kernel$ (\eg squared exponential) but excludes others such as those that give rise to symmetric functions or additive kernels.
 Existing efficient algorithms for Gaussian processes of this form \citep[e.g.][]{Saatci2011-yo} perform calculations using a complete grid of data, which results in computational complexities that depend on the size of the array.
@@ -330,7 +331,7 @@ W_{ij} = \AHvar_i\Lambda\AHvaralt_j' \quad \quad \Lambda_{ij} \simiid \Normal (0
 \end{equation}
 is equivalent to
 \begin{equation}
-W_{ij} = \AHfunction\,(\AHvar_i, \AHvaralt_j) \quad \quad \AHfunction \sim \GP\,(0, L_\AHvar \otimes L_\AHvaralt)
+W_{ij} = \AHfunction\,(\AHvar_i, \AHvaralt_j) \quad \quad \AHfunction \sim \textnormal{\gp{}}\,(0, L_\AHvar \otimes L_\AHvaralt)
 \end{equation}
 where $L_U(\AHvar_{i_1}, \AHvar_{i_2}) = \AHvar_{i_1}\AHvar_{i_2}'$ and similarly for $L_V$.
 \end{prop}
@@ -391,8 +392,8 @@ This correspondence allows us to succinctly summarise many of the models in the 
 \end{tabular}
 \caption[Summary of models of arrays cast into Aldous--Hoover form.]{
 Summary of models classified by equation for $W_{ij}$, equivalent kernel $\kernel$ in GP representation and domain of latent variables $(U_i), (V_j)$.
-$\Lambda$ is a matrix $\phi$ is some mapping into a feature space and $\mathbb{I}_A$ is the indicator function of the event $A>0$.
-$\kernel$ represents any kernel function, $\delta$ the identity kernel function, $L$ the simple dot product kernel function and $L^k$ is the dot product kernel applied only to the $k$th components of its arguments.
+$\Lambda$ is a matrix, $\phi$ is some mapping into a feature space and $\mathbb{I}_A$ is the indicator function of the event $A>0$.
+$\kernel$ represents any kernel function, $\delta$ the identity kernel function and $L$ the simple dot product kernel function.% and $L^k$ is the dot product kernel applied only to the $k$th components of its arguments.
 }
 \label{table:ModelComparison}
 \end{table}
@@ -464,7 +465,7 @@ Our approach is to treat both the inputs and outputs of the GP as latent variabl
 %, a random version of the SoR approximation appears to work very well, even with few pseudoinputs (see below).
 
 In particular, 
-introduce $k$ Gaussian distributed pseudoinputs $\pseudopoints=(\pseudopoints_1,\dotsc,\pseudopoints_k)$, and, for each $j=1,\dotsc,k$, define target values ${\targets_j = \AHfunction(\pseudopoints_j)}$.  In other words, writing $K_{\pseudopoints\pseudopoints}$ for the kernel matrix formed from the pseudoinputs $\pseudopoints$, we have
+we introduce $k$ Gaussian distributed pseudoinputs $\pseudopoints=(\pseudopoints_1,\dotsc,\pseudopoints_k)$, and, for each $j=1,\dotsc,k$, define target values ${\targets_j = \AHfunction(\pseudopoints_j)}$.  In other words, writing $K_{\pseudopoints\pseudopoints}$ for the kernel matrix formed from the pseudoinputs $\pseudopoints$, we have
 \[
 (\pseudopoints_i) \simiid \Normal(0,1) \qquad\text{and}\qquad
 \targets \given \pseudopoints \sim \Normal(0,K_{\pseudopoints\pseudopoints}).
@@ -487,7 +488,7 @@ We evaluate the model on three different network data sets (see table~\ref{table
 analysed in the literature.
 The third data set, a protein interactome, was previously noted by \citet{Hoff2007-ja} to be of interest since it exhibits both block structure and transitivity.
 
-\begin{table}
+\begin{table}[ht]
 \begin{center}
   \begin{tabular}{l  l  c  l}
     Data set & Recorded data & Vertices & Reference\\
@@ -501,7 +502,7 @@ The third data set, a protein interactome, was previously noted by \citet{Hoff20
   \label{table:networks:datasets}
 \end{table}
 
-We compare performance of our model on these data sets to three other models (see table~\ref{table:networks:datasets}), probabilistic matrix factorization (PMF) \citep{Salakhutdinov2008-tp},
+We compare performance of our model on these data sets to three other models (see table~\ref{table:networks:algorithms}), probabilistic matrix factorization (PMF) \citep{Salakhutdinov2008-tp},
 Hoff's eigenmodel \citep{Hoff2007-ja}, and the GPLVM \citep{Lawrence2005-cn}. The models are chosen for comparability, since they all embed nodes into a Euclidean latent space.
 %All of these models represent nodes as being embedded in a latent space, although the approaches vary considerably.
 Experiments for all three models were performed using reference implementations by the respective 
@@ -510,11 +511,11 @@ authors (see table~\ref{table:networks:algorithms} for additional algorithm deta
 \footnotetext{Implementations are available for PMF at
 \url{http://www.mit.edu/~rsalakhu/software.html};
 for the eigenmodel at
-http://cran.r-project.org/src/contrib/Descriptions/eigenmodel.html;
+\url{http://cran.r-project.org/src/contrib/Descriptions/eigenmodel.html};
 and for the GPLVM at
 \url{http://www.cs.man.ac.uk/~neill/collab/}.}
 
-\begin{table}
+\begin{table}[ht]
 \begin{center}
   \begin{tabular}{l  l  c  l }
     Model & Method & Iterations [burn-in] & Parameters\\
@@ -560,10 +561,10 @@ To balance the computational demands of the different sampling steps, we sampled
 
 In all experiments, we partitioned the edge data into 5 equally sized partitions and performed 5-fold cross validation, predicting the links in one held out partition given the other 4. 
 Where the models did not restrict their outputs to values between 0 and 1, we truncated any predictions lying outside this range.
-Tbale~\ref{table:networks:AUCs} reports average AUC (area under receiver operating characteristic) for the various models, with numbers for the top performing model set in bold.
+Table~\ref{table:networks:AUCs} reports average AUC (area under receiver operating characteristic) for the various models, with numbers for the top performing model set in bold.
 Significance of results is evaluated by means of a $t$-test with a $p$-value of 0.05; results for models not distinguishable from the top performing model in terms of this $t$-test are also set in bold.
 
-\begin{table}
+\begin{table}[ht]
 \begin{center}
   \begin{tabular}{r | r r r | r r r | r r r}
     \multicolumn{10}{c}{AUC results} \\
@@ -619,7 +620,7 @@ The reported values are RMSE results, with significance evaluated as above.
 %  \end{tabular}
 %\end{center}
 
-\begin{table}
+\begin{table}[ht]
 \begin{center}
   \begin{tabular}{r | r r r | r r r | r r r}
     \multicolumn{10}{c}{RMSE results} \\
@@ -666,7 +667,7 @@ standard versions of models such as PMF and GPLVM, which assign a Gaussian likel
     RFM & \textbf{205} & \textbf{199} & \textbf{201} & \textbf{65} & \textbf{57} & \textbf{56} & \textbf{78} & \textbf{75} & \textbf{75}
   \end{tabular}
 \end{center}
-  \caption[Negative log conditional edge probabilities in link prediction experiment.]{Average negative log conditional edge probability for the Eigenmodel and RFM and each dataset.
+  \caption[Negative log conditional edge probabilities in link prediction experiment.]{Average negative log conditional edge probability for the Eigenmodel and RFM for each dataset.
   The precise calculation implemented is $-\log(\likelihood(\darray_{\lbrace ij \rbrace} \given \larray_{\lbrace ij \rbrace})) \times 1000 \, / \,(\textrm{Number of held out edges})$.
   $d$ is the dimensionality of the latent variables used in each method. Results that are not distinguishable from the best performing method by a $t$-test at 5\% significance are set in bold.}
   \label{table:networks:probs}
@@ -792,7 +793,7 @@ Similarly, the sorted high school social network adjacency matrix in figure~\ref
   \includegraphics[width=0.45\textwidth]{\networksfigsdir/nips_unsorted}
   \includegraphics[width=0.45\textwidth]{\networksfigsdir/nips_sorted}
   \caption[Unsorted and sorted NIPS coauthorship adjacency matrices.]{NIPS coauthorship data. 
-    \emph{Left:} Unsored adjacency matrix. 
+    \emph{Left:} Unsorted adjacency matrix. 
     \emph{Middle:} Sorted adjacency matrix.
   }
   \label{fig:networks:nips}
@@ -803,7 +804,7 @@ Similarly, the sorted high school social network adjacency matrix in figure~\ref
   \includegraphics[width=0.45\textwidth]{\networksfigsdir/highschool_unsorted}
   \includegraphics[width=0.45\textwidth]{\networksfigsdir/highschool_sorted}
   \caption[Unsorted and sorted highschool social network adjacency matrices.]{Highschool social network. 
-    \emph{Left:} Unsored adjacency matrix. 
+    \emph{Left:} Unsorted adjacency matrix. 
     \emph{Middle:} Sorted adjacency matrix.
   }
   \label{fig:networks:highschool}
