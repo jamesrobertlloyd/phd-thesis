@@ -81,7 +81,7 @@ I prefer the term exponentiated quadratic and recommend others to use it in futu
 & {\small Rational- \newline quadratic(\kRQ)} & {\small multi-scale \newline smoothness}
 \end{tabularx}
 \caption[Samples from Gaussian processes with differnet kernels.]{
-Left and third columns: base kernels $k(\cdot,0)$.  Second and fourth columns: samples from a GP from each kernel.
+First and third columns: base kernels $k(\cdot,0)$.  Second and fourth columns: samples from a GP from each kernel.
 The x-axis has the same range on all plots.}
 \label{fig:basic_kernels}
 \end{figure}
@@ -124,7 +124,7 @@ We therefore define our base kernel families to be one dimensional where we indi
 \end{tabularx}
 \caption[Samples from Gaussian processes with compositionally constructed kernels.]{Examples of structures expressible by
   composite kernels.  
-  Left column and third columns: composite kernels $k(\cdot,0)$.
+  First and third columns: composite kernels $k(\cdot,0)$.
   Plots have the same meaning as in figure \ref{fig:basic_kernels}.}
 \label{fig:kernels}
 \end{figure}
@@ -194,7 +194,7 @@ In particular,
 \item One can look for patterns, \eg periodicity, in the residuals of a model, and then extend the model to capture this pattern.
 This corresponds to applying rule (1).
 \item One can start with a pattern, \eg linearity, which is assumed to hold globally, but find that it only holds locally.
-This corresponds to applying rule (2) to obtain structure like those shown in the top right of figure~\ref{fig:kernels}.
+This corresponds to applying rule (2) to obtain patterns like those shown in the top right of figure~\ref{fig:kernels}.
 \item One can add features incrementally, analogous to algorithms like boosting, backfitting, or forward selection.
 This corresponds to applying rules (1) or (2) to dimensions not yet included in the model.
 \end{itemize}
@@ -273,7 +273,7 @@ We go beyond these works by demonstrating the interpretability of the structure 
 
 There have been several attempts to uncover the structural form of a dataset by searching over a grammar of structures.
 For example, \citet{Schmidt2009-if}, \citet{Todorovski1997-st} and \citet{Washio1999-vy} attempt to learn parametric forms of equations to describe time series, or relations between quantities.
-Since we learn expressions describing the covariance structure rather than the functions themselves, we are able to capture patterns which do not have a simple parametric forms.
+Since we learn expressions describing the covariance structure rather than the functions themselves, we are able to capture patterns which do not have a simple parametric form.
 
 \citet{Kemp2008-ye} learned the structural form of a graph used to model human similarity judgments.
 Examples of graphs included planes, trees, and cylinders.
@@ -347,7 +347,7 @@ Figure \ref{fig:mauna_decomp} shows the final model chosen by our method, togeth
 The final model exhibits both plausible extrapolation and interpretable components: a long-term trend, annual periodicity and medium-term correlated deviations; the same components chosen by \citet{Rasmussen2006-ml}.
 We also plot the residuals, observing that there is little obvious structure left in the data.  
 On this example, our search procedure is able to automate this construction where previously two \gp{} experts devoted 4 pages of text and analysis\footnotemark{} to the development of a composite kernel.
-\footnotetext{Admittedly this was intended as teaching material}
+\footnotetext{Admittedly this was intended as reference material}
 
 \paragraph{Airline passenger data}
 
