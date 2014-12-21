@@ -71,7 +71,7 @@ Define a \defn{database} to be a collection of $R$ relations $r^1,\dotsc,r^R$ of
 \end{definition}
 
 We may encode a database as a collection of arrays $(X^{r^j})_{j=1}^R$, where $X^{r^j}$ encodes the relation $r^j$.  
-For notational simplicity, we will often refer to the collection of arrays $(X^{r^j})_{j=1}^R$ as if it were the database itself.
+We will often refer to the collection of arrays $(X^{r^j})_{j=1}^R$ as if it were the database itself.
 
 Permuting the ordering of objects within a database can result in a permutation of the indices of several of the arrays encoding its relations.
 For each type $t \in \Types$, let $p_t \in \SGinf$ be a permutation of $\Nats$. 
@@ -84,10 +84,11 @@ In other words, $p^s$ maps a sequence $k_1,\dotsc,k_d$ of indices (indexing obje
 
 If $X^r$ is the encoding of a relation $r$ with signature $s \in \Types^d$, then the permuted relation $r \circ p$ is represented by the array $X^{r\circ p}$ given by
 \[
-X^{r \circ p}_{k} = X^r_{p^s(k)}, \qquad \text{for } k \in \Nats^d.
+X^{r \circ p}_{k} = X^r_{p^s(k)}, \qquad \text{for } k \in \Nats^d. \label{eq:arrays:arrayperm}
 \]
 
 \begin{definition}[exchangeable database]
+\label{def:arrays:exdatabase}
 We say that a random database $(X^{r^j})_{j=1}^R$ is \emph{exchangeable} when it has the same distribution as $(X^{r^j\circ p})_{j=1}^R$ for every $p \in \SGinf^T$.
 \end{definition}
 
@@ -218,12 +219,14 @@ We now state and prove the main technical results of this chapter.
 We first summarise material from \citet{Kallenberg1999-pj}.
 Let $\pi$ be a partition of the set $\{1,\dots,d\}$ and let $\pi_i \defas (I \in \pi : i \in I$) \ie this is the partition element which $i$ is in.
 Let $p = (p^{\pi_i} : i = 1,\dots,d)$ be a collection of permutations of $\Nats$ \ie a list of permutations which are equal on the partition elements.
-We say that an array $X^r$ representing relation $r$ is $\pi$-exchangeable if 
+We say that an array $X$ is $\pi$-exchangeable if 
 \begin{equation}
-  X^{r\circ p} \eqd X
+  %X^{r\circ p} \eqd X
+  (X_k) \eqd (X_{p(k)})
 \end{equation}
 for all collections $p$ of permutations of $\Nats^d$ of the form given above.
-Note that this is precisely the type of symmetry we defined for exchangeable databases.
+This matches the symmetry of an exchangeable database defined in definition~\ref{def:arrays:exdatabase} and equation~\eqref{eq:arrays:arrayperm} if $X$ represents a relation with signature $(\pi_i : i = 1,\dots,d)$.
+%This is precisely the type of symmetry we defined for exchangeable databases 
 
 We say that a $\pi$-exchangeable array $X$ is \emph{simple} if it admits a functional representation of the form
 \begin{equation}
@@ -256,7 +259,7 @@ It can be proven by writing down the definitions of Radon--Nikodym derivatives a
 \end{lem}
 
 We also build up some notation for a particular exchangeable database $(X^{r^j})_{j=1}^R$.%\fTBD{Any way to make this notation easier?}.
-Assume w.l.o.g.\ that the types are ordered (\eg type 1, type 2,\dots) and the types in each signature are sorted accoridng to this ordering (\eg $s = (1,1,2,3,3,\dots)$).
+Assume w.l.o.g.\ that the types are ordered (\eg type 1, type 2,\dots) and the types in each signature are sorted according to this ordering (\eg $s = (1,1,2,3,3,\dots)$).
 Define the multiplicity of a type $t$ in signature $s$ by the number of times the type appears in the signature, and denote this by $m_{t}^s$.
 Define the maximum multiplicity of a type $t$ in a database as $m_t = \max_j m_t^{s^j}$.
 Let $d = \sum_{t\in T} m_t$ be the sum of the maximum multiplicities.
@@ -283,20 +286,23 @@ We can now state and prove the first main result of this chapter.
   By proposition~\ref{thm:piex} there exists a sequence of measurable functions $(f^n)$ and collection of independent uniform random variables $U$ and $(U^t_i)$ such that $(\chi_m R_{k})$ and $(\chi_m f^n(U, U^{\pi_1}_{k_1}, \dots, U^{\pi_d}_{k_d}))$ are mutually absolutely continuous and the associated Radon--Nikodym derivates converge uniformly to 1 as $n \to \infty$ for all $m$.
   By using a projection in lemma~\ref{lem:contractionrnd} we have the same convergence for the following subarrays (jointly over $j$)
   \[
-    f^{n,j}(U, U^{\pi_1}_{\tilde{\rho}_j(k_1)}, \dots, U^{\pi_d}_{\tilde{\rho}_j(k_d)}) \to X^{r^j}_{\rho_j(k)}.
+    f^{n,j}(U, U^{\pi_1}_{\tilde{\rho}_j(k_1)}, \dots, U^{\pi_d}_{\tilde{\rho}_j(k_d)}) \to X^{r^j}_{\rho_j(k)}
+  \]
+  and by exchangeability we also have \[
+    f^{n,j}(U, U^{\pi_1}_{\tilde{\rho}_j(k_1+1)}, \dots, U^{\pi_d}_{\tilde{\rho}_j(k_d+1)}) \to X^{r^j}_{\rho_j(k)}.
   \]
   By the Borel isomorphism theorem there is a bimeasurable function $h$ and a uniformly distributed random variable $V$ such that
   \[
-    V = h(U, U^1_1, \dots, U^T_1)
+    V = h(U, U^1_1, \dots, U^T_1) \,\, \as
   \]
-  Let
+  Let $V^t_k = U^t_{k+1}$ and
   \[
-    g^{n,j}(V, U^{\pi_i}_{k_i} : i \in I_{s^j}) \defas f^{n,j}(U, U^{\pi_1}_{\tilde{\rho}_j(k_1)}, \dots, U^{\pi_d}_{\tilde{\rho}_j(k_d)}).
+    g^{n,j}(V, V^{\pi_i}_{k_i} : i \in I_{s^j}) \defas f^{n,j}(U, U^{\pi_1}_{\tilde{\rho}_j(k_1+1)}, \dots, U^{\pi_d}_{\tilde{\rho}_j(k_d+1)}).
   \]
   $g$ is measurable by composition of measurable $f$ and $h$.
   Finally set
   \[
-    X^{r_j,n}_{k} \defas g^{n,j}(V, U^{\pi_i}_{k_i} : i \in I_{s^j})
+    X^{r_j,n}_{k} \defas g^{n,j}(V, V^{\pi_i}_{k_i} : i \in I_{s^j})
   \]
   and we are done.
 \end{proof}
@@ -415,7 +421,7 @@ This is the Aldous--Hoover representation for a jointly exchangeable array and t
 
 \begin{cor}
   Consider an exchangeable database with two object types, one binary relation between two objects of the first type and a ternary relation between two objects of the first type and one of the second type;  denote the first relation by the array $X=(X_{ij})_{i,j\in\Nats}$ and the second by $Y=(Y_{ijk})_{i,j,k\in\Nats}$.
-   Then there exists a pair of measurable functions $(F, G)$ and a collection of \iid Uniform$[0,1]$ random variables $U, (\AHvar_{i})_{i\in\Nats}, (\AHvaralt_{i})_{i\in\Nats}, (\AHvar_{\{ij\}})_{i,j\in\Nats}, (W_{i,j})_{i,j\in\Nats} (Z_{\{ij\}k})_{i,j,k\in\Nats}$ such that
+   Then there exists a pair of measurable functions $(F, G)$ and a collection of \iid Uniform$[0,1]$ random variables $U, (\AHvar_{i})_{i\in\Nats}, (\AHvaralt_{i})_{i\in\Nats}, (\AHvar_{\{ij\}})_{i,j\in\Nats}, (W_{ij})_{i,j\in\Nats},  (Z_{\{ij\}k})_{i,j,k\in\Nats}$ such that
    \[ 
      X_{ij} & = F(U,\AHvar_{i},\AHvar_{j},  \AHvar_{\{ij\}}),  \qquad &\text{for } i,j\in\Nats, \\
      Y_{ijk} & = G(U, \AHvar_{i}, U_j, \AHvaralt_{k}, \AHvar_{\{ij\}}, W_{ik}, W_{jk}, Z_{\{ij\}k}), \qquad &\text{for } i,j,k\in\Nats,
@@ -445,7 +451,7 @@ However, the representation results presented in this chapter provide no guidanc
 In practice one may model the functions to be independent a priori at the risk of wasting statistical strength.
 \end{rem}
 
-\subsection{Deriving appropriate forms for discriminative models}
+\subsection{Deriving appropriate forms for conditional models}
 
 Consider a social network with side information on each user.
 The natural generative model for such data inspired by the simple database representation result is
@@ -602,7 +608,7 @@ However, rather than proposing yet more specific models it would be very interes
 We have demonstrated how the concept of exchangeability can be applied to databases and used to derive a natural parameter space for statistical models of such data.
 Identifying a parameter space is the first step in many statistical analyses, allowing either frequentist estimation of the parameters or Bayesian prior specification.
 This concept is well established for exchangeable sequences where de Finetti's theorem applies.
-For exchangeable arrays, the relevant representation theorems were presented by \citet{Aldous1981-lg} and \citet{Hoover1979-br} over 30 years ago but it is only recently that these results are being used to inspire probabilistic models \cite{Hoff2007-ja, Roy2009-ge, Lloyd2012-sb} and frequentist estimation procedures \cite{Kallenberg1999-pj, Choi2013-th, Wolfe2013-vs}.
+For exchangeable arrays, the relevant representation theorems were presented by \citet{Aldous1981-lg} and \citet{Hoover1979-br} over 30 years ago but it is only recently that these results are being used to inspire probabilistic models \citep{Hoff2007-ja, Roy2009-ge, Lloyd2012-sb} and estimation procedures with frequentist guarantees \citep{Kallenberg1999-pj, Choi2013-th, Wolfe2013-vs}.
 We hope that this work will continue and be extended to the analysis of exchangeable databases.
 
 %\subsection{Mention sparsity again}

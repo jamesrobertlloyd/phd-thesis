@@ -278,7 +278,7 @@ The left shows a random sample of a binary network (represented by an adjacency 
 \label{fig:networks:graphon}
 \end{figure}
 
-\begin{rem}[Dense vs. sparse data]
+\begin{rem}[Dense vs.\ sparse data]
   The methods described here address random matrices that are \emph{dense}, \ie as the size of a finite, observed $n\times n$ matrix increases,
   the number of non-zero entries (or the number of edges in a graph) grows as $O(n^2)$. Although the Aldous-Hoover theorem is sometimes invoked
   for data such as social networks, it should be kept in mind that network data is typically \emph{sparse}, with $O(n)$ non-vanishing entries.
@@ -692,7 +692,7 @@ The adjacency matrix has been sorted by the values of the approximate MAP $(U_i)
   \label{fig:(R)GPLVM_Comparison}
 \end{figure}
 
-The sorted adjacency matrix and MAP estimate of $\Theta$ reveal many qualitatively different structures present in the network.
+The sorted adjacency matrix and MAP estimate of $\Theta$ reveal many qualitatively different structures present in this network.
 The bottom right of the adjacency matrix reveals a densely connected block of nodes; this is highlighted and visualised in figure~\ref{fig:networks:block}.
 In contrast, figure~\ref{fig:networks:sparse} highlights many nodes which display patterns of transitivity although the overall connectivity is sparse.
 A pair of hub nodes are also revealed as demonstrated in figure~\ref{fig:networks:hubs}.
@@ -759,7 +759,7 @@ Finally, the prominent feature at the top left of the adjacency matrix is visual
 The sorted adjacency matrix has revealed three blocks of nodes which we will refer to as the left, right and top blocks according to the right hand side of figure~\ref{fig:networks:butterfly}.
 Ignoring the top block, the left and right blocks are nearly bipartite.
 The top block is almost a clique and is much more strongly connected to the right block than the left.
-The degree distribution of the left and right blocks is also of interest; the variation is larger than expected by a block model (assuming that the probability of a link between different blocks is constant).
+The degree distribution of the left and right blocks is also of interest; the variation is larger than expected by a block model (\ie assuming that the probability of a link between different blocks is constant).
 A more detailed analysis is currently ongoing, but the structure found by this analysis can be shown to correspond with reality; for example, the proteins on the left are almost all ribosomal subunits.%\fTBD{Make sure you do this - leave many samplers going for a day each or something like that}
 
 \begin{figure}[ht]
