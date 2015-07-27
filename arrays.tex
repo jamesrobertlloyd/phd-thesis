@@ -452,6 +452,7 @@ In practice one may model the functions to be independent a priori at the risk o
 \end{rem}
 
 \subsection{Deriving appropriate forms for conditional models}
+\label{sec:arrays:conditional}
 
 Consider a social network with side information on each user.
 The natural generative model for such data inspired by the simple database representation result is
@@ -566,6 +567,30 @@ We are however unaware of any standard probabilistic models making use of this t
 This is most probably due to the potentially large computational barrier to storing and inferring the values of latent variables for each pair of objects.
 There may however be use in this type of model on small datasets where one can afford relatively high computational costs to perform a more detailed analysis.
 
+\subsection{Cross categorisation and multiview clustering}
+
+Some generative models for cross categorisation or multiview clustering can also be understood in this general framework.
+These models are appropriate for data consisting of measurements of several features for a number of objects.
+The common assumption of these models is that the objects can be clustered in several ways, with different features being relevant for different clusterings.
+
+For example, CrossCat \citep{Shafto2011-pu, Mansinghka2009-lx} is a generative model of tables of data where it is assumed that columns are clustered and that for each of these column clusterings there are independent row clusterings.
+More concretely
+\[
+  (U^c_i)_{i \in \Nats} & \probgets \textrm{Clustering} \quad \forall \, c \in \Nats\\
+  (Z_j)_{j \in \Nats} & \probgets \textrm{Clustering} \\
+  \theta^j_c & \probgets \Theta \quad \forall \, j, c \in \Nats\\
+  V_j & \defas (Z_j, (\theta^j_c)_{c \in \Nats}) \quad \forall \, j \in \Nats\\
+  F(U_i, V_j) & \defas \theta^j_{U_i^{Z_j}} \\
+  X_{ij} & \probgets L(F(U_i, V_j)) \quad \forall \, i, j \in \Nats.
+\]
+That is, for entry $X_{ij}$ there is a likelihood, $L$, with parameters $\theta^j_{U_i^{Z_j}}$, that are specific to the column, $j$, and value of the row clustering, $U_i^{Z_j}$, corresponding to the column clustering $Z_j$.
+
+This type of model is not often viewed as a model of relational data since the different columns may have different types of data (\eg binary, count, real-valued), requiring different likelihoods and breaking column exchangeability.
+However, if we view the data-type information as column observations, then we are exactly in the situation of section~\ref{sec:arrays:conditional} and we can easily include this data-type information in a conditional model.
+
+The expressive power of CrossCat comes from the complicated distributions for the latent variables correponding to the rows, $U_i$, and columns, $V_j$.
+Yet more expressive distributions have been proposed; the clustering of rows and columns has been generalised to hierarchical clustering by \citet{Li2011-bk} and the column clustering has been generalised to a feature partition by \citet{Niu2012-kl}.
+
 \subsection{A brief word about longitudinal data}
 
 It is worth mentioning how the modelling paradigms presented here can be extended to longitudinal data (\ie time varying).
@@ -590,17 +615,18 @@ Examples of models of this form include \citep[e.g.][]{Adams2010-ln, durante2014
 It may be advantageous however to have fixed latent variables when one is jointly modelling both time evolving and static data.
 
 \subsection{Prior work using models of this form}
+\label{sec:arrays:related}
 
 In section~\ref{sec:networks:related} it was demonstrated that many models of single 2-arrays fit the form of the generic model presented above.
 In particular there are models that assume $F$ is linear \citep[e.g.][]{Hoff2007-ja, Meeds2007-gd, Salakhutdinov2008-zt, Yu2008-tz, Miller2009-wg}, that $F$ is Gaussian process distributed \citep[e.g.][]{Lawrence2009-za, Yan2011-lc, Lloyd2012-sb} and other non-linear forms for $F$ both parametric \citep[e.g.][]{Hoff2002-vy} and nonparametric \citep[e.g.][]{Roy2009-ge}.
-In addition to this there has been a line of work that uses increasingly more expressive forms of the distribution $\mathcal{U}$ \citep[e.g.][]{Wang1987-jd, Hoffman_undated-ri, Nowicki2001-xm, Kemp2006-jt, Xu2006-uy, Meeds2007-gd, Miller2009-wg, Palla2012-ch}.
+In addition to this there has been a line of work that uses increasingly more expressive forms of the distribution $\mathcal{U}$ \citep[e.g.][]{Wang1987-jd, Hoffman_undated-ri, Nowicki2001-xm, Kemp2006-jt, Xu2006-uy, Meeds2007-gd, Miller2009-wg, Palla2012-ch} which is highly related to work proposing generative models for cross categorisation and multiview clustering \citep[e.g.][]{Niu2012-kl, Li2011-bk, Shafto2011-pu, Mansinghka2009-lx}.
 
-Many, but not all, of these models have been extended to model $d$-arrays.
+Many, but not all, of the models described above have been extended to model $d$-arrays.
 A summary of models using linear forms of $F$ is given in \cite{Kolda2009-ba}; non-linear models include \cite{Xu2012-ub}.
 
 For full databases, the literature is limited to clustering / block / latent class models \citep{Kemp2006-jt, Xu2006-uy} and models using linear forms for the $F^r$ \citep[e.g.][]{Lippert2008-gg, Singh2008-cb, Singh2008-qw, Jimeng2009-rw, Acar2011-vg, Gao2011-ac, Nickel2011-pi, Acar2012-no, Ermis2012-gk, Shangguan2012-ga, Singh2012-jj, Acar2013-na, Andersen2013-rg, Yin2013-we}.
 
-We should certainly expect to see new research using some of the more advanced forms proposed for networks being applied to higher order arrays or full databases.
+We should certainly expect to see new research using some of the more advanced forms proposed for networks or single data tables being applied to higher order arrays or full databases.
 However, rather than proposing yet more specific models it would be very interesting to see automated model building techniques applied to these domains, potentially combined with model forms inspired by probabilistic relational models.
 
 \section{Discussion}
