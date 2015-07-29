@@ -33,7 +33,7 @@ If the labelling is unimportant, then any probabilistic model of such data shoul
 \begin{tabular}{c}
 \tiny \input{\arraysfigsdir/exchangeable}
 \end{tabular}
-\caption[Illustration of array exchangeability for network adjacency matrices.]{Left: Networks with equivalent structure but different node labels. Right: Corresponding adjacency matrix representations of these networks}
+\caption[Illustration of array exchangeability for network adjacency matrices.]{\emph{Left}: Networks with equivalent structure but different node labels. \emph{Right}: Corresponding adjacency matrix representations of these networks}
 \label{fig:exchangeable}
 \end{figure}
 
@@ -75,7 +75,7 @@ We will often refer to the collection of arrays $(X^{r^j})_{j=1}^R$ as if it wer
 
 Permuting the ordering of objects within a database can result in a permutation of the indices of several of the arrays encoding its relations.
 For each type $t \in \Types$, let $p_t \in \SGinf$ be a permutation of $\Nats$. 
-Write $p = (p_t ; t \in \Types) \in \SGinf^T$ for a collection of such permutations.
+Write $p = (p_t ; t \in \Types) \in \SGinf^{|T|}$ for a collection of such permutations.
 Given a signature $s \in \Types^{d}$, define $p^s$ to be the map from $\Nats^{d}$ to $\Nats^{d}$ such that
 \[
 p^s(k) \defas (p_{s_1}(k_1), \dotsc,p_{s_{d}}(k_{d})), \qquad \text{for } k \in \Nats^{d}.
@@ -89,7 +89,7 @@ X^{r \circ p}_{k} = X^r_{p^s(k)}, \qquad \text{for } k \in \Nats^d. \label{eq:ar
 
 \begin{definition}[exchangeable database]
 \label{def:arrays:exdatabase}
-We say that a random database $(X^{r^j})_{j=1}^R$ is \emph{exchangeable} when it has the same distribution as $(X^{r^j\circ p})_{j=1}^R$ for every $p \in \SGinf^T$.
+We say that a random database $(X^{r^j})_{j=1}^R$ is \emph{exchangeable} when it has the same distribution as $(X^{r^j\circ p})_{j=1}^R$ for every $p \in \SGinf^{|T|}$.
 \end{definition}
 
 %If the ordering of all objects is arbitrary, then $X^r$ is $\pi$-exchangeable where $\pi$ is the partition of consecutive integers with lengths $m^r_1, m^r_2, \ldots, m^r_O$.
@@ -336,7 +336,7 @@ We refer to indexed collections of \iid Uniform$[0,1]$ random variables as $U$-a
   Let $X$ be a random $d$-array in a Borel space $S$.
   Then $X$ is $\pi$-exchangeable iff there exists a measurable function $f:[0,1]^{2^d}\to S$ and a $U$-array $\xi$ with index set $\prod_{J\in\pi} \Nats^{\leq |J|}$ such that
   \begin{equation}
-    X_k = f(\xi_{k_{\pi I}} : I \subset \{1,\ldots,d\}) \ \as, \quad k \in \Nats^d.
+    X_k = f(\xi_{k_{\pi I}} : I \subseteq \{1,\ldots,d\}) \ \as, \quad k \in \Nats^d.
     \label{eq:piexas}
   \end{equation}
 \end{prop}
@@ -367,7 +367,7 @@ Again we state a useful lemma.
   \label{thm:as-database}
   A database $(X^{r^j})_{j=1}^R$ is exchangeable iff there exist measurable functions $f^j : [0,1]^{2^{d_j}} \to S^j$ and a $U$-array $\xi$ with index set $\prod_{J\in\pi} \Nats^{\leq |J|}$ such that
   \begin{equation}
-    X_{\rho_j(k)}^{r^j} = f^j(\xi_{k_{\pi I}} : I \subset I_{s^j}) \ \as, \quad k \in \Nats^d, \ j \in \{1,\ldots,R\}.
+    X_{\rho_j(k)}^{r^j} = f^j(\xi_{k_{\pi I}} : I \subseteq I_{s^j}) \ \as, \quad k \in \Nats^d, \ j \in \{1,\ldots,R\}.
   \end{equation}
 \end{thm}
 
@@ -379,16 +379,16 @@ Again we state a useful lemma.
   \]
   which is $\pi$ exchangeable and thus by proposition~\ref{prop:piexas} there exists a measurable $g$ and $U$-array $\xi$ with index set $\prod_{J\in\pi} \Nats^{\leq |J|}$ such that
   \[
-    R_{k} = g(\xi_{k_{\pi I}} : I \subset \{1,\ldots,d\}) \ \as, \quad k \in \Nats^d.
+    R_{k} = g(\xi_{k_{\pi I}} : I \subseteq \{1,\ldots,d\}) \ \as, \quad k \in \Nats^d.
   \]
   We then repeatedly apply lemma~\ref{lemma:copies-full-simple} to remove the redundancy of this representation.
   For example, for some $i \notin I_{s^j}$ we have that there exists some measurable $h^j$ such that
   \[
-    h^j(\xi_{k_{\pi I}} : I \subset \{1,\ldots,d\} \backslash i) = X^{r_j}_{\rho_j(k)} \ \as
+    h^j(\xi_{k_{\pi I}} : I \subseteq \{1,\ldots,d\} \backslash i) = X^{r_j}_{\rho_j(k)} \ \as
   \]
   After repeated application we will find that there exists measureable $f^j$ such that
   \[
-    f^j(\xi_{k_{\pi I}} : I \subset I_{s^j}) = X^{r_j}_{\rho_j(k)} \ \as
+    f^j(\xi_{k_{\pi I}} : I \subseteq I_{s^j}) = X^{r_j}_{\rho_j(k)} \ \as
   \]
   and we are done.
 \end{proof}
@@ -574,7 +574,7 @@ These models are appropriate for data consisting of measurements of several feat
 The common assumption of these models is that the objects can be clustered in several ways, with different features being relevant for different clusterings.
 
 For example, CrossCat \citep{Shafto2011-pu, Mansinghka2009-lx} is a generative model of tables of data where it is assumed that columns are clustered and that for each of these column clusterings there are independent row clusterings.
-More concretely
+Cast into Aldous--Hoover form, the generative model of a table $X$ can be written as
 \[
   (U^c_i)_{i \in \Nats} & \probgets \textrm{Clustering} \quad \forall \, c \in \Nats\\
   (Z_j)_{j \in \Nats} & \probgets \textrm{Clustering} \\
@@ -617,7 +617,7 @@ It may be advantageous however to have fixed latent variables when one is jointl
 \subsection{Prior work using models of this form}
 \label{sec:arrays:related}
 
-In section~\ref{sec:networks:related} it was demonstrated that many models of single 2-arrays fit the form of the generic model presented above.
+In section~\ref{sec:networks:related} it was demonstrated that many models of single 2-arrays fit the form of the generic model presented at the beginning of this section.
 In particular there are models that assume $F$ is linear \citep[e.g.][]{Hoff2007-ja, Meeds2007-gd, Salakhutdinov2008-zt, Yu2008-tz, Miller2009-wg}, that $F$ is Gaussian process distributed \citep[e.g.][]{Lawrence2009-za, Yan2011-lc, Lloyd2012-sb} and other non-linear forms for $F$ both parametric \citep[e.g.][]{Hoff2002-vy} and nonparametric \citep[e.g.][]{Roy2009-ge}.
 In addition to this there has been a line of work that uses increasingly more expressive forms of the distribution $\mathcal{U}$ \citep[e.g.][]{Wang1987-jd, Hoffman_undated-ri, Nowicki2001-xm, Kemp2006-jt, Xu2006-uy, Meeds2007-gd, Miller2009-wg, Palla2012-ch} which is highly related to work proposing generative models for cross categorisation and multiview clustering \citep[e.g.][]{Niu2012-kl, Li2011-bk, Shafto2011-pu, Mansinghka2009-lx}.
 

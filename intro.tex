@@ -46,7 +46,7 @@ This thesis is concerned with the latter strategy.
 
 \footnotetext{
 Or one could attempt to revise statistical theory in such a way as to take account of computational and epistemic limitations.
-These lines of enquiry are potentially very fruitful but still in their infancy \citep[e.g.][]{Jordan2013-uv}.
+These lines of enquiry are potentially very fruitful but still in their infancy \citep[e.g.][]{Jordan2013-uv, Russell2014-be}.
 }
 
 %Chapters~\ref{ch:networks}~and~\ref{ch:arrays} are concerned with the problem of specifying an appropriate mathematical form of probabilistic model based on symmetry arguments.
@@ -96,7 +96,7 @@ For this simple model it is trivial to update our beliefs in the light of data a
   m \given D &\sim \Normal\bigg(\frac{\sum_i x_i y_i}{\sum_i x_i^2 + \sigma_\varepsilon^2}, \frac{\sigma_\varepsilon^2}{\sum_i x_i^2 + \sigma_\varepsilon^2}\bigg) \label{eq:intro:posterior_m} \\
   y_j \given D &\sim \Normal\bigg(\frac{x_j \sum_i x_i y_i}{\sum_i x_i^2 + \sigma_\varepsilon^2}, \frac{x_j^2 \sigma_\varepsilon^2}{\sum_i x_i^2 + \sigma_\varepsilon^2} + \sigma_\varepsilon^2\bigg) \quad \textrm{where } j \notin \{1,\dots,n\}.
 \]
-The updates of the prior belief for $m$ \eqref{eq:intro:prior_m} into the posterior belief \eqref{eq:intro:posterior_m} is demonstrated visually in figure~\ref{fig:intro:lin_reg}; as more data is observed one's belief about the parameter $m$ becomes more concentrated.
+The updates of the prior belief for $m$ \eqref{eq:intro:prior_m} into the posterior belief \eqref{eq:intro:posterior_m} are demonstrated visually in figure~\ref{fig:intro:lin_reg}; as more data is observed one's belief about the parameter $m$ becomes more concentrated.
 
 \begin{figure}[ht]
 \centering

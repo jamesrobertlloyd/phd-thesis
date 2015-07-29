@@ -217,7 +217,7 @@ where $|M|$ is the number of kernel parameters, $p(D|M)$ is the marginal likelih
 We note however that using the Bayesian information criterion is not theoretically justified in this context; but attempts to use a theoretically justified approximation to the marginal likelihood uncover interesting fundamental problems which we discuss in section~\ref{sec:construction:discussion}.
 
 Unfortunately, optimising over parameters is not a convex optimisation problem, and the space can have many local optima.
-For example, in data with periodic structure, integer multiples of the true period (\ie harmonics) are often local optima. 
+For example, in data with periodic structure, integer multiples of the true period (\ie subharmonics) are often local optima. 
 To alleviate this difficulty, we take advantage of our search procedure to hot start the optimisation problem: all of the parameters which were part of the previous kernel are initialised to their previous values.
 All parameters are then optimised using conjugate gradients, randomly restarting the newly introduced parameters.
 This procedure is not guaranteed to find the global optimum, but it is similar to the commonly used method of iteratively modelling residuals called backfitting \citep[e.g.][]{Hastie2009-hj}.

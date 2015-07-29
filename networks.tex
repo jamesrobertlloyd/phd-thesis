@@ -18,7 +18,7 @@ Relational data records relations between entities.
 Such data arises in a variety of contexts, including graph-valued data \citep[e.g.][]{Airoldi2008-fr,Hoff2002-vy}, micro-array data, tensor data \citep[e.g.][]{Xu2012-ub} and collaborative filtering \citep[e.g.][]{Salakhutdinov2008-tp}.
 Pairwise relations can be summarised in a 2-dimensional array (often also called a matrix);
 more generally, relations between $d$-tuples are recorded as $d$-dimensional arrays.
-We consider probabilistic models of infinite 2-arrays $\{\darray_{ij} : i,j\in\Nats\}$, where entries $\darray_{ij}$ take values in a space $\dataspace$. 
+We consider probabilistic models of infinite 2-arrays $(\darray_{ij} : i,j\in\Nats)$, where entries $\darray_{ij}$ take values in a space $\dataspace$. 
 Each entry $\darray_{ij}$ describes the relation between objects $i$ and $j$. Finite
 samples---relational measurements for $n$ objects---are $n\times n$-arrays. As the sample size increases, the data aggregates into
 a larger and larger array. 
@@ -106,7 +106,7 @@ Array exchangeability states that any probabilistic model of these arrays should
 \begin{tabular}{c}
 \tiny \input{\arraysfigsdir/exchangeable}
 \end{tabular}
-\caption[Illustration of array exchangeability for network adjacency matrices.]{Left: Networks with equivalent structure but different node labels. Right: Corresponding adjacency matrix representations of these networks}
+\caption[Illustration of array exchangeability for network adjacency matrices.]{\emph{Left}: Networks with equivalent structure but different node labels. \emph{Right}: Corresponding adjacency matrix representations of these networks}
 \label{fig:networks:exchangeable}
 \end{figure}
 
@@ -196,7 +196,7 @@ In chapter \ref{ch:arrays} we extend these representation results to arbitrary c
 \label{sec:networks:model}
 
 To define a probabilistic model for array or graph valued data, we start with theorem \ref{theorem:ah}: A distribution on exchangeable matrices
-can be specified by specifying a distribution on measurable functions $F : [0,1]^3\to\dataspace$.
+can be specified by a distribution on measurable functions $F : [0,1]^3\to\dataspace$.
 For simplicity we restrict attention to symmetric matrices $X_{ij} = X_{ji}$; in chapter~\ref{ch:arrays} we present different arguments for which asymmetry is more elegantly handled but arrive at the same form of model.
 We decompose the function $F$ into two functions 
 ${\AHfunction:[0,1]^2\rightarrow\latentspace}$ 
@@ -596,7 +596,7 @@ We also note that in all experiments, a single latent dimension suffices to achi
 %With this more sensible MCMC schedule the random function model outperforms the other models across the board.
 %}
 
-In general, a more general model of data will not necessarily improve empirical performance compared to simpler models.
+In general, a more flexible model of data will not necessarily improve empirical performance compared to simpler models.
 However, our results provide empirical evidence that the flexibility of a general nonparametric model can make an important difference for the problems considered here.
 
 The posterior distribution of $\AHfunction$ favours functions defining random array distributions that explain the data well.
@@ -795,7 +795,7 @@ Similarly, the sorted high school social network adjacency matrix in figure~\ref
   \includegraphics[width=0.45\textwidth]{\networksfigsdir/nips_sorted}
   \caption[Unsorted and sorted NIPS coauthorship adjacency matrices.]{NIPS coauthorship data. 
     \emph{Left:} Unsorted adjacency matrix. 
-    \emph{Middle:} Sorted adjacency matrix.
+    \emph{Right:} Sorted adjacency matrix.
   }
   \label{fig:networks:nips}
 \end{figure}
@@ -806,7 +806,7 @@ Similarly, the sorted high school social network adjacency matrix in figure~\ref
   \includegraphics[width=0.45\textwidth]{\networksfigsdir/highschool_sorted}
   \caption[Unsorted and sorted highschool social network adjacency matrices.]{Highschool social network. 
     \emph{Left:} Unsorted adjacency matrix. 
-    \emph{Middle:} Sorted adjacency matrix.
+    \emph{Right:} Sorted adjacency matrix.
   }
   \label{fig:networks:highschool}
 \end{figure}

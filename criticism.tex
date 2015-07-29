@@ -17,7 +17,7 @@ This chapter is my initial response to these gaps in the literature.
 Statistical model checking or criticism\footnotemark{} is an important part of a complete statistical analysis.
 \footnotetext{We follow \citet{Box1980-ud} using the term `model criticism' for similar reasons to \citet{OHagan2003-bc}, namely ``model checking \ldots conveys to me a sense of a rather passive activity that does not expect to uncover any problems, while model criticism conveys a more vigorous and open-minded process''.}
 When one fits a linear model to a data set via least squares a complete analysis includes computing \eg Cook's distances \citep{Cook1982-ia} to identify influential points or plotting residuals against fitted values to identify non-linearity or heteroscedasticity.
-Similarly, modern approaches to Bayesian statistics view model criticism as in important component of an iterative cycle of model construction, inference and criticism \citep[e.g.][]{Gelman2013-st, Blei2014-uz}.
+Similarly, modern approaches to Bayesian statistics view model criticism as in important component of an iterative cycle of model construction, inference and criticism \citep[e.g.][]{Gelman2013-st, Blei2014-uz, Box1980-ud}.
 
 As statistical models become more complex and diverse in response to the challenges of modern data sets there will be an increasing need for a greater range of model criticism procedures that are either automatic or generally applicable.
 This will be especially true as automatic modelling methods \citep[e.g.][]{Grosse2012-zi, Thornton2013-zg, Lloyd2014-nz} and probabilistic programming \citep[e.g.][]{Milch2005-qc, Goodman2008-ok, Stan_Development_Team2014-ha} mature.
@@ -165,9 +165,9 @@ We consider fitting a normal distribution to this data by maximum likelihood.
 \includegraphics[width=0.32\columnwidth]{\criticismfigsdir/newcomb_witness_1}
 \includegraphics[width=0.32\columnwidth]{\criticismfigsdir/newcomb_witness_2}
 \caption[Speed of light data and witness functions.]{
-Left: Histogram of Simon Newcomb's speed of light measurements.
-Middle: Histogram together with density estimate (red solid line) and MMD witness function (green dashed line).
-Right: Histogram together with improved density estimate and witness function.
+\emph{Left}: Histogram of Simon Newcomb's speed of light measurements.
+\emph{Middle}: Histogram together with density estimate (red solid line) and MMD witness function (green dashed line).
+\emph{Right}: Histogram together with improved density estimate and witness function.
 }
 \label{fig:newcomb}
 \end{figure}
@@ -212,8 +212,8 @@ While we can see that one cluster is different from the rest, it is difficult to
 \hspace{0.1\columnwidth}
 \includegraphics[width=0.31\columnwidth]{\criticismfigsdir/high_mog_witness}
 \caption[PCA projection of cluster data and witness function.]{
-Left: PCA projection of synthetic high dimensional cluster data (green circles) and projection of samples from fitted model (red circles).
-Right: Witness function of MMD two sample test. The erroneously fit cluster is clearly identified.
+\emph{Left}: PCA projection of synthetic high dimensional cluster data (green circles) and projection of samples from fitted model (red circles).
+\emph{Right}: Witness function of MMD two sample test. The erroneously fit cluster is clearly identified.
 }
 \label{fig:high_mog}
 \end{figure}
@@ -268,12 +268,12 @@ A priori the answer to this question is almost certainly no, but it is not immed
 \includegraphics[width=0.48\columnwidth]{\criticismfigsdir/many_rbm_cond_witness_peaks}
 \includegraphics[width=0.48\columnwidth]{\criticismfigsdir/dbn_ft_cond_witness_peaks}
 \caption[A variety of digit samples from RBMs and DBNs and troughs and peaks of witness functions.]{
-Top left: Random samples from an RBM.
-Top right: Troughs of the witness function for the RBM (digits that are over-represented by the model).
-Middle left: Troughs of the witness function for samples from 1500 RBMs.
-Middle right: Troughs of the witness function for the DBN.
-Bottom left: Peaks (digits that are under-represented by the model) of the witness function for samples from 1500 RBMs.
-Bottom right: Peaks of the witness function for the DBN.
+\emph{Top left}: Random samples from an RBM.
+\emph{Top right}: Troughs of the witness function for the RBM (digits that are over-represented by the model).
+\emph{Middle left}: Troughs of the witness function for samples from 1500 RBMs.
+\emph{Middle right}: Troughs of the witness function for the DBN.
+\emph{Bottom left}: Peaks (digits that are under-represented by the model) of the witness function for samples from 1500 RBMs.
+\emph{Bottom right}: Peaks of the witness function for the DBN.
 }
 \label{fig:digits}
 \end{figure}
@@ -297,7 +297,7 @@ The usefulness of the test comes into play for more borderline situations demons
     \includegraphics[width=0.4\columnwidth]{\criticismfigsdir/rbm_0_witness}
   \end{tabular}
   \end{center}
-  \caption[PCA projections of MNIST digits and RBM samples and corresponding witness function.]{Top: PCA projection of MNIST digits (green circles) and sample from a trained RBM (red crosses). These are certainly not from the same distribution. Left: Same as top plot but applied to the zero digit class conditional distribution. Right: Estimated witness function for left plot.}
+  \caption[PCA projections of MNIST digits and RBM samples and corresponding witness function.]{\emph{Top}: PCA projection of MNIST digits (green circles) and sample from a trained RBM (red crosses). These are certainly not from the same distribution. \emph{Left}: Same as top plot but applied to the zero digit class conditional distribution. \emph{Right}: Estimated witness function for left plot.}
   \label{fig:criticism:rbm_pca}
 \end{figure}
 
@@ -328,7 +328,7 @@ The witness function no longer shows any class label mistakes (except perhaps fo
 For comparison the bottom right box of figure~\ref{fig:digits} shows digits closest to the peaks of the witness function; there is no trace of ghosting.
 
 Returning to the RBMs, we do not see ghosting either, but the digits nearest the witness function troughs are somewhat blurred (see bottom left box for comparison with peaks).
-Assuming that the top level associative memory of the DBN also suffers from blurring, this will result in occasionally incorrect neurons in the second hidden layer on the DBN.
+Assuming that the top level associative memory of the DBN also suffers from blurring, this will result in occasionally incorrect neurons in the second hidden layer of the DBN.
 These incorrect bits will then propagate down the DBN resulting in spurious features in several visible neurons, resulting in ghosting.
 
 \subsection{Testing non \iid data}
@@ -472,7 +472,7 @@ Of course, when performing multiple hypothesis tests care must be taken in the i
 
 \section{Conclusions}
 
-In this paper we have demonstrated an exploratory form of model criticism based on two sample tests using kernel maximum mean discrepancy.
+In this chapter we have demonstrated an exploratory form of model criticism based on two sample tests using kernel maximum mean discrepancy.
 In contrast to other methods for model criticism, the test analytically maximises over a broad class of statistics, automatically identifying the statistic which most demonstrates the discrepancy between the model and data.
 We demonstrated how this method of model criticism can be applied to neural networks and Gaussian process regression and demonstrated the ways in which these models were misrepresenting the data they were trained on.
 
@@ -515,7 +515,7 @@ If after completing a statistical analysis, one has the resources (intellectual,
 However, this process of model expansion will eventually become infeasible for all but the simplest of problems.
 At this point one might consider cheaper alternatives to performing probabilistic inference, such as model criticism techniques.
 Faced with a decision between multiple actions it seems likely that this problem should ultimately be phrased in decision theoretic terms.
-However, the problem of how one should make optimal statistical decisions given computational and other time constraints is still relatively uncharted territory \citep{Jordan2013-uv}.
+However, the problem of how one should make optimal statistical decisions given computational and other time constraints is still relatively uncharted territory \citep{Jordan2013-uv, Russell2014-be}.
 
 %\subsection{Perhaps a decision theoretic viewpoint will bring some rationality to the problem}
 
