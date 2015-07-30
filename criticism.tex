@@ -453,13 +453,13 @@ In some situations it may be more appropriate to attempt to falsify the null hyp
 As mentioned in section~\ref{sec:model-crit-general} this can be achieved by reserving a portion of the data to be used for model criticism alone, rather than fitting a model or updating a posterior on the full data.
 Methods employing cross validation have also been investigated in this context \citep[e.g.][]{Gelfand1992-ow, Marshall2007-hd, Presanis2013-fg}.
 
-\paragraph{Other methods for evaluating statistical models}
+\subsection{Other methods for evaluating statistical models}
 
 Other typical methods of model evaluation include estimating the predictive performance of the model, analyses of sensitivities to modelling parameters / priors, graphical tests, and estimates of model utility.
 For a recent survey of Bayesian methods for model assessment, selection and comparison see \cite{Vehtari2012-oh} which phrases many techniques as estimates of the utility of a model.
 For some discussion of sensitivity analysis and graphical model comparison see \eg \citet{Gelman2013-st}.
 
-In this manuscript we have focused on methods that compare statistics of data with predictive distributions, ignoring parameters of the model.
+In this chapter we have focused on methods that compare statistics of data with predictive distributions, ignoring parameters of the model.
 The discrepancy measures of \cite{Gelman1996-ez} compute statistics of data and parameters; examples can be found in \cite{Gelman2013-st}.
 There is also a line of work \citep{Marshall2007-hd, OHagan2003-bc, Bayarri2007-nk, Presanis2013-fg, Dahl2007-fi, Gasemyr2009-yh, Scheel2011-jz} developing measures to criticise the internal specifications of hierarchical or otherwise structured models.
 In particular, \citet{Presanis2013-fg} develop conflict measures that can be used to criticise any node in a model specified by a directed acyclic graph.

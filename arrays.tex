@@ -573,7 +573,7 @@ Some generative models for cross categorisation or multiview clustering can also
 These models are appropriate for data consisting of measurements of several features for a number of objects.
 The common assumption of these models is that the objects can be clustered in several ways, with different features being relevant for different clusterings.
 
-For example, CrossCat \citep{Shafto2011-pu, Mansinghka2009-lx} is a generative model of tables of data where it is assumed that columns are clustered and that for each of these column clusterings there are independent row clusterings.
+For example, CrossCat \citep{Shafto2011-pu, Mansinghka2009-lx} is a generative model of tables of data where it is assumed that columns are clustered and that for each of the column clusters there is an independent row clustering.
 Cast into Aldous--Hoover form, the generative model of a table $X$ can be written as
 \[
   (U^c_i)_{i \in \Nats} & \probgets \textrm{Clustering} \quad \forall \, c \in \Nats\\
@@ -583,7 +583,8 @@ Cast into Aldous--Hoover form, the generative model of a table $X$ can be writte
   F(U_i, V_j) & \defas \theta^j_{U_i^{Z_j}} \\
   X_{ij} & \probgets L(F(U_i, V_j)) \quad \forall \, i, j \in \Nats.
 \]
-That is, for entry $X_{ij}$ there is a likelihood, $L$, with parameters $\theta^j_{U_i^{Z_j}}$, that are specific to the column, $j$, and value of the row clustering, $U_i^{Z_j}$, corresponding to the column clustering $Z_j$.
+That is, for entry $X_{ij}$ there is a likelihood, $L$, with parameters $\theta^j_{U_i^{Z_j}}$.
+The parameters are specific to the column, $j$, and value of the row cluster, $U_i^{Z_j}$, from the clustering corresponding to the column cluster $Z_j$.
 
 This type of model is not often viewed as a model of relational data since the different columns may have different types of data (\eg binary, count, real-valued), requiring different likelihoods and breaking column exchangeability.
 However, if we view the data-type information as column observations, then we are exactly in the situation of section~\ref{sec:arrays:conditional} and we can easily include this data-type information in a conditional model.
@@ -611,7 +612,7 @@ or more conventionally
 meaning that we can represent the distribution of the time evolving social network with fixed latent variables for each node but a time varying representing function.
 The form of the time varying function is completely general, but it could be constrained further by assumptions of continuity or Markov exchangeability for example.
 It is more typical however to assume that the latent variables also evolve through time (this still produces an exchangeable distribution) with the representing function potentially static.
-Examples of models of this form include \citep[e.g.][]{Adams2010-ln, durante2014bayesian}.
+Examples of models of this form include \cite[e.g.][]{Adams2010-ln, durante2014bayesian}.
 It may be advantageous however to have fixed latent variables when one is jointly modelling both time evolving and static data.
 
 \subsection{Prior work using models of this form}
